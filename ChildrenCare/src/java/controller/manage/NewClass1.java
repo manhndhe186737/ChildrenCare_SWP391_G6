@@ -17,5 +17,6 @@ public class NewClass1 {
         System.out.println(a.getAccount("manhnguyenduc153@gmail.com", "123").getEmail());
         System.out.println(a.getAccount1().size());
         System.out.println(a.getAllUsers().size());
+        System.out.println("1");
     }
 }
