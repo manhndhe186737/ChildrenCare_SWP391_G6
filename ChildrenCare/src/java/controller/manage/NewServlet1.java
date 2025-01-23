@@ -6,7 +6,6 @@
 package controller.manage;
 
 import controller.auth.BaseRBAC;
-import controller.auth.BaseRequireAuthentication;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,10 +19,8 @@ import model.Account;
  *
  * @author FPTSHOP
  */
-@WebServlet(name="NewServlet", urlPatterns={"/NewServlet"})
-public class NewServlet extends BaseRBAC {
-   
-
+@WebServlet(name="NewServlet1", urlPatterns={"/service/list"})
+public class NewServlet1 extends BaseRBAC {
 
     @Override
     protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, Account acocunt) throws ServletException, IOException {
@@ -34,5 +31,5 @@ public class NewServlet extends BaseRBAC {
     protected void doAuthorizedPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+   
 }
