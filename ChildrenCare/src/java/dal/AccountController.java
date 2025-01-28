@@ -70,7 +70,7 @@ public class AccountController extends DBContext {
                 String fullname = rs.getString("fullname");
 
                 // Tạo đối tượng User và thêm vào danh sách
-                users.add(new User(userId, fullname));
+                users.add(new User(userId, fullname, null, null, null, null, ));
             }
         }catch(SQLException ex){
             
