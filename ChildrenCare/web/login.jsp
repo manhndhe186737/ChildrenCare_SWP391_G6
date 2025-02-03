@@ -12,8 +12,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="login" method="get">
-            <input name="user" type="text">
+        <form action="login" method="post">
+            <input name="email" type="text">
             <input name="pass" type="text">
             <input type="submit">
         </form>
