@@ -54,7 +54,7 @@ public abstract class BaseRBAC extends BaseRequireAuthentication {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         if (isAuthorize(account, req)) {
-            doAuthorizedPost(req, resp, account);
+            doAuthorizedGet(req, resp, account);
         } else {
             resp.sendError(403, "You cannot acces this page!!!");
         }

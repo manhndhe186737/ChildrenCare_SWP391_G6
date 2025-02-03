@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import model.Feature;
 import model.Role;
 import java.sql.Connection;
+import model.Account;
 
 /**
  *
@@ -69,5 +70,36 @@ public class AccountDBContext extends DBContext {
             }
         }
         return roles;
+    }
+
+    public Account getAccount(String email, String password) {
+        PreparedStatement stm = null;
+        try {
+            String sql = "SELECT email, password FROM swp391.accounts\n"
+                    + "WHERE email = ? AND password = ?";
+            
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, email);
+            stm.setString(2, password);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            if (rs.next()) {                
+              Account a = new Account();
+              a.setEmail(rs.getString("email"));
+              a.setPassword(rs.getString("password"));
+              
+              return a;
+            }
+        } catch (Exception e) {
+        }finally{
+            try {
+                stm.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
     }
 }
