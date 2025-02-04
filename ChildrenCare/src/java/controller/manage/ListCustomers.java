@@ -18,20 +18,26 @@ import model.User;
  *
  * @author FPTSHOP
  */
-public class CustomerList extends BaseRBAC{
+public class ListCustomers extends BaseRBAC {
 
     @Override
     protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, Account acocunt) throws ServletException, IOException {
         CustomerDBContext cdb = new CustomerDBContext();
-        ArrayList<User> customers = cdb.getUsers("Customer");
-        
-        req.setAttribute("customers", customers);
-        req.getRequestDispatcher("list.jsp").forward(req, resp);
+//        ArrayList<User> customers = cdb.getUsers("Customer");
+
+        String searchName = req.getParameter("s");
+        if(searchName == null || searchName.length() == 0){
+            searchName = "";
+        }
+        ArrayList<User> customerSearch = cdb.getUsersByName("Customer", searchName);
+
+        req.setAttribute("customers", customerSearch);
+        req.getRequestDispatcher("../admin/customers.jsp").forward(req, resp);
     }
 
     @Override
     protected void doAuthorizedPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
     }
-    
+
 }
