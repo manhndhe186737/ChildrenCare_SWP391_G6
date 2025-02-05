@@ -317,6 +317,17 @@
                         <div class="d-md-flex justify-content-between">
                             <h5 class="mb-0">Patients List</h5>
 
+                            <!-- Sort Dropdown -->
+                            <form action="../admin/customers" method="post" class="d-flex align-items-center">
+                                <label class="me-2" style="white-space: nowrap;">Sort by:</label>
+                                <select class="form-select form-select-sm" name="sortBy" onchange="this.form.submit()">
+                                    <option value="" ${empty requestScope.sortBy ? 'selected' : ''}>None</option>
+                                    <option value="name" ${requestScope.sortBy eq 'name' ? 'selected' : ''}>Name</option>
+                                    <option value="dob" ${requestScope.sortBy eq 'dob' ? 'selected' : ''}>Date of Birth</option>
+                                    <option value="email" ${requestScope.sortBy eq 'email' ? 'selected' : ''}>Email</option>
+                                </select>
+                            </form>
+
                             <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                                 <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
                                     <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
@@ -332,15 +343,12 @@
                                         <thead>
                                             <tr>
                                                 <th class="border-bottom p-3" style="min-width: 50px;">Id</th>
-                                                <th class="border-bottom p-3" style="min-width: 180px;">Name</th>
-                                                <th class="border-bottom p-3">Age</th>
-                                                <th class="border-bottom p-3">Gender</th>
-                                                <th class="border-bottom p-3">Address</th>
-                                                <th class="border-bottom p-3">Mobile No.</th>
-                                                <th class="border-bottom p-3">Department</th>
-                                                <th class="border-bottom p-3" style="min-width: 150px;">Date</th>
-                                                <th class="border-bottom p-3">Time</th>
-                                                <th class="border-bottom p-3">Status</th>
+                                                <th class="border-bottom p-3" style="min-width: 200px;">Name</th>
+                                                <th class="border-bottom p-3" style="min-width: 120px;">Dob</th>
+                                                <th class="border-bottom p-3" style="min-width: 100px;">Gender</th>
+                                                <th class="border-bottom p-3" style="min-width: 200px;">Address</th>
+                                                <th class="border-bottom p-3" style="min-width: 180px;">Mobile No.</th>
+                                                <th class="border-bottom p-3" style="min-width: 150px;">Email</th>
                                                 <th class="border-bottom p-3" style="min-width: 100px;"></th>
                                             </tr>
                                         </thead>
@@ -360,10 +368,7 @@
                                                     <td class="p-3">${c.gender eq true?'Male':'Female'}</td>
                                                     <td class="p-3">${c.address}</td>
                                                     <td class="p-3">${c.phone}</td>
-                                                    <td class="p-3">Cardiology</td>
-                                                    <td class="p-3">20th Dec 2020</td>
-                                                    <td class="p-3">11:00AM</td>
-                                                    <td class="p-3"><span class="badge bg-soft-success">Approved</span></td>
+                                                    <td class="p-3">${c.account.email}</td>
                                                     <td class="text-end p-3">
                                                         <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewprofile"><i class="uil uil-eye"></i></a>
                                                         <a href="#" class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal" data-bs-target="#editprofile"><i class="uil uil-pen"></i></a>

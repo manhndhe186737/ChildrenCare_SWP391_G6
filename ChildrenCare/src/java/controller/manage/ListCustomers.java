@@ -26,10 +26,13 @@ public class ListCustomers extends BaseRBAC {
 //        ArrayList<User> customers = cdb.getUsers("Customer");
 
         String searchName = req.getParameter("s");
-        if(searchName == null || searchName.length() == 0){
+        if (searchName == null || searchName.length() == 0) {
             searchName = "";
         }
-        ArrayList<User> customerSearch = cdb.getUsersByName("Customer", searchName);
+
+        String sortBy = req.getParameter("sortBy");
+
+        ArrayList<User> customerSearch = cdb.getUsersByName("Customer", searchName, "None");
 
         req.setAttribute("customers", customerSearch);
         req.getRequestDispatcher("../admin/customers.jsp").forward(req, resp);
@@ -37,7 +40,19 @@ public class ListCustomers extends BaseRBAC {
 
     @Override
     protected void doAuthorizedPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        CustomerDBContext cdb = new CustomerDBContext();
 
+        String searchName = req.getParameter("s");
+        if (searchName == null || searchName.length() == 0) {
+            searchName = "";
+        }
+        String sortBy = req.getParameter("sortBy");
+
+        ArrayList<User> customerSearch = cdb.getUsersByName("Customer", searchName, sortBy);
+
+        req.setAttribute("sortBy", sortBy);
+        req.setAttribute("customers", customerSearch);
+        req.getRequestDispatcher("../admin/customers.jsp").forward(req, resp);
     }
 
 }
