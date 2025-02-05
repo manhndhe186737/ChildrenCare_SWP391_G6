@@ -318,7 +318,7 @@
                             <h5 class="mb-0">Patients List</h5>
 
                             <!-- Sort Dropdown -->
-                            <form action="../admin/customers" method="post" class="d-flex align-items-center">
+                            <form action="../admin/customers" method="get" class="d-flex align-items-center">
                                 <label class="me-2" style="white-space: nowrap;">Sort by:</label>
                                 <select class="form-select form-select-sm" name="sortBy" onchange="this.form.submit()">
                                     <option value="" ${empty requestScope.sortBy ? 'selected' : ''}>None</option>
@@ -330,36 +330,34 @@
 
                             <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                                 <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
-                                    <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Patients</li>
+                                    <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Customers</li>
                                 </ul>
                             </nav>
                         </div>
 
                         <div class="row">
-                            <div class="col-12 mt-4">
+                            <div class="col-12 mt-5">
                                 <div class="table-responsive shadow rounded">
                                     <table class="table table-center bg-white mb-0">
                                         <thead>
                                             <tr>
-                                                <th class="border-bottom p-3" style="min-width: 50px;">Id</th>
                                                 <th class="border-bottom p-3" style="min-width: 200px;">Name</th>
                                                 <th class="border-bottom p-3" style="min-width: 120px;">Dob</th>
                                                 <th class="border-bottom p-3" style="min-width: 100px;">Gender</th>
                                                 <th class="border-bottom p-3" style="min-width: 200px;">Address</th>
                                                 <th class="border-bottom p-3" style="min-width: 180px;">Mobile No.</th>
-                                                <th class="border-bottom p-3" style="min-width: 150px;">Email</th>
+                                                <th class="border-bottom p-3" style="min-width: 120px;">Email</th>
                                                 <th class="border-bottom p-3" style="min-width: 100px;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <c:forEach var="c" items="${requestScope.customers}">
                                                 <tr>
-                                                    <th class="p-3">${c.id}</th>
                                                     <td class="py-3">
                                                         <a href="#" class="text-dark">
                                                             <div class="d-flex align-items-center">
-                                                                <img src="../assets/images/client/01.jpg" class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                                <img src="../assets/images/client/${c.avatar}" class="avatar avatar-md-sm rounded-circle shadow" alt="">
                                                                 <span class="ms-2">${c.fullname}</span>
                                                             </div>
                                                         </a>
@@ -368,11 +366,24 @@
                                                     <td class="p-3">${c.gender eq true?'Male':'Female'}</td>
                                                     <td class="p-3">${c.address}</td>
                                                     <td class="p-3">${c.phone}</td>
-                                                    <td class="p-3">${c.account.email}</td>
+                                                    <td class="p-3" style="min-width: 120px;">${c.account.email}</td>
                                                     <td class="text-end p-3">
-                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewprofile"><i class="uil uil-eye"></i></a>
-                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal" data-bs-target="#editprofile"><i class="uil uil-pen"></i></a>
-                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i class="uil uil-trash"></i></a>
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-primary"
+                                                           data-bs-toggle="modal" data-bs-target="#viewprofile"
+                                                           onclick="viewProfile('${c.id}', '${c.fullname}', '${c.dob}', '${c.gender}', '${c.address}', '${c.phone}', '${c.account.email}', '${c.avatar}')">
+                                                            <i class="uil uil-eye"></i>
+                                                        </a>
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-success"
+                                                           data-bs-toggle="modal" data-bs-target="#editprofile"
+                                                           onclick="editProfile('${c.id}', '${c.fullname}', '${c.dob}', '${c.gender}', '${c.address}', '${c.phone}', '${c.account.email}', '${c.avatar}')">
+                                                            <i class="uil uil-pen"></i>
+                                                        </a>
+
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-danger"
+                                                           onclick="confirmDelete(${c.id}); return false;">
+                                                            <i class="uil uil-trash"></i>
+                                                        </a>
+
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -383,21 +394,39 @@
                         </div><!--end row-->
 
                         <div class="row text-center">
-                            <!-- PAGINATION START -->
                             <div class="col-12 mt-4">
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
-                                    <span class="text-muted me-3">Showing 1 - 10 out of 50</span>
+                                    <span class="text-muted me-3">
+                                        Showing ${(currentPage - 1) * 10 + 1} - 
+                                        ${Math.min(currentPage * 10, totalPages * 10)} out of ${totalPages * 10}
+                                    </span>
+
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Previous">Prev</a></li>
-                                        <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Next">Next</a></li>
+                                        <!-- Nút Prev -->
+                                        <c:if test="${currentPage > 1}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="?s=${searchName}&sortBy=${sortBy}&page=${currentPage - 1}">Prev</a>
+                                            </li>
+                                        </c:if>
+
+                                        <!-- Hiển thị số trang -->
+                                        <c:forEach var="i" begin="1" end="${totalPages}">
+                                            <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                <a class="page-link" href="?s=${searchName}&sortBy=${sortBy}&page=${i}">${i}</a>
+                                            </li>
+                                        </c:forEach>
+
+                                        <!-- Nút Next -->
+                                        <c:if test="${currentPage < totalPages}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="?s=${searchName}&sortBy=${sortBy}&page=${currentPage + 1}">Next</a>
+                                            </li>
+                                        </c:if>
                                     </ul>
                                 </div>
-                            </div><!--end col-->
-                            <!-- PAGINATION END -->
-                        </div><!--end row-->
+                            </div>
+                        </div>
+
                     </div>
                 </div><!--end container-->
 
@@ -470,74 +499,80 @@
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header border-bottom p-3">
-                        <h5 class="modal-title" id="exampleModalLabel">Profile Settings</h5>
+                        <h5 class="modal-title">Edit Profile</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-3 pt-4">
-                        <div class="row align-items-center">
-                            <div class="col-lg-2 col-md-4">
-                                <img src="../assets/images/doctors/01.jpg" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
-                            </div><!--end col-->
+                        <form action="../admin/editCustomer" method="get" enctype="multipart/form-data">
+                            <input type="hidden" id="editId" name="id">
 
-                            <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                <h6 class="">Upload your picture</h6>
-                                <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg or .png format</p>
-                            </div><!--end col-->
+                            <!-- Upload Image -->
+                            <div class="row align-items-center">
+                                <div class="col-lg-2 col-md-4">
+                                    <img id="editProfileImg" src="" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="Profile Image">
+                                </div>
+                                <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
+                                    <h6 class="">Upload your picture</h6>
+                                    <p class="text-muted mb-0">Use an image at least 256x256 in .jpg or .png format</p>
+                                </div>
+                                <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
+                                    <input type="file" name="profileImage" id="profileImageInput" class="form-control" accept="image/*" onchange="previewProfileImage(event)">
+                                </div>
+                            </div>
 
-                            <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
-                                <a href="#" class="btn btn-primary">Upload</a>
-                                <a href="#" class="btn btn-soft-primary ms-2">Remove</a>
-                            </div><!--end col-->
-                        </div><!--end row-->
-
-                        <form class="mt-4">
-                            <div class="row">
+                            <!-- Form Fields -->
+                            <div class="row mt-4">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">First Name</label>
-                                        <input name="name" id="name" type="text" class="form-control" placeholder="First Name :">
+                                        <label class="form-label">Full Name</label>
+                                        <input name="fullname" id="editFullName" type="text" class="form-control">
                                     </div>
-                                </div><!--end col-->
+                                </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Last Name</label>
-                                        <input name="name" id="name2" type="text" class="form-control" placeholder="Last Name :">
+                                        <label class="form-label">Date of Birth</label>
+                                        <input name="dob" id="editDob" type="date" class="form-control">
                                     </div>
-                                </div><!--end col-->
+                                </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Your Email</label>
-                                        <input name="email" id="email" type="email" class="form-control" placeholder="Your email :">
-                                    </div> 
-                                </div><!--end col-->
+                                        <label class="form-label">Gender</label>
+                                        <select name="gender" id="editGender" class="form-control">
+                                            <option value="true">Male</option>
+                                            <option value="false">Female</option>
+                                        </select>
+                                    </div>
+                                </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Phone no.</label>
-                                        <input name="number" id="number" type="text" class="form-control" placeholder="Phone no. :">
-                                    </div>                                                                               
-                                </div><!--end col-->
+                                        <label class="form-label">Phone</label>
+                                        <input name="phone" id="editPhone" type="text" class="form-control">
+                                    </div>
+                                </div>
 
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label class="form-label">Your Bio Here</label>
-                                        <textarea name="comments" id="comments" rows="4" class="form-control" placeholder="Bio :"></textarea>
+                                        <label class="form-label">Address</label>
+                                        <input name="address" id="editAddress" type="text" class="form-control">
                                     </div>
                                 </div>
-                            </div><!--end row-->
 
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <input type="submit" id="submit" name="send" class="btn btn-primary" value="Save changes">
-                                </div><!--end col-->
+                                <div class="col-md-12">
+                                    <div class="mb-3 text-end">
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
                             </div><!--end row-->
                         </form><!--end form-->
                     </div>
                 </div>
             </div>
         </div>
+
+
         <!-- Profile Settings End -->
 
         <!-- Profile Start -->
@@ -545,48 +580,40 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header border-bottom p-3">
-                        <h5 class="modal-title" id="exampleModalLabel1">Profile</h5>
+                        <h5 class="modal-title">Customer Profile</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-3 pt-4">
                         <div class="d-flex align-items-center">
-                            <img src="../assets/images/client/01.jpg" class="avatar avatar-small rounded-pill" alt="">
-                            <h5 class="mb-0 ms-3">Howard Tanner</h5>
+                            <img id="viewProfileImg" src="" class="avatar avatar-small rounded-pill" alt="">
+                            <h5 class="mb-0 ms-3" id="profileFullName">---</h5>
                         </div>
                         <ul class="list-unstyled mb-0 d-md-flex justify-content-between mt-4">
                             <li>
                                 <ul class="list-unstyled mb-0">
                                     <li class="d-flex">
-                                        <h6>Age:</h6>
-                                        <p class="text-muted ms-2">25 year old</p>
+                                        <h6>Id:</h6>
+                                        <p class="text-muted ms-2" id="profileId">---</p>
                                     </li>
-
+                                    <li class="d-flex">
+                                        <h6>Date of Birth:</h6>
+                                        <p class="text-muted ms-2" id="profileDob">---</p>
+                                    </li>
                                     <li class="d-flex">
                                         <h6>Gender:</h6>
-                                        <p class="text-muted ms-2">Male</p>
+                                        <p class="text-muted ms-2" id="profileGender">---</p>
                                     </li>
-
                                     <li class="d-flex">
-                                        <h6 class="mb-0">Department:</h6>
-                                        <p class="text-muted ms-2 mb-0">Cardiology</p>
+                                        <h6>Address:</h6>
+                                        <p class="text-muted ms-2" id="profileAddress">---</p>
                                     </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <ul class="list-unstyled mb-0">
                                     <li class="d-flex">
-                                        <h6>Date:</h6>
-                                        <p class="text-muted ms-2">20th Dec 2020</p>
+                                        <h6>Phone:</h6>
+                                        <p class="text-muted ms-2" id="profilePhone">---</p>
                                     </li>
-
                                     <li class="d-flex">
-                                        <h6>Time:</h6>
-                                        <p class="text-muted ms-2">11:00 AM</p>
-                                    </li>
-
-                                    <li class="d-flex">
-                                        <h6 class="mb-0">Doctor:</h6>
-                                        <p class="text-muted ms-2 mb-0">Dr. Calvin Carlo</p>
+                                        <h6>Email:</h6>
+                                        <p class="text-muted ms-2" id="profileEmail">---</p>
                                     </li>
                                 </ul>
                             </li>
@@ -595,6 +622,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Profile End -->
         <!-- Modal end -->
 
@@ -606,6 +634,49 @@
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
+
+        <script>
+                                        function viewProfile(id, fullname, dob, gender, address, phone, email, imageUrl) {
+                                            document.getElementById("profileId").innerText = id;
+                                            document.getElementById("profileFullName").innerText = fullname;
+                                            document.getElementById("profileDob").innerText = dob;
+                                            document.getElementById("profileGender").innerText = gender === 'true' ? 'Male' : 'Female';
+                                            document.getElementById("profileAddress").innerText = address;
+                                            document.getElementById("profilePhone").innerText = phone;
+                                            document.getElementById("profileEmail").innerText = email;
+                                            document.getElementById("viewProfileImg").src = "../assets/images/client/" + imageUrl;
+                                        }
+
+                                        function editProfile(id, fullname, dob, gender, address, phone, email, imageUrl) {
+                                            document.getElementById("editId").value = id;
+                                            document.getElementById("editFullName").value = fullname;
+                                            document.getElementById("editDob").value = dob;
+                                            document.getElementById("editGender").value = gender;
+                                            document.getElementById("editAddress").value = address;
+                                            document.getElementById("editPhone").value = phone;
+                                            document.getElementById("editProfileImg").src = "../assets/images/client/" + imageUrl;
+                                        }
+
+                                        function previewProfileImage(event) {
+                                            let profileImg = document.getElementById("editProfileImg");
+                                            let file = event.target.files[0];
+
+                                            if (file) {
+                                                let reader = new FileReader();
+                                                reader.onload = function (e) {
+                                                    profileImg.src = e.target.result;
+                                                };
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }
+
+                                        function confirmDelete(userId) {
+                                            if (confirm("Are you sure you want to delete this customer?")) {
+                                                window.location.href = "../admin/removeCustomer?user_id=" + userId;
+                                            }
+                                        }
+
+        </script>
 
     </body>
 

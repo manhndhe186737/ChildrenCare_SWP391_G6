@@ -21,9 +21,8 @@ import model.User;
 public class ListCustomers extends BaseRBAC {
 
     @Override
-    protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, Account acocunt) throws ServletException, IOException {
+    protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         CustomerDBContext cdb = new CustomerDBContext();
-//        ArrayList<User> customers = cdb.getUsers("Customer");
 
         String searchName = req.getParameter("s");
         if (searchName == null || searchName.length() == 0) {
@@ -31,10 +30,31 @@ public class ListCustomers extends BaseRBAC {
         }
 
         String sortBy = req.getParameter("sortBy");
+        if (sortBy == null) {
+            sortBy = "None";
+        }
 
-        ArrayList<User> customerSearch = cdb.getUsersByName("Customer", searchName, "None");
+        int page = 1;
+        int pageSize = 5;
+        if (req.getParameter("page") != null) {
+            try {
+                page = Integer.parseInt(req.getParameter("page"));
+            } catch (NumberFormatException e) {
+                page = 1; 
+            }
+        }
 
-        req.setAttribute("customers", customerSearch);
+        ArrayList<User> customers = cdb.getUsersByNameWithPagination("Customer", searchName, sortBy, page, pageSize);
+
+        int totalCustomers = cdb.getTotalUsersCount("Customer", searchName);
+        int totalPages = (int) Math.ceil((double) totalCustomers / pageSize);
+
+        req.setAttribute("customers", customers);
+        req.setAttribute("searchName", searchName);
+        req.setAttribute("sortBy", sortBy);
+        req.setAttribute("currentPage", page);
+        req.setAttribute("totalPages", totalPages);
+
         req.getRequestDispatcher("../admin/customers.jsp").forward(req, resp);
     }
 
