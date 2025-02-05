@@ -16,7 +16,7 @@ public class test {
     public static void main(String[] args) {
         CustomerDBContext cdb = new CustomerDBContext();
         AccountDBContext adb = new AccountDBContext();
-        System.out.println(cdb.getUsers("Customer").size());
-        System.out.println(adb.getAccount("manh@gmail.com", "123").getEmail());
+        System.out.println(cdb.getUsers("Customer"));
+        System.out.println(adb.getAccount("manhnguyenduc153@gmail.com", "123").getEmail());
     }
 }

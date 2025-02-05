@@ -4,7 +4,6 @@
  */
 package model;
 
-import java.util.Locale.Category;
 
 /**
  *
@@ -15,7 +14,7 @@ public class Service {
     private String name;
     private String description;
     private float price;
-    private Category category;
+    private ServiceCategory category;
 
     public int getId() {
         return id;
@@ -49,15 +48,15 @@ public class Service {
         this.price = price;
     }
 
-    public Category getCategory() {
+    public ServiceCategory getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(ServiceCategory category) {
         this.category = category;
     }
 
-    public Service(int id, String name, String description, float price, Category category) {
+    public Service(int id, String name, String description, float price, ServiceCategory category) {
         this.id = id;
         this.name = name;
         this.description = description;

@@ -8,6 +8,18 @@
         <servlet-name>Login</servlet-name>
         <servlet-class>controller.auth.LoginController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServiceList</servlet-name>
+        <servlet-class>controller.manage.ServiceList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Test</servlet-name>
+        <servlet-class>controller.manage.Test</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostList</servlet-name>
+        <servlet-class>controller.manage.PostList</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
         <url-pattern>/customer/list</url-pattern>
@@ -15,5 +27,17 @@
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServiceList</servlet-name>
+        <url-pattern>/ServiceList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Test</servlet-name>
+        <url-pattern>/Test</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostList</servlet-name>
+        <url-pattern>/PostList</url-pattern>
     </servlet-mapping>
 </web-app>
