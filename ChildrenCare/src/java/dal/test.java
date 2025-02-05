@@ -15,8 +15,9 @@ import model.Role;
 public class test {
     public static void main(String[] args) {
         CustomerDBContext cdb = new CustomerDBContext();
-        AccountDBContext adb = new AccountDBContext();
-        System.out.println(cdb.getUsers("Customer").size());
-        System.out.println(adb.getAccount("manh@gmail.com", "123").getEmail());
+//        for (User c : cdb.getUsersByName(role, name)) {
+//            
+//        }
+        System.out.println(cdb.getUsersByName("Customer", "H"));
     }
 }
