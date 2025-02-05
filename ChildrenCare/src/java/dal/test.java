@@ -15,9 +15,5 @@ import model.Role;
 public class test {
     public static void main(String[] args) {
         CustomerDBContext cdb = new CustomerDBContext();
-//        for (User c : cdb.getUsersByName(role, name)) {
-//            
-//        }
-        System.out.println(cdb.getUsersByName("Customer", "H"));
     }
 }

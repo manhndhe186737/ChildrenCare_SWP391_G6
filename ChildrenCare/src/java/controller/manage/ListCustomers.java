@@ -21,23 +21,58 @@ import model.User;
 public class ListCustomers extends BaseRBAC {
 
     @Override
-    protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, Account acocunt) throws ServletException, IOException {
+    protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         CustomerDBContext cdb = new CustomerDBContext();
-//        ArrayList<User> customers = cdb.getUsers("Customer");
 
         String searchName = req.getParameter("s");
-        if(searchName == null || searchName.length() == 0){
+        if (searchName == null || searchName.length() == 0) {
             searchName = "";
         }
-        ArrayList<User> customerSearch = cdb.getUsersByName("Customer", searchName);
 
-        req.setAttribute("customers", customerSearch);
+        String sortBy = req.getParameter("sortBy");
+        if (sortBy == null) {
+            sortBy = "None";
+        }
+
+        int page = 1;
+        int pageSize = 5;
+        if (req.getParameter("page") != null) {
+            try {
+                page = Integer.parseInt(req.getParameter("page"));
+            } catch (NumberFormatException e) {
+                page = 1; 
+            }
+        }
+
+        ArrayList<User> customers = cdb.getUsersByNameWithPagination("Customer", searchName, sortBy, page, pageSize);
+
+        int totalCustomers = cdb.getTotalUsersCount("Customer", searchName);
+        int totalPages = (int) Math.ceil((double) totalCustomers / pageSize);
+
+        req.setAttribute("customers", customers);
+        req.setAttribute("searchName", searchName);
+        req.setAttribute("sortBy", sortBy);
+        req.setAttribute("currentPage", page);
+        req.setAttribute("totalPages", totalPages);
+
         req.getRequestDispatcher("../admin/customers.jsp").forward(req, resp);
     }
 
     @Override
     protected void doAuthorizedPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        CustomerDBContext cdb = new CustomerDBContext();
 
+        String searchName = req.getParameter("s");
+        if (searchName == null || searchName.length() == 0) {
+            searchName = "";
+        }
+        String sortBy = req.getParameter("sortBy");
+
+        ArrayList<User> customerSearch = cdb.getUsersByName("Customer", searchName, sortBy);
+
+        req.setAttribute("sortBy", sortBy);
+        req.setAttribute("customers", customerSearch);
+        req.getRequestDispatcher("../admin/customers.jsp").forward(req, resp);
     }
 
 }
