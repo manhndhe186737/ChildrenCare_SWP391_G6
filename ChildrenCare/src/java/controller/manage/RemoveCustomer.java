@@ -10,23 +10,28 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import model.Account;
-import model.User;
 
 /**
  *
  * @author FPTSHOP
  */
-public class CustomerList extends BaseRBAC{
+public class RemoveCustomer extends BaseRBAC{
 
     @Override
     protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, Account acocunt) throws ServletException, IOException {
-        CustomerDBContext cdb = new CustomerDBContext();
-        ArrayList<User> customers = cdb.getUsers("Customer");
+        String id_raw = req.getParameter("user_id");
         
-        req.setAttribute("customers", customers);
-        req.getRequestDispatcher("list.jsp").forward(req, resp);
+        CustomerDBContext cdb = new CustomerDBContext();
+        
+        int id = 0;
+        if(id_raw != null && id_raw.length() != 0){
+            id = Integer.parseInt(id_raw);
+        }
+        
+        cdb.removeCustomer(id);
+        
+        resp.sendRedirect("../admin/customers");
     }
 
     @Override

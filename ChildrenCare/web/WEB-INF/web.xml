@@ -2,7 +2,7 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
         <servlet-name>CustomerList</servlet-name>
-        <servlet-class>controller.manage.CustomerList</servlet-class>
+        <servlet-class>controller.manage.ListCustomers</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Login</servlet-name>
@@ -20,9 +20,22 @@
         <servlet-name>PostList</servlet-name>
         <servlet-class>controller.manage.PostList</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddCustomer</servlet-name>
+        <servlet-class>controller.manage.AddCustomer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Edit Customer</servlet-name>
+        <servlet-class>controller.manage.EditCustomer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Remove Customer</servlet-name>
+        <servlet-class>controller.manage.RemoveCustomer</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
-        <url-pattern>/customer/list</url-pattern>
+        <url-pattern>/admin/customers</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -39,5 +52,17 @@
     <servlet-mapping>
         <servlet-name>PostList</servlet-name>
         <url-pattern>/PostList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddCustomer</servlet-name>
+        <url-pattern>/admin/add-customer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Edit Customer</servlet-name>
+        <url-pattern>/admin/editCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Remove Customer</servlet-name>
+        <url-pattern>/admin/removeCustomer</url-pattern>
     </servlet-mapping>
 </web-app>
