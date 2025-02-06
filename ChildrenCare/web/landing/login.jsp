@@ -1,7 +1,7 @@
-
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-    <html lang="en">
-
+<html lang="en">
     <head>
         <meta charset="utf-8" />
         <title>Doctris - Doctor Appointment Booking System</title>
@@ -36,7 +36,7 @@
             </div>
         </div>
         <!-- Loader -->
-        
+
         <div class="back-to-home rounded d-none d-sm-block">
             <a href="index.html" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
         </div>
@@ -49,23 +49,56 @@
                         <img src="../assets/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
                         <div class="card login-page bg-white shadow mt-4 rounded border-0">
                             <div class="card-body">
-                                <h4 class="text-center">Recover Account</h4>  
-                                <form class="login-form mt-4">
+                                <h4 class="text-center">Sign In</h4>  
+                                <form action="account?service=login" class="login-form mt-4" method="POST">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <p class="text-muted">Please enter your email address. You will receive a link to create a new password via email.</p>
                                             <div class="mb-3">
-                                                <label class="form-label">Email address <span class="text-danger">*</span></label>
-                                                <input type="email" class="form-control" placeholder="Enter Your Email Address" name="email" required="">
+                                                <label class="form-label">Your Email <span class="text-danger">*</span></label>
+                                                <input type="email" class="form-control" placeholder="Email" name="email" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Password <span class="text-danger">*</span></label>
+                                                <input type="password" class="form-control" placeholder="Password" name="password" required="">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
-                                            <div class="d-grid">
-                                                <button class="btn btn-primary">Send</button>
+                                            <div class="d-flex justify-content-between">
+                                                <div class="mb-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input align-middle" type="checkbox" value="" id="remember-check">
+                                                        <label class="form-check-label" for="remember-check">Remember me</label>
+                                                    </div>
+                                                </div>
+                                                <a href="account?service=forgotPassword" class="text-dark h6 mb-0">Forgot password ?</a>
                                             </div>
                                         </div>
-                                        <div class="mx-auto">
-                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Remember your password ?</small> <a href="login.html" class="text-dark h6 mb-0">Sign in</a></p>
+                                        <div class="col-lg-12 mb-0">
+                                            <div class="d-grid">
+                                                <button type="submit" name="buttonSubmit" class="btn btn-primary">Sign in</button>
+                                            </div>
+                                        </div>
+                                        <c:if test="${not empty message}">
+                                            <div class="alert alert-success">
+                                                <p>${message}</p>
+                                            </div>
+                                        </c:if>
+
+                                        <c:if test="${not empty error}">
+                                            <div class="alert alert-error">
+                                                <p>${error}</p>
+                                            </div>
+                                        </c:if>
+
+                                        <div class="col-lg-12 mt-3 text-center">
+                                            <h6 class="text-muted">Or</h6>
+                                        </div><!--end col-->
+
+                                        <div class="col-12 text-center">
+                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Don't have an account ?</small> <a href="account?service=register" class="text-dark fw-bold">Sign Up</a></p>
                                         </div>
                                     </div>
                                 </form>
@@ -76,14 +109,14 @@
             </div> <!--end container-->
         </section><!--end section-->
         <!-- Hero End -->
-        
+
         <!-- javascript -->
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <!-- Icons -->
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
-        
+
     </body>
 
 </html>
