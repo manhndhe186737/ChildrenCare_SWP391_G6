@@ -49,6 +49,8 @@ public class AddCustomer extends BaseRBAC{
         customer.setAccount(acc);
         
         cdb.addCustomer(customer);
+        
+        //New comment 2/6
     }
     
 }
