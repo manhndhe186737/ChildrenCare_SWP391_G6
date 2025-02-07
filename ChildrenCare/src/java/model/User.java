@@ -18,6 +18,7 @@ public class User {
     private Date dob;
     private String phone;
     private String avatar;
+    private boolean isVerified;
     private Boolean gender;
     private Account account;
     private ArrayList<Post> posts;
@@ -29,13 +30,14 @@ public class User {
     public User() {
     }
 
-    public User(int id, String fullname, String address, Date dob, String phone, String avatar, Boolean gender, Account account, ArrayList<Post> posts, ArrayList<Slider> sliders, Profile profile, ArrayList<Reservation> reservations, ArrayList<Schedule> schedules) {
+    public User(int id, String fullname, String address, Date dob, String phone, String avatar,boolean isVerified, Boolean gender, Account account, ArrayList<Post> posts, ArrayList<Slider> sliders, Profile profile, ArrayList<Reservation> reservations, ArrayList<Schedule> schedules) {
         this.id = id;
         this.fullname = fullname;
         this.address = address;
         this.dob = dob;
         this.phone = phone;
         this.avatar = avatar;
+        this.isVerified = isVerified;
         this.gender = gender;
         this.account = account;
         this.posts = posts;
@@ -148,6 +150,12 @@ public class User {
     public void setSchedules(ArrayList<Schedule> schedules) {
         this.schedules = schedules;
     }
+  public boolean isIsVerified() {
+        return isVerified;
+    }
 
+    public void setIsVerified(boolean isVerified) {
+        this.isVerified = isVerified;
+    }
     
 }
