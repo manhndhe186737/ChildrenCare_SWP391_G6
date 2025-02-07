@@ -88,7 +88,15 @@
                                         </c:if>
 
                                         <c:if test="${not empty error}">
-                                            <div class="alert alert-error">
+                                            <div class="alert alert-error"style="
+                                                 margin-bottom: 0px;
+                                                 padding-top: 0px;
+                                                 padding-bottom: 0px;
+                                                 border-top-width: 0px;
+                                                 border-bottom-width: 0px;
+                                                 border-left-width: 0px;
+                                                 border-right-width: 0px;
+                                                 ">
                                                 <p>${error}</p>
                                             </div>
                                         </c:if>
@@ -96,6 +104,10 @@
                                         <div class="col-lg-12 mt-3 text-center">
                                             <h6 class="text-muted">Or</h6>
                                         </div><!--end col-->
+
+                                            <div class="d-grid">
+                                                <a href="#" class="btn btn-soft-primary"><i class="uil uil-google"></i> Google</a>
+                                            </div>
 
                                         <div class="col-12 text-center">
                                             <p class="mb-0 mt-3"><small class="text-dark me-2">Don't have an account ?</small> <a href="account?service=register" class="text-dark fw-bold">Sign Up</a></p>

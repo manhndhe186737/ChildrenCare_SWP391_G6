@@ -65,12 +65,19 @@
                                             </div>
                                         </div>
                                         <c:if test="${not empty message}">
-                                            <div class="alert alert-success">
+                                            <div class="alert alert-success"style="
+                                                 margin-bottom: 0px;
+                                                 border-bottom-width: 0px;
+                                                 padding-bottom: 0px;
+                                                 padding-top: 0px;
+                                                 padding-left: 0px;
+                                                 padding-right: 0px;
+                                                 border-top-width: 0px;">
                                                 <p>${message}</p>
                                             </div>
                                         </c:if>
                                         <c:if test="${not empty error}">
-                                            <div class="alert alert-error">
+                                            <div class="alert alert-error" >
                                                 <p>${error}</p>
                                             </div>
                                         </c:if>
