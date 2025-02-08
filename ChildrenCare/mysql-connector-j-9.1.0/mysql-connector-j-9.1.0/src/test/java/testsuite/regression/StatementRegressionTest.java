@@ -185,7 +185,8 @@ public class StatementRegressionTest extends BaseTestCase {
                 } catch (SQLException sqlEx) {
                     throw new RuntimeException(sqlEx);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    ex.printStackTrace();
+
                 }
             }
         }
@@ -5017,7 +5018,8 @@ public class StatementRegressionTest extends BaseTestCase {
                         try {
                             deadlockConn.rollback();
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            ex.printStackTrace();
+
                         }
                     }
                 }
@@ -6226,7 +6228,8 @@ public class StatementRegressionTest extends BaseTestCase {
             this.stmt.setQueryTimeout(5);
             this.rs = this.stmt.executeQuery("select sleep(5)");
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            ex.printStackTrace();
+
             fail();
         } catch (Exception e) {
             if (e instanceof MySQLTimeoutException) {
@@ -8452,7 +8455,8 @@ public class StatementRegressionTest extends BaseTestCase {
                 }
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                ex.printStackTrace();
+
                 fail(threadName + ": Something went wrong, maybe Connection or Statement was closed before its time.");
 
             } finally {
@@ -10787,7 +10791,8 @@ public class StatementRegressionTest extends BaseTestCase {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                ex.printStackTrace();
+
                 throw e;
             } finally {
                 if (con != null) {
@@ -12127,7 +12132,8 @@ public class StatementRegressionTest extends BaseTestCase {
             try {
                 testStmt.executeQuery("SELECT SLEEP(600)");
             } catch (Throwable e) {
-                e.printStackTrace();
+                ex.printStackTrace();
+
             }
         }).start();
 

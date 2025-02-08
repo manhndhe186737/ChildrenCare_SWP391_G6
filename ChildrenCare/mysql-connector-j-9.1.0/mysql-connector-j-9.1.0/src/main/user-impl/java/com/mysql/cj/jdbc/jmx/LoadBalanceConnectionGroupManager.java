@@ -56,7 +56,8 @@ public class LoadBalanceConnectionGroupManager implements LoadBalanceConnectionG
         try {
             ConnectionGroupManager.addHost(group, host, forExisting);
         } catch (Exception e) {
-            e.printStackTrace(); // TODO log error normally instead of sysout
+            ex.printStackTrace();
+ // TODO log error normally instead of sysout
         }
     }
 

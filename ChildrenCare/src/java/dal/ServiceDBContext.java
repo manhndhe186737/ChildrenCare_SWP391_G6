@@ -35,6 +35,7 @@ public class ServiceDBContext extends DBContext {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
         return services;
     }
@@ -50,6 +51,7 @@ public class ServiceDBContext extends DBContext {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
         return 0;
     }
@@ -72,6 +74,7 @@ public class ServiceDBContext extends DBContext {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
         return services;
     }
@@ -119,6 +122,7 @@ public class ServiceDBContext extends DBContext {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
         return services;
     }
@@ -147,6 +151,7 @@ public class ServiceDBContext extends DBContext {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
         return 0;
     }

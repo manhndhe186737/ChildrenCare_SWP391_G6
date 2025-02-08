@@ -545,7 +545,8 @@ public class ResultSetRegressionTest extends BaseTestCase {
                 try {
                     streamStmt.close();
                 } catch (SQLException exWhileClose) {
-                    exWhileClose.printStackTrace();
+                    exWhileClosex.printStackTrace();
+
                 }
             }
         }

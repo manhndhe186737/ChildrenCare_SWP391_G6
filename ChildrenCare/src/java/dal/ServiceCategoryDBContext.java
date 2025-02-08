@@ -27,6 +27,7 @@ public class ServiceCategoryDBContext extends DBContext {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
         return categories;
     }

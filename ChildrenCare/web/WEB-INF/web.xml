@@ -32,7 +32,18 @@
         <servlet-name>Remove Customer</servlet-name>
         <servlet-class>controller.manage.RemoveCustomer</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>PostView</servlet-name>
+        <servlet-class>controller.manage.PostView</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostEdit</servlet-name>
+        <servlet-class>controller.manage.PostEdit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostAdd</servlet-name>
+        <servlet-class>controller.manage.PostAdd</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
         <url-pattern>/admin/customers</url-pattern>
@@ -64,5 +75,17 @@
     <servlet-mapping>
         <servlet-name>Remove Customer</servlet-name>
         <url-pattern>/admin/removeCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostView</servlet-name>
+        <url-pattern>/PostView</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostEdit</servlet-name>
+        <url-pattern>/PostEdit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostAdd</servlet-name>
+        <url-pattern>/PostAdd</url-pattern>
     </servlet-mapping>
 </web-app>

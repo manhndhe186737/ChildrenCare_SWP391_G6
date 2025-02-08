@@ -345,7 +345,8 @@ public class StressRegressionTest extends BaseTestCase {
                         "Finishing job 1 (" + Thread.currentThread().getName() + ") after " + SharedInfoForTestBug67760.job1Iterations + " iterations...");
                 testPstmt.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                ex.printStackTrace();
+
             }
         });
 
@@ -372,7 +373,8 @@ public class StressRegressionTest extends BaseTestCase {
                         "Finishing job 2 (" + Thread.currentThread().getName() + ") after " + SharedInfoForTestBug67760.job2Iterations + " iterations...");
                 testPstmt.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                ex.printStackTrace();
+
             }
         });
 

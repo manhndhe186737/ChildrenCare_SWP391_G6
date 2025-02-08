@@ -834,7 +834,8 @@ public class ConnectionTest extends BaseTestCase {
             rs1.next();
             conn1.close();
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            ex.printStackTrace();
+
             fail();
         }
     }

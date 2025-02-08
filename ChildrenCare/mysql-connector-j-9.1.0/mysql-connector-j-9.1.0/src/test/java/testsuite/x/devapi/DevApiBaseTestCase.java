@@ -120,7 +120,8 @@ public class DevApiBaseTestCase extends InternalXBaseTestCase {
             MysqlxSession mysqlxSession = (MysqlxSession) f.get(this.session);
             mysqlxSession.query(mysqlxSession.getMessageBuilder().buildSqlStatement(sql), new UpdateResultBuilder<>());
         } catch (Exception e) {
-            e.printStackTrace();
+            ex.printStackTrace();
+
             throw new RuntimeException(e);
         }
     }
