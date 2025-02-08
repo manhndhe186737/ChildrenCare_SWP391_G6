@@ -156,4 +156,33 @@ public class ServiceDBContext extends DBContext {
         return 0;
     }
 
+    public ArrayList<Service> getHomeServices() {
+        ArrayList<Service> services = new ArrayList<>();
+        try {
+            String sql = "SELECT s.service_id, s.name, s.description, s.price, c.category_id, c.name AS categoryname "
+                    + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
+                    + "LIMIT 8";  // Chỉ lấy tối đa 8 dịch vụ
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                ServiceCategory category = new ServiceCategory();
+                category.setId(rs.getInt("category_id"));
+                category.setCategoryname(rs.getString("categoryname"));
+
+                Service service = new Service();
+                service.setId(rs.getInt("service_id"));
+                service.setName(rs.getString("name"));
+                service.setDescription(rs.getString("description"));
+                service.setPrice(rs.getFloat("price"));
+                service.setCategory(category);
+
+                services.add(service);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return services;
+    }
+
 }

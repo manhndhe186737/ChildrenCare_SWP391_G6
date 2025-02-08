@@ -2,48 +2,32 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.manage;
-import dal.ServiceCategoryDBContext;
-import dal.ServiceDBContext;
-import model.Service;
+package controller.manage.post;
+
+import dal.PostDBContext;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import model.ServiceCategory;
+import model.Post;
 
-public class ServiceList extends HttpServlet {
-    private static final int PAGE_SIZE = 6; 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-         int page = 1;
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
-        }
+/**
+ *
+ * @author DELL
+ */
+public class PostView extends HttpServlet {
 
-        String searchQuery = request.getParameter("search") != null ? request.getParameter("search").trim() : "";
-        String[] selectedCategories = request.getParameterValues("category");
-
-        ServiceDBContext serviceDB = new ServiceDBContext();
-        ArrayList<Service> services = serviceDB.getFilteredServices(page, PAGE_SIZE, searchQuery, selectedCategories);
-        int totalServices = serviceDB.getTotalFilteredServices(searchQuery, selectedCategories);
-        int totalPages = (int) Math.ceil((double) totalServices / PAGE_SIZE);
-
-        ServiceCategoryDBContext categoryDB = new ServiceCategoryDBContext();
-        ArrayList<ServiceCategory> categories = categoryDB.getAllCategoriesWithServices();
-
-        request.setAttribute("services", services);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("totalPages", totalPages);
-        request.setAttribute("categories", categories);
-        request.setAttribute("searchQuery", searchQuery);
-        request.setAttribute("selectedCategories", selectedCategories);
-
-        request.getRequestDispatcher("/landing/services.jsp").forward(request, response);
-    }
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -52,10 +36,10 @@ public class ServiceList extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServiceList</title>");            
+            out.println("<title>Servlet PostView</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServiceList at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PostView at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,7 +54,29 @@ public class ServiceList extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+      @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Nhận tham số ID bài viết
+        String postIdStr = request.getParameter("id");
+        if (postIdStr != null) {
+            int postId = Integer.parseInt(postIdStr);
+            PostDBContext postDAO = new PostDBContext();
 
+            // Lấy bài viết từ database
+            Post post = postDAO.getPostById(postId);
+            
+            if (post != null) {
+                // Đưa bài viết vào request và chuyển đến trang view.jsp
+                request.setAttribute("post", post);
+                request.getRequestDispatcher("admin/postView.jsp").forward(request, response);
+            } else {
+                response.sendRedirect("PostList"); // Chuyển hướng nếu không tìm thấy bài viết
+            }
+        } else {
+            response.sendRedirect("PostList");
+        }
+    }
 
     /**
      * Handles the HTTP <code>POST</code> method.

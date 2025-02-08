@@ -2,16 +2,15 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
         <servlet-name>CustomerList</servlet-name>
-        <servlet-class>controller.manage.ListCustomers</servlet-class>
+        <servlet-class>controller.manage.customer.ListCustomers</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Login</servlet-name>
         <servlet-class>controller.auth.LoginController</servlet-class>
     </servlet>
     <servlet>
-
         <servlet-name>ServiceList</servlet-name>
-        <servlet-class>controller.manage.ServiceList</servlet-class>
+        <servlet-class>controller.manage.service.ServiceList</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Test</servlet-name>
@@ -19,7 +18,7 @@
     </servlet>
     <servlet>
         <servlet-name>PostList</servlet-name>
-        <servlet-class>controller.manage.PostList</servlet-class>
+        <servlet-class>controller.manage.post.PostList</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddCustomer</servlet-name>
@@ -27,40 +26,51 @@
     </servlet>
     <servlet>
         <servlet-name>EditCustomer</servlet-name>
-        <servlet-class>controller.manage.EditCustomer</servlet-class>
+        <servlet-class>controller.manage.customer.EditCustomer</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RemoveCustomer</servlet-name>
-        <servlet-class>controller.manage.RemoveCustomer</servlet-class>
+        <servlet-class>controller.manage.customer.RemoveCustomer</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PostView</servlet-name>
-        <servlet-class>controller.manage.PostView</servlet-class>
+        <servlet-class>controller.manage.post.PostView</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PostEdit</servlet-name>
-        <servlet-class>controller.manage.PostEdit</servlet-class>
+        <servlet-class>controller.manage.post.PostEdit</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PostAdd</servlet-name>
-        <servlet-class>controller.manage.PostAdd</servlet-class>
+        <servlet-class>controller.manage.post.PostAdd</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ListStaff</servlet-name>
-        <servlet-class>controller.manage.ListStaff</servlet-class>
+        <servlet-class>controller.manage.staff.ListStaff</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>StaffProfile</servlet-name>
-        <servlet-class>controller.manage.StaffProfile</servlet-class>
+        <servlet-class>controller.manage.staff.StaffProfile</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>Staff Dashboard</servlet-name>
+        <servlet-class>controller.manage.staff.StaffDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin Dashboard</servlet-name>
+        <servlet-class>controller.manage.AdminDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>controller.auth.LogoutController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
         <url-pattern>/admin/customers</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServiceList</servlet-name>
-        <url-pattern>/ServiceList</url-pattern>
+        <url-pattern>/service-list</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Test</servlet-name>
@@ -101,5 +111,17 @@
     <servlet-mapping>
         <servlet-name>StaffProfile</servlet-name>
         <url-pattern>/admin/staff-profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Staff Dashboard</servlet-name>
+        <url-pattern>/c/staff-dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin Dashboard</servlet-name>
+        <url-pattern>/admin/dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 </web-app>

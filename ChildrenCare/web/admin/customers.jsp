@@ -13,7 +13,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Doctris - Doctor Appointment Booking System</title>
+        <title>Children Care - Children Service Booking System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -52,23 +52,23 @@
             <nav id="sidebar" class="sidebar-wrapper">
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
-                        <a href="index.html">
-                            <img src="../assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
-                            <img src="../assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
+                        <a href="../c/home">
+                        <!--<a href="index.html">-->
+                            <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
+                            <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
 
                     <ul class="sidebar-menu pt-3">
-                        <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                        <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
 
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="doctors.html">Staff</a></li>
+                                    <li><a href="../admin/staff">Staff</a></li>
                                     <li><a href="add-doctor.html">Add Staff</a></li>
-                                    <li><a href="dr-profile.html">Profile</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -77,7 +77,7 @@
                             <a href="javascript:void(0)"><i class="uil uil-wheelchair me-2 d-inline-block"></i>Customers</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="patients.html">All Customers</a></li>
+                                    <li><a href="../admin/customers">All Customers</a></li>
                                     <li><a href="add-customer.jsp">Add Customer</a></li>
                                     <li><a href="patient-profile.html">Profile</a></li>
                                 </ul>
@@ -148,7 +148,7 @@
 
                         <li><a href="components.html"><i class="uil uil-cube me-2 d-inline-block"></i>Components</a></li>
 
-                        <li><a href="../landing/index-two.html" target="_blank"><i class="uil uil-window me-2 d-inline-block"></i>Landing page</a></li>
+                        <li><a href="../c/index-two.html" target="_blank"><i class="uil uil-window me-2 d-inline-block"></i>Landing page</a></li>
                     </ul>
                     <!-- sidebar-menu  -->
                 </div>
@@ -292,19 +292,18 @@
 
                             <li class="list-inline-item mb-0 ms-1">
                                 <div class="dropdown dropdown-primary">
-                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle" alt=""></button>
+                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
                                         <a class="dropdown-item d-flex align-items-center text-dark" href="https://shreethemes.in/doctris/layouts/admin/profile.html">
-                                            <img src="../assets/images/doctors/01.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                            <img src="../assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="flex-1 ms-2">
-                                                <span class="d-block mb-1">Calvin Carlo</span>
-                                                <small class="text-muted">Orthopedic</small>
+                                                <span class="d-block mb-1">${sessionScope.user.fullname}</span>
                                             </div>
                                         </a>
-                                        <a class="dropdown-item text-dark" href="index.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
+                                        <a class="dropdown-item text-dark" href="../admin/dashboard"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
                                         <a class="dropdown-item text-dark" href="dr-profile.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                         <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="lock-screen.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                                        <a class="dropdown-item text-dark" href="../logout"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -357,7 +356,7 @@
                                                     <td class="py-3">
                                                         <a href="#" class="text-dark">
                                                             <div class="d-flex align-items-center">
-                                                                <img src="../assets/images/client/${c.avatar}" class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                                <img src="../assets/images/${c.avatar}" class="avatar avatar-md-sm rounded-circle shadow" alt="">
                                                                 <span class="ms-2">${c.fullname}</span>
                                                             </div>
                                                         </a>
@@ -470,7 +469,7 @@
                                     <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
                                     <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
                                     <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                    <li class="d-grid"><a href="../landing/index.html" target="_blank" class="mt-4"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Landing Demos</span></a></li>
+                                    <li class="d-grid"><a href="../c/index.html" target="_blank" class="mt-4"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Landing Demos</span></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -644,7 +643,7 @@
                                             document.getElementById("profileAddress").innerText = address;
                                             document.getElementById("profilePhone").innerText = phone;
                                             document.getElementById("profileEmail").innerText = email;
-                                            document.getElementById("viewProfileImg").src = "../assets/images/client/" + imageUrl;
+                                            document.getElementById("viewProfileImg").src = "../assets/images/" + imageUrl;
                                         }
 
                                         function editProfile(id, fullname, dob, gender, address, phone, email, imageUrl) {
@@ -654,7 +653,7 @@
                                             document.getElementById("editGender").value = gender;
                                             document.getElementById("editAddress").value = address;
                                             document.getElementById("editPhone").value = phone;
-                                            document.getElementById("editProfileImg").src = "../assets/images/client/" + imageUrl;
+                                            document.getElementById("editProfileImg").src = "../assets/images/" + imageUrl;
                                         }
 
                                         function previewProfileImage(event) {
