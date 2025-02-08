@@ -1,6 +1,6 @@
 <%-- 
-    Document   : patients
-    Created on : Feb 4, 2025, 8:23:49 PM
+    Document   : staff
+    Created on : Feb 8, 2025, 8:39:43 AM
     Author     : FPTSHOP
 --%>
 
@@ -27,6 +27,11 @@
         <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- simplebar -->
         <link href="../assets/css/simplebar.css" rel="stylesheet" type="text/css" />
+        <!-- Select2 -->
+        <link href="../assets/css/select2.min.css" rel="stylesheet" />
+        <!-- Date picker -->
+        <link rel="stylesheet" href="../assets/css/flatpickr.min.css">
+        <link href="../assets/css/jquery.timepicker.min.css" rel="stylesheet" type="text/css" />
         <!-- Icons -->
         <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
         <link href="../assets/css/remixicon.css" rel="stylesheet" type="text/css" />
@@ -63,22 +68,22 @@
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
 
                         <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
+                            <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Doctors</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="doctors.html">Staff</a></li>
-                                    <li><a href="add-doctor.html">Add Staff</a></li>
+                                    <li><a href="doctors.html">Doctors</a></li>
+                                    <li><a href="add-doctor.html">Add Doctor</a></li>
                                     <li><a href="dr-profile.html">Profile</a></li>
                                 </ul>
                             </div>
                         </li>
 
                         <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-wheelchair me-2 d-inline-block"></i>Customers</a>
+                            <a href="javascript:void(0)"><i class="uil uil-wheelchair me-2 d-inline-block"></i>Patients</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="patients.html">All Customers</a></li>
-                                    <li><a href="add-customer.jsp">Add Customer</a></li>
+                                    <li><a href="patients.html">All Patients</a></li>
+                                    <li><a href="add-patient.html">Add Patients</a></li>
                                     <li><a href="patient-profile.html">Profile</a></li>
                                 </ul>
                             </div>
@@ -180,7 +185,7 @@
                             </a>
                             <div class="search-bar p-0 d-none d-lg-block ms-2">
                                 <div id="search" class="menu-search mb-0">
-                                    <form role="search" action="../admin/customers" method="get" id="searchform" class="searchform">
+                                    <form role="search" method="get" id="searchform" class="searchform">
                                         <div>
                                             <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords...">
                                             <input type="submit" id="searchsubmit" value="Search">
@@ -314,119 +319,43 @@
 
                 <div class="container-fluid">
                     <div class="layout-specing">
-                        <div class="d-md-flex justify-content-between">
-                            <h5 class="mb-0">Customers List</h5>
-
-                            <!-- Sort Dropdown -->
-                            <form action="../admin/customers" method="get" class="d-flex align-items-center">
-                                <label class="me-2" style="white-space: nowrap;">Sort by:</label>
-                                <select class="form-select form-select-sm" name="sortBy" onchange="this.form.submit()">
-                                    <option value="" ${empty requestScope.sortBy ? 'selected' : ''}>None</option>
-                                    <option value="name" ${requestScope.sortBy eq 'name' ? 'selected' : ''}>Name</option>
-                                    <option value="dob" ${requestScope.sortBy eq 'dob' ? 'selected' : ''}>Date of Birth</option>
-                                    <option value="email" ${requestScope.sortBy eq 'email' ? 'selected' : ''}>Email</option>
-                                </select>
-                            </form>
-
-                            <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
-                                <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
-                                    <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Customers</li>
-                                </ul>
-                            </nav>
-                        </div>
-
                         <div class="row">
-                            <div class="col-12 mt-5">
-                                <div class="table-responsive shadow rounded">
-                                    <table class="table table-center bg-white mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th class="border-bottom p-3" style="min-width: 200px;">Name</th>
-                                                <th class="border-bottom p-3" style="min-width: 120px;">Dob</th>
-                                                <th class="border-bottom p-3" style="min-width: 100px;">Gender</th>
-                                                <th class="border-bottom p-3" style="min-width: 200px;">Address</th>
-                                                <th class="border-bottom p-3" style="min-width: 180px;">Mobile No.</th>
-                                                <th class="border-bottom p-3" style="min-width: 120px;">Email</th>
-                                                <th class="border-bottom p-3" style="min-width: 100px;"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach var="c" items="${requestScope.customers}">
-                                                <tr>
-                                                    <td class="py-3">
-                                                        <a href="#" class="text-dark">
-                                                            <div class="d-flex align-items-center">
-                                                                <img src="../assets/images/client/${c.avatar}" class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                                <span class="ms-2">${c.fullname}</span>
-                                                            </div>
-                                                        </a>
-                                                    </td>
-                                                    <td class="p-3">${c.dob}</td>
-                                                    <td class="p-3">${c.gender eq true?'Male':'Female'}</td>
-                                                    <td class="p-3">${c.address}</td>
-                                                    <td class="p-3">${c.phone}</td>
-                                                    <td class="p-3" style="min-width: 120px;">${c.account.email}</td>
-                                                    <td class="text-end p-3">
-                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-primary"
-                                                           data-bs-toggle="modal" data-bs-target="#viewprofile"
-                                                           onclick="viewProfile('${c.id}', '${c.fullname}', '${c.dob}', '${c.gender}', '${c.address}', '${c.phone}', '${c.account.email}', '${c.avatar}')">
-                                                            <i class="uil uil-eye"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-success"
-                                                           data-bs-toggle="modal" data-bs-target="#editprofile"
-                                                           onclick="editProfile('${c.id}', '${c.fullname}', '${c.dob}', '${c.gender}', '${c.address}', '${c.phone}', '${c.account.email}', '${c.avatar}')">
-                                                            <i class="uil uil-pen"></i>
-                                                        </a>
+                            <div class="col-xl-9 col-md-6">
+                                <h5 class="mb-0">Doctors</h5>
 
-                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-danger"
-                                                           onclick="confirmDelete(${c.id}); return false;">
-                                                            <i class="uil uil-trash"></i>
-                                                        </a>
+                                <nav aria-label="breadcrumb" class="d-inline-block mt-2">
+                                    <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+                                        <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Doctors</li>
+                                    </ul>
+                                </nav>
+                            </div><!--end col-->
 
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <div class="col-xl-3 col-md-6 mt-4 mt-md-0 text-md-end">
+                                <a href="add-doctor.html" class="btn btn-primary">Add New Doctor</a>
+                            </div><!--end col-->
                         </div><!--end row-->
 
-                        <div class="row text-center">
-                            <div class="col-12 mt-4">
-                                <div class="d-md-flex align-items-center text-center justify-content-between">
-                                    <span class="text-muted me-3">
-                                        Showing ${(currentPage - 1) * 10 + 1} - 
-                                        ${Math.min(currentPage * 10, totalPages * 10)} out of ${totalPages * 10}
-                                    </span>
-
-                                    <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <!-- Nút Prev -->
-                                        <c:if test="${currentPage > 1}">
-                                            <li class="page-item">
-                                                <a class="page-link" href="?s=${searchName}&sortBy=${sortBy}&page=${currentPage - 1}">Prev</a>
-                                            </li>
-                                        </c:if>
-
-                                        <!-- Hiển thị số trang -->
-                                        <c:forEach var="i" begin="1" end="${totalPages}">
-                                            <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                <a class="page-link" href="?s=${searchName}&sortBy=${sortBy}&page=${i}">${i}</a>
-                                            </li>
-                                        </c:forEach>
-
-                                        <!-- Nút Next -->
-                                        <c:if test="${currentPage < totalPages}">
-                                            <li class="page-item">
-                                                <a class="page-link" href="?s=${searchName}&sortBy=${sortBy}&page=${currentPage + 1}">Next</a>
-                                            </li>
-                                        </c:if>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
+                        <div class="row row-cols-md-2 row-cols-lg-5">
+                            <c:forEach var="s" items="${requestScope.staff}">
+                                <div class="col mt-4">
+                                    <div class="card team border-0 rounded shadow overflow-hidden">
+                                        <div class="team-img position-relative">
+                                            <img src="../assets/images/staff/${s.avatar}" class="img-fluid" alt="">
+                                            <ul class="list-unstyled team-social mb-0">
+                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="facebook" class="icons"></i></a></li>
+                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="linkedin" class="icons"></i></a></li>
+                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="instagram" class="icons"></i></a></li>
+                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="twitter" class="icons"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="card-body content text-center">
+                                            <a href="staff-profile?staff_id=${s.id}" class="title text-dark h5 d-block mb-0">${s.fullname}</a>
+                                        </div>
+                                    </div>
+                                </div><!--end col-->
+                            </c:forEach>
+                        </div><!--end row-->
                     </div>
                 </div><!--end container-->
 
@@ -493,139 +422,6 @@
         </div>
         <!-- Offcanvas End -->
 
-        <!-- Modal start -->
-        <!-- Profile Settings Start -->
-        <div class="modal fade" id="editprofile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header border-bottom p-3">
-                        <h5 class="modal-title">Edit Profile</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-3 pt-4">
-                        <form action="../admin/editCustomer" method="get" enctype="multipart/form-data">
-                            <input type="hidden" id="editId" name="id">
-
-                            <!-- Upload Image -->
-                            <div class="row align-items-center">
-                                <div class="col-lg-2 col-md-4">
-                                    <img id="editProfileImg" src="" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="Profile Image">
-                                </div>
-                                <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                    <h6 class="">Upload your picture</h6>
-                                    <p class="text-muted mb-0">Use an image at least 256x256 in .jpg or .png format</p>
-                                </div>
-                                <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
-                                    <input type="file" name="profileImage" id="profileImageInput" class="form-control" accept="image/*" onchange="previewProfileImage(event)">
-                                </div>
-                            </div>
-
-                            <!-- Form Fields -->
-                            <div class="row mt-4">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Full Name</label>
-                                        <input name="fullname" id="editFullName" type="text" class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Date of Birth</label>
-                                        <input name="dob" id="editDob" type="date" class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Gender</label>
-                                        <select name="gender" id="editGender" class="form-control">
-                                            <option value="true">Male</option>
-                                            <option value="false">Female</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Phone</label>
-                                        <input name="phone" id="editPhone" type="text" class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">Address</label>
-                                        <input name="address" id="editAddress" type="text" class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="mb-3 text-end">
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                                    </div>
-                                </div>
-                            </div><!--end row-->
-                        </form><!--end form-->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Profile Settings End -->
-
-        <!-- Profile Start -->
-        <div class="modal fade" id="viewprofile" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header border-bottom p-3">
-                        <h5 class="modal-title">Customer Profile</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-3 pt-4">
-                        <div class="d-flex align-items-center">
-                            <img id="viewProfileImg" src="" class="avatar avatar-small rounded-pill" alt="">
-                            <h5 class="mb-0 ms-3" id="profileFullName">---</h5>
-                        </div>
-                        <ul class="list-unstyled mb-0 d-md-flex justify-content-between mt-4">
-                            <li>
-                                <ul class="list-unstyled mb-0">
-                                    <li class="d-flex">
-                                        <h6>Id:</h6>
-                                        <p class="text-muted ms-2" id="profileId">---</p>
-                                    </li>
-                                    <li class="d-flex">
-                                        <h6>Date of Birth:</h6>
-                                        <p class="text-muted ms-2" id="profileDob">---</p>
-                                    </li>
-                                    <li class="d-flex">
-                                        <h6>Gender:</h6>
-                                        <p class="text-muted ms-2" id="profileGender">---</p>
-                                    </li>
-                                    <li class="d-flex">
-                                        <h6>Address:</h6>
-                                        <p class="text-muted ms-2" id="profileAddress">---</p>
-                                    </li>
-                                    <li class="d-flex">
-                                        <h6>Phone:</h6>
-                                        <p class="text-muted ms-2" id="profilePhone">---</p>
-                                    </li>
-                                    <li class="d-flex">
-                                        <h6>Email:</h6>
-                                        <p class="text-muted ms-2" id="profileEmail">---</p>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Profile End -->
-        <!-- Modal end -->
-
         <!-- javascript -->
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <!-- simplebar -->
@@ -634,49 +430,6 @@
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
-
-        <script>
-                                        function viewProfile(id, fullname, dob, gender, address, phone, email, imageUrl) {
-                                            document.getElementById("profileId").innerText = id;
-                                            document.getElementById("profileFullName").innerText = fullname;
-                                            document.getElementById("profileDob").innerText = dob;
-                                            document.getElementById("profileGender").innerText = gender === 'true' ? 'Male' : 'Female';
-                                            document.getElementById("profileAddress").innerText = address;
-                                            document.getElementById("profilePhone").innerText = phone;
-                                            document.getElementById("profileEmail").innerText = email;
-                                            document.getElementById("viewProfileImg").src = "../assets/images/client/" + imageUrl;
-                                        }
-
-                                        function editProfile(id, fullname, dob, gender, address, phone, email, imageUrl) {
-                                            document.getElementById("editId").value = id;
-                                            document.getElementById("editFullName").value = fullname;
-                                            document.getElementById("editDob").value = dob;
-                                            document.getElementById("editGender").value = gender;
-                                            document.getElementById("editAddress").value = address;
-                                            document.getElementById("editPhone").value = phone;
-                                            document.getElementById("editProfileImg").src = "../assets/images/client/" + imageUrl;
-                                        }
-
-                                        function previewProfileImage(event) {
-                                            let profileImg = document.getElementById("editProfileImg");
-                                            let file = event.target.files[0];
-
-                                            if (file) {
-                                                let reader = new FileReader();
-                                                reader.onload = function (e) {
-                                                    profileImg.src = e.target.result;
-                                                };
-                                                reader.readAsDataURL(file);
-                                            }
-                                        }
-
-                                        function confirmDelete(userId) {
-                                            if (confirm("Are you sure you want to delete this customer?")) {
-                                                window.location.href = "../admin/removeCustomer?user_id=" + userId;
-                                            }
-                                        }
-
-        </script>
 
     </body>
 

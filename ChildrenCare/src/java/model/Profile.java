@@ -14,24 +14,20 @@ public class Profile {
     private String certification;
     private String specialties;
     private User staff;
+    private String exp_start;
+    private String exp_end;
 
-    public Profile(int id, String experience, String certification, String specialties, User staff) {
+    public Profile() {
+    }
+
+    public Profile(int id, String experience, String certification, String specialties, User staff, String exp_start, String exp_end) {
         this.id = id;
         this.experience = experience;
         this.certification = certification;
         this.specialties = specialties;
         this.staff = staff;
-    }
-
-    public Profile() {
-    }
-
-    public User getStaff() {
-        return staff;
-    }
-
-    public void setStaff(User staff) {
-        this.staff = staff;
+        this.exp_start = exp_start;
+        this.exp_end = exp_end;
     }
 
     public int getId() {
@@ -65,6 +61,30 @@ public class Profile {
     public void setSpecialties(String specialties) {
         this.specialties = specialties;
     }
-    
+
+    public User getStaff() {
+        return staff;
+    }
+
+    public void setStaff(User staff) {
+        this.staff = staff;
+    }
+
+    public String getExp_start() {
+        return exp_start;
+    }
+
+    public void setExp_start(String exp_start) {
+        this.exp_start = exp_start;
+    }
+
+    public String getExp_end() {
+        return exp_end;
+    }
+
+    public void setExp_end(String exp_end) {
+        this.exp_end = exp_end;
+    }
+
     
 }

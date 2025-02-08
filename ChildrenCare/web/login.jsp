@@ -12,7 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="login" method="post">
+        <form action="account" method="post">
             <input name="email" type="text">
             <input name="pass" type="text">
             <input type="submit">

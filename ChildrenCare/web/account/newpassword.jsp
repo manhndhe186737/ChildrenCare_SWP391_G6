@@ -51,7 +51,7 @@
                         <div class="card login-page bg-white shadow mt-4 rounded border-0">
                             <div class="card-body">
                                 <h4 class="text-center">Recover Account</h4>  
-                                <form action="account?service=resetPasswordSubmit" method="POST" class="login-form mt-4">
+                                <form action="login?service=resetPasswordSubmit" method="POST" class="login-form mt-4">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <p class="text-muted">Please input your new password</p>
@@ -71,7 +71,7 @@
                                             </div>
                                         </div>
                                         <div class="mx-auto">
-                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Remember your password ?</small> <a href="account?service=login" class="text-dark h6 mb-0">Sign in</a></p>
+                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Remember your password ?</small> <a href="login?service=login" class="text-dark h6 mb-0">Sign in</a></p>
                                         </div>
                                     </div>
                                 </form>

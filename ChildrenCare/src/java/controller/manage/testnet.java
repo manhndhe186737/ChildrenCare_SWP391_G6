@@ -5,7 +5,9 @@
 package controller.manage;
 
 import dal.CustomerDBContext;
+import dal.StaffDBContext;
 import java.util.ArrayList;
+import model.Profile;
 import model.User;
 
 /**
@@ -14,8 +16,7 @@ import model.User;
  */
 public class testnet {
     public static void main(String[] args) {
-        CustomerDBContext cdb = new CustomerDBContext();
-        ArrayList<User> customerSearch = cdb.getUsersByName("Customer", "L", "Name");
-        System.out.println(customerSearch.size());
+        StaffDBContext sdb = new StaffDBContext();
+        System.out.println(sdb.getStaffReserv(3).size());
     }
 }
