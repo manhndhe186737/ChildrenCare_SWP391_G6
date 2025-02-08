@@ -103,10 +103,10 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SliderList</servlet-name>
-        <url-pattern>/admin/sliders</url-pattern>
+        <url-pattern>/SliderList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SliderEdit</servlet-name>
-        <url-pattern>/admin/slider/edit</url-pattern>
+        <url-pattern>/SliderEdit</url-pattern>
     </servlet-mapping>
 </web-app>
