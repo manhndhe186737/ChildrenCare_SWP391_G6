@@ -2,20 +2,15 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
         <servlet-name>CustomerList</servlet-name>
-        <servlet-class>controller.manage.ListCustomers</servlet-class>
+        <servlet-class>controller.manage.CustomerList</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Login</servlet-name>
         <servlet-class>controller.auth.LoginController</servlet-class>
     </servlet>
     <servlet>
-
         <servlet-name>ServiceList</servlet-name>
         <servlet-class>controller.manage.ServiceList</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Test</servlet-name>
-        <servlet-class>controller.manage.Test</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PostList</servlet-name>
@@ -53,22 +48,26 @@
         <servlet-name>StaffProfile</servlet-name>
         <servlet-class>controller.manage.StaffProfile</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>SliderList</servlet-name>
+        <servlet-class>controller.manage.SliderList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SliderEdit</servlet-name>
+        <servlet-class>controller.manage.SliderEdit</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
         <url-pattern>/admin/customers</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServiceList</servlet-name>
-        <url-pattern>/ServiceList</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Test</servlet-name>
-        <url-pattern>/Test</url-pattern>
+        <url-pattern>/admin/services</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostList</servlet-name>
-        <url-pattern>/PostList</url-pattern>
+        <url-pattern>/admin/posts</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddCustomer</servlet-name>
@@ -76,23 +75,23 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditCustomer</servlet-name>
-        <url-pattern>/admin/editCustomer</url-pattern>
+        <url-pattern>/admin/edit-customer</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RemoveCustomer</servlet-name>
-        <url-pattern>/admin/removeCustomer</url-pattern>
+        <url-pattern>/admin/remove-customer</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostView</servlet-name>
-        <url-pattern>/PostView</url-pattern>
+        <url-pattern>/admin/post/view</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostEdit</servlet-name>
-        <url-pattern>/PostEdit</url-pattern>
+        <url-pattern>/admin/post/edit</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostAdd</servlet-name>
-        <url-pattern>/PostAdd</url-pattern>
+        <url-pattern>/admin/post/add</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ListStaff</servlet-name>
@@ -101,5 +100,13 @@
     <servlet-mapping>
         <servlet-name>StaffProfile</servlet-name>
         <url-pattern>/admin/staff-profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SliderList</servlet-name>
+        <url-pattern>/admin/sliders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SliderEdit</servlet-name>
+        <url-pattern>/admin/slider/edit</url-pattern>
     </servlet-mapping>
 </web-app>
