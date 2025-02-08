@@ -28,7 +28,7 @@ import javax.mail.MessagingException;
 import model.User;
 
 
-@WebServlet(name = "AccountController", urlPatterns = {"/account"})
+@WebServlet(name = "AccountController", urlPatterns = {"/login"})
 public class AccountController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -60,7 +60,7 @@ public class AccountController extends HttpServlet {
                 if (user != null && PasswordUtil.verifyPassword(password, user.getAccount().getPassword())) {
                     if (user.isIsVerified()) {
                         HttpSession session = request.getSession();
-                        session.setAttribute("user", user);
+                        session.setAttribute("account", user.getAccount());
                         session.setAttribute("isLoggedIn", true);
                         response.sendRedirect("dashboard.jsp");
                     } else {

@@ -199,14 +199,16 @@ public class CustomerDBContext extends DBContext {
                 + "JOIN accounts a ON u.user_id = a.user_id\n"
                 + "JOIN userroles ur ON ur.email = a.email\n"
                 + "JOIN roles r ON r.role_id = ur.role_id\n"
-                + "WHERE u.isActive = true AND r.role_name = ? AND u.fullname LIKE ?\n"
+                + "WHERE u.isActive = true AND r.role_name = ? AND (u.fullname LIKE ? OR u.phone LIKE ? OR a.email LIKE ?)\n"
                 + orderByClause + " LIMIT ? OFFSET ?"; // Thêm LIMIT và OFFSET
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setString(1, role);
             stm.setString(2, searchKeyword);
-            stm.setInt(3, pageSize);
-            stm.setInt(4, offset);
+            stm.setString(3, searchKeyword);
+            stm.setString(4, searchKeyword);
+            stm.setInt(5, pageSize);
+            stm.setInt(6, offset);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {

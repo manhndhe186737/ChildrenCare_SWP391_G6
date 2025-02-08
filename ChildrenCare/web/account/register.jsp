@@ -43,7 +43,7 @@
                         <div class="card login-page bg-white shadow mt-4 rounded border-0">
                             <div class="card-body">
                                 <h4 class="text-center">Sign Up</h4>  
-                                <form action="account?service=register" class="login-form mt-4" method="POST">
+                                <form action="login?service=register" class="login-form mt-4" method="POST">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="mb-3">                                                
@@ -114,7 +114,7 @@
                                                 Google</a>
                                         </div>
                                         <div class="mx-auto">
-                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Already have an account?</small> <a href="account?service=login" class="text-dark fw-bold">Sign in</a></p>
+                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Already have an account?</small> <a href="login?service=login" class="text-dark fw-bold">Sign in</a></p>
                                         </div>
                                     </div>
                                 </form>

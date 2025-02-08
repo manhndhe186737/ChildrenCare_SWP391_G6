@@ -23,14 +23,14 @@ public class User {
     private Account account;
     private ArrayList<Post> posts;
     private ArrayList<Slider> sliders;
-    private Profile profile;
+    private ArrayList<Profile> profiles;
     private ArrayList<Reservation> reservations;
     private ArrayList<Schedule> schedules;
 
     public User() {
     }
 
-    public User(int id, String fullname, String address, Date dob, String phone, String avatar,boolean isVerified, Boolean gender, Account account, ArrayList<Post> posts, ArrayList<Slider> sliders, Profile profile, ArrayList<Reservation> reservations, ArrayList<Schedule> schedules) {
+    public User(int id, String fullname, String address, Date dob, String phone, String avatar, boolean isVerified, Boolean gender, Account account, ArrayList<Post> posts, ArrayList<Slider> sliders, ArrayList<Profile> profiles, ArrayList<Reservation> reservations, ArrayList<Schedule> schedules) {
         this.id = id;
         this.fullname = fullname;
         this.address = address;
@@ -42,7 +42,7 @@ public class User {
         this.account = account;
         this.posts = posts;
         this.sliders = sliders;
-        this.profile = profile;
+        this.profiles = profiles;
         this.reservations = reservations;
         this.schedules = schedules;
     }
@@ -95,6 +95,14 @@ public class User {
         this.avatar = avatar;
     }
 
+    public boolean isIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
     public Boolean getGender() {
         return gender;
     }
@@ -127,12 +135,12 @@ public class User {
         this.sliders = sliders;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public ArrayList<Profile> getProfiles() {
+        return profiles;
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setProfiles(ArrayList<Profile> profiles) {
+        this.profiles = profiles;
     }
 
     public ArrayList<Reservation> getReservations() {
@@ -150,12 +158,7 @@ public class User {
     public void setSchedules(ArrayList<Schedule> schedules) {
         this.schedules = schedules;
     }
-  public boolean isIsVerified() {
-        return isVerified;
-    }
 
-    public void setIsVerified(boolean isVerified) {
-        this.isVerified = isVerified;
-    }
+   
     
 }

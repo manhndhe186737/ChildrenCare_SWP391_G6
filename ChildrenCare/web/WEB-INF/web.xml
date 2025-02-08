@@ -5,10 +5,6 @@
         <servlet-class>controller.manage.ListCustomers</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Login</servlet-name>
-        <servlet-class>controller.auth.LoginController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ServiceList</servlet-name>
         <servlet-class>controller.manage.ServiceList</servlet-class>
     </servlet>
@@ -32,14 +28,17 @@
         <servlet-name>Remove Customer</servlet-name>
         <servlet-class>controller.manage.RemoveCustomer</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>List Staff</servlet-name>
+        <servlet-class>controller.manage.ListStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Staff Profile</servlet-name>
+        <servlet-class>controller.manage.StaffProfile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
         <url-pattern>/admin/customers</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Login</servlet-name>
-        <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServiceList</servlet-name>
@@ -64,5 +63,13 @@
     <servlet-mapping>
         <servlet-name>Remove Customer</servlet-name>
         <url-pattern>/admin/removeCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>List Staff</servlet-name>
+        <url-pattern>/admin/staff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Staff Profile</servlet-name>
+        <url-pattern>/admin/staff-profile</url-pattern>
     </servlet-mapping>
 </web-app>
