@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author FPTSHOP
  */
-@WebServlet(name="Homepage", urlPatterns={"/home"})
+@WebServlet(name="Homepage", urlPatterns={"/landing/home"})
 public class Homepage extends HttpServlet {
    
     /** 
