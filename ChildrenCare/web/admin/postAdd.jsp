@@ -6,7 +6,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Doctris - Doctor Appointment Booking System</title>
+        <title>Children Care - Service Booking System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -177,18 +177,11 @@
                                     <img src="./assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                                 </span>
                             </a>
-                            <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
-                                <i class="uil uil-bars"></i>
-                            </a>
-                            <div class="search-bar p-0 d-none d-lg-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <form role="search" method="get" id="searchform" class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords..">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
-                                    </form>
-                                </div>
+                            <div class="sidebar-brand">
+                                <a href="./c/home">
+                                    <!--<a href="index.html">-->
+                                    <img src="./assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
+                                </a>
                             </div>
                         </div>
 
