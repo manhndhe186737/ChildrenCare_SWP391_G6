@@ -7,7 +7,7 @@
 
         <head>
             <meta charset="utf-8" />
-            <title>Doctris - Doctor Appointment Booking System</title>
+            <title>Children Care - Service Booking System</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
             <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -232,19 +232,13 @@
                                         <img src="./assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                                     </span>
                                 </a>
-                                <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
-                                    <i class="uil uil-bars"></i>
-                                </a>
-                                <div class="search-bar p-0 d-none d-lg-block ms-2">
-                                    <div id="search" class="menu-search mb-0">
-                                        <form role="search" method="get" id="searchform" class="searchform">
-                                            <div>
-                                                <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords..">
-                                                <input type="submit" id="searchsubmit" value="Search">
-                                            </div>
-                                        </form>
-                                    </div>
+                                <div class="sidebar-brand">
+                                    <a href="./c/home">
+                                        <!--<a href="index.html">-->
+                                        <img src="./assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
+                                    </a>
                                 </div>
+
                             </div>
 
                             <ul class="list-unstyled mb-0">
@@ -348,40 +342,40 @@
                                 </li>
 
                                 <li class="list-inline-item mb-0 ms-1">
-                                <c:choose>
-                                    <c:when test="${sessionScope.user ne null}">
-                                        <div class="dropdown dropdown-primary">
-                                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
-                                            </button>
-                                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                                <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                                    <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                    <div class="flex-1 ms-2">
-                                                        <span class="d-block mb-1">${sessionScope.user.fullname}</span>
-                                                    </div>
-                                                </a>
-                                                <c:if test="${sessionScope.role.contains('Admin')}">
-                                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html">
-                                                        <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                    <c:choose>
+                                        <c:when test="${sessionScope.user ne null}">
+                                            <div class="dropdown dropdown-primary">
+                                                <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                                </button>
+                                                <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                                    <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
+                                                        <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                        <div class="flex-1 ms-2">
+                                                            <span class="d-block mb-1">${sessionScope.user.fullname}</span>
+                                                        </div>
                                                     </a>
-                                                </c:if>
-                                                <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
-                                                    <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
-                                                </a>
-                                                <div class="dropdown-divider border-top"></div>
-                                                <a class="dropdown-item text-dark" href="logout">
-                                                    <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
-                                                </a>
+                                                    <c:if test="${sessionScope.role.contains('Admin')}">
+                                                        <a class="dropdown-item text-dark" href="doctor-dashboard.html">
+                                                            <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                                        </a>
+                                                    </c:if>
+                                                    <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
+                                                        <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
+                                                    </a>
+                                                    <div class="dropdown-divider border-top"></div>
+                                                    <a class="dropdown-item text-dark" href="logout">
+                                                        <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a href="login" class="btn btn-soft-primary btn-sm">
-                                            <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
-                                        </a>
-                                    </c:otherwise>
-                                </c:choose>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="login" class="btn btn-soft-primary btn-sm">
+                                                <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
+                                            </a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </li>
                             </ul>
                         </div>
