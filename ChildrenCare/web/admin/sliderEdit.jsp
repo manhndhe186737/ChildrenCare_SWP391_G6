@@ -421,7 +421,7 @@
             <%
                 Slider slider = (Slider) request.getAttribute("slider");
                 if (slider == null) {
-                    response.sendRedirect("SliderList");
+                    response.sendRedirect("admin/slider-list");
                     return;
                 }
             %>
@@ -444,7 +444,7 @@
 
                 <div class="edit-slider-actions">
                     <button type="submit" class="save-btn">Save</button>
-                    <a href="SliderList" class="cancel-btn">Cancel</a>
+                    <a href="admin/slider-list" class="cancel-btn">Cancel</a>
                 </div>
             </form>
         </div>

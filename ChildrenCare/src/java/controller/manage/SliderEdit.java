@@ -61,7 +61,7 @@ public class SliderEdit extends HttpServlet {
         Slider slider = db.getSliderById(id);
         
         if (slider == null) {
-            response.sendRedirect("SliderList");
+            response.sendRedirect("admin/slider-list");
             return;
         }
 
@@ -85,7 +85,7 @@ public class SliderEdit extends HttpServlet {
         SliderDBContext db = new SliderDBContext();
         db.updateSlider(slider);
 
-        response.sendRedirect("SliderList");
+        response.sendRedirect("admin/slider-list");
     }
     /**
      * Returns a short description of the servlet.

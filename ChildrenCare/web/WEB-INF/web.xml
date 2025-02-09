@@ -140,4 +140,20 @@
         <servlet-name>Update Staff</servlet-name>
         <url-pattern>/admin/update-staff</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>SliderList</servlet-name>
+        <servlet-class>controller.manage.SliderList</servlet-class>
+    </servlet>
+     <servlet>
+        <servlet-name>SliderEdit</servlet-name>
+        <servlet-class>controller.manage.SliderEdit</servlet-class>
+    </servlet>
+        <servlet-mapping>
+        <servlet-name>SliderList</servlet-name>
+        <url-pattern>/SliderList</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>SliderEdit</servlet-name>
+        <url-pattern>/SliderEdit</url-pattern>
+    </servlet-mapping>
 </web-app>

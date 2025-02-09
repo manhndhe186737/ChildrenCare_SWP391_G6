@@ -20,7 +20,7 @@ public abstract class DBContext {
 
     public DBContext() {
         try {
-            String url = "jdbc:mysql://localhost:3306/swp391";
+            String url = "jdbc:mysql://localhost:3306/swp3911";
             String username = "root";
             String password = "123456";
             Class.forName("com.mysql.cj.jdbc.Driver");
