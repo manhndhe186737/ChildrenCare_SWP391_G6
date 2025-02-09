@@ -491,6 +491,7 @@
             <script src="../assets/js/tiny-slider.js"></script>
             <script src="../assets/js/tiny-slider-init.js"></script>
             <script src="../assets/js/easy_background.js"></script>
+
             <!-- Select2 -->
             <script src="../assets/js/select2.min.js"></script>
             <script src="../assets/js/select2.init.js"></script>
@@ -505,12 +506,16 @@
             <!-- Main Js -->
             <script src="../assets/js/app.js"></script>
             <script>
-                                            easy_background("#home",
-                                                    {
-                                                        slide: ["../assets/images/bg/02.jpg", "../assets/images/bg/03.jpg", "../assets/images/bg/04.jpg"],
-                                                        delay: [3000, 3000, 3000]
-                                                    }
-                                            );
+                                            var sliderImages = [
+                <c:forEach var="s" items="${sliders}">
+                                                "../${s.getImg()}",
+                </c:forEach>
+                                            ];
+
+                                            easy_background("#home", {
+                                                slide: sliderImages,
+                                                delay: [3000, 3000, 3000]
+                                            });
             </script>
     </body>
 

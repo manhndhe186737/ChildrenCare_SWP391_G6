@@ -4,25 +4,21 @@
  */
 package controller.manage;
 
-import dal.ServiceDBContext;
 import dal.SliderDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.Account;
-import model.Role;
+import java.util.ArrayList;
+import model.Slider;
 
 /**
  *
- * @author FPTSHOP
+ * @author DELL
  */
-@WebServlet(name = "Homepage", urlPatterns = {"/c/home"})
-public class Homepage extends HttpServlet {
+public class SliderList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +37,10 @@ public class Homepage extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Homepage</title>");
+            out.println("<title>Servlet SliderList</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Homepage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SliderList at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,44 +55,37 @@ public class Homepage extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Account account = (Account) request.getSession().getAttribute("account");
-        String role = "Admin, Customer, Staff";
-        String roles = "";
-        String isLogin = "";
-        if (account != null) {
-            for (Role r : account.getRoles()) {
-                roles += r.getRname() + ", ";
-            }
-            isLogin += "1";
+        String status = request.getParameter("status");
+        String search = request.getParameter("search");
+        int page = 1;
+        int pageSize = 5;
+
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
         }
 
-        ServiceDBContext sdb = new ServiceDBContext();
-        SliderDBContext sliderDB = new SliderDBContext();
-        request.setAttribute("sliders", sliderDB.getActiveSliders());
-        request.setAttribute("services", sdb.getHomeServices());
-        request.setAttribute("login", isLogin);
-        response.getWriter().print(isLogin);
-        request.setAttribute("role", roles);
+        SliderDBContext db = new SliderDBContext();
+        ArrayList<Slider> sliders = db.getPaginatedSliders(status, search, page, pageSize);
+        int totalSliders = db.getTotalSliders(status, search);
+        int totalPages = (int) Math.ceil(totalSliders * 1.0 / pageSize);
 
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        request.setAttribute("sliders", sliders);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("currentPage", page);
+        request.getRequestDispatcher("/admin/sliderList.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        int id = Integer.parseInt(request.getParameter("sliderId"));
+        boolean newStatus = Boolean.parseBoolean(request.getParameter("newStatus"));
+
+        SliderDBContext db = new SliderDBContext();
+        db.toggleSliderVisibility(id, newStatus);
+
+        response.sendRedirect("SliderList");
     }
 
     /**
@@ -108,5 +97,5 @@ public class Homepage extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-   
+
 }
