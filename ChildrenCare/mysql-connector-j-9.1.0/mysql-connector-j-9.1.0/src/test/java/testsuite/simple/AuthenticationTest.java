@@ -92,7 +92,8 @@ public class AuthenticationTest extends BaseTestCase {
             field.set(saslCli, "n=user,r=" + nonce);
             field.setAccessible(accessible);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
+            ex.printStackTrace();
+
             fail("Failed overriding internal plugin data via reflection. Cannot continue test.");
         }
     }

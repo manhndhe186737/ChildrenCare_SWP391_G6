@@ -38,7 +38,9 @@
         <!-- Loader -->
 
         <div class="back-to-home rounded d-none d-sm-block">
-            <a href="index.jsp" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
+
+            <a href="c/home" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
+
         </div>
 
         <!-- Hero Start -->
@@ -46,11 +48,10 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-5 col-md-8">
-                        <img src="./assets/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
                         <div class="card login-page bg-white shadow mt-4 rounded border-0">
                             <div class="card-body">
                                 <h4 class="text-center">Sign In</h4>  
-                                <form action="account?service=login" class="login-form mt-4" method="POST">
+                                <form action="login?service=login" class="login-form mt-4" method="POST">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
@@ -73,7 +74,7 @@
                                                         <label class="form-check-label" for="remember-check">Remember me</label>
                                                     </div>
                                                 </div>
-                                                <a href="account?service=forgotPassword" class="text-dark h6 mb-0">Forgot password ?</a>
+                                                <a href="login?service=forgotPassword" class="text-dark h6 mb-0">Forgot password ?</a>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 mb-0">
@@ -88,7 +89,15 @@
                                         </c:if>
 
                                         <c:if test="${not empty error}">
-                                            <div class="alert alert-error">
+                                            <div class="alert alert-error"style="
+                                                 margin-bottom: 0px;
+                                                 padding-top: 0px;
+                                                 padding-bottom: 0px;
+                                                 border-top-width: 0px;
+                                                 border-bottom-width: 0px;
+                                                 border-left-width: 0px;
+                                                 border-right-width: 0px;
+                                                 ">
                                                 <p>${error}</p>
                                             </div>
                                         </c:if>
@@ -97,8 +106,12 @@
                                             <h6 class="text-muted">Or</h6>
                                         </div><!--end col-->
 
+                                            <div class="d-grid">
+                                                <a href="#" class="btn btn-soft-primary"><i class="uil uil-google"></i> Google</a>
+                                            </div>
+
                                         <div class="col-12 text-center">
-                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Don't have an account ?</small> <a href="account?service=register" class="text-dark fw-bold">Sign Up</a></p>
+                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Don't have an account ?</small> <a href="login?service=register" class="text-dark fw-bold">Sign Up</a></p>
                                         </div>
                                     </div>
                                 </form>

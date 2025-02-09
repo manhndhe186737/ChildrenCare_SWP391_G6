@@ -5,7 +5,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Doctris - Doctor Appointment Booking System</title>
+        <title>Children Care - Children Service Booking System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -32,18 +32,17 @@
         </div>
 
         <div class="back-to-home rounded d-none d-sm-block">
-            <a href="index.html" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
+            <a href="c/home" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
         </div>
 
         <section class="bg-half-150 d-table w-100 bg-light" style="background: url('./assets/images/bg/bg-lines-one.png') center;">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-5 col-md-8">
-                        <img src="./assets/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
                         <div class="card login-page bg-white shadow mt-4 rounded border-0">
                             <div class="card-body">
                                 <h4 class="text-center">Sign Up</h4>  
-                                <form action="account?service=register" class="login-form mt-4" method="POST">
+                                <form action="login?service=register" class="login-form mt-4" method="POST">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="mb-3">                                                
@@ -93,7 +92,15 @@
                                         </c:if>
 
                                         <c:if test="${not empty error}">
-                                            <div class="alert alert-error">
+                                            <div class="alert alert-error"style="
+                                                 margin-bottom: 0px;
+                                                 padding-top: 0px;
+                                                 padding-bottom: 0px;
+                                                 border-top-width: 0px;
+                                                 border-bottom-width: 0px;
+                                                 border-left-width: 0px;
+                                                 border-right-width: 0px;
+                                                 ">
                                                 <p>${error}</p>
                                             </div>
                                         </c:if>
@@ -101,8 +108,12 @@
                                         <div class="col-lg-12 mt-3 text-center">
                                             <h6 class="text-muted">Or</h6>
                                         </div>
+                                        <div class="d-grid">
+                                            <a href="#" class="btn btn-soft-primary"><i class="uil uil-google"></i>
+                                                Google</a>
+                                        </div>
                                         <div class="mx-auto">
-                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Already have an account?</small> <a href="login.html" class="text-dark fw-bold">Sign in</a></p>
+                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Already have an account?</small> <a href="login?service=login" class="text-dark fw-bold">Sign in</a></p>
                                         </div>
                                     </div>
                                 </form>

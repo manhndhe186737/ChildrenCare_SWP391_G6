@@ -1,12 +1,15 @@
 package DAO;
 
 import dal.DBContext;
+import dal.DBContext;
 import model.User;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import model.Account;
+import model.Role;
 
 public class UserDAO extends DBContext {
 
@@ -52,7 +55,7 @@ public class UserDAO extends DBContext {
         String sql = "SELECT u.user_id, u.fullname, u.address, u.dob, u.phone, u.avatar, u.is_verified, a.password "
                 + "FROM accounts a JOIN users u ON a.user_id = u.user_id WHERE a.email = ?";
         try (
-            PreparedStatement stmt = connection.prepareStatement(sql)) {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, email);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -75,6 +78,37 @@ public class UserDAO extends DBContext {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public Account getUserRoles(String email) {
+        ArrayList<Role> roles = new ArrayList<>();
+        Account acc = new Account();
+        String sql = "select r.role_id, r.role_name, a.email, a.password from users u\n"
+                + "join accounts a\n"
+                + "on u.user_id = a.user_id\n"
+                + "join userroles ur\n"
+                + "on ur.email = a.email\n"
+                + "join roles r\n"
+                + "on r.role_id = ur.role_id\n"
+                + "where ur.email = ?";
+        try(PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setString(1, email);
+            ResultSet rs = stm.executeQuery();
+            
+            while (rs.next()) {                
+                Role r = new Role();
+                r.setRid(rs.getInt("role_id"));
+                r.setRname(rs.getString("role_name"));
+                
+                acc.setEmail(rs.getString("email"));
+                acc.setPassword(rs.getString("password"));
+                
+                roles.add(r);
+            }
+            acc.setRoles(roles);
+        } catch (Exception e) {
+        }
+        return acc;
     }
 
     public void verifyUser(String email) {

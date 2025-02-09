@@ -4780,7 +4780,8 @@ public class ConnectionRegressionTest extends BaseTestCase {
                     ConnectionRegressionTest.this.testServerPrepStmtDeadlockCounter++;
                     System.out.println(this.num + ". Done!");
                 } catch (Throwable e) {
-                    e.printStackTrace();
+                    ex.printStackTrace();
+
                 }
             }
         }
@@ -5367,7 +5368,8 @@ public class ConnectionRegressionTest extends BaseTestCase {
                     try {
                         this.serverSocket.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        ex.printStackTrace();
+
                     }
                 }
             }
@@ -5389,7 +5391,8 @@ public class ConnectionRegressionTest extends BaseTestCase {
                         try {
                             clientSocket.close();
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            ex.printStackTrace();
+
                         }
                     }
                 }
@@ -5433,12 +5436,14 @@ public class ConnectionRegressionTest extends BaseTestCase {
             fail("The connection attempt should have timed out.");
 
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            ex.printStackTrace();
+
             fail("Failed to establish a connection with mock server.");
 
         } catch (ExecutionException e) {
             if (e.getCause() instanceof SQLException) {
-                e.printStackTrace();
+                ex.printStackTrace();
+
                 assertTrue(e.getCause().getMessage().startsWith("Communications link failure")
                         || e.getCause().getMessage().equals(Messages.getString("Connection.LoginTimeout")));
 
@@ -6799,7 +6804,8 @@ public class ConnectionRegressionTest extends BaseTestCase {
                         testBug20825727TestLogin(dbUrl, testConn.getPropertySet().getStringProperty(PropertyKey.characterEncoding).getValue(), sslEnabled,
                                 rsaEnabled, "testBug20825727", complexPwd, encoding, pluginName);
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        ex.printStackTrace();
+
                         fail("Failed at '" + testStep + "' using encoding '" + encoding + "' and plugin '" + pluginName
                                 + "'. See also system output for more details.");
                     } finally {
@@ -7338,7 +7344,8 @@ public class ConnectionRegressionTest extends BaseTestCase {
                     try {
                         TestBug21934573ExceptionInterceptor.class.wait();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        ex.printStackTrace();
+
                     }
                 }
             }
@@ -7776,7 +7783,8 @@ public class ConnectionRegressionTest extends BaseTestCase {
                 tlsConn.close();
             } catch (Exception e) {
                 if (commonSupportedProtocols.contains(protocol)) {
-                    e.printStackTrace();
+                    ex.printStackTrace();
+
                     fail("Expected to be able to connect with " + protocol + " protocol, but failed.");
                 }
             }
@@ -9844,7 +9852,8 @@ public class ConnectionRegressionTest extends BaseTestCase {
                 assertTrue(rset.next());
                 assertEquals(key, rset.getInt(1));
             } catch (SQLException e) {
-                e.printStackTrace();
+                ex.printStackTrace();
+
                 fail("Exception [" + e.getClass().getName() + ": " + e.getMessage() + "] caught when no exception was expected.");
             }
 
