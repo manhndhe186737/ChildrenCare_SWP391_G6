@@ -11,6 +11,7 @@ package dal;
 import java.sql.*;
 import model.Slider;
 import java.util.ArrayList;
+import model.User;
 
 public class SliderDBContext extends DBContext {
 
@@ -138,4 +139,36 @@ public class SliderDBContext extends DBContext {
         }
     }
 
+    public ArrayList<Slider> getActiveSliders() {
+        ArrayList<Slider> sliders = new ArrayList<>();
+        String sql = "SELECT s.slider_id, s.title, s.image, s.status, s.createdate, s.updatedate, " +
+                 "s.visibility, u.user_id AS author_id, u.fullname " +
+                 "FROM sliders s " +
+                 "JOIN users u ON s.author_id = u.user_id " +
+                 "WHERE s.status = 1";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Slider s = new Slider();
+                s.setId(rs.getInt("slider_id"));
+                s.setTitle(rs.getString("title"));
+                s.setImg(rs.getString("image"));
+                s.setStatus(rs.getString("status"));
+                s.setCreatedate(rs.getDate("createdate"));
+                s.setUpdatedate(rs.getDate("updatedate"));
+                s.setVisibility(rs.getBoolean("visibility"));
+
+                User author = new User();
+                author.setId(rs.getInt("author_id"));
+                author.setFullname(rs.getString("fullname"));
+                s.setAuthor(author);
+
+                sliders.add(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sliders;
+    }
 }

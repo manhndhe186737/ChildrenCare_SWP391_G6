@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-  <servlet>
+ <servlet>
         <servlet-name>CustomerList</servlet-name>
         <servlet-class>controller.manage.customer.ListCustomers</servlet-class>
     </servlet>
@@ -68,6 +68,10 @@
         <servlet-name>Add Staff</servlet-name>
         <servlet-class>controller.manage.staff.AddStaff</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Update Staff</servlet-name>
+        <servlet-class>controller.manage.staff.UpdateStaff</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
         <url-pattern>/admin/customers</url-pattern>
@@ -76,13 +80,13 @@
         <servlet-name>ServiceList</servlet-name>
         <url-pattern>/service-list</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+ <servlet-mapping>
         <servlet-name>Test</servlet-name>
         <url-pattern>/Test</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-<servlet-name>PostList</servlet-name>
-        <url-pattern>/PostList</url-pattern>
+        <servlet-name>PostList</servlet-name>
+        <url-pattern>/post-list</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddCustomer</servlet-name>
@@ -98,15 +102,15 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostView</servlet-name>
-        <url-pattern>/PostView</url-pattern>
+        <url-pattern>/post-view</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostEdit</servlet-name>
-        <url-pattern>/PostEdit</url-pattern>
+        <url-pattern>/post-edit</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostAdd</servlet-name>
-        <url-pattern>/PostAdd</url-pattern>
+        <url-pattern>/post-add</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ListStaff</servlet-name>
@@ -132,3 +136,8 @@
         <servlet-name>Add Staff</servlet-name>
         <url-pattern>/admin/add-staff</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Update Staff</servlet-name>
+        <url-pattern>/admin/update-staff</url-pattern>
+    </servlet-mapping>
+</web-app>

@@ -5,6 +5,7 @@
 package controller.manage;
 
 import dal.ServiceDBContext;
+import dal.SliderDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -72,9 +73,10 @@ public class Homepage extends HttpServlet {
             }
             isLogin += "1";
         }
-        
+
         ServiceDBContext sdb = new ServiceDBContext();
-        
+        SliderDBContext sliderDB = new SliderDBContext();
+        request.setAttribute("sliders", sliderDB.getActiveSliders());
         request.setAttribute("services", sdb.getHomeServices());
         request.setAttribute("login", isLogin);
         response.getWriter().print(isLogin);
@@ -106,5 +108,5 @@ public class Homepage extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+   
 }

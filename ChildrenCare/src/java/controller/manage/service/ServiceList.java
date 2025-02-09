@@ -42,7 +42,7 @@ public class ServiceList extends HttpServlet {
         request.setAttribute("searchQuery", searchQuery);
         request.setAttribute("selectedCategories", selectedCategories);
 
-        request.getRequestDispatcher("/c/services.jsp").forward(request, response);
+        request.getRequestDispatcher("c/services.jsp").forward(request, response);
     }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

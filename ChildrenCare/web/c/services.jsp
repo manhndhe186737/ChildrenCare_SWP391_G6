@@ -400,7 +400,7 @@
         <div class="row full-height">
             <!-- Sidebar -->
             <div class="col-md-3 sidebar">
-                <form action="ServiceList" method="GET">
+                <form action="service-list" method="GET">
                     <input type="text" name="search" class="form-control mb-3" placeholder="Search services.."
                            value="<%= request.getAttribute("searchQuery") != null ? request.getAttribute("searchQuery") : "" %>">
                     <h5>Filter by Category</h5>
@@ -466,7 +466,7 @@
             <ul class="pagination justify-content-center">
                 <% for (int i = 1; i <= totalPages; i++) { %>
                 <li class="page-item <%= (i == currentPage) ? "active" : "" %>">
-                    <a class="page-link" href="ServiceList?page=<%= i %>"><%= i %></a>
+                    <a class="page-link" href="service-list?page=<%= i %>"><%= i %></a>
                 </li>
                 <% } %>
             </ul>

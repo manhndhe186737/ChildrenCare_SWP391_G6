@@ -5,6 +5,7 @@
 package controller.manage;
 
 import DAO.UserDAO;
+import dal.SliderDBContext;
 
 /**
  *
@@ -12,7 +13,7 @@ import DAO.UserDAO;
  */
 public class NewClass {
     public static void main(String[] args) {
-        UserDAO u = new UserDAO();
-        System.out.println(u.getUserRoles("manhvipyb1@gmail.com").getRoles().get(0).getRname());
+        SliderDBContext u = new SliderDBContext();
+        System.out.println(u.getActiveSliders());
     }
 }
