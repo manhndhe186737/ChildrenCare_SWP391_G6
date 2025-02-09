@@ -4,6 +4,7 @@
  */
 package controller.manage.post;
 
+import controller.auth.BaseRBAC;
 import dal.PostDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,13 +12,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Account;
 import model.Post;
 
 /**
  *
  * @author DELL
  */
-public class PostView extends HttpServlet {
+public class PostView extends BaseRBAC {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,7 +57,7 @@ public class PostView extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
       @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         // Nhận tham số ID bài viết
         String postIdStr = request.getParameter("id");
@@ -71,10 +73,10 @@ public class PostView extends HttpServlet {
                 request.setAttribute("post", post);
                 request.getRequestDispatcher("admin/postView.jsp").forward(request, response);
             } else {
-                response.sendRedirect("PostList"); // Chuyển hướng nếu không tìm thấy bài viết
+                response.sendRedirect("post-list"); // Chuyển hướng nếu không tìm thấy bài viết
             }
         } else {
-            response.sendRedirect("PostList");
+            response.sendRedirect("post-list");
         }
     }
 
@@ -87,7 +89,7 @@ public class PostView extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         processRequest(request, response);
     }

@@ -64,6 +64,14 @@
         <servlet-name>Logout</servlet-name>
         <servlet-class>controller.auth.LogoutController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Add Staff</servlet-name>
+        <servlet-class>controller.manage.staff.AddStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Update Staff</servlet-name>
+        <servlet-class>controller.manage.staff.UpdateStaff</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
         <url-pattern>/admin/customers</url-pattern>
@@ -78,7 +86,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostList</servlet-name>
-        <url-pattern>/PostList</url-pattern>
+        <url-pattern>/post-list</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddCustomer</servlet-name>
@@ -94,15 +102,15 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostView</servlet-name>
-        <url-pattern>/PostView</url-pattern>
+        <url-pattern>/post-view</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostEdit</servlet-name>
-        <url-pattern>/PostEdit</url-pattern>
+        <url-pattern>/post-edit</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostAdd</servlet-name>
-        <url-pattern>/PostAdd</url-pattern>
+        <url-pattern>/post-add</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ListStaff</servlet-name>
@@ -123,5 +131,13 @@
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Add Staff</servlet-name>
+        <url-pattern>/admin/add-staff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Update Staff</servlet-name>
+        <url-pattern>/admin/update-staff</url-pattern>
     </servlet-mapping>
 </web-app>

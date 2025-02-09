@@ -185,14 +185,14 @@
                                 <li><a href="aboutus.html" class="sub-menu-item"> About Us</a></li>
                                 <li><a href="faqs.html" class="sub-menu-item">FAQs</a></li>
                                 <li class="has-submenu parent-menu-item">
+                                <li><a href="blogs.html" class="sub-menu-item">Blogs</a></li>
                                     <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                        <a href="javascript:void(0)" class="menu-item"> Blogs </a><span class="submenu-arrow"></span>
-                                        <ul class="submenu">
-                                            <li><a href="blogs.html" class="sub-menu-item">Blogs</a></li>
-                                            <li><a href="blog-detail.html" class="sub-menu-item">Blog Details</a></li>
-                                        </ul>
+                                    <li><a href="blogs.html" class="sub-menu-item">Blogs - Management</a></li>
                                     </c:if>
-                                </li>
+                                <li><a href="terms.html" class="sub-menu-item">Posts</a></li>
+                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
+                                    <li><a href="../post-list" class="sub-menu-item">Posts - Management</a></li>
+                                    </c:if>
                                 <li><a href="terms.html" class="sub-menu-item">Terms & Policy</a></li>
                                 <li><a href="privacy.html" class="sub-menu-item">Privacy Policy</a></li>
                             </ul>
@@ -380,7 +380,7 @@
                         <div class="row align-items-center">
                             <div class="col-sm-6">
                                 <div class="text-sm-start text-center">
-                                    <p class="mb-0"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.</p>
+
                                 </div>
                             </div><!--end col-->
 

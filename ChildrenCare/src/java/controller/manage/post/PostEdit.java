@@ -4,6 +4,7 @@
  */
 package controller.manage.post;
 
+import controller.auth.BaseRBAC;
 import dal.PostDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,13 +13,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.Account;
 import model.Post;
 
 /**
  *
  * @author DELL
  */
-public class PostEdit extends HttpServlet {
+public class PostEdit extends BaseRBAC {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,7 +58,7 @@ public class PostEdit extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         PostDBContext postDAO = new PostDBContext();
 
@@ -76,15 +78,15 @@ public class PostEdit extends HttpServlet {
 
                 request.getRequestDispatcher("admin/postEdit.jsp").forward(request, response);
             } else {
-                response.sendRedirect("PostList"); // Chuyển hướng nếu không tìm thấy bài viết
+                response.sendRedirect("post-list"); // Chuyển hướng nếu không tìm thấy bài viết
             }
         } else {
-            response.sendRedirect("PostList");
+            response.sendRedirect("post-list");
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         int postId = Integer.parseInt(request.getParameter("postId"));
         String title = request.getParameter("title");
@@ -95,7 +97,7 @@ public class PostEdit extends HttpServlet {
         String authorIdStr = request.getParameter("author");
 
         if (authorIdStr == null || authorIdStr.trim().isEmpty()) {
-            response.sendRedirect("PostEdit?id=" + postId + "&error=missing_author");
+            response.sendRedirect("post-edit?id=" + postId + "&error=missing_author");
             return;
         }
 
@@ -103,7 +105,7 @@ public class PostEdit extends HttpServlet {
         try {
             authorId = Integer.parseInt(authorIdStr);
         } catch (NumberFormatException e) {
-            response.sendRedirect("PostEdit?id=" + postId + "&error=invalid_author");
+            response.sendRedirect("post-edit?id=" + postId + "&error=invalid_author");
             return;
         }
 
@@ -111,7 +113,7 @@ public class PostEdit extends HttpServlet {
         Post post = new Post(postId, title, content, null, null, status, image, category, String.valueOf(authorId));
         postDAO.updatePost(post);
 
-        response.sendRedirect("PostList");
+        response.sendRedirect("post-list");
     }
 
     /**

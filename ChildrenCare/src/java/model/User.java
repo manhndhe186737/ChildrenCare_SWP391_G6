@@ -20,6 +20,7 @@ public class User {
     private String avatar;
     private boolean isVerified;
     private Boolean gender;
+    private String bio;
     private Account account;
     private ArrayList<Post> posts;
     private ArrayList<Slider> sliders;
@@ -30,7 +31,7 @@ public class User {
     public User() {
     }
 
-    public User(int id, String fullname, String address, Date dob, String phone, String avatar, boolean isVerified, Boolean gender, Account account, ArrayList<Post> posts, ArrayList<Slider> sliders, ArrayList<Profile> profiles, ArrayList<Reservation> reservations, ArrayList<Schedule> schedules) {
+    public User(int id, String fullname, String address, Date dob, String phone, String avatar, boolean isVerified, Boolean gender, String bio, Account account, ArrayList<Post> posts, ArrayList<Slider> sliders, ArrayList<Profile> profiles, ArrayList<Reservation> reservations, ArrayList<Schedule> schedules) {
         this.id = id;
         this.fullname = fullname;
         this.address = address;
@@ -39,6 +40,7 @@ public class User {
         this.avatar = avatar;
         this.isVerified = isVerified;
         this.gender = gender;
+        this.bio = bio;
         this.account = account;
         this.posts = posts;
         this.sliders = sliders;
@@ -111,6 +113,14 @@ public class User {
         this.gender = gender;
     }
 
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
     public Account getAccount() {
         return account;
     }
@@ -159,6 +169,5 @@ public class User {
         this.schedules = schedules;
     }
 
-   
     
 }

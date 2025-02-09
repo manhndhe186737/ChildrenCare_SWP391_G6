@@ -4,6 +4,7 @@
  */
 package dal;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import java.util.logging.Logger;
 import model.Account;
 import model.Profile;
 import model.Reservation;
+import model.Role;
 import model.User;
 
 /**
@@ -73,12 +75,10 @@ public class StaffDBContext extends DBContext {
     public User getProfileStaff(int id) {
         User staff = new User();
         ArrayList<Profile> profiles = new ArrayList<>();
-        String sql = "select u.user_id, u.fullname, u.address, u.dob, u.phone, u.avatar, u.gender, sp.staff_profile_id, sp.experience, sp.certification, sp.specialties, sp.exp_start, sp.exp_end, a.email from users u\n"
-                + "join staffprofiles sp\n"
-                + "on u.user_id = sp.staff_id\n"
-                + "join accounts a\n"
-                + "on a.user_id = u.user_id\n"
-                + "where u.user_id = ?";
+        String sql = "SELECT u.user_id, u.fullname, u.address, u.dob, u.phone, u.avatar, u.gender, sp.staff_profile_id, sp.experience, sp.certification, sp.specialties, sp.exp_start, sp.exp_end, a.email, u.bio FROM users u \n"
+                + "JOIN staffprofiles sp ON u.user_id = sp.staff_id \n"
+                + "JOIN accounts a ON a.user_id = u.user_id \n"
+                + "WHERE u.user_id = ?";
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, id);
@@ -96,7 +96,7 @@ public class StaffDBContext extends DBContext {
                     staff.setPhone(rs.getString("phone"));
                     staff.setAvatar(rs.getString("avatar"));
                     staff.setGender(rs.getBoolean("gender"));
-
+                    staff.setBio(rs.getString("bio"));
                     Account a = new Account();
                     a.setEmail(rs.getString("email"));
 
@@ -113,7 +113,6 @@ public class StaffDBContext extends DBContext {
 
                 profiles.add(p);
             }
-
             staff.setProfiles(profiles);
         } catch (Exception e) {
         }
@@ -133,7 +132,7 @@ public class StaffDBContext extends DBContext {
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
-            
+
             while (rs.next()) {
                 Reservation rsv = new Reservation();
                 rsv.setId(rs.getInt("reserv_id"));
@@ -142,7 +141,7 @@ public class StaffDBContext extends DBContext {
                 rsv.setNote(rs.getString("note"));
                 rsv.setStart(rs.getTime("starttime"));
                 rsv.setEnd(rs.getTime("endtime"));
-                
+
                 reserv.add(rsv);
             }
 
@@ -150,4 +149,26 @@ public class StaffDBContext extends DBContext {
         }
         return reserv;
     }
+
+    public void updateStaff(User staff) {
+    String sql = "UPDATE users SET fullname = ?, phone = ?, bio = ?, dob = ?, address = ?, avatar = ? WHERE user_id = ?";
+    
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+        stmt.setString(1, staff.getFullname());
+        stmt.setString(2, staff.getPhone());
+        stmt.setString(3, staff.getBio());
+        stmt.setDate(4, new java.sql.Date(staff.getDob().getTime()));
+        stmt.setString(5, staff.getAddress());
+        stmt.setString(6, staff.getAvatar());
+        stmt.setInt(7, staff.getId());
+
+        stmt.executeUpdate();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+
 }
