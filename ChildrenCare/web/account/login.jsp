@@ -46,7 +46,6 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-5 col-md-8">
-                        <img src="./assets/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
                         <div class="card login-page bg-white shadow mt-4 rounded border-0">
                             <div class="card-body">
                                 <h4 class="text-center">Sign In</h4>  

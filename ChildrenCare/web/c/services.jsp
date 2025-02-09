@@ -241,7 +241,7 @@
                                 </div>
                             </c:when>
                             <c:otherwise>
-                                <a href="../login" class="btn btn-soft-primary btn-sm">
+                                <a href="./login" class="btn btn-soft-primary btn-sm">
                                     <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
                                 </a>
                             </c:otherwise>
@@ -548,7 +548,7 @@
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="text-sm-start text-center">
-                            <p class="mb-0"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="./././index.html" target="_blank" class="text-reset">Shreethemes</a>.</p>
+                           
                         </div>
                     </div><!--end col-->
 
