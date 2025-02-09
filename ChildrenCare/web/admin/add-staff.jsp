@@ -1,10 +1,9 @@
 <%-- 
-    Document   : staff
-    Created on : Feb 8, 2025, 8:39:43 AM
+    Document   : add-staff
+    Created on : Feb 8, 2025, 10:45:11 PM
     Author     : FPTSHOP
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
@@ -13,7 +12,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Children Care - Service Booking System</title>
+        <title>Doctris - Doctor Appointment Booking System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -29,9 +28,6 @@
         <link href="../assets/css/simplebar.css" rel="stylesheet" type="text/css" />
         <!-- Select2 -->
         <link href="../assets/css/select2.min.css" rel="stylesheet" />
-        <!-- Date picker -->
-        <link rel="stylesheet" href="../assets/css/flatpickr.min.css">
-        <link href="../assets/css/jquery.timepicker.min.css" rel="stylesheet" type="text/css" />
         <!-- Icons -->
         <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
         <link href="../assets/css/remixicon.css" rel="stylesheet" type="text/css" />
@@ -57,33 +53,33 @@
             <nav id="sidebar" class="sidebar-wrapper">
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
-                        <a href="../c/home">
-                        <!--<a href="index.html">-->
-                            <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
-                            <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
+                        <a href="index.html">
+                            <img src="../assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
+                            <img src="../assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
-
+                    
                     <ul class="sidebar-menu pt-3">
-                        <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                        <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
 
                         <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
+                            <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Doctors</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li class="active"><a href="../admin/staff">Staff</a></li>
-                                    <li><a href="add-doctor.html">Add Staff</a></li>
+                                    <li><a href="doctors.html">Doctors</a></li>
+                                    <li><a href="add-doctor.html">Add Doctor</a></li>
+                                    <li><a href="dr-profile.html">Profile</a></li>
                                 </ul>
                             </div>
                         </li>
 
                         <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-wheelchair me-2 d-inline-block"></i>Customers</a>
+                            <a href="javascript:void(0)"><i class="uil uil-wheelchair me-2 d-inline-block"></i>Patients</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="../admin/customers">All Customers</a></li>
-                                    <li><a href="add-patient.html">Add Customers</a></li>
+                                    <li><a href="patients.html">All Patients</a></li>
+                                    <li><a href="add-patient.html">Add Patients</a></li>
                                     <li><a href="patient-profile.html">Profile</a></li>
                                 </ul>
                             </div>
@@ -194,7 +190,7 @@
                                 </div>
                             </div>
                         </div>
-
+        
                         <ul class="list-unstyled mb-0">
                             <li class="list-inline-item mb-0">
                                 <div class="dropdown dropdown-primary">
@@ -206,28 +202,28 @@
                                                 <small class="text-dark mb-0">Chinese</small>
                                             </div>
                                         </a>
-
+        
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/european.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">European</small>
                                             </div>
                                         </a>
-
+        
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/indian.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">Indian</small>
                                             </div>
                                         </a>
-
+        
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/japanese.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">Japanese</small>
                                             </div>
                                         </a>
-
+        
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/russian.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
@@ -248,7 +244,7 @@
                                 <div class="dropdown dropdown-primary">
                                     <button type="button" class="btn btn-icon btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="mail" class="fea icon-sm"></i></button>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">4 <span class="visually-hidden">unread mail</span></span>
-
+                                    
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow rounded border-0 mt-3 px-2 py-2" data-simplebar style="height: 320px; width: 300px;">
                                         <a href="#" class="d-flex align-items-center justify-content-between py-2">
                                             <div class="d-inline-flex position-relative overflow-hidden">
@@ -297,18 +293,19 @@
 
                             <li class="list-inline-item mb-0 ms-1">
                                 <div class="dropdown dropdown-primary">
-                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
+                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle" alt=""></button>
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
                                         <a class="dropdown-item d-flex align-items-center text-dark" href="https://shreethemes.in/doctris/layouts/admin/profile.html">
-                                            <img src="../assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                            <img src="../assets/images/doctors/01.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="flex-1 ms-2">
-                                                <span class="d-block mb-1">${sessionScope.user.fullname}</span>
+                                                <span class="d-block mb-1">Calvin Carlo</span>
+                                                <small class="text-muted">Orthopedic</small>
                                             </div>
                                         </a>
-                                        <a class="dropdown-item text-dark" href="../admin/dashboard"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
+                                        <a class="dropdown-item text-dark" href="index.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
                                         <a class="dropdown-item text-dark" href="dr-profile.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                         <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="../logout"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                                        <a class="dropdown-item text-dark" href="lock-screen.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -318,42 +315,209 @@
 
                 <div class="container-fluid">
                     <div class="layout-specing">
+                        <div class="d-md-flex justify-content-between">
+                            <h5 class="mb-0">Add New Doctor</h5>
+
+                            <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
+                                <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                                    <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
+                                    <li class="breadcrumb-item"><a href="doctors.html">Doctors</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Add Doctor</li>
+                                </ul>
+                            </nav>
+                        </div>
+                        
                         <div class="row">
-                            <div class="col-xl-9 col-md-6">
-                                <h5 class="mb-0">Staff</h5>
-
-                                <nav aria-label="breadcrumb" class="d-inline-block mt-2">
-                                    <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
-                                        <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Staff</li>
-                                    </ul>
-                                </nav>
+                            <div class="col-lg-8 mt-4">
+                                <div class="card border-0 p-4 rounded shadow">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-2 col-md-4">
+                                            <img src="../assets/images/doctors/01.jpg" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
+                                        </div><!--end col-->
+            
+                                        <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
+                                            <h5 class="">Upload your picture</h5>
+                                            <p class="text-muted mb-0">For best results, use an image at least 600px by 600px in either .jpg or .png format</p>
+                                        </div><!--end col-->
+            
+                                        <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
+                                            <a href="#" class="btn btn-primary">Upload</a>
+                                            <a href="#" class="btn btn-soft-primary ms-2">Remove</a>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+            
+                                    <form class="mt-4">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">First Name</label>
+                                                    <input name="name" id="name" type="text" class="form-control" placeholder="First Name :">
+                                                </div>
+                                            </div><!--end col-->
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Last Name</label>
+                                                    <input name="name" id="name2" type="text" class="form-control" placeholder="Last Name :">
+                                                </div>
+                                            </div><!--end col-->
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Your Email</label>
+                                                    <input name="email" id="email" type="email" class="form-control" placeholder="Your email :">
+                                                </div> 
+                                            </div><!--end col-->
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Phone no.</label>
+                                                    <input name="number" id="number" type="text" class="form-control" placeholder="Phone no. :">
+                                                </div>                                                                               
+                                            </div><!--end col-->
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Departments</label>
+                                                    <select class="form-control department-name select2input">
+                                                        <option value="EY">Eye Care</option>
+                                                        <option value="GY">Gynecologist</option>
+                                                        <option value="PS">Psychotherapist</option>
+                                                        <option value="OR">Orthopedic</option>
+                                                        <option value="DE">Dentist</option>
+                                                        <option value="GA">Gastrologist</option>
+                                                        <option value="UR">Urologist</option>
+                                                        <option value="NE">Neurologist</option>
+                                                    </select>
+                                                </div>
+                                            </div><!--end col-->
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Gender</label>
+                                                    <select class="form-control gender-name select2input">
+                                                        <option value="EY">Male</option>
+                                                        <option value="GY">Female</option>
+                                                    </select>
+                                                </div>
+                                            </div><!--end col-->
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Instagram</label>
+                                                    <div class="input-group flex-nowrap">
+                                                        <span class="input-group-text bg-white border border-end-0 text-dark" id="insta-id"><i data-feather="instagram" class="fea icon-sm"></i></span>
+                                                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="insta-id">
+                                                    </div>
+                                                </div>
+                                            </div><!--end col-->
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Facebook</label>
+                                                    <div class="input-group flex-nowrap">
+                                                        <span class="input-group-text bg-white border border-end-0 text-dark" id="fb-id"><i data-feather="facebook" class="fea icon-sm"></i></span>
+                                                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="fb-id">
+                                                    </div>
+                                                </div>
+                                            </div><!--end col-->
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Linkedin</label>
+                                                    <div class="input-group flex-nowrap">
+                                                        <span class="input-group-text bg-white border border-end-0 text-dark" id="linke-pro"><i data-feather="linkedin" class="fea icon-sm"></i></span>
+                                                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="linke-pro">
+                                                    </div>
+                                                </div>
+                                            </div><!--end col-->
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Twitter</label>
+                                                    <div class="input-group flex-nowrap">
+                                                        <span class="input-group-text bg-white border border-end-0 text-dark" id="twitter-id"><i data-feather="twitter" class="fea icon-sm"></i></span>
+                                                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="twitter-id">
+                                                    </div>
+                                                </div>
+                                            </div><!--end col-->
+            
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Your Bio Here</label>
+                                                    <textarea name="comments" id="comments" rows="3" class="form-control" placeholder="Bio :"></textarea>
+                                                </div>
+                                            </div>
+                                        </div><!--end row-->
+            
+                                        <button type="submit" class="btn btn-primary">Add Doctor</button>
+                                    </form>
+                                </div>
                             </div><!--end col-->
 
-                            <div class="col-xl-3 col-md-6 mt-4 mt-md-0 text-md-end">
-                                <a href="add-doctor.html" class="btn btn-primary">Add New Staff</a>
-                            </div><!--end col-->
-                        </div><!--end row-->
-
-                        <div class="row row-cols-md-2 row-cols-lg-5">
-                            <c:forEach var="s" items="${requestScope.staff}">
-                                <div class="col mt-4">
-                                    <div class="card team border-0 rounded shadow overflow-hidden">
-                                        <div class="team-img position-relative">
-                                            <img src="../assets/images/${s.avatar}" class="img-fluid" alt="">
-                                            <ul class="list-unstyled team-social mb-0">
-                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="facebook" class="icons"></i></a></li>
-                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="linkedin" class="icons"></i></a></li>
-                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="instagram" class="icons"></i></a></li>
-                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="twitter" class="icons"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="card-body content text-center">
-                                            <a href="staff-profile?staff_id=${s.id}" class="title text-dark h5 d-block mb-0">${s.fullname}</a>
-                                        </div>
+                            <div class="col-lg-4 mt-4">
+                                <div class="card rounded border-0 shadow">
+                                    <div class="p-4 border-bottom">
+                                        <h5 class="mb-0">Doctors List</h5>
                                     </div>
-                                </div><!--end col-->
-                            </c:forEach>
+
+                                    <ul class="list-unstyled mb-0 p-4" data-simplebar style="height: 664px;">
+                                        <li class="d-md-flex align-items-center text-center text-md-start">
+                                            <img src="../assets/images/doctors/01.jpg" class="avatar avatar-medium rounded-md shadow" alt="">
+
+                                            <div class="ms-md-3 mt-4 mt-sm-0">
+                                                <a href="#" class="text-dark h6">Dr. Calvin Carlo</a>
+                                                <p class="text-muted my-1">Cardiologist</p>
+                                                <p class="text-muted mb-0">3 Years Experienced</p>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-md-flex align-items-center text-center text-md-start mt-4">
+                                            <img src="../assets/images/doctors/02.jpg" class="avatar avatar-medium rounded-md shadow" alt="">
+
+                                            <div class="ms-md-3 mt-4 mt-sm-0">
+                                                <a href="#" class="text-dark h6">Dr. Alex Smith</a>
+                                                <p class="text-muted my-1">Dentist</p>
+                                                <p class="text-muted mb-0">1 Years Experienced</p>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-md-flex align-items-center text-center text-md-start mt-4">
+                                            <img src="../assets/images/doctors/03.jpg" class="avatar avatar-medium rounded-md shadow" alt="">
+
+                                            <div class="ms-md-3 mt-4 mt-sm-0">
+                                                <a href="#" class="text-dark h6">Dr. Cristina Luly</a>
+                                                <p class="text-muted my-1">Orthopedic</p>
+                                                <p class="text-muted mb-0">5 Years Experienced</p>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-md-flex align-items-center text-center text-md-start mt-4">
+                                            <img src="../assets/images/doctors/04.jpg" class="avatar avatar-medium rounded-md shadow" alt="">
+
+                                            <div class="ms-md-3 mt-4 mt-sm-0">
+                                                <a href="#" class="text-dark h6">Dr. Dwayen Maria</a>
+                                                <p class="text-muted my-1">Gastrologist</p>
+                                                <p class="text-muted mb-0">2 Years Experienced</p>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-md-flex align-items-center text-center text-md-start mt-4">
+                                            <img src="../assets/images/doctors/05.jpg" class="avatar avatar-medium rounded-md shadow" alt="">
+
+                                            <div class="ms-md-3 mt-4 mt-sm-0">
+                                                <a href="#" class="text-dark h6">Dr. Jenelia Focia</a>
+                                                <p class="text-muted my-1">Psychotherapist</p>
+                                                <p class="text-muted mb-0">3 Years Experienced</p>
+                                            </div>
+                                        </li>
+
+                                        <li class="mt-4">
+                                            <a href="doctors.html" class="btn btn-primary">All Doctors</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div><!--end row-->
                     </div>
                 </div><!--end container-->
@@ -421,15 +585,123 @@
         </div>
         <!-- Offcanvas End -->
 
+        <!-- View Appintment Start -->
+        <div class="modal fade" id="viewappointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header border-bottom p-3">
+                        <h5 class="modal-title" id="exampleModalLabel">Appointment Detail</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-3 pt-4">
+                        <div class="d-flex align-items-center">
+                            <img src="../assets/images/client/01.jpg" class="avatar avatar-small rounded-pill" alt="">
+                            <h5 class="mb-0 ms-3">Howard Tanner</h5>
+                        </div>
+                        <ul class="list-unstyled mb-0 d-md-flex justify-content-between mt-4">
+                            <li>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="d-flex">
+                                        <h6>Age:</h6>
+                                        <p class="text-muted ms-2">25 year old</p>
+                                    </li>
+
+                                    <li class="d-flex">
+                                        <h6>Gender:</h6>
+                                        <p class="text-muted ms-2">Male</p>
+                                    </li>
+
+                                    <li class="d-flex">
+                                        <h6 class="mb-0">Department:</h6>
+                                        <p class="text-muted ms-2 mb-0">Cardiology</p>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="d-flex">
+                                        <h6>Date:</h6>
+                                        <p class="text-muted ms-2">20th Dec 2020</p>
+                                    </li>
+
+                                    <li class="d-flex">
+                                        <h6>Time:</h6>
+                                        <p class="text-muted ms-2">11:00 AM</p>
+                                    </li>
+
+                                    <li class="d-flex">
+                                        <h6 class="mb-0">Doctor:</h6>
+                                        <p class="text-muted ms-2 mb-0">Dr. Calvin Carlo</p>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- View Appintment End -->
+
+        <!-- Accept Appointment Start -->
+        <div class="modal fade" id="acceptappointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body py-5">
+                        <div class="text-center">
+                            <div class="icon d-flex align-items-center justify-content-center bg-soft-success rounded-circle mx-auto" style="height: 95px; width:95px;">
+                                <i class="uil uil-check-circle h1 mb-0"></i>
+                            </div>
+                            <div class="mt-4">
+                                <h4>Accept Appointment</h4>
+                                <p class="para-desc mx-auto text-muted mb-0">Great doctor if you need your family member to get immediate assistance, emergency treatment.</p>
+                                <div class="mt-4">
+                                    <a href="#" class="btn btn-soft-success">Accept</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Accept Appointment End -->
+
+        <!-- Cancel Appointment Start -->
+        <div class="modal fade" id="cancelappointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body py-5">
+                        <div class="text-center">
+                            <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto" style="height: 95px; width:95px;">
+                                <i class="uil uil-times-circle h1 mb-0"></i>
+                            </div>
+                            <div class="mt-4">
+                                <h4>Cancel Appointment</h4>
+                                <p class="para-desc mx-auto text-muted mb-0">Great doctor if you need your family member to get immediate assistance, emergency treatment.</p>
+                                <div class="mt-4">
+                                    <a href="#" class="btn btn-soft-danger">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Cancel Appointment End -->
+        <!-- Modal end -->
+        
         <!-- javascript -->
+        <script src="../assets/js/jquery.min.js"></script>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <!-- simplebar -->
         <script src="../assets/js/simplebar.min.js"></script>
+        <!-- Select2 -->
+        <script src="../assets/js/select2.min.js"></script>
+        <script src="../assets/js/select2.init.js"></script>
         <!-- Icons -->
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
-
+        
     </body>
 
 </html>

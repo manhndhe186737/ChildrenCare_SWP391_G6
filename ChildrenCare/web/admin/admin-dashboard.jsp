@@ -71,7 +71,7 @@
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li><a href="../admin/staff">Staff</a></li>
-                                    <li><a href="add-doctor">Add Staff</a></li>
+                                    <li><a href="../admin/add-staff">Add Staff</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -864,7 +864,7 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <div class="text-sm-start text-center">
-                                    <p class="mb-0 text-muted"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.</p>
+                                    
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->

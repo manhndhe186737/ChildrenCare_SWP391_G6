@@ -5,6 +5,8 @@
 package controller.manage;
 
 import DAO.UserDAO;
+import dal.StaffDBContext;
+import model.Role;
 
 /**
  *
@@ -12,7 +14,10 @@ import DAO.UserDAO;
  */
 public class NewClass {
     public static void main(String[] args) {
-        UserDAO u = new UserDAO();
-        System.out.println(u.getUserRoles("manhvipyb1@gmail.com").getRoles().get(0).getRname());
+        StaffDBContext sdb = new StaffDBContext();
+        System.out.println(sdb.getProfileStaff(3).getAccount().getRoles().size());
+        for (Role r : sdb.getProfileStaff(3).getAccount().getRoles()) {
+            System.out.println(r.getRname());
+        }
     }
 }

@@ -10,37 +10,24 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.sql.Date;
 import model.Account;
-import model.Profile;
-import model.Role;
 import model.User;
 
 /**
  *
  * @author FPTSHOP
  */
-public class StaffProfile extends BaseRBAC{
+public class AddStaff extends BaseRBAC{
 
     @Override
     protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, Account acocunt) throws ServletException, IOException {
-        int id = -1;
-        String id_raw = req.getParameter("staff_id");
-        if(id_raw != null && id_raw.length() != 0){
-            id = Integer.parseInt(id_raw);
-        }
-        
-        StaffDBContext sdb = new StaffDBContext();
-        
-        User staff = sdb.getProfileStaff(id);
-        staff.setReservations(sdb.getStaffReserv(id));
-        req.setAttribute("staff", staff);
-        req.getRequestDispatcher("../admin/staff-profile.jsp").forward(req, resp);
+        req.getRequestDispatcher("../admin/add-staff.jsp").forward(req, resp);
     }
 
     @Override
     protected void doAuthorizedPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
     }
     
 }
