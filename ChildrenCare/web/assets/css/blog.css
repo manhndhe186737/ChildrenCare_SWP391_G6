@@ -1,0 +1,181 @@
+/* Phân trang */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+/* Các trang */
+.pagination .page-item {
+    margin: 0 5px;
+}
+
+/* Các nút "Prev", "Next" */
+.pagination .page-item .page-link {
+    padding: 8px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Trang đang được chọn */
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+/* Các nút "Prev" và "Next" bị vô hiệu */
+.pagination .page-item.disabled .page-link {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Các số trang */
+.pagination .page-item:not(.disabled) .page-link {
+    cursor: pointer;
+}
+
+/* Phần tử chứa các bài blog */
+#blog-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Các bài blog */
+.blog-item {
+    flex: 0 0 32%; /* Mỗi bài blog chiếm 32% chiều rộng */
+    margin-bottom: 30px; /* Khoảng cách giữa các bài blog */
+    display: flex;
+    flex-direction: column; /* Đảm bảo các phần tử trong bài blog được xếp theo chiều dọc */
+}
+
+/* Cấu hình card blog */
+.card.blog {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Hình ảnh blog */
+.card img {
+    width: 100%; /* Đảm bảo hình ảnh chiếm đầy chiều rộng của container */
+    height: 200px; /* Cố định chiều cao của ảnh */
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+}
+
+/* Phần thân card blog */
+.card-body {
+    flex-grow: 1; /* Đảm bảo phần này chiếm phần còn lại của card */
+}
+
+/* Tiêu đề blog */
+.card-body .title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+/* Nội dung blog */
+.card-body p {
+    height: 60px; /* Cố định chiều cao cho phần mô tả */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Thêm dấu ba chấm khi phần nội dung quá dài */
+}
+
+/* Nút "Read More" */
+.card-body a {
+    margin-top: auto; /* Đẩy nút "Read More" xuống dưới cùng */
+}
+
+/* Responsive: Màn hình nhỏ */
+@media (max-width: 768px) {
+    .blog-item {
+        flex: 0 0 48%; /* Mỗi bài blog chiếm 48% chiều rộng trên màn hình nhỏ */
+    }
+}
+
+/* Responsive: Màn hình rất nhỏ */
+@media (max-width: 576px) {
+    .blog-item {
+        flex: 0 0 100%; /* Mỗi bài blog chiếm 100% chiều rộng trên màn hình rất nhỏ */
+    }
+}
+/* Cấu hình card blog */
+.card.blog {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Phần thân card blog */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Đảm bảo phần này chiếm phần còn lại của card */
+}
+
+/* Tiêu đề bài blog */
+.card-body .title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+/* Mô tả bài blog */
+.card-body p {
+    height: 60px; /* Cố định chiều cao cho phần mô tả */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 20px; /* Khoảng cách dưới cho phần mô tả */
+}
+
+/* Nút "Read More" */
+.card-body a {
+    margin-top: auto; /* Đẩy nút "Read More" xuống dưới cùng */
+    align-self: flex-start; /* Đảm bảo nút căn trái */
+    font-weight: bold;
+    text-decoration: none;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.card-body a:hover {
+    color: #0056b3;
+}
+
+/* Cấu hình cho hình ảnh blog */
+.card img {
+    width: 100%; /* Đảm bảo hình ảnh chiếm đầy chiều rộng của container */
+    height: 200px; /* Cố định chiều cao của ảnh */
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+}
+
+/* Responsive: Màn hình nhỏ */
+@media (max-width: 768px) {
+    .blog-item {
+        flex: 0 0 48%; /* Mỗi bài blog chiếm 48% chiều rộng trên màn hình nhỏ */
+    }
+}
+
+/* Responsive: Màn hình rất nhỏ */
+@media (max-width: 576px) {
+    .blog-item {
+        flex: 0 0 100%; /* Mỗi bài blog chiếm 100% chiều rộng trên màn hình rất nhỏ */
+    }
+}

@@ -20,6 +20,18 @@
         <servlet-name>Remove Customer</servlet-name>
         <servlet-class>controller.manage.RemoveCustomer</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BlogDBContext</servlet-name>
+        <servlet-class>dal.BlogDBContext</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogServlet</servlet-name>
+        <servlet-class>controller.home.BlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogSearchServlet</servlet-name>
+        <servlet-class>controller.home.BlogSearchServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
         <url-pattern>/admin/customers</url-pattern>
@@ -39,5 +51,17 @@
     <servlet-mapping>
         <servlet-name>Remove Customer</servlet-name>
         <url-pattern>/admin/removeCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogDBContext</servlet-name>
+        <url-pattern>/BlogDBContext</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogServlet</servlet-name>
+        <url-pattern>/blog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogSearchServlet</servlet-name>
+        <url-pattern>/search</url-pattern>
     </servlet-mapping>
 </web-app>
