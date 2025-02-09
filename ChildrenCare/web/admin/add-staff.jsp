@@ -12,7 +12,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Doctris - Doctor Appointment Booking System</title>
+        <title>Children Care - Service Booking System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -53,33 +53,33 @@
             <nav id="sidebar" class="sidebar-wrapper">
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
-                        <a href="index.html">
-                            <img src="../assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
-                            <img src="../assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
+                        <a href="../c/home">
+                            <!--<a href="index.html">-->
+                            <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
+                            <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
-                    
+
                     <ul class="sidebar-menu pt-3">
-                        <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                        <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
 
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Doctors</a>
-                            <div class="sidebar-submenu">
+                        <li class="sidebar-dropdown active">
+                            <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
+                            <div class="sidebar-submenu d-block">
                                 <ul>
-                                    <li><a href="doctors.html">Doctors</a></li>
-                                    <li><a href="add-doctor.html">Add Doctor</a></li>
-                                    <li><a href="dr-profile.html">Profile</a></li>
+                                    <li><a href="../admin/staff">Staff</a></li>
+                                    <li class="active"><a href="add-doctor.html">Add Staff</a></li>
                                 </ul>
                             </div>
                         </li>
 
                         <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-wheelchair me-2 d-inline-block"></i>Patients</a>
+                            <a href="javascript:void(0)"><i class="uil uil-wheelchair me-2 d-inline-block"></i>Customers</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="patients.html">All Patients</a></li>
-                                    <li><a href="add-patient.html">Add Patients</a></li>
+                                    <li><a href="../admin/customers">All Customers</a></li>
+                                    <li><a href="add-patient.html">Add Customers</a></li>
                                     <li><a href="patient-profile.html">Profile</a></li>
                                 </ul>
                             </div>
@@ -190,7 +190,7 @@
                                 </div>
                             </div>
                         </div>
-        
+
                         <ul class="list-unstyled mb-0">
                             <li class="list-inline-item mb-0">
                                 <div class="dropdown dropdown-primary">
@@ -202,28 +202,28 @@
                                                 <small class="text-dark mb-0">Chinese</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/european.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">European</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/indian.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">Indian</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/japanese.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">Japanese</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/russian.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
@@ -244,7 +244,7 @@
                                 <div class="dropdown dropdown-primary">
                                     <button type="button" class="btn btn-icon btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="mail" class="fea icon-sm"></i></button>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">4 <span class="visually-hidden">unread mail</span></span>
-                                    
+
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow rounded border-0 mt-3 px-2 py-2" data-simplebar style="height: 320px; width: 300px;">
                                         <a href="#" class="d-flex align-items-center justify-content-between py-2">
                                             <div class="d-inline-flex position-relative overflow-hidden">
@@ -293,19 +293,18 @@
 
                             <li class="list-inline-item mb-0 ms-1">
                                 <div class="dropdown dropdown-primary">
-                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle" alt=""></button>
+                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
                                         <a class="dropdown-item d-flex align-items-center text-dark" href="https://shreethemes.in/doctris/layouts/admin/profile.html">
-                                            <img src="../assets/images/doctors/01.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                            <img src="../assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="flex-1 ms-2">
-                                                <span class="d-block mb-1">Calvin Carlo</span>
-                                                <small class="text-muted">Orthopedic</small>
+                                                <span class="d-block mb-1">${sessionScope.user.fullname}</span>
                                             </div>
                                         </a>
-                                        <a class="dropdown-item text-dark" href="index.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
+                                        <a class="dropdown-item text-dark" href="../admin/dashboard"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
                                         <a class="dropdown-item text-dark" href="dr-profile.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                         <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="lock-screen.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                                        <a class="dropdown-item text-dark" href="../logout"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -316,7 +315,7 @@
                 <div class="container-fluid">
                     <div class="layout-specing">
                         <div class="d-md-flex justify-content-between">
-                            <h5 class="mb-0">Add New Doctor</h5>
+                            <h5 class="mb-0">Add New Staff</h5>
 
                             <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                                 <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
@@ -326,7 +325,7 @@
                                 </ul>
                             </nav>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-lg-8 mt-4">
                                 <div class="card border-0 p-4 rounded shadow">
@@ -334,18 +333,18 @@
                                         <div class="col-lg-2 col-md-4">
                                             <img src="../assets/images/doctors/01.jpg" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
                                         </div><!--end col-->
-            
+
                                         <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
                                             <h5 class="">Upload your picture</h5>
                                             <p class="text-muted mb-0">For best results, use an image at least 600px by 600px in either .jpg or .png format</p>
                                         </div><!--end col-->
-            
+
                                         <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
                                             <a href="#" class="btn btn-primary">Upload</a>
                                             <a href="#" class="btn btn-soft-primary ms-2">Remove</a>
                                         </div><!--end col-->
                                     </div><!--end row-->
-            
+
                                     <form class="mt-4">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -354,28 +353,28 @@
                                                     <input name="name" id="name" type="text" class="form-control" placeholder="First Name :">
                                                 </div>
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Last Name</label>
                                                     <input name="name" id="name2" type="text" class="form-control" placeholder="Last Name :">
                                                 </div>
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Your Email</label>
                                                     <input name="email" id="email" type="email" class="form-control" placeholder="Your email :">
                                                 </div> 
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Phone no.</label>
                                                     <input name="number" id="number" type="text" class="form-control" placeholder="Phone no. :">
                                                 </div>                                                                               
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Departments</label>
@@ -391,7 +390,7 @@
                                                     </select>
                                                 </div>
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Gender</label>
@@ -401,7 +400,7 @@
                                                     </select>
                                                 </div>
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Instagram</label>
@@ -411,7 +410,7 @@
                                                     </div>
                                                 </div>
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Facebook</label>
@@ -421,7 +420,7 @@
                                                     </div>
                                                 </div>
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Linkedin</label>
@@ -431,7 +430,7 @@
                                                     </div>
                                                 </div>
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Twitter</label>
@@ -441,7 +440,7 @@
                                                     </div>
                                                 </div>
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Your Bio Here</label>
@@ -449,7 +448,7 @@
                                                 </div>
                                             </div>
                                         </div><!--end row-->
-            
+
                                         <button type="submit" class="btn btn-primary">Add Doctor</button>
                                     </form>
                                 </div>
@@ -528,7 +527,7 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <div class="text-sm-start text-center">
-                                    
+
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->
@@ -688,7 +687,7 @@
         </div>
         <!-- Cancel Appointment End -->
         <!-- Modal end -->
-        
+
         <!-- javascript -->
         <script src="../assets/js/jquery.min.js"></script>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
@@ -701,7 +700,7 @@
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
-        
+
     </body>
 
 </html>

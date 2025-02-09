@@ -1,19 +1,22 @@
 <%-- 
-    Document   : home
-    Created on : Feb 8, 2025, 12:43:38 PM
-    Author     : FPTSHOP
+    Document   : blog-detail
+    Created on : Feb 8, 2025, 2:00:08 PM
+    Author     : dell
 --%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ page language="java" import="java.util.Locale" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
         <meta charset="utf-8" />
-        <title>Children Care - Children Service Booking System</title>
+        <title>Doctris - Doctor Appointment Booking System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -21,23 +24,19 @@
         <meta name="email" content="support@shreethemes.in" />
         <meta name="website" content="https://shreethemes.in" />
         <meta name="Version" content="v1.2.0" />
+        <meta http-equiv="Content-Language" content="en" />
         <!-- favicon -->
-        <link rel="shortcut icon" href="../assets/images/favicon.ico.png">
+        <link rel="shortcut icon" href="assets/images/favicon.ico.png">
         <!-- Bootstrap -->
-        <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <!-- SLIDER -->
-        <link rel="stylesheet" href="../assets/css/tiny-slider.css"/>
-        <!-- Select2 -->
-        <link href="../assets/css/select2.min.css" rel="stylesheet" />
-        <!-- Date picker -->
-        <link rel="stylesheet" href="../assets/css/flatpickr.min.css">
-        <link href="../assets/css/jquery.timepicker.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- Icons -->
-        <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/css/remixicon.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/remixicon.css" rel="stylesheet" type="text/css" />
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
+        <!-- SLIDER -->
+        <link rel="stylesheet" href="assets/css/tiny-slider.css"/>
         <!-- Css -->
-        <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
     </head>
 
@@ -57,16 +56,14 @@
         <header id="topnav" class="defaultscroll sticky">
             <div class="container">
                 <!-- Logo container-->
-                <div>
-                    <a class="logo" href="../c/home">
-                        <span class="logo-light-mode">
-                            <img src="../assets/images/logo-icon-child.png" class="l-dark" height="24" alt="">
-                            <img src="../assets/images/logo-icon-child.png" class="l-light" height="24" alt="">
-                        </span>
-                        <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
-                    </a>
-                </div>
-                <!-- End Logo container-->
+                <a class="logo" href="./c/home">
+                    <span class="logo-light-mode">
+                        <img src="./assets/images/logo-icon-child.png" class="l-dark" height="24" alt="">
+                        <img src="./assets/images/logo-icon-child.png" class="l-light" height="24" alt="">
+                    </span>
+                    <img src="./assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
+                </a>         
+                <!-- Logo End -->
 
                 <!-- Start Mobile Toggle -->
                 <div class="menu-extras">
@@ -103,11 +100,11 @@
                             <c:when test="${sessionScope.user ne null}">
                                 <div class="dropdown dropdown-primary">
                                     <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="../assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                        <img src="assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
                                     </button>
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
                                         <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                            <img src="../assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                            <img src="assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="flex-1 ms-2">
                                                 <span class="d-block mb-1">${sessionScope.user.fullname}</span>
                                             </div>
@@ -121,20 +118,19 @@
                                             <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
                                         </a>
                                         <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="../logout">
+                                        <a class="dropdown-item text-dark" href="logout">
                                             <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
                                         </a>
                                     </div>
                                 </div>
                             </c:when>
                             <c:otherwise>
-                                <a href="../login" class="btn btn-soft-primary btn-sm">
+                                <a href="login" class="btn btn-soft-primary btn-sm">
                                     <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
                                 </a>
                             </c:otherwise>
                         </c:choose>
                     </li>
-
                 </ul>
                 <!-- Start Dropdown -->
 
@@ -185,13 +181,13 @@
                                 <li><a href="aboutus.html" class="sub-menu-item"> About Us</a></li>
                                 <li><a href="faqs.html" class="sub-menu-item">FAQs</a></li>
                                 <li class="has-submenu parent-menu-item">
-                                <li><a href="../blog" class="sub-menu-item">Blogs</a></li>
+                                <li><a href="blog" class="sub-menu-item">Blogs</a></li>
                                     <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                     <li><a href="blogs.html" class="sub-menu-item">Blogs - Management</a></li>
                                     </c:if>
                                 <li><a href="terms.html" class="sub-menu-item">Posts</a></li>
                                     <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                    <li><a href="../post-list" class="sub-menu-item">Posts - Management</a></li>
+                                    <li><a href="post-list" class="sub-menu-item">Posts - Management</a></li>
                                     </c:if>
                                 <li><a href="terms.html" class="sub-menu-item">Terms & Policy</a></li>
                                 <li><a href="privacy.html" class="sub-menu-item">Privacy Policy</a></li>
@@ -206,100 +202,189 @@
         </header><!--end header-->
         <!-- Navbar End -->
 
+
         <!-- Start Hero -->
-        <section class="bg-half-170 d-table w-100" id="home">
-            <div class="bg-overlay bg-overlay-dark"></div>
+        <section class="bg-half-150 d-table w-100 bg-light">
             <div class="container">
-                <div class="row justify-content-center mt-5">
-                    <div class="col-xl-10">
-                        <div class="heading-title text-center">
-                            <img src="../assets/images/logo-icon.png" height="50" alt="">
-                            <h4 class="heading fw-bold text-white title-dark mt-3 mb-4">Booking Your Appointments</h4>
-                            <p class="para-desc mx-auto text-white-50 mb-0">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
+                <div class="row mt-5 justify-content-center">
+                    <div class="col-12">
+                        <div class="section-title text-center">
+                            <h3 class="sub-title mb-4">${blog.title}</h3>
+                            <p class="para-desc mx-auto text-muted">Great staff if you need your family member to get effective immediate assistance.</p>
 
-                            <div class="mt-4 pt-2">
-                                <form class="rounded text-start shadow p-4 bg-white-50">
-                                    <div class="row align-items-center">
-                                        <div class="col-md">
-                                            <div class="input-group bg-white border rounded" style="opacity: 0.7;">
-                                                <span class="input-group-text bg-white border-0"><i class="ri-map-pin-line text-primary h5 fw-normal mb-0"></i></span>
-                                                <input name="name" id="location" type="text" class="form-control border-0" placeholder="Location:">
-                                            </div>
-                                        </div><!--end col-->
-
-                                        <div class="col-md mt-4 mt-sm-0">
-                                            <div class="input-group bg-white border rounded" style="opacity: 0.7;">
-                                                <span class="input-group-text bg-white border-0"><i class="ri-user-2-line text-primary h5 fw-normal mb-0"></i></span>
-                                                <input name="name" id="name" type="text" class="form-control border-0" placeholder="Doctor Name:">
-                                            </div>
-                                        </div><!--end col-->
-
-                                        <div class="col-md-auto mt-4 mt-sm-0">
-                                            <div class="d-grid d-md-block">
-                                                <button type="submit" class="btn btn-primary">Search</button>
-                                            </div>
-                                        </div><!--end col-->
-                                    </div><!--end row-->
-                                </form><!--end form-->
-                            </div>
+                            <ul class="list-unstyled mt-4">
+                                <!-- Hiển thị ngày tháng được lấy từ createdAt của blog -->
+                                <li class="list-inline-item date text-muted">
+                                    <i class="mdi mdi-calendar-check"></i>
+                                    <fmt:formatDate value="${blog.createdAt}" pattern="dd MMMM, yyyy"/>
+                                </li>
+                            </ul>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
             </div><!--end container-->
         </section><!--end section-->
-        <!-- End Hero -->
 
         <!-- Start -->
-        <section class="section bg-white pb-0">
+        <section class="section">
             <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-5 col-md-6">
-                        <div class="position-relative">
-                            <img src="../assets/images/about/about-2.png" class="img-fluid" alt="">
-                            <div class="play-icon">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#watchvideomodal" class="play-btn video-play-icon">
-                                    <i class="mdi mdi-play text-primary rounded-circle bg-white title-bg-dark shadow"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col-lg-7 col-md-6 mt-4 pt-2 mt-sm-0 pt-sm-0">
-                        <div class="section-title ms-lg-5">
-                            <span class="badge badge-pill badge-soft-primary">About Doctris</span>
-                            <h4 class="title mt-3 mb-4">Good Services And Better <br> Health By Our Specialists</h4>
-                            <p class="para-desc text-muted">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
-                            <p class="para-desc text-muted">The most well-known dummy text is the 'Lorem Ipsum', which is said to have originated in the 16th century. Lorem Ipsum is composed in a pseudo-Latin language which more or less corresponds to 'proper' Latin. It contains a series of real Latin words.</p>
-                            <div class="mt-4">
-                                <a href="aboutus.html" class="btn btn-soft-primary">Read More</a>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-
-            <div class="container mt-100 mt-60">
-                <div class="row justify-content-center">
-                    <div class="col-12">
-                        <div class="section-title mb-4 pb-2 text-center">
-                            <h4 class="title mb-4">Our Children Care Services</h4>
-                            <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-
                 <div class="row">
-                    <c:forEach var="s" items="${requestScope.services}">
-                        <div class="col-xl-3 col-md-4 col-12 mt-5">
-                            <div class="card features feature-primary bg-transparent border-0">
-                                <div class="card-body p-0 mt-3">
-                                    <a href="departments.html" class="title text-dark h5">${s.name}</a>
-                                    <p class="text-muted mt-3">${s.description}</p>
-                                    <a href="departments.html" class="link">View More <i class="ri-arrow-right-line align-middle"></i></a>
+                    <div class="col-lg-8 col-lg-7">
+                        <img src="./assets/images/blog/${blog.featuredImage}" class="img-fluid rounded shadow" alt="Blog Image">
+
+                        <!-- <ul class="list-unstyled mt-4">
+                            <li class="list-inline-item user text-muted me-2"><i class="mdi mdi-account"></i> Calvin Carlo</li>
+                            <li class="list-inline-item date text-muted"><i class="mdi mdi-calendar-check"></i> 1st January, 2021</li>
+                        </ul> -->
+
+                        <p class="text-muted mt-4">${blog.content}</p> <!-- Hiển thị nội dung bài viết -->
+
+
+                        <h5 class="card-title mt-4 mb-0">Comments :</h5>
+
+                        <ul class="media-list list-unstyled mb-0">
+                            <li class="mt-4">
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <a class="pe-3" href="#">
+                                            <img src="assets/images/client/01.jpg" class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
+                                        </a>
+                                        <div class="commentor-detail">
+                                            <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark media-heading">Lorenzo Peterson</a></h6>
+                                            <small class="text-muted">15th August, 2019 at 01:25 pm</small>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="text-muted"><i class="mdi mdi-reply"></i> Reply</a>
                                 </div>
+                                <div class="mt-3">
+                                    <p class="text-muted font-italic p-3 bg-light rounded">" There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour "</p>
+                                </div>
+                            </li>
+
+                            <li class="mt-4">
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <a class="pe-3" href="#">
+                                            <img src="assets/images/client/02.jpg" class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
+                                        </a>
+                                        <div class="commentor-detail">
+                                            <h6 class="mb-0"><a href="javascript:void(0)" class="media-heading text-dark">Tammy Camacho</a></h6>
+                                            <small class="text-muted">15th August, 2019 at 05:44 pm</small>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="text-muted"><i class="mdi mdi-reply"></i> Reply</a>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-muted font-italic p-3 bg-light rounded">" There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour "</p>
+                                </div>
+                            </li>
+
+                            <li class="mt-4">
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <a class="pe-3" href="#">
+                                            <img src="assets/images/client/03.jpg" class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
+                                        </a>
+                                        <div class="commentor-detail">
+                                            <h6 class="mb-0"><a href="javascript:void(0)" class="media-heading text-dark">Tammy Camacho</a></h6>
+                                            <small class="text-muted">16th August, 2019 at 03:44 pm</small>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="text-muted"><i class="mdi mdi-reply"></i> Reply</a>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-muted font-italic p-3 bg-light rounded">" There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour "</p>
+                                </div>
+
+                                <ul class="list-unstyled ps-4 ps-md-5 sub-comment">
+                                    <li class="mt-4">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <a class="pe-3" href="#">
+                                                    <img src="assets/images/client/01.jpg" class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
+                                                </a>
+                                                <div class="commentor-detail">
+                                                    <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark media-heading">Lorenzo Peterson</a></h6>
+                                                    <small class="text-muted">17th August, 2019 at 01:25 pm</small>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="text-muted"><i class="mdi mdi-reply"></i> Reply</a>
+                                        </div>
+                                        <div class="mt-3">
+                                            <p class="text-muted font-italic p-3 bg-light rounded">" There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour "</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <h5 class="card-title mt-4 mb-0">Leave A Comment :</h5>
+
+                        <form class="mt-3">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Your Comment</label>
+                                        <textarea id="message" placeholder="Your Comment" rows="5" name="message" class="form-control" required=""></textarea>
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Name <span class="text-danger">*</span></label>
+                                        <input id="name" name="name" type="text" placeholder="Name" class="form-control" required="">
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Your Email <span class="text-danger">*</span></label>
+                                        <input id="email" type="email" placeholder="Email" name="email" class="form-control" required="">
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-md-12">
+                                    <div class="send d-grid">
+                                        <button type="submit" class="btn btn-primary">Send Message</button>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </form><!--end form-->
+                    </div><!--end col-->
+
+                    <div class="col-lg-4 col-md-5 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                        <div class="card border-0 sidebar sticky-bar rounded shadow">
+                            <div class="card-body">
+                                <!-- SEARCH -->
+
+
+
+                                <!-- RECENT POST -->
+                                <div class="widget mb-4 pb-2">
+                                    <h5 class="widget-title">Recent Post</h5>
+                                    <div class="mt-4">
+                                        <c:forEach var="recentBlog" items="${recentBlogs}">
+                                            <div class="clearfix post-recent">
+                                                <div class="post-recent-thumb float-start">
+                                                    <a href="blog-detail.jsp?id=${recentBlog.blogId}">
+                                                        <img alt="img" src="assets/images/blog/${recentBlog.featuredImage}" class="img-fluid rounded">
+                                                    </a>
+                                                </div>
+                                                <div class="post-recent-content float-start">
+                                                    <a href="blog-detail.jsp?id=${recentBlog.blogId}">${recentBlog.title}</a>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                                <!-- RECENT POST -->
+
+
+
+
                             </div>
-                        </div><!--end col-->
-                    </c:forEach>
+                        </div>
+                    </div>
                 </div><!--end row-->
             </div><!--end container-->
 
@@ -312,7 +397,7 @@
                     <div class="row">
                         <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
                             <a href="#" class="logo-footer">
-                                <img src="../assets/images/logo-light.png" height="22" alt="">
+                                <img src="assets/images/logo-light.png" height="22" alt="">
                             </a>
                             <p class="mt-4 me-xl-5">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
                         </div><!--end col-->
@@ -322,25 +407,25 @@
                                 <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                                     <h5 class="text-light title-dark footer-head">Company</h5>
                                     <ul class="list-unstyled footer-list mt-4">
-                                        <li><a href="aboutus.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> About us</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Services</a></li>
-                                        <li><a href="doctor-team-two.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Team</a></li>
-                                        <li><a href="blog-detail.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Project</a></li>
-                                        <li><a href="blogs.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Blog</a></li>
-                                        <li><a href="login.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Login</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> About us</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Services</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Team</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Project</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Blog</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Login</a></li>
                                     </ul>
                                 </div><!--end col-->
 
                                 <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                                     <h5 class="text-light title-dark footer-head">Departments</h5>
                                     <ul class="list-unstyled footer-list mt-4">
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Eye Care</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Psychotherapy</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Dental Care</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Orthopedic</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Cardiology</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Gynecology</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Neurology</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Eye Care</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Psychotherapy</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Dental Care</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Orthopedic</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Cardiology</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Gynecology</a></li>
+                                        <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Neurology</a></li>
                                     </ul>
                                 </div><!--end col-->
 
@@ -380,7 +465,7 @@
                         <div class="row align-items-center">
                             <div class="col-sm-6">
                                 <div class="text-sm-start text-center">
-
+                                    <p class="mb-0"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.</p>
                                 </div>
                             </div><!--end col-->
 
@@ -411,9 +496,9 @@
                                 <div class="text-center">
                                     <h4>Search now.....</h4>
                                     <div class="subcribe-form mt-4">
-                                        <form>
+                                        <form action="/ChildrenCare/blog-search" method="GET">
                                             <div class="mb-0">
-                                                <input type="text" id="help" name="name" class="border bg-white rounded-pill" required="" placeholder="Search">
+                                                <input type="text" id="search-term" name="search" class="border bg-white rounded-pill" required="" placeholder="Search">
                                                 <button type="submit" class="btn btn-pills btn-primary">Search</button>
                                             </div>
                                         </form>
@@ -430,8 +515,8 @@
             <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                 <div class="offcanvas-header p-4 border-bottom">
                     <h5 id="offcanvasRightLabel" class="mb-0">
-                        <img src="../assets/images/logo-dark.png" height="24" class="light-version" alt="">
-                        <img src="../assets/images/logo-light.png" height="24" class="dark-version" alt="">
+                        <img src="assets/images/logo-dark.png" height="24" class="light-version" alt="">
+                        <img src="assets/images/logo-light.png" height="24" class="dark-version" alt="">
                     </h5>
                     <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
                 </div>
@@ -442,13 +527,13 @@
                             <div id="style-switcher">
                                 <div>
                                     <ul class="text-center list-unstyled mb-0">
-                                        <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="../assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="../assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                        <li class="d-grid"><a href="../admin/index.html" target="_blank" class="mt-4"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
+                                        <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                        <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
+                                        <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
+                                        <li class="d-grid"><a href="../admin/index.html" target="_blank" class="mt-4"><img src="assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -471,47 +556,16 @@
             </div>
             <!-- Offcanvas End -->
 
-            <!-- MOdal Start -->
-            <div class="modal fade" id="watchvideomodal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content video-modal rounded overflow-hidden">
-                        <video class="w-100" controls autoplay muted loop>
-                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">>
-                            <!--Browser does not support <video> tag -->
-                        </video>
-                    </div>
-                </div>
-            </div>
-            <!-- MOdal End -->
-
             <!-- javascript -->
-            <script src="../assets/js/jquery.min.js"></script>
-            <script src="../assets/js/bootstrap.bundle.min.js"></script>
+            <script src="assets/js/bootstrap.bundle.min.js"></script>
             <!-- SLIDER -->
-            <script src="../assets/js/tiny-slider.js"></script>
-            <script src="../assets/js/tiny-slider-init.js"></script>
-            <script src="../assets/js/easy_background.js"></script>
-            <!-- Select2 -->
-            <script src="../assets/js/select2.min.js"></script>
-            <script src="../assets/js/select2.init.js"></script>
-            <!-- Datepicker -->
-            <script src="../assets/js/flatpickr.min.js"></script>
-            <script src="../assets/js/flatpickr.init.js"></script>
-            <!-- Datepicker -->
-            <script src="../assets/js/jquery.timepicker.min.js"></script> 
-            <script src="../assets/js/timepicker.init.js"></script> 
+            <script src="assets/js/tiny-slider.js"></script>
+            <script src="assets/js/tiny-slider-init.js"></script>
             <!-- Icons -->
-            <script src="../assets/js/feather.min.js"></script>
+            <script src="assets/js/feather.min.js"></script>
             <!-- Main Js -->
-            <script src="../assets/js/app.js"></script>
-            <script>
-                                            easy_background("#home",
-                                                    {
-                                                        slide: ["../assets/images/bg/02.jpg", "../assets/images/bg/03.jpg", "../assets/images/bg/04.jpg"],
-                                                        delay: [3000, 3000, 3000]
-                                                    }
-                                            );
-            </script>
+            <script src="assets/js/app.js"></script>
+
     </body>
 
 </html>
