@@ -582,13 +582,6 @@
 
         </script>
 
-        <form id="search-form">
-            <div class="mb-0">
-                <input type="text" id="search-term" name="search" class="border bg-white rounded-pill" required="" placeholder="Search">
-                <button type="submit" class="btn btn-pills btn-primary">Search</button>
-            </div>
-        </form>
-
         <script>
             document.getElementById('search-form').addEventListener('submit', function (event) {
                 event.preventDefault(); // Ngăn chặn form submit mặc định

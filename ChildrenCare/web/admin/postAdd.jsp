@@ -286,40 +286,40 @@
                             </li>
 
                             <li class="list-inline-item mb-0 ms-1">
-                            <c:choose>
-                                <c:when test="${sessionScope.user ne null}">
-                                    <div class="dropdown dropdown-primary">
-                                        <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
-                                        </button>
-                                        <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                            <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                                <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="flex-1 ms-2">
-                                                    <span class="d-block mb-1">${sessionScope.user.fullname}</span>
-                                                </div>
-                                            </a>
-                                            <c:if test="${sessionScope.role.contains('Admin')}">
-                                                <a class="dropdown-item text-dark" href="doctor-dashboard.html">
-                                                    <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                <c:choose>
+                                    <c:when test="${sessionScope.user ne null}">
+                                        <div class="dropdown dropdown-primary">
+                                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                            </button>
+                                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                                <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
+                                                    <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                    <div class="flex-1 ms-2">
+                                                        <span class="d-block mb-1">${sessionScope.user.fullname}</span>
+                                                    </div>
                                                 </a>
-                                            </c:if>
-                                            <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
-                                                <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
-                                            </a>
-                                            <div class="dropdown-divider border-top"></div>
-                                            <a class="dropdown-item text-dark" href="logout">
-                                                <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
-                                            </a>
+                                                <c:if test="${sessionScope.role.contains('Admin')}">
+                                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html">
+                                                        <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                                    </a>
+                                                </c:if>
+                                                <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
+                                                    <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
+                                                </a>
+                                                <div class="dropdown-divider border-top"></div>
+                                                <a class="dropdown-item text-dark" href="logout">
+                                                    <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="login" class="btn btn-soft-primary btn-sm">
-                                        <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
-                                    </a>
-                                </c:otherwise>
-                            </c:choose>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="login" class="btn btn-soft-primary btn-sm">
+                                            <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
                             </li>
                         </ul>
                     </div>
@@ -342,7 +342,7 @@
                         <div class="container">
                             <h2>Add New Post</h2>
 
-                            <form method="POST" action="post-add">
+                            <form method="POST" action="post-add" enctype="multipart/form-data">
                                 <label>Title:</label>
                                 <input type="text" name="title" required>
 
@@ -352,7 +352,7 @@
                                 <label>Category:</label>
                                 <select name="category">
                                     <% List<String> categories = (List<String>) request.getAttribute("categories");
-               for (String category : categories) { %>
+           for (String category : categories) { %>
                                     <option value="<%= category %>"><%= category %></option>
                                     <% } %>
                                 </select>
@@ -363,8 +363,8 @@
                                     <option value="0">Hidden</option>
                                 </select>
 
-                                <label>Image URL:</label>
-                                <input type="text" name="image">
+                                <label>Upload Image:</label>
+                                <input type="file" name="imageFile" accept="image/*">
 
                                 <label>Author:</label>
                                 <select name="author">
@@ -383,6 +383,7 @@
                                         } 
                                     %>
                                 </select>
+
                                 <% String error = request.getParameter("error"); %>
                                 <% if (error != null) { %>
                                 <p style="color: red;">
@@ -397,21 +398,11 @@
                                 <button type="submit">Add Post</button>
                             </form>
 
+
                             <a href="post-list" class="back-btn">Back to Post List</a>
                         </div>
                         <!-- Footer Start -->
-                        <footer class="bg-white shadow py-3">
-                            <div class="container-fluid">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <div class="text-sm-start text-center">
 
-                                        </div>
-                                    </div><!--end col-->
-                                </div><!--end row-->
-                            </div><!--end container-->
-                        </footer><!--end footer-->
-                        <!-- End -->
                         </main>
                         <!--End page-content" -->
                     </div>
@@ -579,3 +570,4 @@
                     </body>
 
                     </html>
+

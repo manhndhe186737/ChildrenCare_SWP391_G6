@@ -28,8 +28,8 @@ import model.Account;
 import model.Role;
 
 import model.User;
+import model.Validate;
 
-@WebServlet(name = "AccountController", urlPatterns = {"/login"})
 public class AccountController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -86,46 +86,107 @@ public class AccountController extends HttpServlet {
             }
 
             case "register" -> {
+                // Nhận dữ liệu từ form
                 String fullName = request.getParameter("fullname");
                 String address = request.getParameter("address");
                 String dobString = request.getParameter("dob");
                 String phone = request.getParameter("mobile");
-                String avatar = request.getParameter("avatar");
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
+                String picture = request.getParameter("picture") != null ? request.getParameter("picture") : "/assets/images/avatar.jpg";
+
+                // Tạo đối tượng Validate để kiểm tra dữ liệu
+                Validate validate = new Validate();
+
+                // Biến lưu lỗi
+                String errorMessage = "";
                 Date dob = null;
+
+                if (fullName == null || fullName.trim().isEmpty()) {
+                    request.setAttribute("error", "Họ và tên không được để trống!");
+                    request.getRequestDispatcher("account/register.jsp").forward(request, response);
+                    return;
+                }
+
+                // Kiểm tra địa chỉ không được để trống
+                if (address == null || address.trim().isEmpty()) {
+                    errorMessage += "Địa chỉ không được để trống!<br>";
+                }
+
+                // Kiểm tra ngày sinh hợp lệ
                 if (dobString != null && !dobString.isEmpty()) {
                     try {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         dob = sdf.parse(dobString);
+
+                        // Kiểm tra ngày sinh không phải tương lai
+                        if (dob.after(new Date())) {
+                            errorMessage += "Ngày sinh không thể là ngày trong tương lai!<br>";
+                        }
                     } catch (ParseException e) {
-                        e.printStackTrace();
-                        request.setAttribute("error", "Ngày sinh không hợp lệ.");
-                        request.getRequestDispatcher("account/register.jsp").forward(request, response);
-                        return;
+                        errorMessage += "Ngày sinh không hợp lệ!<br>";
                     }
                 } else {
-                    request.setAttribute("error", "Ngày sinh không được để trống.");
+                    errorMessage += "Ngày sinh không được để trống!<br>";
+                }
+
+                // Kiểm tra số điện thoại hợp lệ
+                if (!validate.checkPhone(phone)) {
+                    errorMessage += "Số điện thoại không hợp lệ!<br>";
+                }
+
+                // Kiểm tra email hợp lệ
+                if (!validate.checkEmail(email)) {
+                    errorMessage += "Email không hợp lệ!<br>";
+                }
+
+                // Kiểm tra mật khẩu hợp lệ
+//                if (!validate.checkPassword(password)) {
+//                    errorMessage += "Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!<br>";
+//                }
+
+                // Nếu có lỗi, quay lại trang đăng ký và hiển thị lỗi
+                if (!errorMessage.isEmpty()) {
+                    request.setAttribute("error", errorMessage);
                     request.getRequestDispatcher("account/register.jsp").forward(request, response);
                     return;
                 }
+                // Nếu có lỗi, lưu dữ liệu vào request và quay lại trang đăng ký
+                if (!errorMessage.isEmpty()) {
+                    request.setAttribute("error", errorMessage);
+                    request.setAttribute("fullname", fullName);
+                    request.setAttribute("address", address);
+                    request.setAttribute("dob", dobString);
+                    request.setAttribute("mobile", phone);
+                    request.setAttribute("email", email);
+                    request.getRequestDispatcher("account/register.jsp").forward(request, response);
+                    return;
+                }
+                // Nếu dữ liệu hợp lệ, thực hiện đăng ký
                 String hashedPassword = PasswordUtil.hashPassword(password);
                 User user = new User();
                 user.setFullname(fullName);
                 user.setAddress(address);
                 user.setDob(dob);
                 user.setPhone(phone);
-                user.setAvatar(avatar);
+                user.setAvatar(picture);
                 user.setIsVerified(false);
+
                 String token = UUID.randomUUID().toString();
-                Timestamp expiryTime = new Timestamp(System.currentTimeMillis() + (60 * 60 * 1000));
+                Timestamp expiryTime = new Timestamp(System.currentTimeMillis() + (60 * 60 * 1000)); // Hết hạn sau 1 giờ
+
                 UserDAO userDAO = new UserDAO();
                 int userId = userDAO.registerUser(user, email, hashedPassword);
+
                 if (userId > 0) {
+                    // Lưu token xác thực
                     VerificationTokenDAO tokenDAO = new VerificationTokenDAO();
                     tokenDAO.saveVerificationToken(email, token, expiryTime);
+
+                    // Gửi email xác nhận
                     EmailConfig emailSender = new EmailConfig();
                     emailSender.sendVerificationEmail(email, token);
+
                     request.setAttribute("message", "Đăng ký thành công! Vui lòng kiểm tra email để xác thực.");
                     request.getRequestDispatcher("account/login.jsp").forward(request, response);
                 } else {

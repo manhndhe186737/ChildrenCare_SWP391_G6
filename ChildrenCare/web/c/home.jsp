@@ -192,6 +192,7 @@
                                 <li><a href="terms.html" class="sub-menu-item">Posts</a></li>
                                     <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                     <li><a href="../post-list" class="sub-menu-item">Posts - Management</a></li>
+                                    <li><a href="../slider" class="sub-menu-item">Sliders - Management</a></li>
                                     </c:if>
                                 <li><a href="terms.html" class="sub-menu-item">Terms & Policy</a></li>
                                 <li><a href="privacy.html" class="sub-menu-item">Privacy Policy</a></li>

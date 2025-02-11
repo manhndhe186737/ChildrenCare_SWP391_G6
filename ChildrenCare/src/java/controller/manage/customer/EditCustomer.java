@@ -30,6 +30,10 @@ public class EditCustomer extends BaseRBAC{
         String address_raw = req.getParameter("address");
         String img = req.getParameter("profileImage");
         
+        if (!img.startsWith("client/")) {
+            img = "client/" + img;
+        }
+        
         int id = Integer.parseInt(id_raw);
         String fullname = name_raw;
         

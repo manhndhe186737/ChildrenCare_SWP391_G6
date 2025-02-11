@@ -748,19 +748,7 @@
                                             let file = event.target.files[0]; // Lấy file từ input
                                             if (file) {
                                                 document.getElementById("previewImage").src = URL.createObjectURL(file); // Hiển thị ảnh xem trước
-                                                document.getElementById("avatar_url").value = java.lang.UnsupportedOperationException: Not supported yet.
-	controller.manage.staff.StaffProfile.doAuthorizedPost(StaffProfile.java:43)
-	controller.auth.BaseRBAC.doPost(BaseRBAC.java:48)
-	controller.auth.BaseRequireAuthentication.doPost(BaseRequireAuthentication.java:28)
-	jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
-	jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
-	org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
-	controller.manage.staff.UpdateStaff.doAuthorizedPost(UpdateStaff.java:64)
-	controller.auth.BaseRBAC.doPost(BaseRBAC.java:48)
-	controller.auth.BaseRequireAuthentication.doPost(BaseRequireAuthentication.java:28)
-	jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
-	jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
-	org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)file.name; // Tạo đường dẫn tương đối
+                                                document.getElementById("avatar_url").value = file.name;
                                             }
                                         });
         </script>
