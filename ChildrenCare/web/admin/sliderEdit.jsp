@@ -28,94 +28,94 @@
         <link href="./assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
         <style>
             /* Container styling */
-.edit-slider-container {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-}
+            .edit-slider-container {
+                background: #ffffff;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+                margin-top: 20px;
+            }
 
-/* Form Title */
-.edit-slider-title {
-    font-size: 22px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 20px;
-}
+            /* Form Title */
+            .edit-slider-title {
+                font-size: 22px;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 20px;
+            }
 
-/* Form Inputs */
-.edit-slider-form label {
-    font-weight: 500;
-    color: #666;
-    margin-bottom: 8px;
-    display: block;
-}
+            /* Form Inputs */
+            .edit-slider-form label {
+                font-weight: 500;
+                color: #666;
+                margin-bottom: 8px;
+                display: block;
+            }
 
-.edit-slider-form input,
-.edit-slider-form select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    transition: 0.3s;
-}
+            .edit-slider-form input,
+            .edit-slider-form select {
+                width: 100%;
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid #ddd;
+                font-size: 16px;
+                transition: 0.3s;
+            }
 
-.edit-slider-form input:focus,
-.edit-slider-form select:focus {
-    border-color: #007bff;
-    box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
-}
+            .edit-slider-form input:focus,
+            .edit-slider-form select:focus {
+                border-color: #007bff;
+                box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
+            }
 
-/* Image Preview */
-.image-preview {
-    width: 100%;
-    max-width: 400px;
-    border-radius: 8px;
-    margin-top: 10px;
-    display: block;
-    border: 1px solid #ddd;
-}
+            /* Image Preview */
+            .image-preview {
+                width: 100%;
+                max-width: 400px;
+                border-radius: 8px;
+                margin-top: 10px;
+                display: block;
+                border: 1px solid #ddd;
+            }
 
-/* Action Buttons */
-.edit-slider-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-}
+            /* Action Buttons */
+            .edit-slider-actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+                margin-top: 20px;
+            }
 
-.edit-slider-actions button,
-.edit-slider-actions a {
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    text-decoration: none;
-    transition: 0.3s;
-}
+            .edit-slider-actions button,
+            .edit-slider-actions a {
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-size: 16px;
+                text-decoration: none;
+                transition: 0.3s;
+            }
 
-.edit-slider-actions .save-btn {
-    background: #007bff;
-    color: #fff;
-    border: none;
-}
+            .edit-slider-actions .save-btn {
+                background: #007bff;
+                color: #fff;
+                border: none;
+            }
 
-.edit-slider-actions .save-btn:hover {
-    background: #0056b3;
-}
+            .edit-slider-actions .save-btn:hover {
+                background: #0056b3;
+            }
 
-.edit-slider-actions .cancel-btn {
-    background: #f5f5f5;
-    color: #333;
-    border: 1px solid #ddd;
-}
+            .edit-slider-actions .cancel-btn {
+                background: #f5f5f5;
+                color: #333;
+                border: 1px solid #ddd;
+            }
 
-.edit-slider-actions .cancel-btn:hover {
-    background: #e0e0e0;
-}
+            .edit-slider-actions .cancel-btn:hover {
+                background: #e0e0e0;
+            }
         </style>
-        
+
     </head>
 
     <body>
@@ -413,43 +413,46 @@
                             </div>
                         </div>
 
-                      <div class="container-fluid">
-    <div class="layout-specing">
-        <div class="edit-slider-container">
-            <h2 class="edit-slider-title">Edit Slider</h2>
+                        <div class="container-fluid">
+                            <div class="layout-specing">
+                                <div class="edit-slider-container">
+                                    <h2 class="edit-slider-title">Edit Slider</h2>
 
-            <%
-                Slider slider = (Slider) request.getAttribute("slider");
-                if (slider == null) {
-                    response.sendRedirect("SliderList");
-                    return;
-                }
-            %>
+                                    <%
+                                        Slider slider = (Slider) request.getAttribute("slider");
+                                        if (slider == null) {
+                                            response.sendRedirect("SliderList");
+                                            return;
+                                        }
+                                    %>
 
-            <form action="SliderEdit" method="post" class="edit-slider-form">
-                <input type="hidden" name="id" value="<%= slider.getId() %>">
+                                    <form action="SliderEdit" method="post" enctype="multipart/form-data" class="edit-slider-form">
+                                        <input type="hidden" name="id" value="<%= slider.getId() %>">
 
-                <label>Title:</label>
-                <input type="text" name="title" value="<%= slider.getTitle() %>" required>
+                                        <label>Title:</label>
+                                        <input type="text" name="title" value="<%= slider.getTitle() %>" required>
 
-                <label>Image URL:</label>
-                <input type="text" name="image" value="<%= slider.getImg() %>" required>
-                <img src="<%= "."+slider.getImg() %>" alt="Preview" class="image-preview">
+                                        <label>Upload Image:</label>
+                                        <input type="file" name="imageFile" accept="image/*">
 
-                <label>Status:</label>
-                <select name="status">
-                    <option value="1" <%= slider.getStatus().equals("1") ? "selected" : "" %>>Visible</option>
-                    <option value="0" <%= slider.getStatus().equals("0") ? "selected" : "" %>>Hidden</option>
-                </select>
+                                        <!-- Hiển thị ảnh hiện tại -->
+                                        <img src="<%= slider.getImg() %>" alt="Preview" class="image-preview">
 
-                <div class="edit-slider-actions">
-                    <button type="submit" class="save-btn">Save</button>
-                    <a href="SliderList" class="cancel-btn">Cancel</a>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                                        <label>Status:</label>
+                                        <select name="status">
+                                            <option value="1" <%= slider.getStatus().equals("1") ? "selected" : "" %>>Visible</option>
+                                            <option value="0" <%= slider.getStatus().equals("0") ? "selected" : "" %>>Hidden</option>
+                                        </select>
+
+                                        <div class="edit-slider-actions">
+                                            <button type="submit" class="save-btn">Save</button>
+                                            <a href="SliderList" class="cancel-btn">Cancel</a>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Footer Start -->
                         <footer class="bg-white shadow py-3">
