@@ -518,6 +518,32 @@
                                                 delay: [3000, 3000, 3000]
                                             });
             </script>
+            
+            
+            
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+           
+                var alertMessage = '<%= session.getAttribute("alertMessage") != null ? session.getAttribute("alertMessage") : "" %>';
+                var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "" %>';
+
+                // Kiểm tra nếu alertMessage và alertType không rỗng thì hiển thị Swal.fire
+                if (alertMessage.trim() !== "" && alertType.trim() !== "") {
+                    Swal.fire({
+                        icon: alertType,
+                        title: alertMessage,
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                }
+            
+            
+            <%
+            session.removeAttribute("alertMessage");
+            session.removeAttribute("alertType");
+    %>
+        </script>
+            
     </body>
 
 </html>
