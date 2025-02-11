@@ -72,6 +72,22 @@
         <servlet-name>Update Staff</servlet-name>
         <servlet-class>controller.manage.staff.UpdateStaff</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Slider Edit</servlet-name>
+        <servlet-class>controller.manage.SliderEdit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Slider List</servlet-name>
+        <servlet-class>controller.manage.SliderList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Blog List</servlet-name>
+        <servlet-class>controller.manage.blog.BlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Blog Search</servlet-name>
+        <servlet-class>controller.manage.blog.BlogSearchServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
         <url-pattern>/admin/customers</url-pattern>
@@ -140,5 +156,20 @@
         <servlet-name>Update Staff</servlet-name>
         <url-pattern>/admin/update-staff</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>Slider Edit</servlet-name>
+        <url-pattern>/slider-edit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Slider List</servlet-name>
+        <url-pattern>/slider</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Blog List</servlet-name>
+        <url-pattern>/blog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Blog Search</servlet-name>
+        <url-pattern>/blog-search</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -4,6 +4,7 @@
  */
 package controller.manage;
 
+import controller.auth.BaseRBAC;
 import dal.SliderDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,13 +13,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import model.Account;
 import model.Slider;
 
 /**
  *
  * @author DELL
  */
-public class SliderList extends HttpServlet {
+public class SliderList extends BaseRBAC {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,7 +57,7 @@ public class SliderList extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         String status = request.getParameter("status");
         String search = request.getParameter("search");
@@ -77,7 +79,7 @@ public class SliderList extends HttpServlet {
         request.getRequestDispatcher("/admin/sliderList.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("sliderId"));
         boolean newStatus = Boolean.parseBoolean(request.getParameter("newStatus"));
@@ -85,7 +87,7 @@ public class SliderList extends HttpServlet {
         SliderDBContext db = new SliderDBContext();
         db.toggleSliderVisibility(id, newStatus);
 
-        response.sendRedirect("SliderList");
+        response.sendRedirect("slider");
     }
 
     /**
