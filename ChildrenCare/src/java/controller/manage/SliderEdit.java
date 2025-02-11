@@ -1,14 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller.manage;
 
 import controller.auth.BaseRBAC;
 import dal.SliderDBContext;
+import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.nio.file.Paths;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -61,7 +60,7 @@ public class SliderEdit extends BaseRBAC {
         int id = Integer.parseInt(request.getParameter("id"));
         SliderDBContext db = new SliderDBContext();
         Slider slider = db.getSliderById(id);
-        
+
         if (slider == null) {
             response.sendRedirect("slider");
             return;
@@ -71,32 +70,47 @@ public class SliderEdit extends BaseRBAC {
         request.getRequestDispatcher("/admin/sliderEdit.jsp").forward(request, response);
     }
 
+
+    @Override
     protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         String title = request.getParameter("title");
-        String img = request.getParameter("image");
         String status = request.getParameter("status");
 
-        Slider slider = new Slider();
-        slider.setId(id);
-        slider.setTitle(title);
-        slider.setImg(img);
-        slider.setStatus(status);
-
         SliderDBContext db = new SliderDBContext();
+        Slider slider = db.getSliderById(id);
+        if (slider == null) {
+            response.sendRedirect("SliderList");
+            return;
+        }
+
+        // Xử lý upload ảnh
+        String imagePath = slider.getImg(); // Mặc định giữ nguyên ảnh cũ
+        Part filePart = request.getPart("imageFile");
+        if (filePart != null && filePart.getSize() > 0) {
+            // Đường dẫn thư mục lưu ảnh
+            String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) uploadDir.mkdir();
+
+            // Lưu file
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            imagePath = "uploads/" + fileName;
+            filePart.write(uploadPath + File.separator + fileName);
+        }
+
+        // Cập nhật slider trong database
+        slider.setTitle(title);
+        slider.setImg(imagePath);
+        slider.setStatus(status);
         db.updateSlider(slider);
 
         response.sendRedirect("slider");
     }
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Servlet chỉnh sửa slider với upload ảnh";
+    }
 }
