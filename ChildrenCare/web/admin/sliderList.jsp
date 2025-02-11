@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="model.Slider"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -30,144 +31,144 @@
         <style>
             /* ======================== SLIDER MANAGEMENT PAGE ======================== */
 
-/* General container styling */
-.slider-container {
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-}
+            /* General container styling */
+            .slider-container {
+                background: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+                margin-top: 20px;
+            }
 
-/* Page title */
-.slider-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 20px;
-}
+            /* Page title */
+            .slider-title {
+                font-size: 24px;
+                font-weight: 700;
+                color: #333;
+                margin-bottom: 20px;
+            }
 
-/* Form - Filter & Search */
-.slider-filter-form {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-}
+            /* Form - Filter & Search */
+            .slider-filter-form {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
 
-.slider-filter-form label {
-    font-weight: 500;
-    color: #666;
-}
+            .slider-filter-form label {
+                font-weight: 500;
+                color: #666;
+            }
 
-.slider-filter-form select,
-.slider-filter-form input {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 14px;
-}
+            .slider-filter-form select,
+            .slider-filter-form input {
+                padding: 8px;
+                border-radius: 5px;
+                border: 1px solid #ddd;
+                font-size: 14px;
+            }
 
-.slider-filter-form input[type="submit"] {
-    background: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-}
+            .slider-filter-form input[type="submit"] {
+                background: #007bff;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                transition: 0.3s;
+            }
 
-.slider-filter-form input[type="submit"]:hover {
-    background: #0056b3;
-}
+            .slider-filter-form input[type="submit"]:hover {
+                background: #0056b3;
+            }
 
-/* Slider Table */
-.slider-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
+            /* Slider Table */
+            .slider-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+            }
 
-.slider-table th, .slider-table td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-}
+            .slider-table th, .slider-table td {
+                padding: 12px;
+                text-align: center;
+                border-bottom: 1px solid #ddd;
+            }
 
-.slider-table th {
-    background: #f5f5f5;
-    font-weight: bold;
-}
+            .slider-table th {
+                background: #f5f5f5;
+                font-weight: bold;
+            }
 
-.slider-table td img {
-    width: 100px;
-    border-radius: 5px;
-    transition: 0.3s;
-}
+            .slider-table td img {
+                width: 100px;
+                border-radius: 5px;
+                transition: 0.3s;
+            }
 
-.slider-table td img:hover {
-    transform: scale(1.05);
-}
+            .slider-table td img:hover {
+                transform: scale(1.05);
+            }
 
-/* Toggle Buttons */
-.toggle-btn {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+            /* Toggle Buttons */
+            .toggle-btn {
+                padding: 8px 12px;
+                border: none;
+                border-radius: 5px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: 0.3s;
+            }
 
-.toggle-btn.show {
-    background: #28a745;
-    color: #fff;
-}
+            .toggle-btn.show {
+                background: #28a745;
+                color: #fff;
+            }
 
-.toggle-btn.hide {
-    background: #dc3545;
-    color: #fff;
-}
+            .toggle-btn.hide {
+                background: #dc3545;
+                color: #fff;
+            }
 
-.toggle-btn:hover {
-    opacity: 0.8;
-}
+            .toggle-btn:hover {
+                opacity: 0.8;
+            }
 
-/* Edit Button */
-.edit-btn {
-    text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    background: #ffc107;
-    color: #333;
-    transition: 0.3s;
-}
+            /* Edit Button */
+            .edit-btn {
+                text-decoration: none;
+                padding: 8px 12px;
+                border-radius: 5px;
+                background: #ffc107;
+                color: #333;
+                transition: 0.3s;
+            }
 
-.edit-btn:hover {
-    background: #e0a800;
-}
+            .edit-btn:hover {
+                background: #e0a800;
+            }
 
-/* Pagination */
-.pagination {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-}
+            /* Pagination */
+            .pagination {
+                margin-top: 15px;
+                display: flex;
+                justify-content: center;
+                gap: 5px;
+            }
 
-.pagination a {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    text-decoration: none;
-    color: #333;
-    transition: 0.3s;
-}
+            .pagination a {
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                text-decoration: none;
+                color: #333;
+                transition: 0.3s;
+            }
 
-.pagination a:hover,
-.pagination a.active {
-    background: #007bff;
-    color: #fff;
-}
+            .pagination a:hover,
+            .pagination a.active {
+                background: #007bff;
+                color: #fff;
+            }
 
         </style>
     </head>
@@ -184,7 +185,7 @@
         </div>
         <!-- Loader -->
 
-        <div class="page-wrapper doctris-theme toggled">
+        <div class="page-wrapper doctris-theme">
             <nav id="sidebar" class="sidebar-wrapper">
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
@@ -193,99 +194,6 @@
                             <img src="./assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
-
-                    <ul class="sidebar-menu pt-3">
-                        <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                        <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Doctors</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="doctors.html">Doctors</a></li>
-                                    <li><a href="add-doctor.html">Add Doctor</a></li>
-                                    <li><a href="dr-profile.html">Profile</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-wheelchair me-2 d-inline-block"></i>Patients</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="patients.html">All Patients</a></li>
-                                    <li><a href="add-patient.html">Add Patients</a></li>
-                                    <li><a href="patient-profile.html">Profile</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-apps me-2 d-inline-block"></i>Apps</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="chat.html">Chat</a></li>
-                                    <li><a href="email.html">Email</a></li>
-                                    <li><a href="calendar.html">Calendar</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-shopping-cart me-2 d-inline-block"></i>Pharmacy</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="shop.html">Shop</a></li>
-                                    <li><a href="product-detail.html">Shop Detail</a></li>
-                                    <li><a href="shopcart.html">Shopcart</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Blogs</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="blogs.html">Blogs</a></li>
-                                    <li><a href="blog-detail.html">Blog Detail</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Pages</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="faqs.html">FAQs</a></li>
-                                    <li><a href="review.html">Reviews</a></li>
-                                    <li><a href="invoice-list.html">Invoice List</a></li>
-                                    <li><a href="invoice.html">Invoice</a></li>
-                                    <li><a href="terms.html">Terms & Policy</a></li>
-                                    <li><a href="privacy.html">Privacy Policy</a></li>
-                                    <li><a href="error.html">404 !</a></li>
-                                    <li><a href="blank-page.html">Blank Page</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authentication</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="signup.html">Signup</a></li>
-                                    <li><a href="forgot-password.html">Forgot Password</a></li>
-                                    <li><a href="lock-screen.html">Lock Screen</a></li>
-                                    <li><a href="thankyou.html">Thank you..!</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li><a href="components.html"><i class="uil uil-cube me-2 d-inline-block"></i>Components</a></li>
-
-                        <li><a href="./landing/index-two.html" target="_blank"><i class="uil uil-window me-2 d-inline-block"></i>Landing page</a></li>
-                    </ul>
                     <!-- sidebar-menu  -->
                 </div>
                 <!-- sidebar-content  -->
@@ -311,19 +219,14 @@
                                     <img src="./assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                                 </span>
                             </a>
-                            <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
-                                <i class="uil uil-bars"></i>
-                            </a>
-                            <div class="search-bar p-0 d-none d-lg-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <form role="search" method="get" id="searchform" class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords..">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
-                                    </form>
-                                </div>
+
+                            <div class="sidebar-brand">
+                                <a href="./c/home">
+                                    <!--<a href="index.html">-->
+                                    <img src="./assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
+                                </a>
                             </div>
+
                         </div>
 
                         <ul class="list-unstyled mb-0">
@@ -427,22 +330,40 @@
                             </li>
 
                             <li class="list-inline-item mb-0 ms-1">
-                                <div class="dropdown dropdown-primary">
-                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="./assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle" alt=""></button>
-                                    <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                        <a class="dropdown-item d-flex align-items-center text-dark" href="https://shreethemes.in/doctris/layouts/admin/profile.html">
-                                            <img src="./assets/images/doctors/01.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                            <div class="flex-1 ms-2">
-                                                <span class="d-block mb-1">Calvin Carlo</span>
-                                                <small class="text-muted">Orthopedic</small>
-                                            </div>
-                                        </a>
-                                        <a class="dropdown-item text-dark" href="index.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                        <a class="dropdown-item text-dark" href="dr-profile.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
-                                        <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="lock-screen.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                            <c:choose>
+                                <c:when test="${sessionScope.user ne null}">
+                                    <div class="dropdown dropdown-primary">
+                                        <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                        </button>
+                                        <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                            <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
+                                                <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                <div class="flex-1 ms-2">
+                                                    <span class="d-block mb-1">${sessionScope.user.fullname}</span>
+                                                </div>
+                                            </a>
+                                            <c:if test="${sessionScope.role.contains('Admin')}">
+                                                <a class="dropdown-item text-dark" href="doctor-dashboard.html">
+                                                    <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                                </a>
+                                            </c:if>
+                                            <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
+                                                <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
+                                            </a>
+                                            <div class="dropdown-divider border-top"></div>
+                                            <a class="dropdown-item text-dark" href="logout">
+                                                <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="login" class="btn btn-soft-primary btn-sm">
+                                        <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
                             </li>
                         </ul>
                     </div>
@@ -452,18 +373,18 @@
                     <div class="layout-specing">
                         <div class="d-md-flex justify-content-between">
                             <div>
-                                <h5 class="mb-0">Blogs</h5>
+                                <h5 class="mb-0">Sliders</h5>
 
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-1">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
-                                        <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Blogs</li>
+                                        <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Sliders</li>
                                     </ul>
                                 </nav>
                             </div>
 
                             <div class="mt-4 mt-sm-0">
-                                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newblogadd">Add Blog</a>
+                                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newblogadd">Add Slider</a>
                             </div>
                         </div>
 
@@ -474,73 +395,63 @@
                         %>
 
                         <div class="container-fluid">
-    <div class="layout-specing">
-        <div class="slider-container">
-            <h2 class="slider-title">Slider Management</h2>
+                            <div class="layout-specing">
+                                <div class="slider-container">
+                                    <h2 class="slider-title">Slider Management</h2>
 
-            <form action="SliderList" method="get" class="slider-filter-form">
-                <label>Status:</label>
-                <select name="status">
-                    <option value="">All</option>
-                    <option value="1">Visible</option>
-                    <option value="0">Hidden</option>
-                </select>
+                                    <form action="slider" method="get" class="slider-filter-form">
+                                        <label>Status:</label>
+                                        <select name="status">
+                                            <option value="">All</option>
+                                            <option value="1">Visible</option>
+                                            <option value="0">Hidden</option>
+                                        </select>
 
-                <label>Search:</label>
-                <input type="text" name="search" placeholder="Enter title or backlink">
-                <input type="submit" value="Filter">
-            </form>
+                                        <label>Search:</label>
+                                        <input type="text" name="search" placeholder="Enter title or backlink">
+                                        <input type="submit" value="Filter">
+                                    </form>
 
-            <table class="slider-table">
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Image</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-                <% for (Slider s : sliders) { %>
-                <tr>
-                    <td><%= s.getId() %></td>
-                    <td><%= s.getTitle() %></td>
-                    <td><img src="<%= "."+s.getImg() %>" alt="Slider Image"></td>
-                    <td>
-                        <form action="SliderList" method="post">
-                            <input type="hidden" name="sliderId" value="<%= s.getId() %>">
-                            <input type="hidden" name="newStatus" value="<%= !s.getStatus().equals("1") %>">
-                            <button type="submit" class="toggle-btn <%= s.getStatus().equals("1") ? "show" : "hide" %>">
-                                <%= s.getStatus().equals("1") ? "Hide" : "Show" %>
-                            </button>
-                        </form>
-                    </td>
-                    <td>
-                        <a href="SliderEdit?id=<%= s.getId() %>&action=edit" class="edit-btn">Edit</a>
-                    </td>
-                </tr>
-                <% } %>
-            </table>
+                                    <table class="slider-table">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Title</th>
+                                            <th>Image</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        <% for (Slider s : sliders) { %>
+                                        <tr>
+                                            <td><%= s.getId() %></td>
+                                            <td><%= s.getTitle() %></td>
+                                            <td><img src="<%= "."+s.getImg() %>" alt="Slider Image"></td>
+                                            <td>
+                                                <form action="slider" method="post">
+                                                    <input type="hidden" name="sliderId" value="<%= s.getId() %>">
+                                                    <input type="hidden" name="newStatus" value="<%= !s.getStatus().equals("1") %>">
+                                                    <button type="submit" class="toggle-btn <%= s.getStatus().equals("1") ? "show" : "hide" %>">
+                                                        <%= s.getStatus().equals("1") ? "Hide" : "Show" %>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <a href="slider-edit?id=<%= s.getId() %>&action=edit" class="edit-btn">Edit</a>
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                                    </table>
 
-            <div class="pagination">
-                <% for (int i = 1; i <= totalPages; i++) { %>
-                <a href="SliderList?page=<%= i %>" class="<%= (i == currentPage) ? "active" : "" %>"><%= i %></a>
-                <% } %>
-            </div>
-        </div>
-    </div>
-</div>
+                                    <div class="pagination">
+                                        <% for (int i = 1; i <= totalPages; i++) { %>
+                                        <a href="slider?page=<%= i %>" class="<%= (i == currentPage) ? "active" : "" %>"><%= i %></a>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Footer Start -->
-                        <footer class="bg-white shadow py-3">
-                            <div class="container-fluid">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <div class="text-sm-start text-center">
-                                            <p class="mb-0 text-muted"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="./././index.html" target="_blank" class="text-reset">Shreethemes</a>.</p>
-                                        </div>
-                                    </div><!--end col-->
-                                </div><!--end row-->
-                            </div><!--end container-->
-                        </footer><!--end footer-->
+
                         <!-- End -->
                         </main>
                         <!--End page-content" -->
@@ -608,7 +519,7 @@
                                                 <p class="text-muted">Upload your blog image here, Please click "Upload Image" Button.</p>
                                                 <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
                                                 <input type="file" id="input-file" name="input-file" accept="image/*" onchange={
-        handleChange()} hidden />
+                                                       handleChange()} hidden />
                                                 <label class="btn-upload btn btn-primary mt-4" for="input-file">Upload Image</label>
                                             </div>
                                         </div><!--end col-->
@@ -685,26 +596,26 @@
                     <script src="./assets/js/app.js"></script>
 
                     <script>
-                        const handleChange = () => {
-                            const fileUploader = document.querySelector('#input-file');
-                            const getFile = fileUploader.files
-                            if (getFile.length !== 0) {
-                                const uploadedFile = getFile[0];
-                                readFile(uploadedFile);
-                            }
-                        }
+                                                    const handleChange = () => {
+                                                        const fileUploader = document.querySelector('#input-file');
+                                                        const getFile = fileUploader.files
+                                                        if (getFile.length !== 0) {
+                                                            const uploadedFile = getFile[0];
+                                                            readFile(uploadedFile);
+                                                        }
+                                                    }
 
-                        const readFile = (uploadedFile) => {
-                            if (uploadedFile) {
-                                const reader = new FileReader();
-                                reader.onload = () => {
-                                    const parent = document.querySelector('.preview-box');
-                                    parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
-                                };
+                                                    const readFile = (uploadedFile) => {
+                                                        if (uploadedFile) {
+                                                            const reader = new FileReader();
+                                                            reader.onload = () => {
+                                                                const parent = document.querySelector('.preview-box');
+                                                                parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
+                                                            };
 
-                                reader.readAsDataURL(uploadedFile);
-                            }
-                        };
+                                                            reader.readAsDataURL(uploadedFile);
+                                                        }
+                                                    };
                     </script>
                     </body>
 

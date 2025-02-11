@@ -58,7 +58,7 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                        <!--<a href="index.html">-->
+                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
@@ -73,7 +73,7 @@
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li class="active"><a href="../admin/staff">Staff</a></li>
-                                    <li><a href="add-doctor.html">Add Staff</a></li>
+                                    <li><a href="javascript:void(0)" onclick="location.href='../admin/add-staff'">Add Staff</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -183,16 +183,7 @@
                             <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
                                 <i class="uil uil-bars"></i>
                             </a>
-                            <div class="search-bar p-0 d-none d-lg-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <form role="search" method="get" id="searchform" class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords...">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+
                         </div>
 
                         <ul class="list-unstyled mb-0">
@@ -331,30 +322,77 @@
                             </div><!--end col-->
 
                             <div class="col-xl-3 col-md-6 mt-4 mt-md-0 text-md-end">
-                                <a href="add-doctor.html" class="btn btn-primary">Add New Staff</a>
+                                <a href="../admin/add-staff" class="btn btn-primary">Add New Staff</a>
                             </div><!--end col-->
                         </div><!--end row-->
+                        
+                        </br>
+
+                        <form method="GET" action="../admin/staff">
+                            <div class="row g-2 align-items-center">
+                                <!-- Ô tìm kiếm -->
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control rounded-pill" name="search" placeholder="Search by name" value="${searchTerm}">
+                                </div>
+
+                                <!-- Ô chọn cột sắp xếp -->
+                                <div class="col-md-3">
+                                    <select class="form-select" name="sort">
+                                        <option value="fullname" ${sortColumn == 'fullname' ? 'selected' : ''}>Sort by Name</option>
+                                    </select>
+                                </div>
+
+                                <!-- Ô chọn hướng sắp xếp -->
+                                <div class="col-md-3">
+                                    <select class="form-select" name="direction">
+                                        <option value="ASC" ${sortDirection == 'ASC' ? 'selected' : ''}>Ascending</option>
+                                        <option value="DESC" ${sortDirection == 'DESC' ? 'selected' : ''}>Descending</option>
+                                    </select>
+                                </div>
+
+                                <!-- Nút Apply -->
+                                <div class="col-md-2 text-end">
+                                    <button type="submit" class="btn btn-primary w-100">Apply</button>
+                                </div>
+                            </div>
+                        </form>
 
                         <div class="row row-cols-md-2 row-cols-lg-5">
-                            <c:forEach var="s" items="${requestScope.staff}">
+                            <c:forEach var="s" items="${staff}">
                                 <div class="col mt-4">
                                     <div class="card team border-0 rounded shadow overflow-hidden">
                                         <div class="team-img position-relative">
                                             <img src="../assets/images/${s.avatar}" class="img-fluid" alt="">
-                                            <ul class="list-unstyled team-social mb-0">
-                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="facebook" class="icons"></i></a></li>
-                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="linkedin" class="icons"></i></a></li>
-                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="instagram" class="icons"></i></a></li>
-                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="twitter" class="icons"></i></a></li>
-                                            </ul>
                                         </div>
                                         <div class="card-body content text-center">
                                             <a href="staff-profile?staff_id=${s.id}" class="title text-dark h5 d-block mb-0">${s.fullname}</a>
                                         </div>
                                     </div>
-                                </div><!--end col-->
+                                </div>
                             </c:forEach>
-                        </div><!--end row-->
+                        </div>
+                                    
+                                    </br>
+                                    </br>
+
+
+                        <div class="pagination justify-content-center">
+                            <c:if test="${currentPage > 1}">
+                                <a class="btn btn-outline-primary mx-1" href="staff?page=${currentPage - 1}&search=${searchTerm}&sort=${sortColumn}&direction=${sortDirection}">Previous</a>
+                            </c:if>
+
+                            <c:forEach var="i" begin="1" end="${totalPages}">
+                                <a class="btn ${i == currentPage ? 'btn-primary' : 'btn-outline-primary'} mx-1"
+                                   href="staff?page=${i}&search=${searchTerm}&sort=${sortColumn}&direction=${sortDirection}">${i}</a>
+                            </c:forEach>
+
+                            <c:if test="${currentPage < totalPages}">
+                                <a class="btn btn-outline-primary mx-1" href="staff?page=${currentPage + 1}&search=${searchTerm}&sort=${sortColumn}&direction=${sortDirection}">Next</a>
+                            </c:if>
+                        </div>
+
+
+
                     </div>
                 </div><!--end container-->
 
@@ -364,7 +402,7 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <div class="text-sm-start text-center">
-                                    
+
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->
@@ -383,7 +421,7 @@
                     <img src="../assets/images/logo-dark.png" height="24" class="light-version" alt="">
                     <img src="../assets/images/logo-light.png" height="24" class="dark-version" alt="">
                 </h5>
-                <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+                <button type="button" classse="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
             </div>
             <div class="offcanvas-body p-4 px-md-5">
                 <div class="row">

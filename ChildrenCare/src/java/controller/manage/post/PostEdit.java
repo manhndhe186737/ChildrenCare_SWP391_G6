@@ -9,9 +9,13 @@ import dal.PostDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 import model.Account;
 import model.Post;
@@ -20,6 +24,11 @@ import model.Post;
  *
  * @author DELL
  */
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
 public class PostEdit extends BaseRBAC {
 
     /**
@@ -57,15 +66,15 @@ public class PostEdit extends BaseRBAC {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
-            throws ServletException, IOException {
-        PostDBContext postDAO = new PostDBContext();
+@Override
+protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
+        throws ServletException, IOException {
+    PostDBContext postDAO = new PostDBContext();
 
-        String postIdStr = request.getParameter("id");
-        if (postIdStr != null) {
+    String postIdStr = request.getParameter("id");
+    if (postIdStr != null) {
+        try {
             int postId = Integer.parseInt(postIdStr);
-
             Post post = postDAO.getPostById(postId);
             List<String> categories = postDAO.getAllCategories();
             List<String[]> authors = postDAO.getAllAuthors(); // Lấy danh sách tác giả
@@ -74,47 +83,70 @@ public class PostEdit extends BaseRBAC {
                 request.setAttribute("post", post);
                 request.setAttribute("categories", categories);
                 request.setAttribute("authors", authors);
-                request.setAttribute("currentAuthorId", post.getAuthor()); // Lưu ID tác giả hiện tại
+
+                // Kiểm tra nếu bài viết có tác giả thì đặt currentAuthorId, nếu không thì null
+                request.setAttribute("currentAuthorId", post.getAuthor() != null ? post.getAuthor() : "");
 
                 request.getRequestDispatcher("admin/postEdit.jsp").forward(request, response);
-            } else {
-                response.sendRedirect("post-list"); // Chuyển hướng nếu không tìm thấy bài viết
+                return;
             }
-        } else {
-            response.sendRedirect("post-list");
-        }
-    }
-
-    @Override
-    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
-            throws ServletException, IOException {
-        int postId = Integer.parseInt(request.getParameter("postId"));
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        String category = request.getParameter("category");
-        String status = request.getParameter("status");
-        String image = request.getParameter("image");
-        String authorIdStr = request.getParameter("author");
-
-        if (authorIdStr == null || authorIdStr.trim().isEmpty()) {
-            response.sendRedirect("post-edit?id=" + postId + "&error=missing_author");
-            return;
-        }
-
-        int authorId;
-        try {
-            authorId = Integer.parseInt(authorIdStr);
         } catch (NumberFormatException e) {
-            response.sendRedirect("post-edit?id=" + postId + "&error=invalid_author");
-            return;
+            e.printStackTrace();
         }
-
-        PostDBContext postDAO = new PostDBContext();
-        Post post = new Post(postId, title, content, null, null, status, image, category, String.valueOf(authorId));
-        postDAO.updatePost(post);
-
-        response.sendRedirect("post-list");
     }
+
+    // Nếu không tìm thấy bài viết hoặc có lỗi, chuyển hướng về danh sách bài viết
+    response.sendRedirect("post-list");
+}
+
+  @Override
+protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
+        throws ServletException, IOException {
+    int postId = Integer.parseInt(request.getParameter("postId"));
+    String title = request.getParameter("title");
+    String content = request.getParameter("content");
+    String category = request.getParameter("category");
+    String status = request.getParameter("status");
+    String authorIdStr = request.getParameter("author");
+
+    // Xử lý lỗi tác giả
+    if (authorIdStr == null || authorIdStr.trim().isEmpty()) {
+        response.sendRedirect("post-edit?id=" + postId + "&error=missing_author");
+        return;
+    }
+
+    int authorId;
+    try {
+        authorId = Integer.parseInt(authorIdStr);
+    } catch (NumberFormatException e) {
+        response.sendRedirect("post-edit?id=" + postId + "&error=invalid_author");
+        return;
+    }
+
+    // Xử lý upload ảnh
+    String imagePath = null;
+    Part filePart = request.getPart("imageFile");
+    if (filePart != null && filePart.getSize() > 0) {
+        // Đường dẫn lưu ảnh
+        String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) uploadDir.mkdir();
+
+        // Lưu file
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        imagePath = "uploads/" + fileName;
+        filePart.write(uploadPath + File.separator + fileName);
+    } else {
+        imagePath = request.getParameter("image");
+    }
+
+    // Cập nhật bài viết vào database
+    PostDBContext postDAO = new PostDBContext();
+    Post post = new Post(postId, title, content, null, null, status, imagePath, category, String.valueOf(authorId));
+    postDAO.updatePost(post);
+
+    response.sendRedirect("post-list");
+}
 
     /**
      * Returns a short description of the servlet.
@@ -127,3 +159,5 @@ public class PostEdit extends BaseRBAC {
     }// </editor-fold>
 
 }
+
+

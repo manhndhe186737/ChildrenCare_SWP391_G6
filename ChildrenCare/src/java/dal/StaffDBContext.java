@@ -151,24 +151,137 @@ public class StaffDBContext extends DBContext {
     }
 
     public void updateStaff(User staff) {
-    String sql = "UPDATE users SET fullname = ?, phone = ?, bio = ?, dob = ?, address = ?, avatar = ? WHERE user_id = ?";
-    
-    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        String sql = "UPDATE users SET fullname = ?, phone = ?, bio = ?, dob = ?, address = ?, avatar = ? WHERE user_id = ?";
 
-        stmt.setString(1, staff.getFullname());
-        stmt.setString(2, staff.getPhone());
-        stmt.setString(3, staff.getBio());
-        stmt.setDate(4, new java.sql.Date(staff.getDob().getTime()));
-        stmt.setString(5, staff.getAddress());
-        stmt.setString(6, staff.getAvatar());
-        stmt.setInt(7, staff.getId());
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-        stmt.executeUpdate();
+            stmt.setString(1, staff.getFullname());
+            stmt.setString(2, staff.getPhone());
+            stmt.setString(3, staff.getBio());
+            stmt.setDate(4, new java.sql.Date(staff.getDob().getTime()));
+            stmt.setString(5, staff.getAddress());
+            stmt.setString(6, staff.getAvatar());
+            stmt.setInt(7, staff.getId());
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-}
 
+    public ArrayList<User> getFilteredStaff(String searchTerm, String sortColumn, String sortDirection, int pageIndex, int pageSize) {
+        ArrayList<User> staffList = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.avatar, u.phone, a.email, a.password, r.role_name "
+                    + "FROM users u "
+                    + "JOIN accounts a ON u.user_id = a.user_id "
+                    + "JOIN userroles ur ON ur.email = a.email "
+                    + "JOIN roles r ON r.role_id = ur.role_id "
+                    + "WHERE r.role_name = 'Staff' ";
+
+            // Nếu có searchTerm, thêm điều kiện tìm kiếm
+            if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                sql += " AND u.fullname LIKE ? ";
+            }
+
+            // Thêm sắp xếp theo cột được chọn
+            sql += " ORDER BY " + sortColumn + " " + sortDirection;
+
+            // Áp dụng phân trang
+            sql += " LIMIT ? OFFSET ? ";
+
+            stm = connection.prepareStatement(sql);
+            int paramIndex = 1;
+
+            // Nếu có searchTerm, đặt giá trị cho parameter
+            if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                stm.setString(paramIndex++, "%" + searchTerm + "%");
+            }
+
+            // Đặt giá trị LIMIT và OFFSET
+            stm.setInt(paramIndex++, pageSize);
+            stm.setInt(paramIndex, (pageIndex - 1) * pageSize);
+
+            rs = stm.executeQuery();
+
+            while (rs.next()) {
+                User u = new User();
+                u.setId(rs.getInt("user_id"));
+                u.setFullname(rs.getString("fullname"));
+                u.setDob(rs.getDate("dob"));
+                u.setAddress(rs.getString("address"));
+                u.setAvatar(rs.getString("avatar"));
+                u.setPhone(rs.getString("phone"));
+                u.setGender(rs.getBoolean("gender"));
+
+                Account a = new Account();
+                a.setEmail(rs.getString("email"));
+                a.setPassword(rs.getString("password"));
+                u.setAccount(a);
+
+                staffList.add(u);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return staffList;
+    }
+
+    public int getTotalStaffCount(String searchTerm) {
+        int total = 0;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT COUNT(*) AS total FROM users u "
+                    + "JOIN accounts a ON u.user_id = a.user_id "
+                    + "JOIN userroles ur ON ur.email = a.email "
+                    + "JOIN roles r ON r.role_id = ur.role_id "
+                    + "WHERE r.role_name = 'Staff' ";
+
+            if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                sql += " AND u.fullname LIKE ? ";
+            }
+
+            stm = connection.prepareStatement(sql);
+            if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                stm.setString(1, "%" + searchTerm + "%");
+            }
+
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return total;
+    }
 
 }

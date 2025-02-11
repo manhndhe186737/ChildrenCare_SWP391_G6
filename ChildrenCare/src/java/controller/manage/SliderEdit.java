@@ -4,6 +4,7 @@
  */
 package controller.manage;
 
+import controller.auth.BaseRBAC;
 import dal.SliderDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,13 +12,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Account;
 import model.Slider;
 
 /**
  *
  * @author DELL
  */
-public class SliderEdit extends HttpServlet {
+public class SliderEdit extends BaseRBAC {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,14 +56,14 @@ public class SliderEdit extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   protected void doGet(HttpServletRequest request, HttpServletResponse response)
+   protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         SliderDBContext db = new SliderDBContext();
         Slider slider = db.getSliderById(id);
         
         if (slider == null) {
-            response.sendRedirect("SliderList");
+            response.sendRedirect("slider");
             return;
         }
 
@@ -69,7 +71,7 @@ public class SliderEdit extends HttpServlet {
         request.getRequestDispatcher("/admin/sliderEdit.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         String title = request.getParameter("title");
@@ -85,7 +87,7 @@ public class SliderEdit extends HttpServlet {
         SliderDBContext db = new SliderDBContext();
         db.updateSlider(slider);
 
-        response.sendRedirect("SliderList");
+        response.sendRedirect("slider");
     }
     /**
      * Returns a short description of the servlet.

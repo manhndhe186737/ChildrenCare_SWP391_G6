@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="model.Post, java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.ArrayList" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -339,40 +341,40 @@
                             </li>
 
                             <li class="list-inline-item mb-0 ms-1">
-                            <c:choose>
-                                <c:when test="${sessionScope.user ne null}">
-                                    <div class="dropdown dropdown-primary">
-                                        <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
-                                        </button>
-                                        <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                            <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                                <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="flex-1 ms-2">
-                                                    <span class="d-block mb-1">${sessionScope.user.fullname}</span>
-                                                </div>
-                                            </a>
-                                            <c:if test="${sessionScope.role.contains('Admin')}">
-                                                <a class="dropdown-item text-dark" href="doctor-dashboard.html">
-                                                    <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                <c:choose>
+                                    <c:when test="${sessionScope.user ne null}">
+                                        <div class="dropdown dropdown-primary">
+                                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                            </button>
+                                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                                <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
+                                                    <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                    <div class="flex-1 ms-2">
+                                                        <span class="d-block mb-1">${sessionScope.user.fullname}</span>
+                                                    </div>
                                                 </a>
-                                            </c:if>
-                                            <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
-                                                <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
-                                            </a>
-                                            <div class="dropdown-divider border-top"></div>
-                                            <a class="dropdown-item text-dark" href="logout">
-                                                <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
-                                            </a>
+                                                <c:if test="${sessionScope.role.contains('Admin')}">
+                                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html">
+                                                        <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                                    </a>
+                                                </c:if>
+                                                <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
+                                                    <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
+                                                </a>
+                                                <div class="dropdown-divider border-top"></div>
+                                                <a class="dropdown-item text-dark" href="logout">
+                                                    <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="login" class="btn btn-soft-primary btn-sm">
-                                        <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
-                                    </a>
-                                </c:otherwise>
-                            </c:choose>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="login" class="btn btn-soft-primary btn-sm">
+                                            <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
                             </li>
                         </ul>
                     </div>
@@ -400,7 +402,7 @@
                                List<String> categories = (List<String>) request.getAttribute("categories"); 
                             %>
 
-                            <form method="POST" action="post-edit">
+                            <form method="POST" action="post-edit" enctype="multipart/form-data">
                                 <input type="hidden" name="postId" value="<%= post.getId() %>">
 
                                 <label>Title:</label>
@@ -422,20 +424,26 @@
                                     <option value="0" <%= post.getStatus().equals("0") ? "selected" : "" %>>Hidden</option>
                                 </select>
 
-                                <label>Image URL:</label>
-                                <input type="text" name="image" value="<%= post.getImg() %>">
+                                <label>Upload Image:</label>
+                                <input type="file" name="imageFile" accept="image/*">
+
+                                <% 
+     List<String[]> authors = (List<String[]>) request.getAttribute("authors");
+     String currentAuthorId = (String) request.getAttribute("currentAuthorId");
+
+     if (authors == null) authors = new ArrayList<>();
+     if (currentAuthorId == null) currentAuthorId = "";
+                                %>
+
                                 <label>Author:</label>
                                 <select name="author">
-                                    <% 
-                                        List<String[]> authors = (List<String[]>) request.getAttribute("authors"); 
-                                        String currentAuthorId = (String) request.getAttribute("currentAuthorId");
-                                        for (String[] author : authors) { 
-                                    %>
+                                    <% for (String[] author : authors) { %>
                                     <option value="<%= author[0] %>" <%= author[0].equals(currentAuthorId) ? "selected" : "" %>>
                                         <%= author[1] %>
                                     </option>
                                     <% } %>
                                 </select>
+
 
                                 <% String error = request.getParameter("error"); %>
                                 <% if (error != null) { %>
@@ -455,17 +463,6 @@
                         </div>
 
                         <!-- Footer Start -->
-                        <footer class="bg-white shadow py-3">
-                            <div class="container-fluid">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <div class="text-sm-start text-center">
-
-                                        </div>
-                                    </div><!--end col-->
-                                </div><!--end row-->
-                            </div><!--end container-->
-                        </footer><!--end footer-->
                         <!-- End -->
                         </main>
                         <!--End page-content" -->
@@ -635,3 +632,5 @@
 
 
                     </html>
+
+
