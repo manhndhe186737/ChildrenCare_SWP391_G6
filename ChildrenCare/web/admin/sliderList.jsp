@@ -424,7 +424,7 @@
                                         <tr>
                                             <td><%= s.getId() %></td>
                                             <td><%= s.getTitle() %></td>
-                                            <td><img src="<%= "."+s.getImg() %>" alt="Slider Image"></td>
+                                            <td><img src="<%=s.getImg() %>" alt="Slider Image"></td>
                                             <td>
                                                 <form action="slider" method="post">
                                                     <input type="hidden" name="sliderId" value="<%= s.getId() %>">

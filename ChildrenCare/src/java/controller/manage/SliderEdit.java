@@ -20,6 +20,11 @@ import model.Slider;
  *
  * @author DELL
  */
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+    maxFileSize = 1024 * 1024 * 10,      // 10MB
+    maxRequestSize = 1024 * 1024 * 50    // 50MB
+)
 public class SliderEdit extends BaseRBAC {
 
     /**
@@ -39,7 +44,7 @@ public class SliderEdit extends BaseRBAC {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SliderEdit</title>");            
+            out.println("<title>Servlet SliderEdit</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet SliderEdit at " + request.getContextPath() + "</h1>");
@@ -57,7 +62,7 @@ public class SliderEdit extends BaseRBAC {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         SliderDBContext db = new SliderDBContext();
@@ -72,18 +77,22 @@ public class SliderEdit extends BaseRBAC {
         request.getRequestDispatcher("/admin/sliderEdit.jsp").forward(request, response);
     }
 
-
-    @Override
     protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        String idParam = request.getParameter("id");
+        if (idParam == null || idParam.isEmpty()) {
+            response.sendRedirect("slider"); // Chuyển hướng nếu không có ID
+            return;
+        }
+
+        int id = Integer.parseInt(idParam);
         String title = request.getParameter("title");
         String status = request.getParameter("status");
 
         SliderDBContext db = new SliderDBContext();
         Slider slider = db.getSliderById(id);
         if (slider == null) {
-            response.sendRedirect("SliderList");
+            response.sendRedirect("slider");
             return;
         }
 
@@ -94,7 +103,9 @@ public class SliderEdit extends BaseRBAC {
             // Đường dẫn thư mục lưu ảnh
             String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
             File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) uploadDir.mkdir();
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
 
             // Lưu file
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();

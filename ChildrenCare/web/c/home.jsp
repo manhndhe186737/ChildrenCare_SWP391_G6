@@ -38,6 +38,98 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <!-- Post btn -->
+        <!-- Thêm Font Awesome từ CDN -->
+        <!-- Thêm Font Awesome từ CDN -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+        <style>
+            /* Cập nhật cho nút Prev và Next */
+            .tns-prev, .tns-next {
+                background-color: rgba(0, 0, 0, 0.5);  /* Nền mờ */
+                color: white;
+                border: none;
+                border-radius: 50%;
+                font-size: 24px;
+                padding: 10px;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 10;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .tns-prev {
+                left: 10px;
+            }
+
+            .tns-next {
+                right: 10px;
+            }
+
+            /* Thêm hiệu ứng hover */
+            .tns-prev:hover, .tns-next:hover {
+                background-color: rgba(0, 0, 0, 0.7);
+            }
+
+            /* Cập nhật icon mũi tên từ Font Awesome */
+            .tns-prev:before {
+                content: "\f104";  /* Mũi tên trái FontAwesome */
+                font-family: 'Font Awesome 5 Free';
+                font-weight: 900;  /* Đảm bảo sử dụng icon Bold */
+            }
+
+            .tns-next:before {
+                content: "\f105";  /* Mũi tên phải FontAwesome */
+                font-family: 'Font Awesome 5 Free';
+                font-weight: 900;  /* Đảm bảo sử dụng icon Bold */
+            }
+
+            /* Cập nhật cho card */
+            .card-body {
+                height: 300px; /* Cố định chiều cao */
+                overflow: hidden; /* Ẩn nội dung tràn ra ngoài */
+                display: flex;
+                flex-direction: column;
+            }
+
+            .card-body img {
+                max-height: 150px; /* Giới hạn chiều cao hình ảnh */
+                object-fit: cover; /* Đảm bảo hình ảnh không bị bóp méo */
+            }
+
+            .card-body .title {
+                font-size: 18px;
+                font-weight: bold;
+                margin-top: 10px;
+            }
+
+            .card-body p {
+                flex-grow: 1;
+                font-size: 14px;
+                color: #666;
+                overflow: hidden; /* Ẩn phần text bị tràn */
+                text-overflow: ellipsis; /* Hiển thị "..." nếu nội dung quá dài */
+                white-space: nowrap; /* Ngừng xuống dòng */
+            }
+
+            .card-body .link {
+                font-size: 14px;
+                color: #007bff;
+                text-decoration: none;
+                margin-top: 10px;
+            }
+
+            .card-body .link:hover {
+                text-decoration: underline;
+            }
+
+
+        </style>
+
+
 
     </head>
 
@@ -252,32 +344,69 @@
 
         <!-- Start -->
         <section class="section bg-white pb-0">
+            <!--Blog-->
             <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="section-title mb-4 pb-2 text-center">
+                            <h4 class="title mb-4">Our Children Care Newest Blog</h4>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <c:set var="b" value="${requestScope.blog}"/>
+
                 <div class="row align-items-center">
                     <div class="col-lg-5 col-md-6">
                         <div class="position-relative">
-                            <img src="../assets/images/about/about-2.png" class="img-fluid" alt="">
-                            <div class="play-icon">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#watchvideomodal" class="play-btn video-play-icon">
-                                    <i class="mdi mdi-play text-primary rounded-circle bg-white title-bg-dark shadow"></i>
-                                </a>
-                            </div>
+                            <img src="../assets/images/blog/${blog.featuredImage}" class="img-fluid" alt="">
                         </div>
                     </div><!--end col-->
 
                     <div class="col-lg-7 col-md-6 mt-4 pt-2 mt-sm-0 pt-sm-0">
                         <div class="section-title ms-lg-5">
-                            <span class="badge badge-pill badge-soft-primary">About Doctris</span>
-                            <h4 class="title mt-3 mb-4">Good Services And Better <br> Health By Our Specialists</h4>
-                            <p class="para-desc text-muted">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
-                            <p class="para-desc text-muted">The most well-known dummy text is the 'Lorem Ipsum', which is said to have originated in the 16th century. Lorem Ipsum is composed in a pseudo-Latin language which more or less corresponds to 'proper' Latin. It contains a series of real Latin words.</p>
+                            <span class="badge badge-pill badge-soft-primary">About Children Care</span>
+                            <h4 class="title mt-3 mb-4">${blog.title}</h4>
+                            <p class="para-desc text-muted">${blog.content}</p>
                             <div class="mt-4">
-                                <a href="aboutus.html" class="btn btn-soft-primary">Read More</a>
+                                <a href="../blog?id=2" class="btn btn-soft-primary">Read More</a>
                             </div>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
             </div><!--end container-->
+
+
+            <!-- Start Post List with Tiny Slider -->
+            <div class="container mt-100 mt-60">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="section-title mb-4 pb-2 text-center">
+                            <h4 class="title mb-4">Our Children Care Posts</h4>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <div class="tiny-slider">
+                    <div class="row">
+                        <c:forEach var="p" items="${requestScope.posts}">
+                            <div class="col-xl-3 col-md-4 col-12 mt-5">
+                                <div class="card features feature-primary bg-transparent border-0">
+                                    <div class="card-body p-0 mt-3">
+                                        <img src="../${p.img}" class="img-fluid" alt="">
+                                        <a href="#" class="title text-dark h5">${p.title}</a>
+                                        <p class="text-muted mt-3">${p.content}</p>
+                                        <a href="#" class="link">View More <i class="ri-arrow-right-line align-middle"></i></a>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                        </c:forEach>
+                    </div><!--end row-->
+                </div><!--end tiny-slider-->
+            </div><!--end container-->
+            <!-- End Post List -->
+
+
 
             <div class="container mt-100 mt-60">
                 <div class="row justify-content-center">
@@ -294,230 +423,285 @@
                         <div class="col-xl-3 col-md-4 col-12 mt-5">
                             <div class="card features feature-primary bg-transparent border-0">
                                 <div class="card-body p-0 mt-3">
-                                    <a href="departments.html" class="title text-dark h5">${s.name}</a>
+                                    <a href="#" class="title text-dark h5">${s.name}</a>
                                     <p class="text-muted mt-3">${s.description}</p>
-                                    <a href="departments.html" class="link">View More <i class="ri-arrow-right-line align-middle"></i></a>
+                                    <a href="#" class="link">View More <i class="ri-arrow-right-line align-middle"></i></a>
                                 </div>
                             </div>
                         </div><!--end col-->
                     </c:forEach>
                 </div><!--end row-->
             </div><!--end container-->
+        </section>
 
-            </br>
-            </br>
+        </br>
+        </br>
 
-            <!-- Start -->
-            <footer class="bg-footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
-                            <a href="#" class="logo-footer">
-                                <img src="../assets/images/logo-light.png" height="22" alt="">
-                            </a>
-                            <p class="mt-4 me-xl-5">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
-                        </div><!--end col-->
+        <!-- Start -->
+        <footer class="bg-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
+                        <a href="#" class="logo-footer">
+                            <img src="../assets/images/logo-light.png" height="22" alt="">
+                        </a>
+                        <p class="mt-4 me-xl-5">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
+                    </div><!--end col-->
 
-                        <div class="col-xl-7 col-lg-8 col-md-12">
-                            <div class="row">
-                                <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                    <h5 class="text-light title-dark footer-head">Company</h5>
-                                    <ul class="list-unstyled footer-list mt-4">
-                                        <li><a href="aboutus.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> About us</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Services</a></li>
-                                        <li><a href="doctor-team-two.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Team</a></li>
-                                        <li><a href="blog-detail.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Project</a></li>
-                                        <li><a href="blogs.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Blog</a></li>
-                                        <li><a href="login.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Login</a></li>
-                                    </ul>
-                                </div><!--end col-->
-
-                                <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                    <h5 class="text-light title-dark footer-head">Departments</h5>
-                                    <ul class="list-unstyled footer-list mt-4">
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Eye Care</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Psychotherapy</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Dental Care</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Orthopedic</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Cardiology</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Gynecology</a></li>
-                                        <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Neurology</a></li>
-                                    </ul>
-                                </div><!--end col-->
-
-                                <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                    <h5 class="text-light title-dark footer-head">Contact us</h5>
-                                    <ul class="list-unstyled footer-list mt-4">
-                                        <li class="d-flex align-items-center">
-                                            <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
-                                            <a href="mailto:contact@example.com" class="text-foot ms-2">contact@example.com</a>
-                                        </li>
-
-                                        <li class="d-flex align-items-center">
-                                            <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
-                                            <a href="tel:+152534-468-854" class="text-foot ms-2">+152 534-468-854</a>
-                                        </li>
-
-                                        <li class="d-flex align-items-center">
-                                            <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
-                                            <a href="javascript:void(0)" class="video-play-icon text-foot ms-2">View on Google map</a>
-                                        </li>
-                                    </ul>
-
-                                    <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
-                                        <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></a></li>
-                                        <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></a></li>
-                                        <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></a></li>
-                                        <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></a></li>
-                                    </ul><!--end icon-->
-                                </div><!--end col-->
-                            </div><!--end row-->
-                        </div><!--end col-->
-                    </div><!--end row-->
-                </div><!--end container-->
-
-                <div class="container mt-5">
-                    <div class="pt-4 footer-bar">
-                        <div class="row align-items-center">
-                            <div class="col-sm-6">
-                                <div class="text-sm-start text-center">
-
-                                </div>
-                            </div><!--end col-->
-
-                            <div class="col-sm-6 mt-4 mt-sm-0">
-                                <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
-                                    <li class="list-inline-item"><a href="terms.html" class="text-foot me-2">Terms</a></li>
-                                    <li class="list-inline-item"><a href="privacy.html" class="text-foot me-2">Privacy</a></li>
-                                    <li class="list-inline-item"><a href="aboutus.html" class="text-foot me-2">About</a></li>
-                                    <li class="list-inline-item"><a href="contact.html" class="text-foot me-2">Contact</a></li>
+                    <div class="col-xl-7 col-lg-8 col-md-12">
+                        <div class="row">
+                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                <h5 class="text-light title-dark footer-head">Company</h5>
+                                <ul class="list-unstyled footer-list mt-4">
+                                    <li><a href="aboutus.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> About us</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Services</a></li>
+                                    <li><a href="doctor-team-two.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Team</a></li>
+                                    <li><a href="blog-detail.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Project</a></li>
+                                    <li><a href="blogs.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Blog</a></li>
+                                    <li><a href="login.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Login</a></li>
                                 </ul>
                             </div><!--end col-->
-                        </div><!--end row-->
-                    </div>
-                </div><!--end container-->
-            </footer><!--end footer-->
-            <!-- End -->
 
-            <!-- Back to top -->
-            <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
-            <!-- Back to top -->
+                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                <h5 class="text-light title-dark footer-head">Departments</h5>
+                                <ul class="list-unstyled footer-list mt-4">
+                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Eye Care</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Psychotherapy</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Dental Care</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Orthopedic</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Cardiology</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Gynecology</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Neurology</a></li>
+                                </ul>
+                            </div><!--end col-->
 
-            <!-- Offcanvas Start -->
-            <div class="offcanvas bg-white offcanvas-top" tabindex="-1" id="offcanvasTop">
-                <div class="offcanvas-body d-flex align-items-center align-items-center">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <div class="text-center">
-                                    <h4>Search now.....</h4>
-                                    <div class="subcribe-form mt-4">
-                                        <form>
-                                            <div class="mb-0">
-                                                <input type="text" id="help" name="name" class="border bg-white rounded-pill" required="" placeholder="Search">
-                                                <button type="submit" class="btn btn-pills btn-primary">Search</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                <h5 class="text-light title-dark footer-head">Contact us</h5>
+                                <ul class="list-unstyled footer-list mt-4">
+                                    <li class="d-flex align-items-center">
+                                        <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
+                                        <a href="mailto:contact@example.com" class="text-foot ms-2">contact@example.com</a>
+                                    </li>
+
+                                    <li class="d-flex align-items-center">
+                                        <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
+                                        <a href="tel:+152534-468-854" class="text-foot ms-2">+152 534-468-854</a>
+                                    </li>
+
+                                    <li class="d-flex align-items-center">
+                                        <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
+                                        <a href="javascript:void(0)" class="video-play-icon text-foot ms-2">View on Google map</a>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
+                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></a></li>
+                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></a></li>
+                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></a></li>
+                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></a></li>
+                                </ul><!--end icon-->
                             </div><!--end col-->
                         </div><!--end row-->
-                    </div><!--end container-->
-                </div>
-            </div>
-            <!-- Offcanvas End -->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
 
-            <!-- Offcanvas Start -->
-            <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                <div class="offcanvas-header p-4 border-bottom">
-                    <h5 id="offcanvasRightLabel" class="mb-0">
-                        <img src="../assets/images/logo-dark.png" height="24" class="light-version" alt="">
-                        <img src="../assets/images/logo-light.png" height="24" class="dark-version" alt="">
-                    </h5>
-                    <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
-                </div>
-                <div class="offcanvas-body p-4 px-md-5">
-                    <div class="row">
-                        <div class="col-12">
-                            <!-- Style switcher -->
-                            <div id="style-switcher">
-                                <div>
-                                    <ul class="text-center list-unstyled mb-0">
-                                        <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="../assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="../assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                        <li class="d-grid"><a href="../admin/index.html" target="_blank" class="mt-4"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
-                                    </ul>
-                                </div>
+            <div class="container mt-5">
+                <div class="pt-4 footer-bar">
+                    <div class="row align-items-center">
+                        <div class="col-sm-6">
+                            <div class="text-sm-start text-center">
+
                             </div>
-                            <!-- end Style switcher -->
+                        </div><!--end col-->
+
+                        <div class="col-sm-6 mt-4 mt-sm-0">
+                            <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
+                                <li class="list-inline-item"><a href="terms.html" class="text-foot me-2">Terms</a></li>
+                                <li class="list-inline-item"><a href="privacy.html" class="text-foot me-2">Privacy</a></li>
+                                <li class="list-inline-item"><a href="aboutus.html" class="text-foot me-2">About</a></li>
+                                <li class="list-inline-item"><a href="contact.html" class="text-foot me-2">Contact</a></li>
+                            </ul>
                         </div><!--end col-->
                     </div><!--end row-->
                 </div>
+            </div><!--end container-->
+        </footer><!--end footer-->
+        <!-- End -->
 
-                <div class="offcanvas-footer p-4 border-top text-center">
-                    <ul class="list-unstyled social-icon mb-0">
-                        <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
-                        <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
-                        <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
-                        <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
-                        <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
-                        <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
-                        <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
-                    </ul><!--end icon-->
+        <!-- Back to top -->
+        <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
+        <!-- Back to top -->
+
+        <!-- Offcanvas Start -->
+        <div class="offcanvas bg-white offcanvas-top" tabindex="-1" id="offcanvasTop">
+            <div class="offcanvas-body d-flex align-items-center align-items-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="text-center">
+                                <h4>Search now.....</h4>
+                                <div class="subcribe-form mt-4">
+                                    <form>
+                                        <div class="mb-0">
+                                            <input type="text" id="help" name="name" class="border bg-white rounded-pill" required="" placeholder="Search">
+                                            <button type="submit" class="btn btn-pills btn-primary">Search</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end container-->
+            </div>
+        </div>
+        <!-- Offcanvas End -->
+
+        <!-- Offcanvas Start -->
+        <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header p-4 border-bottom">
+                <h5 id="offcanvasRightLabel" class="mb-0">
+                    <img src="../assets/images/logo-dark.png" height="24" class="light-version" alt="">
+                    <img src="../assets/images/logo-light.png" height="24" class="dark-version" alt="">
+                </h5>
+                <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+            </div>
+            <div class="offcanvas-body p-4 px-md-5">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Style switcher -->
+                        <div id="style-switcher">
+                            <div>
+                                <ul class="text-center list-unstyled mb-0">
+                                    <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="../assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="../assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
+                                    <li class="d-grid"><a href="../admin/index.html" target="_blank" class="mt-4"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- end Style switcher -->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+
+            <div class="offcanvas-footer p-4 border-top text-center">
+                <ul class="list-unstyled social-icon mb-0">
+                    <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
+                </ul><!--end icon-->
+            </div>
+        </div>
+        <!-- Offcanvas End -->
+
+        <!-- MOdal Start -->
+        <div class="modal fade" id="watchvideomodal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content video-modal rounded overflow-hidden">
+                    <video class="w-100" controls autoplay muted loop>
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">>
+                        <!--Browser does not support <video> tag -->
+                    </video>
                 </div>
             </div>
-            <!-- Offcanvas End -->
+        </div>
+        <!-- MOdal End -->
 
-            <!-- MOdal Start -->
-            <div class="modal fade" id="watchvideomodal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content video-modal rounded overflow-hidden">
-                        <video class="w-100" controls autoplay muted loop>
-                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">>
-                            <!--Browser does not support <video> tag -->
-                        </video>
-                    </div>
-                </div>
-            </div>
-            <!-- MOdal End -->
+        <!-- javascript -->
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/bootstrap.bundle.min.js"></script>
+        <!-- SLIDER -->
+        <script src="../assets/js/tiny-slider.js"></script>
+        <script src="../assets/js/tiny-slider-init.js"></script>
+        <script src="../assets/js/easy_background.js"></script>
 
-            <!-- javascript -->
-            <script src="../assets/js/jquery.min.js"></script>
-            <script src="../assets/js/bootstrap.bundle.min.js"></script>
-            <!-- SLIDER -->
-            <script src="../assets/js/tiny-slider.js"></script>
-            <script src="../assets/js/tiny-slider-init.js"></script>
-            <script src="../assets/js/easy_background.js"></script>
+        <!-- Select2 -->
+        <script src="../assets/js/select2.min.js"></script>
+        <script src="../assets/js/select2.init.js"></script>
+        <!-- Datepicker -->
+        <script src="../assets/js/flatpickr.min.js"></script>
+        <script src="../assets/js/flatpickr.init.js"></script>
+        <!-- Datepicker -->
+        <script src="../assets/js/jquery.timepicker.min.js"></script> 
+        <script src="../assets/js/timepicker.init.js"></script> 
+        <!-- Icons -->
+        <script src="../assets/js/feather.min.js"></script>
+        <!-- Main Js -->
+        <script src="../assets/js/app.js"></script>
+        <script>
+                                        var sliderImages = [
+            <c:forEach var="s" items="${sliders}">
+                                            "../${s.getImg()}",
+            </c:forEach>
+                                        ];
 
-            <!-- Select2 -->
-            <script src="../assets/js/select2.min.js"></script>
-            <script src="../assets/js/select2.init.js"></script>
-            <!-- Datepicker -->
-            <script src="../assets/js/flatpickr.min.js"></script>
-            <script src="../assets/js/flatpickr.init.js"></script>
-            <!-- Datepicker -->
-            <script src="../assets/js/jquery.timepicker.min.js"></script> 
-            <script src="../assets/js/timepicker.init.js"></script> 
-            <!-- Icons -->
-            <script src="../assets/js/feather.min.js"></script>
-            <!-- Main Js -->
-            <script src="../assets/js/app.js"></script>
-            <script>
-                                            var sliderImages = [
-                <c:forEach var="s" items="${sliders}">
-                                                "../${s.getImg()}",
-                </c:forEach>
-                                            ];
+                                        easy_background("#home", {
+                                            slide: sliderImages,
+                                            delay: [3000, 3000, 3000]
+                                        });
+        </script>
 
-                                            easy_background("#home", {
-                                                slide: sliderImages,
-                                                delay: [3000, 3000, 3000]
+
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+
+                                        var alertMessage = '<%= session.getAttribute("alertMessage") != null ? session.getAttribute("alertMessage") : "" %>';
+                                        var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "" %>';
+
+                                        // Kiểm tra nếu alertMessage và alertType không rỗng thì hiển thị Swal.fire
+                                        if (alertMessage.trim() !== "" && alertType.trim() !== "") {
+                                            Swal.fire({
+                                                icon: alertType,
+                                                title: alertMessage,
+                                                showConfirmButton: false,
+                                                timer: 3000
                                             });
-            </script>
+                                        }
+
+
+            <%
+            session.removeAttribute("alertMessage");
+            session.removeAttribute("alertType");
+            %>
+        </script>
+
+        <script src="../assets/js/tiny-slider.js"></script>
+        <script src="../assets/js/tiny-slider-init.js"></script>
+        <script>
+                                        var slider = tns({
+                                            container: '.tiny-slider .row',
+                                            items: 4, // Hiển thị 4 bài viết trên mỗi slide
+                                            slideBy: 'page',
+                                            autoplay: true,
+                                            autoplayButtonOutput: false,
+                                            controls: false, // Cho phép điều khiển slide
+                                            nav: true, // Cho phép navigation
+                                            controlsPosition: 'outside', // Đặt nút prev, next bên ngoài slider
+                                            responsive: {
+                                                '0': {
+                                                    items: 1, // 1 item cho các màn hình nhỏ
+                                                },
+                                                '600': {
+                                                    items: 2, // 2 items cho các màn hình trung bình
+                                                },
+                                                '1024': {
+                                                    items: 4, // 4 items cho màn hình lớn
+                                                }
+                                            }
+                                        });
+        </script>
+
+
+
     </body>
 
 </html>

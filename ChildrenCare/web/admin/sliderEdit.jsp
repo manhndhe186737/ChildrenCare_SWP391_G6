@@ -275,40 +275,40 @@
                             </li>
 
                             <li class="list-inline-item mb-0 ms-1">
-                            <c:choose>
-                                <c:when test="${sessionScope.user ne null}">
-                                    <div class="dropdown dropdown-primary">
-                                        <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
-                                        </button>
-                                        <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                            <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                                <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="flex-1 ms-2">
-                                                    <span class="d-block mb-1">${sessionScope.user.fullname}</span>
-                                                </div>
-                                            </a>
-                                            <c:if test="${sessionScope.role.contains('Admin')}">
-                                                <a class="dropdown-item text-dark" href="doctor-dashboard.html">
-                                                    <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                <c:choose>
+                                    <c:when test="${sessionScope.user ne null}">
+                                        <div class="dropdown dropdown-primary">
+                                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                            </button>
+                                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                                <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
+                                                    <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                    <div class="flex-1 ms-2">
+                                                        <span class="d-block mb-1">${sessionScope.user.fullname}</span>
+                                                    </div>
                                                 </a>
-                                            </c:if>
-                                            <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
-                                                <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
-                                            </a>
-                                            <div class="dropdown-divider border-top"></div>
-                                            <a class="dropdown-item text-dark" href="logout">
-                                                <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
-                                            </a>
+                                                <c:if test="${sessionScope.role.contains('Admin')}">
+                                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html">
+                                                        <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                                    </a>
+                                                </c:if>
+                                                <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
+                                                    <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
+                                                </a>
+                                                <div class="dropdown-divider border-top"></div>
+                                                <a class="dropdown-item text-dark" href="logout">
+                                                    <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="login" class="btn btn-soft-primary btn-sm">
-                                        <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
-                                    </a>
-                                </c:otherwise>
-                            </c:choose>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="login" class="btn btn-soft-primary btn-sm">
+                                            <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
                             </li>
                         </ul>
                     </div>
@@ -341,20 +341,22 @@
                                     <%
                                         Slider slider = (Slider) request.getAttribute("slider");
                                         if (slider == null) {
-                                            response.sendRedirect("SliderList");
+                                            response.sendRedirect("slider");
                                             return;
                                         }
                                     %>
 
-                                    <form action="slider-edit" method="post" class="edit-slider-form">
+                                    <form action="slider-edit" method="post" enctype="multipart/form-data" class="edit-slider-form">
                                         <input type="hidden" name="id" value="<%= slider.getId() %>">
 
                                         <label>Title:</label>
                                         <input type="text" name="title" value="<%= slider.getTitle() %>" required>
 
-                                        <label>Image URL:</label>
-                                        <input type="text" name="image" value="<%= slider.getImg() %>" required>
-                                        <img src="<%= "."+slider.getImg() %>" alt="Preview" class="image-preview">
+                                        <label>Current Image:</label>
+                                        <img src="<%= slider.getImg() %>" alt="Current Image" class="image-preview" id="preview">
+
+                                        <label>Upload New Image:</label>
+                                        <input type="file" name="imageFile" id="imageFile" accept="image/*">
 
                                         <label>Status:</label>
                                         <select name="status">
@@ -515,28 +517,39 @@
                     <script src="./assets/js/feather.min.js"></script>
                     <!-- Main Js -->
                     <script src="./assets/js/app.js"></script>
-
                     <script>
-                                                    const handleChange = () => {
-                                                        const fileUploader = document.querySelector('#input-file');
-                                                        const getFile = fileUploader.files
-                                                        if (getFile.length !== 0) {
-                                                            const uploadedFile = getFile[0];
-                                                            readFile(uploadedFile);
-                                                        }
-                                                    }
-
-                                                    const readFile = (uploadedFile) => {
-                                                        if (uploadedFile) {
+                                                    document.getElementById("imageFile").addEventListener("change", function (event) {
+                                                        const file = event.target.files[0];
+                                                        if (file) {
                                                             const reader = new FileReader();
-                                                            reader.onload = () => {
-                                                                const parent = document.querySelector('.preview-box');
-                                                                parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
+                                                            reader.onload = function () {
+                                                                document.getElementById("preview").src = reader.result;
                                                             };
-
-                                                            reader.readAsDataURL(uploadedFile);
+                                                            reader.readAsDataURL(file);
                                                         }
-                                                    };
+                                                    });
+                    </script>
+                    <script>
+                        const handleChange = () => {
+                            const fileUploader = document.querySelector('#input-file');
+                            const getFile = fileUploader.files
+                            if (getFile.length !== 0) {
+                                const uploadedFile = getFile[0];
+                                readFile(uploadedFile);
+                            }
+                        }
+
+                        const readFile = (uploadedFile) => {
+                            if (uploadedFile) {
+                                const reader = new FileReader();
+                                reader.onload = () => {
+                                    const parent = document.querySelector('.preview-box');
+                                    parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
+                                };
+
+                                reader.readAsDataURL(uploadedFile);
+                            }
+                        };
                     </script>
                     </body>
 
