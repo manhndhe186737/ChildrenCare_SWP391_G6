@@ -5,8 +5,12 @@
         <servlet-class>controller.manage.customer.ListCustomers</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Login</servlet-name>
+        <servlet-name>LoginController</servlet-name>
         <servlet-class>controller.auth.LoginController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccountController</servlet-name>
+        <servlet-class>controller.auth.AccountController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ServiceList</servlet-name>
@@ -88,6 +92,18 @@
         <servlet-name>Blog Search</servlet-name>
         <servlet-class>controller.manage.blog.BlogSearchServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Delete Staff</servlet-name>
+        <servlet-class>controller.manage.staff.DeleteStaff</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/logingoogle</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountController</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
         <url-pattern>/admin/customers</url-pattern>
@@ -171,5 +187,9 @@
     <servlet-mapping>
         <servlet-name>Blog Search</servlet-name>
         <url-pattern>/blog-search</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Delete Staff</servlet-name>
+        <url-pattern>/admin/delete-staff</url-pattern>
     </servlet-mapping>
 </web-app>

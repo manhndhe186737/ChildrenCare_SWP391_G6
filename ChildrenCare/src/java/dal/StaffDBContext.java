@@ -23,44 +23,89 @@ import model.User;
  */
 public class StaffDBContext extends DBContext {
 
-    public ArrayList<User> getUsers(String role) {
-        PreparedStatement stm = null;
+    public ArrayList<User> getUsers(String role, String search, String sort, int page, int pageSize) {
         ArrayList<User> users = new ArrayList<>();
+
+        String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.avatar, u.phone, a.email, a.password, r.role_name FROM users u\n"
+                + "JOIN accounts a ON u.user_id = a.user_id\n"
+                + "JOIN userroles ur ON ur.email = a.email\n"
+                + "JOIN roles r ON r.role_id = ur.role_id\n"
+                + "WHERE r.role_name = ? AND isActive = 1 ";
+
+        if (search != null && !search.isEmpty()) {
+            sql += "AND u.fullname LIKE ? ";
+        }
+
+        sql += "ORDER BY u.fullname " + (sort != null && sort.equals("desc") ? "DESC" : "ASC") + " "
+                + "LIMIT ?, ?";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+
+            stm.setString(1, role);
+
+            int index = 2;
+            if (search != null && !search.isEmpty()) {
+                stm.setString(index++, "%" + search + "%");
+            }
+
+            stm.setInt(index++, (page - 1) * pageSize); 
+            stm.setInt(index, pageSize); 
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    User u = new User();
+                    u.setId(rs.getInt("user_id"));
+                    u.setFullname(rs.getString("fullname"));
+                    u.setDob(rs.getDate("dob"));
+                    u.setAddress(rs.getString("address"));
+                    u.setAvatar(rs.getString("avatar"));
+                    u.setPhone(rs.getString("phone"));
+                    u.setGender(rs.getBoolean("gender"));
+
+                    Account a = new Account();
+                    a.setEmail(rs.getString("email"));
+                    a.setPassword(rs.getString("password"));
+
+                    u.setAccount(a);
+                    users.add(u);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        }
+
+        return users;
+    }
+
+    public int getTotalUsers(String role, String search) {
+        PreparedStatement stm = null;
+        int total = 0;
         try {
-            String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.avatar, u.phone, a.email, a.password, r.role_name FROM users u\n"
-                    + "JOIN accounts a\n"
-                    + "ON u.user_id = a.user_id\n"
-                    + "JOIN userroles ur\n"
-                    + "ON ur.email = a.email\n"
-                    + "JOIN roles r\n"
-                    + "ON r.role_id = ur.role_id\n"
-                    + "WHERE r.role_name = ?\n"
-                    + "ORDER BY u.user_id";
+            String sql = "SELECT COUNT(*) FROM users u\n"
+                    + "JOIN accounts a ON u.user_id = a.user_id\n"
+                    + "JOIN userroles ur ON ur.email = a.email\n"
+                    + "JOIN roles r ON r.role_id = ur.role_id\n"
+                    + "WHERE r.role_name = ?";
+
+            if (search != null && !search.isEmpty()) {
+                sql += " AND u.fullname LIKE ?";
+            }
 
             stm = connection.prepareStatement(sql);
             stm.setString(1, role);
+
+            if (search != null && !search.isEmpty()) {
+                stm.setString(2, "%" + search + "%");
+            }
+
             ResultSet rs = stm.executeQuery();
-
-            while (rs.next()) {
-                User u = new User();
-                u.setId(rs.getInt("user_id"));
-                u.setFullname(rs.getString("fullname"));
-                u.setDob(rs.getDate("dob"));
-                u.setAddress(rs.getString("address"));
-                u.setAvatar(rs.getString("avatar"));
-                u.setPhone(rs.getString("phone"));
-                u.setGender(rs.getBoolean("gender"));
-
-                Account a = new Account();
-                a.setEmail(rs.getString("email"));
-                a.setPassword(rs.getString("password"));
-
-                u.setAccount(a);
-
-                users.add(u);
+            if (rs.next()) {
+                total = rs.getInt(1);
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             try {
                 stm.close();
@@ -69,7 +114,7 @@ public class StaffDBContext extends DBContext {
                 Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return users;
+        return total;
     }
 
     public User getProfileStaff(int id) {
@@ -78,7 +123,7 @@ public class StaffDBContext extends DBContext {
         String sql = "SELECT u.user_id, u.fullname, u.address, u.dob, u.phone, u.avatar, u.gender, sp.staff_profile_id, sp.experience, sp.certification, sp.specialties, sp.exp_start, sp.exp_end, a.email, u.bio FROM users u \n"
                 + "JOIN staffprofiles sp ON u.user_id = sp.staff_id \n"
                 + "JOIN accounts a ON a.user_id = u.user_id \n"
-                + "WHERE u.user_id = ?";
+                + "WHERE u.user_id = ? AND isActive = 1";
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, id);
@@ -151,24 +196,36 @@ public class StaffDBContext extends DBContext {
     }
 
     public void updateStaff(User staff) {
-    String sql = "UPDATE users SET fullname = ?, phone = ?, bio = ?, dob = ?, address = ?, avatar = ? WHERE user_id = ?";
-    
-    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        String sql = "UPDATE users SET fullname = ?, phone = ?, bio = ?, dob = ?, address = ?, avatar = ? WHERE user_id = ?";
 
-        stmt.setString(1, staff.getFullname());
-        stmt.setString(2, staff.getPhone());
-        stmt.setString(3, staff.getBio());
-        stmt.setDate(4, new java.sql.Date(staff.getDob().getTime()));
-        stmt.setString(5, staff.getAddress());
-        stmt.setString(6, staff.getAvatar());
-        stmt.setInt(7, staff.getId());
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-        stmt.executeUpdate();
+            stmt.setString(1, staff.getFullname());
+            stmt.setString(2, staff.getPhone());
+            stmt.setString(3, staff.getBio());
+            stmt.setDate(4, new java.sql.Date(staff.getDob().getTime()));
+            stmt.setString(5, staff.getAddress());
+            stmt.setString(6, staff.getAvatar());
+            stmt.setInt(7, staff.getId());
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-}
+    
+    public void deleteStaff(int id) {
+        String sql = "UPDATE users SET isActive = 0 WHERE user_id = ?";
 
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
+            stmt.setInt(1, id);
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

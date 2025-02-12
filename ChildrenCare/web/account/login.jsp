@@ -80,11 +80,8 @@
                                                 <button type="submit" name="buttonSubmit" class="btn btn-primary">Sign in</button>
                                             </div>
                                         </div>
-                                        <c:if test="${not empty message}">
-                                            <div class="alert alert-success">
-                                                <p>${message}</p>
-                                            </div>
-                                        </c:if>
+                                        
+                                        
 
                                         <c:if test="${not empty error}">
                                             <div class="alert alert-error"style="
@@ -105,7 +102,7 @@
                                         </div><!--end col-->
 
                                             <div class="d-grid">
-                                                <a href="#" class="btn btn-soft-primary"><i class="uil uil-google"></i> Google</a>
+                                                <a href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile&redirect_uri=http://localhost:8080/ChildrenCare/logingoogle&response_type=code&client_id=101952113442-4io3q1t71ct7onapubshkg195qmv61rs.apps.googleusercontent.com&approval_prompt=force" class="btn btn-soft-primary"><i class="uil uil-google"></i> Google</a>
                                             </div>
 
                                         <div class="col-12 text-center">

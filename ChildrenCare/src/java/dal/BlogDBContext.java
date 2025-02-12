@@ -186,4 +186,24 @@ public List<Blog> getLatestBlogs() {
             System.out.println("❌ Không tìm thấy chi tiết cho blog với ID: " + testBlogId);
         }
     }
+    
+    public Blog getNewestBlog() {
+        Blog blog = new Blog();
+        String sql = "SELECT * FROM blogs\n"
+                + "ORDER BY created_at DESC\n"
+                + "LIMIT 1";
+        
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            ResultSet rs = stm.executeQuery();
+            
+            if(rs.next()){
+                blog.setBlogId(rs.getInt("blog_id"));
+                blog.setTitle(rs.getString("title"));
+                blog.setContent(rs.getString("content"));
+                blog.setFeaturedImage(rs.getString("featured_image"));
+            }
+        } catch (Exception e) {
+        }
+        return blog;
+    }
 }

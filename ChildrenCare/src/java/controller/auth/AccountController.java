@@ -74,6 +74,8 @@ public class AccountController extends HttpServlet {
                         session.setAttribute("account", acc);
                         session.setAttribute("role", roles);
                         session.setAttribute("isLoggedIn", true);
+                        session.setAttribute("alertMessage", "Đăng nhập thành công!");
+                        session.setAttribute("alertType", "success");
                         response.sendRedirect("c/home");
                     } else {
                         request.setAttribute("error", "Tài khoản của bạn chưa được xác minh.");
