@@ -58,7 +58,7 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                        <!--<a href="index.html">-->
+                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
@@ -321,20 +321,38 @@
                         <div class="row">
                             <div class="col-xl-9 col-md-6">
                                 <h5 class="mb-0">Staff</h5>
-
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Staff</li>
                                     </ul>
                                 </nav>
-                            </div><!--end col-->
+                            </div>
 
                             <div class="col-xl-3 col-md-6 mt-4 mt-md-0 text-md-end">
                                 <a href="add-doctor.html" class="btn btn-primary">Add New Staff</a>
-                            </div><!--end col-->
-                        </div><!--end row-->
+                            </div>
+                        </div>
 
+                        <!-- Search and Sort Form -->
+                        <form action="staff" method="get">
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <input type="text" name="search" class="form-control" placeholder="Search by Name" value="${param.search}">
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="sort" class="form-control">
+                                        <option value="asc" ${param.sort == 'asc' ? 'selected' : ''}>Name ASC</option>
+                                        <option value="desc" ${param.sort == 'desc' ? 'selected' : ''}>Name DESC</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Staff List -->
                         <div class="row row-cols-md-2 row-cols-lg-5">
                             <c:forEach var="s" items="${requestScope.staff}">
                                 <div class="col mt-4">
@@ -352,11 +370,31 @@
                                             <a href="staff-profile?staff_id=${s.id}" class="title text-dark h5 d-block mb-0">${s.fullname}</a>
                                         </div>
                                     </div>
-                                </div><!--end col-->
+                                </div>
                             </c:forEach>
-                        </div><!--end row-->
+                        </div>
+
+                        <!-- Paging with Prev and Next -->
+                        <div class="mt-4">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <!-- Page Numbers -->
+                                    <c:if test="${not empty requestScope.pageNumbers}">
+                                        <c:forEach var="page" items="${requestScope.pageNumbers}">
+                                            <li class="page-item ${page == param.page ? 'active' : ''}">
+                                                <a class="page-link" href="staff?page=${page}&search=${param.search}&sort=${param.sort}">${page}</a>
+                                            </li>
+                                        </c:forEach>
+                                    </c:if>
+                                </ul>
+                            </nav>
+                        </div>
+
+
+
                     </div>
-                </div><!--end container-->
+                </div>
+
 
                 <!-- Footer Start -->
                 <footer class="bg-white shadow py-3">
@@ -364,7 +402,7 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <div class="text-sm-start text-center">
-                                    
+
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->

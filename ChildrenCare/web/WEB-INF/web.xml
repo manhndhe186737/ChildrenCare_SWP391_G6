@@ -92,6 +92,10 @@
         <servlet-name>Blog Search</servlet-name>
         <servlet-class>controller.manage.blog.BlogSearchServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Delete Staff</servlet-name>
+        <servlet-class>controller.manage.staff.DeleteStaff</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/logingoogle</url-pattern>
@@ -183,5 +187,9 @@
     <servlet-mapping>
         <servlet-name>Blog Search</servlet-name>
         <url-pattern>/blog-search</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Delete Staff</servlet-name>
+        <url-pattern>/admin/delete-staff</url-pattern>
     </servlet-mapping>
 </web-app>

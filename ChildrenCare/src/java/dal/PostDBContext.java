@@ -4,78 +4,78 @@ import model.Post;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import model.User;
 
 public class PostDBContext extends DBContext {
 
-   public List<Post> getPaginatedPosts(int page, int pageSize, String category, String author, String status, String search, String sortBy, String order) {
-    List<Post> posts = new ArrayList<>();
-    String sql = "SELECT p.*, u.fullname AS author_name FROM posts p "
-            + "LEFT JOIN users u ON p.author_id = u.user_id WHERE 1=1 ";
+    public List<Post> getPaginatedPosts(int page, int pageSize, String category, String author, String status, String search, String sortBy, String order) {
+        List<Post> posts = new ArrayList<>();
+        String sql = "SELECT p.*, u.fullname AS author_name FROM posts p "
+                + "LEFT JOIN users u ON p.author_id = u.user_id WHERE 1=1 ";
 
-    // Bộ lọc dữ liệu
-    if (category != null && !category.isEmpty()) {
-        sql += " AND p.category = ? ";
-    }
-    if (author != null && !author.isEmpty()) {
-        sql += " AND p.author_id = ? ";
-    }
-    if (status != null && !status.isEmpty()) {
-        sql += " AND p.status = ? ";
-    }
-    if (search != null && !search.isEmpty()) {
-        sql += " AND p.title LIKE ? ";
-    }
-
-    // Kiểm tra cột sắp xếp hợp lệ
-    String validSortColumns = "p.title, p.category, author_name, p.status";
-    if (sortBy == null || !validSortColumns.contains(sortBy)) {
-        sortBy = "p.updatedate"; // Mặc định sắp xếp theo ngày cập nhật
-    }
-    if (!"ASC".equalsIgnoreCase(order) && !"DESC".equalsIgnoreCase(order)) {
-        order = "DESC"; // Mặc định giảm dần
-    }
-    sql += " ORDER BY " + sortBy + " " + order;
-
-    // Giới hạn phân trang
-    sql += " LIMIT ?, ?";
-
-    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-        int paramIndex = 1;
+        // Bộ lọc dữ liệu
         if (category != null && !category.isEmpty()) {
-            stmt.setString(paramIndex++, category);
+            sql += " AND p.category = ? ";
         }
         if (author != null && !author.isEmpty()) {
-            stmt.setInt(paramIndex++, Integer.parseInt(author));
+            sql += " AND p.author_id = ? ";
         }
         if (status != null && !status.isEmpty()) {
-            stmt.setString(paramIndex++, status);
+            sql += " AND p.status = ? ";
         }
         if (search != null && !search.isEmpty()) {
-            stmt.setString(paramIndex++, "%" + search + "%");
+            sql += " AND p.title LIKE ? ";
         }
-        stmt.setInt(paramIndex++, (page - 1) * pageSize);
-        stmt.setInt(paramIndex, pageSize);
 
-        ResultSet rs = stmt.executeQuery();
-        while (rs.next()) {
-            posts.add(new Post(
-                    rs.getInt("post_id"),
-                    rs.getString("title"),
-                    rs.getString("content"),
-                    rs.getDate("updatedate"),
-                    rs.getDate("createdate"),
-                    rs.getString("status"),
-                    rs.getString("image"),
-                    rs.getString("category"),
-                    rs.getString("author_name")
-            ));
+        // Kiểm tra cột sắp xếp hợp lệ
+        String validSortColumns = "p.title, p.category, author_name, p.status";
+        if (sortBy == null || !validSortColumns.contains(sortBy)) {
+            sortBy = "p.updatedate"; // Mặc định sắp xếp theo ngày cập nhật
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        if (!"ASC".equalsIgnoreCase(order) && !"DESC".equalsIgnoreCase(order)) {
+            order = "DESC"; // Mặc định giảm dần
+        }
+        sql += " ORDER BY " + sortBy + " " + order;
+
+        // Giới hạn phân trang
+        sql += " LIMIT ?, ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            int paramIndex = 1;
+            if (category != null && !category.isEmpty()) {
+                stmt.setString(paramIndex++, category);
+            }
+            if (author != null && !author.isEmpty()) {
+                stmt.setInt(paramIndex++, Integer.parseInt(author));
+            }
+            if (status != null && !status.isEmpty()) {
+                stmt.setString(paramIndex++, status);
+            }
+            if (search != null && !search.isEmpty()) {
+                stmt.setString(paramIndex++, "%" + search + "%");
+            }
+            stmt.setInt(paramIndex++, (page - 1) * pageSize);
+            stmt.setInt(paramIndex, pageSize);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                posts.add(new Post(
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getDate("updatedate"),
+                        rs.getDate("createdate"),
+                        rs.getString("status"),
+                        rs.getString("image"),
+                        rs.getString("category"),
+                        rs.getString("author_name")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return posts;
     }
-    return posts;
-}
-
 
     // Đếm tổng số bài viết theo điều kiện
     public int getTotalPosts(String category, String author, String status, String search) {
@@ -222,28 +222,54 @@ public class PostDBContext extends DBContext {
         return categories;
     }
 
-public List<String[]> getAllAuthors() {
-    List<String[]> authors = new ArrayList<>();
-    String sql = "SELECT u.user_id, u.fullname " +
-                 "FROM users u " +
-                 "JOIN accounts a ON u.user_id = a.user_id " +
-                 "JOIN userroles ur ON a.email = ur.email " +
-                 "JOIN roles r ON ur.role_id = r.role_id " +
-                 "WHERE r.role_name = ?";  
+    public List<String[]> getAllAuthors() {
+        List<String[]> authors = new ArrayList<>();
+        String sql = "SELECT u.user_id, u.fullname "
+                + "FROM users u "
+                + "JOIN accounts a ON u.user_id = a.user_id "
+                + "JOIN userroles ur ON a.email = ur.email "
+                + "JOIN roles r ON ur.role_id = r.role_id "
+                + "WHERE r.role_name = ?";
 
-    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-        stmt.setString(1, "Marketing Staff"); 
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, "Marketing Staff");
 
-        try (ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                authors.add(new String[]{rs.getString("user_id"), rs.getString("fullname")});
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    authors.add(new String[]{rs.getString("user_id"), rs.getString("fullname")});
+                }
             }
+        } catch (SQLException e) {
+            System.err.println("Error fetching marketing authors: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.err.println("Error fetching marketing authors: " + e.getMessage());
+        return authors;
     }
-    return authors;
-}
 
+    public ArrayList<Post> getHomePosts() {
+        ArrayList<Post> posts = new ArrayList<>();
+        String sql = "select * from Posts\n"
+                + "where status = 1";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Post p = new Post();
+                p.setId(rs.getInt("post_id"));
+                p.setTitle(rs.getString("title"));
+                p.setContent(rs.getString("content"));
+                p.setImg(rs.getString("image"));
+                p.setCategory(rs.getString("category"));
+
+                User u = new User();
+                u.setId(rs.getInt("author_id"));
+
+                posts.add(p);
+            }
+
+        } catch (Exception e) {
+        }
+        return posts;
+    }
 
 }

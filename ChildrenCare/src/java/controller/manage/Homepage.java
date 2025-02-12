@@ -4,6 +4,8 @@
  */
 package controller.manage;
 
+import dal.BlogDBContext;
+import dal.PostDBContext;
 import dal.ServiceDBContext;
 import dal.SliderDBContext;
 import java.io.IOException;
@@ -14,7 +16,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import model.Account;
+import model.Post;
 import model.Role;
 
 /**
@@ -73,9 +77,17 @@ public class Homepage extends HttpServlet {
             }
             isLogin += "1";
         }
+        
+        PostDBContext pdb = new PostDBContext();
+        ArrayList<Post> posts = pdb.getHomePosts();
 
         ServiceDBContext sdb = new ServiceDBContext();
         SliderDBContext sliderDB = new SliderDBContext();
+        
+        BlogDBContext bdb = new BlogDBContext();
+        
+        request.setAttribute("blog", bdb.getNewestBlog());
+        request.setAttribute("posts", posts);
         request.setAttribute("sliders", sliderDB.getActiveSliders());
         request.setAttribute("services", sdb.getHomeServices());
         request.setAttribute("login", isLogin);
