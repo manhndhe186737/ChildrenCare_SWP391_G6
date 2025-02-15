@@ -73,7 +73,7 @@
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li class="active"><a href="../admin/staff">Staff</a></li>
-                                    <li><a href="javascript:void(0)" onclick="location.href='../admin/add-staff'">Add Staff</a></li>
+                                    <li><a href="add-doctor.html">Add Staff</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -183,7 +183,16 @@
                             <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
                                 <i class="uil uil-bars"></i>
                             </a>
-
+                            <div class="search-bar p-0 d-none d-lg-block ms-2">
+                                <div id="search" class="menu-search mb-0">
+                                    <form role="search" method="get" id="searchform" class="searchform">
+                                        <div>
+                                            <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords...">
+                                            <input type="submit" id="searchsubmit" value="Search">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
 
                         <ul class="list-unstyled mb-0">
@@ -312,57 +321,50 @@
                         <div class="row">
                             <div class="col-xl-9 col-md-6">
                                 <h5 class="mb-0">Staff</h5>
-
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Staff</li>
                                     </ul>
                                 </nav>
-                            </div><!--end col-->
+                            </div>
 
                             <div class="col-xl-3 col-md-6 mt-4 mt-md-0 text-md-end">
-                                <a href="../admin/add-staff" class="btn btn-primary">Add New Staff</a>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                        
-                        </br>
+                                <a href="add-doctor.html" class="btn btn-primary">Add New Staff</a>
+                            </div>
+                        </div>
 
-                        <form method="GET" action="../admin/staff">
-                            <div class="row g-2 align-items-center">
-                                <!-- Ô tìm kiếm -->
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control rounded-pill" name="search" placeholder="Search by name" value="${searchTerm}">
+                        <!-- Search and Sort Form -->
+                        <form action="staff" method="get">
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <input type="text" name="search" class="form-control" placeholder="Search by Name" value="${param.search}">
                                 </div>
-
-                                <!-- Ô chọn cột sắp xếp -->
                                 <div class="col-md-3">
-                                    <select class="form-select" name="sort">
-                                        <option value="fullname" ${sortColumn == 'fullname' ? 'selected' : ''}>Sort by Name</option>
+                                    <select name="sort" class="form-control">
+                                        <option value="asc" ${param.sort == 'asc' ? 'selected' : ''}>Name ASC</option>
+                                        <option value="desc" ${param.sort == 'desc' ? 'selected' : ''}>Name DESC</option>
                                     </select>
                                 </div>
-
-                                <!-- Ô chọn hướng sắp xếp -->
                                 <div class="col-md-3">
-                                    <select class="form-select" name="direction">
-                                        <option value="ASC" ${sortDirection == 'ASC' ? 'selected' : ''}>Ascending</option>
-                                        <option value="DESC" ${sortDirection == 'DESC' ? 'selected' : ''}>Descending</option>
-                                    </select>
-                                </div>
-
-                                <!-- Nút Apply -->
-                                <div class="col-md-2 text-end">
-                                    <button type="submit" class="btn btn-primary w-100">Apply</button>
+                                    <button type="submit" class="btn btn-primary">Search</button>
                                 </div>
                             </div>
                         </form>
 
+                        <!-- Staff List -->
                         <div class="row row-cols-md-2 row-cols-lg-5">
-                            <c:forEach var="s" items="${staff}">
+                            <c:forEach var="s" items="${requestScope.staff}">
                                 <div class="col mt-4">
                                     <div class="card team border-0 rounded shadow overflow-hidden">
                                         <div class="team-img position-relative">
                                             <img src="../assets/images/${s.avatar}" class="img-fluid" alt="">
+                                            <ul class="list-unstyled team-social mb-0">
+                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="facebook" class="icons"></i></a></li>
+                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="linkedin" class="icons"></i></a></li>
+                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="instagram" class="icons"></i></a></li>
+                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="twitter" class="icons"></i></a></li>
+                                            </ul>
                                         </div>
                                         <div class="card-body content text-center">
                                             <a href="staff-profile?staff_id=${s.id}" class="title text-dark h5 d-block mb-0">${s.fullname}</a>
@@ -371,30 +373,28 @@
                                 </div>
                             </c:forEach>
                         </div>
-                                    
-                                    </br>
-                                    </br>
 
-
-                        <div class="pagination justify-content-center">
-                            <c:if test="${currentPage > 1}">
-                                <a class="btn btn-outline-primary mx-1" href="staff?page=${currentPage - 1}&search=${searchTerm}&sort=${sortColumn}&direction=${sortDirection}">Previous</a>
-                            </c:if>
-
-                            <c:forEach var="i" begin="1" end="${totalPages}">
-                                <a class="btn ${i == currentPage ? 'btn-primary' : 'btn-outline-primary'} mx-1"
-                                   href="staff?page=${i}&search=${searchTerm}&sort=${sortColumn}&direction=${sortDirection}">${i}</a>
-                            </c:forEach>
-
-                            <c:if test="${currentPage < totalPages}">
-                                <a class="btn btn-outline-primary mx-1" href="staff?page=${currentPage + 1}&search=${searchTerm}&sort=${sortColumn}&direction=${sortDirection}">Next</a>
-                            </c:if>
+                        <!-- Paging with Prev and Next -->
+                        <div class="mt-4">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <!-- Page Numbers -->
+                                    <c:if test="${not empty requestScope.pageNumbers}">
+                                        <c:forEach var="page" items="${requestScope.pageNumbers}">
+                                            <li class="page-item ${page == param.page ? 'active' : ''}">
+                                                <a class="page-link" href="staff?page=${page}&search=${param.search}&sort=${param.sort}">${page}</a>
+                                            </li>
+                                        </c:forEach>
+                                    </c:if>
+                                </ul>
+                            </nav>
                         </div>
 
 
 
                     </div>
-                </div><!--end container-->
+                </div>
+
 
                 <!-- Footer Start -->
                 <footer class="bg-white shadow py-3">
@@ -421,7 +421,7 @@
                     <img src="../assets/images/logo-dark.png" height="24" class="light-version" alt="">
                     <img src="../assets/images/logo-light.png" height="24" class="dark-version" alt="">
                 </h5>
-                <button type="button" classse="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+                <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
             </div>
             <div class="offcanvas-body p-4 px-md-5">
                 <div class="row">

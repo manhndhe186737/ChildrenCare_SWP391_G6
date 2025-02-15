@@ -68,7 +68,7 @@
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li><a href="../admin/staff">Staff</a></li>
-                                    <li><a href="../admin/add-staff">Add Staff</a></li>
+                                    <li><a href="add-doctor.html">Add Staff</a></li>
                                 </ul>
                             </div>
                         </li>

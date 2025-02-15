@@ -659,10 +659,34 @@
                                                             </div>
                                                         </div>
                                                     </div><!--end row-->
+                                                    
+                                                    <div class="col-lg-6">
+                                                        <div class="rounded shadow mt-4">
+                                                            <div class="p-4 border-bottom">
+                                                                <h6 class="mb-0">General Notifications :</h6>
+                                                            </div>
+                                
+                                                            <div class="p-4">
+                                                                <div class="p-4 border-bottom">
+                                                                    <h5 class="mb-0 text-danger">Delete Staff :</h5>
+                                                                </div>
+
+                                                                <div class="p-4">
+                                                                    <h6 class="mb-0 fw-normal">Do you want to delete this staff? Please press below "Delete" button</h6>
+                                                                    <div class="mt-4">
+                                                                        <button class="btn btn-danger">
+                                                                            <a href="../admin/delete-staff?id=${requestScope.staff.id}" style="text-decoration: none; color: inherit;">Delete Staff</a>
+                                                                        </button>
+                                                                    </div><!--end col-->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div><!--end col-->
                                                 </div><!--end teb pane-->
                                             </div><!--end tab content-->
                                         </div>
                                     </div><!--end col-->
+
                                 </div><!--end row-->
                             </div>
                         </div>
@@ -674,7 +698,7 @@
                             <div class="row align-items-center">
                                 <div class="col">
                                     <div class="text-sm-start text-center">
-                                        
+
                                     </div>
                                 </div><!--end col-->
                             </div><!--end row-->

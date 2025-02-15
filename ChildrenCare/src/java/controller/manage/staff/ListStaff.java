@@ -22,44 +22,33 @@ import model.User;
 public class ListStaff extends BaseRBAC {
 
     @Override
-    protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, Account acocunt) throws ServletException, IOException {
+    protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         StaffDBContext sdb = new StaffDBContext();
 
-        String searchTerm = req.getParameter("search");
-        String sortColumn = req.getParameter("sort");
-        String sortDirection = req.getParameter("direction");
-        String pageIndexStr = req.getParameter("page");
-        int pageSize = 10; // Số nhân viên trên mỗi trang
-        int pageIndex = (pageIndexStr != null) ? Integer.parseInt(pageIndexStr) : 1;
+        String search = req.getParameter("search");
+        String sort = req.getParameter("sort");
+        String pageParam = req.getParameter("page");
 
-        if (sortColumn == null || sortColumn.isEmpty()) {
-            sortColumn = "fullname";
-        }
+        int page = (pageParam != null && !pageParam.isEmpty()) ? Integer.parseInt(pageParam) : 1;
+        int pageSize = 10;
 
-        if (sortDirection == null || (!sortDirection.equalsIgnoreCase("ASC") && !sortDirection.equalsIgnoreCase("DESC"))) {
-            sortDirection = "ASC";
-        }
+        ArrayList<User> staff = sdb.getUsers("Staff", search, sort, page, pageSize);
 
-// Lấy tổng số nhân viên để tính số trang
-        int totalStaff = sdb.getTotalStaffCount(searchTerm);
+        int totalStaff = sdb.getTotalUsers("Staff", search);
         int totalPages = (int) Math.ceil((double) totalStaff / pageSize);
 
-// Gọi DBContext để lấy danh sách nhân viên theo tiêu chí
-        ArrayList<User> staff = sdb.getFilteredStaff(searchTerm, sortColumn, sortDirection, pageIndex, pageSize);
-
         req.setAttribute("staff", staff);
-        req.setAttribute("searchTerm", searchTerm);
-        req.setAttribute("sortColumn", sortColumn);
-        req.setAttribute("sortDirection", sortDirection);
-        req.setAttribute("currentPage", pageIndex);
-        req.setAttribute("totalPages", totalPages);
+        req.setAttribute("pageNumbers", getPageNumbers(totalPages, page));
 
         req.getRequestDispatcher("../admin/staff.jsp").forward(req, resp);
+    }
 
-        //        ArrayList<User> staff = sdb.getUsers("Staff");
-//        
-//        req.setAttribute("staff", staff);
-//        req.getRequestDispatcher("../admin/staff.jsp").forward(req, resp);
+    private ArrayList<Integer> getPageNumbers(int totalPages, int currentPage) {
+        ArrayList<Integer> pageNumbers = new ArrayList<>();
+        for (int i = 1; i <= totalPages; i++) {
+            pageNumbers.add(i);
+        }
+        return pageNumbers;
     }
 
     @Override
