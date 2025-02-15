@@ -110,6 +110,10 @@
         <servlet-name>Remove Customer</servlet-name>
         <servlet-class>controller.manage.customer.RemoveCustomer</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Booking Reservation</servlet-name>
+        <servlet-class>controller.manage.reservation.BookingReservation</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
         <url-pattern>/admin/customers</url-pattern>
@@ -185,5 +189,9 @@
     <servlet-mapping>
         <servlet-name>Remove Customer</servlet-name>
         <url-pattern>/admin/removeCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Booking Reservation</servlet-name>
+        <url-pattern>/booking-reserv</url-pattern>
     </servlet-mapping>
 </web-app>
