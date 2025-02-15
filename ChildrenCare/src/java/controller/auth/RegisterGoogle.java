@@ -81,7 +81,7 @@ public class RegisterGoogle extends HttpServlet {
                     session.setAttribute("userLogin", userLogin);
                     session.setAttribute("alertMessage", "Đăng nhập thành công");
                     session.setAttribute("alertType", "success");
-                    response.sendRedirect("index.jsp");
+                    response.sendRedirect("login");
                 } else {
                     request.setAttribute("error", "Đăng ký thất bại. Vui lòng thử lại.");
                     request.getRequestDispatcher("account/RegisterGoogle.jsp").forward(request, response);
