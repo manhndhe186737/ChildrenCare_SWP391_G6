@@ -26,9 +26,8 @@ public class StaffDBContext extends DBContext {
     public ArrayList<User> getUsers(String role, String search, String sort, int page, int pageSize) {
         ArrayList<User> users = new ArrayList<>();
 
-        String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.avatar, u.phone, a.email, a.password, r.role_name FROM users u\n"
-                + "JOIN accounts a ON u.user_id = a.user_id\n"
-                + "JOIN userroles ur ON ur.email = a.email\n"
+        String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.avatar, u.phone, u.email, u.password, r.role_name FROM users u\n"
+                + "JOIN userroles ur ON ur.email = u.email\n"
                 + "JOIN roles r ON r.role_id = ur.role_id\n"
                 + "WHERE r.role_name = ? AND isActive = 1 ";
 
@@ -83,8 +82,7 @@ public class StaffDBContext extends DBContext {
         int total = 0;
         try {
             String sql = "SELECT COUNT(*) FROM users u\n"
-                    + "JOIN accounts a ON u.user_id = a.user_id\n"
-                    + "JOIN userroles ur ON ur.email = a.email\n"
+                    + "JOIN userroles ur ON ur.email = u.email\n"
                     + "JOIN roles r ON r.role_id = ur.role_id\n"
                     + "WHERE r.role_name = ?";
 
@@ -120,9 +118,8 @@ public class StaffDBContext extends DBContext {
     public User getProfileStaff(int id) {
         User staff = new User();
         ArrayList<Profile> profiles = new ArrayList<>();
-        String sql = "SELECT u.user_id, u.fullname, u.address, u.dob, u.phone, u.avatar, u.gender, sp.staff_profile_id, sp.experience, sp.certification, sp.specialties, sp.exp_start, sp.exp_end, a.email, u.bio FROM users u \n"
+        String sql = "SELECT u.user_id, u.fullname, u.address, u.dob, u.phone, u.avatar, u.gender, sp.staff_profile_id, sp.experience, sp.certification, sp.specialties, sp.exp_start, sp.exp_end, u.email, u.bio FROM users u \n"
                 + "JOIN staffprofiles sp ON u.user_id = sp.staff_id \n"
-                + "JOIN accounts a ON a.user_id = u.user_id \n"
                 + "WHERE u.user_id = ? AND isActive = 1";
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
@@ -170,7 +167,7 @@ public class StaffDBContext extends DBContext {
         String sql = "select rsv.staff_id, a.email, u.fullname, u.address, u.dob, u.phone, u.avatar, u.gender, rsv.reserv_id, rsv.dateBook, rsv.user_id, rsv.service_id, rsv.status, rsv.createDate, rsv.updateDate, rsv.note, rsv.starttime, rsv.endtime  from users u\n"
                 + "join reservations rsv\n"
                 + "on u.user_id = rsv.staff_id\n"
-                + "join accounts a\n"
+                + "join users a\n"
                 + "on a.user_id = rsv.staff_id\n"
                 + "where u.user_id = ?";
 

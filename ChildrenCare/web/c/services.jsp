@@ -255,8 +255,6 @@
                     <ul class="navigation-menu nav-left nav-light">
 
                         <li class="has-submenu parent-parent-menu-item">
-
-                        <li class="has-submenu parent-parent-menu-item">
                             <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
@@ -287,34 +285,33 @@
                         <li class="has-submenu parent-menu-item">
                             <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                             <ul class="submenu">
-                                <li><a href="service-list" class="sub-menu-item">Services List</a></li>
+                                <li><a href="./service-list" class="sub-menu-item">Services List</a></li>
                                 <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">My Reservation</a></li>
                                 <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
                                 <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
                             </ul>
                         </li>
 
-
                         <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)">Pages</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="aboutus.html" class="sub-menu-item"> About Us</a></li>
                                 <li><a href="faqs.html" class="sub-menu-item">FAQs</a></li>
                                 <li class="has-submenu parent-menu-item">
+                                <li><a href="./blog" class="sub-menu-item">Blogs</a></li>
                                     <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                        <a href="javascript:void(0)" class="menu-item"> Blogs </a><span class="submenu-arrow"></span>
-                                        <ul class="submenu">
-                                            <li><a href="blogs.html" class="sub-menu-item">Blogs</a></li>
-                                            <li><a href="blog-detail.html" class="sub-menu-item">Blog Details</a></li>
-                                        </ul>
+                                    <li><a href="blogs.html" class="sub-menu-item">Blogs - Management</a></li>
                                     </c:if>
-                                </li>
+                                <li><a href="terms.html" class="sub-menu-item">Posts</a></li>
+                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
+                                    <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
+                                    <li><a href="./slider" class="sub-menu-item">Sliders - Management</a></li>
+                                    </c:if>
                                 <li><a href="terms.html" class="sub-menu-item">Terms & Policy</a></li>
                                 <li><a href="privacy.html" class="sub-menu-item">Privacy Policy</a></li>
                             </ul>
                         </li>
-
                         <c:if test="${sessionScope.role.contains('Admin')}">
-                            <li><a href="../admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
+                            <li><a href="./admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
                             </c:if>
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
@@ -548,7 +545,7 @@
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="text-sm-start text-center">
-                           
+
                         </div>
                     </div><!--end col-->
 

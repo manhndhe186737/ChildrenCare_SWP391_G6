@@ -226,8 +226,7 @@ public class PostDBContext extends DBContext {
         List<String[]> authors = new ArrayList<>();
         String sql = "SELECT u.user_id, u.fullname "
                 + "FROM users u "
-                + "JOIN accounts a ON u.user_id = a.user_id "
-                + "JOIN userroles ur ON a.email = ur.email "
+                + "JOIN userroles ur ON u.email = ur.email "
                 + "JOIN roles r ON ur.role_id = r.role_id "
                 + "WHERE r.role_name = ?";
 

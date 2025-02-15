@@ -26,16 +26,12 @@ public class AccountDBContext extends DBContext {
         ArrayList<Role> roles = new ArrayList<>();
         try {
             String sql = "SELECT r.role_id, r.role_name, f.fid, f.fname, f.url\n"
-                    + "FROM Accounts u\n"
-                    + "JOIN UserRoles ur \n"
-                    + "ON u.email = ur.email\n"
-                    + "JOIN Roles r\n"
-                    + "ON r.role_id = ur.role_id\n"
-                    + "JOIN RoleFeatures rf\n"
-                    + "ON rf.role_id = r.role_id\n"
-                    + "JOIN Features f\n"
-                    + "ON f.fid = rf.fid\n"
-                    + "WHERE u.email = ?";
+                    + "FROM Users u\n"
+                    + "JOIN UserRoles ur ON u.email = ur.email\n"
+                    + "JOIN Roles r ON r.role_id = ur.role_id\n"
+                    + "JOIN RoleFeatures rf ON rf.role_id = r.role_id\n"
+                    + "JOIN Features f ON f.fid = rf.fid\n"
+                    + "WHERE u.email = ?;";
 
             stm = connection.prepareStatement(sql);
             stm.setString(1, username);
@@ -75,24 +71,24 @@ public class AccountDBContext extends DBContext {
     public Account getAccount(String email, String password) {
         PreparedStatement stm = null;
         try {
-            String sql = "SELECT email, password FROM swp391.accounts\n"
+            String sql = "SELECT email, password FROM users\n"
                     + "WHERE email = ? AND password = ?";
-            
+
             stm = connection.prepareStatement(sql);
             stm.setString(1, email);
             stm.setString(2, password);
-            
+
             ResultSet rs = stm.executeQuery();
-            
-            if (rs.next()) {                
-              Account a = new Account();
-              a.setEmail(rs.getString("email"));
-              a.setPassword(rs.getString("password"));
-              
-              return a;
+
+            if (rs.next()) {
+                Account a = new Account();
+                a.setEmail(rs.getString("email"));
+                a.setPassword(rs.getString("password"));
+
+                return a;
             }
         } catch (Exception e) {
-        }finally{
+        } finally {
             try {
                 stm.close();
                 connection.close();

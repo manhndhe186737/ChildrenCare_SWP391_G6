@@ -53,7 +53,7 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                        <!--<a href="index.html">-->
+                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
@@ -435,7 +435,7 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <div class="text-sm-start text-center">
-                                    
+
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->
@@ -518,6 +518,7 @@
                                     <input type="file" name="profileImage" id="profileImageInput" class="form-control" accept="image/*" onchange="previewProfileImage(event)">
                                 </div>
                             </div>
+
 
                             <!-- Form Fields -->
                             <div class="row mt-4">

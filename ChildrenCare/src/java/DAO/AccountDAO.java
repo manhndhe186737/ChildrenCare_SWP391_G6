@@ -22,7 +22,7 @@ public class AccountDAO extends DBContext {
             e.printStackTrace();
             return false;
         }
-        String sql = "UPDATE accounts SET password = ? WHERE email = ?";
+        String sql = "UPDATE users SET password = ? WHERE email = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, hashedPassword);  
             stmt.setString(2, email);          

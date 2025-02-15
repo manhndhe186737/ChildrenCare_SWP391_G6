@@ -485,7 +485,7 @@
         <script src="assets/js/app.js"></script>
         <script>
                                         let currentPage = 1;
-                                        let itemsPerPage = 6; // Số lượng bài viết hiển thị mỗi trang
+                                        let itemsPerPage = 4; // Số lượng bài viết hiển thị mỗi trang
                                         let blogs = document.querySelectorAll('.blog-item');
                                         let totalPages = Math.ceil(blogs.length / itemsPerPage);
 
