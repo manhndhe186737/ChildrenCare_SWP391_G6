@@ -156,6 +156,7 @@
     </head>
 
     <body>
+
         <!-- Loader -->
         <div id="preloader">
             <div id="status">
@@ -440,8 +441,20 @@
                             <h6>$<%= s.getPrice() %></h6>
                             <div class="mt-3 service-actions">
                                 <a href="ServiceDetailServlet?id=<%= s.getId() %>" class="btn btn-info">Details</a>
-                                <a href="cart.jsp?add=<%= s.getId() %>" class="btn btn-success">Reserve</a>
-                                <a href="feedback.jsp?service_id=<%= s.getId() %>" class="btn btn-danger">Feedback</a>
+                                <c:if test="${sessionScope.role.contains('Customer')}">
+                                    
+                                    <form id="freserv" action="c/BookingStaff" method="post">
+                                        <input type="hidden" name="service_id" value="<%= s.getId() %>"/>
+                                        <input type="hidden" name="service_name" value="<%= s.getName() %>"/>
+                                        <a href="#" class="btn btn-success" onclick="submitCartItem(this);">Reserve</a>
+                                    </form>
+                                    <form id="fcart" action="AddToCart" method="post">
+                                        <input type="hidden" name="service_id" value="<%= s.getId() %>"/>
+                                        <input type="hidden" name="user_id" value="${sessionScope.user.id}"/>
+    <!--                                    <a href="AddToCart?service_id=<%= s.getId() %>" class="btn btn-danger">Add to Cart</a>-->
+                                        <a href="#" class="btn btn-danger" onclick="submitCartItem(this);">Add to Cart</a>
+                                    </form>
+                                </c:if>
                             </div>
                         </div>
                     </div>
@@ -548,7 +561,7 @@
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="text-sm-start text-center">
-                           
+
                         </div>
                     </div><!--end col-->
 
@@ -648,5 +661,44 @@
     <script src="./assets/js/feather.min.js"></script>
     <!-- Main Js -->
     <script src="./assets/js/app.js"></script>
+
+    <script>
+                                    function submitCart() {
+                                        var form = document.getElementById('fcart'); // Tìm form gần nhất chứa thẻ <a> được nhấn
+                                        form.submit(); // Gửi form tương ứng
+                                    }
+
+                                    function submitCartItem(button) {
+                                        button.closest('form').submit(); // Lấy form gần nhất chứa nút này và submit
+                                    }
+
+    </script>
+
+    <!-- Thư viện SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+                                    // Lấy thông báo từ session
+                                    var alertMessage = '<%= session.getAttribute("cartMessage") != null ? session.getAttribute("cartMessage") : "" %>';
+                                    var alertType = '<%= session.getAttribute("cartAlertType") != null ? session.getAttribute("cartAlertType") : "" %>';
+
+                                    // Kiểm tra nếu có thông báo thì hiển thị Swal.fire
+                                    if (alertMessage.trim() !== "" && alertType.trim() !== "") {
+                                        Swal.fire({
+                                            icon: alertType, // success, error, warning
+                                            title: alertMessage,
+                                            showConfirmButton: false,
+                                            timer: 3000
+                                        });
+                                    }
+
+                                    // Xóa thông báo khỏi session sau khi hiển thị
+        <%
+            session.removeAttribute("cartMessage");
+            session.removeAttribute("cartAlertType");
+        %>
+    </script>
+
+
 </body>
 </html>

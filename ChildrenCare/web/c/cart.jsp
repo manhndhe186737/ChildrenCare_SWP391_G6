@@ -1,9 +1,10 @@
 <%-- 
-    Document   : home
-    Created on : Feb 8, 2025, 12:43:38 PM
+    Document   : cart
+    Created on : Feb 18, 2025, 8:44:44 PM
     Author     : FPTSHOP
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,7 +14,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Children Care - Children Service Booking System</title>
+        <title>Doctris - Doctor Appointment Booking System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -25,111 +26,12 @@
         <link rel="shortcut icon" href="../assets/images/favicon.ico.png">
         <!-- Bootstrap -->
         <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <!-- SLIDER -->
-        <link rel="stylesheet" href="../assets/css/tiny-slider.css"/>
-        <!-- Select2 -->
-        <link href="../assets/css/select2.min.css" rel="stylesheet" />
-        <!-- Date picker -->
-        <link rel="stylesheet" href="../assets/css/flatpickr.min.css">
-        <link href="../assets/css/jquery.timepicker.min.css" rel="stylesheet" type="text/css" />
         <!-- Icons -->
         <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
         <link href="../assets/css/remixicon.css" rel="stylesheet" type="text/css" />
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
-        <!-- Post btn -->
-        <!-- Thêm Font Awesome từ CDN -->
-        <!-- Thêm Font Awesome từ CDN -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
-        <style>
-            /* Cập nhật cho nút Prev và Next */
-            .tns-prev, .tns-next {
-                background-color: rgba(0, 0, 0, 0.5);  /* Nền mờ */
-                color: white;
-                border: none;
-                border-radius: 50%;
-                font-size: 24px;
-                padding: 10px;
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                z-index: 10;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .tns-prev {
-                left: 10px;
-            }
-
-            .tns-next {
-                right: 10px;
-            }
-
-            /* Thêm hiệu ứng hover */
-            .tns-prev:hover, .tns-next:hover {
-                background-color: rgba(0, 0, 0, 0.7);
-            }
-
-            /* Cập nhật icon mũi tên từ Font Awesome */
-            .tns-prev:before {
-                content: "\f104";  /* Mũi tên trái FontAwesome */
-                font-family: 'Font Awesome 5 Free';
-                font-weight: 900;  /* Đảm bảo sử dụng icon Bold */
-            }
-
-            .tns-next:before {
-                content: "\f105";  /* Mũi tên phải FontAwesome */
-                font-family: 'Font Awesome 5 Free';
-                font-weight: 900;  /* Đảm bảo sử dụng icon Bold */
-            }
-
-            /* Cập nhật cho card */
-            .card-body {
-                height: 300px; /* Cố định chiều cao */
-                overflow: hidden; /* Ẩn nội dung tràn ra ngoài */
-                display: flex;
-                flex-direction: column;
-            }
-
-            .card-body img {
-                max-height: 150px; /* Giới hạn chiều cao hình ảnh */
-                object-fit: cover; /* Đảm bảo hình ảnh không bị bóp méo */
-            }
-
-            .card-body .title {
-                font-size: 18px;
-                font-weight: bold;
-                margin-top: 10px;
-            }
-
-            .card-body p {
-                flex-grow: 1;
-                font-size: 14px;
-                color: #666;
-                overflow: hidden; /* Ẩn phần text bị tràn */
-                text-overflow: ellipsis; /* Hiển thị "..." nếu nội dung quá dài */
-                white-space: nowrap; /* Ngừng xuống dòng */
-            }
-
-            .card-body .link {
-                font-size: 14px;
-                color: #007bff;
-                text-decoration: none;
-                margin-top: 10px;
-            }
-
-            .card-body .link:hover {
-                text-decoration: underline;
-            }
-
-
-        </style>
-
-
 
     </head>
 
@@ -157,8 +59,8 @@
                         </span>
                         <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                     </a>
-                </div>
-                <!-- End Logo container-->
+                </div>            
+                <!-- Logo End -->
 
                 <!-- Start Mobile Toggle -->
                 <div class="menu-extras">
@@ -178,10 +80,9 @@
 
                 <!-- Start Dropdown -->
                 <ul class="dropdowns list-inline mb-0">
-                    
                     <li class="list-inline-item mb-0">
-                        <a href="Cart">
-                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
+                        <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="settings" class="fea icon-sm"></i></div>
                         </a>
                     </li>
 
@@ -227,13 +128,12 @@
                             </c:otherwise>
                         </c:choose>
                     </li>
-
                 </ul>
                 <!-- Start Dropdown -->
 
                 <div id="navigation">
                     <!-- Navigation Menu-->   
-                    <ul class="navigation-menu nav-left nav-light">
+                    <ul class="navigation-menu nav-left nav-dark">
 
                         <li class="has-submenu parent-parent-menu-item">
                             <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
@@ -267,10 +167,7 @@
                             <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="../service-list" class="sub-menu-item">Services List</a></li>
-                                    <c:if test="${sessionScope.role.contains('Customer')}">
-                                    <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">My Reservation</a></li>
-                                    <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
-                                    </c:if>
+                                <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">My Reservation</a></li>
                                 <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
                                 <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
                             </ul>
@@ -303,143 +200,72 @@
         </header><!--end header-->
         <!-- Navbar End -->
 
-        <!-- Start Hero -->
-        <section class="bg-half-170 d-table w-100" id="home">
-            <div class="bg-overlay bg-overlay-dark"></div>
+        <!-- Hero Start -->
+
+        <div class="position-relative">
+            <div class="shape overflow-hidden text-white">
+                <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+                </svg>
+            </div>
+        </div>
+        <!-- Hero End -->
+
+        <!-- Start -->
+        <section class="section">
             <div class="container">
-                <div class="row justify-content-center mt-5">
-                    <div class="col-xl-10">
-                        <div class="heading-title text-center">
-                            <img src="../assets/images/logo-icon.png" height="50" alt="">
-                            <h4 class="heading fw-bold text-white title-dark mt-3 mb-4">Booking Your Appointments</h4>
-                            <p class="para-desc mx-auto text-white-50 mb-0">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive bg-white shadow rounded">
+                            <table class="table table-center table-padding mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="border-bottom p-3" style="min-width:50px "></th>
+                                        <th class="border-bottom p-3" style="min-width: 100px;">Product</th>
+                                        <th class="border-bottom text-center p-3" style="min-width: 500px;">Description</th>
+                                        <th class="border-bottom text-center p-3" style="min-width: 50px;">Price</th>
+                                        <th class="border-bottom text-center p-3" style="min-width: 50px;"></th>
+                                    </tr>
+                                </thead>
 
-                            <div class="mt-4 pt-2">
-                                <form class="rounded text-start shadow p-4 bg-white-50">
-                                    <div class="row align-items-center">
-                                        <div class="col-md">
-                                            <div class="input-group bg-white border rounded" style="opacity: 0.7;">
-                                                <span class="input-group-text bg-white border-0"><i class="ri-map-pin-line text-primary h5 fw-normal mb-0"></i></span>
-                                                <input name="name" id="location" type="text" class="form-control border-0" placeholder="Location:">
-                                            </div>
-                                        </div><!--end col-->
-
-                                        <div class="col-md mt-4 mt-sm-0">
-                                            <div class="input-group bg-white border rounded" style="opacity: 0.7;">
-                                                <span class="input-group-text bg-white border-0"><i class="ri-user-2-line text-primary h5 fw-normal mb-0"></i></span>
-                                                <input name="name" id="name" type="text" class="form-control border-0" placeholder="Doctor Name:">
-                                            </div>
-                                        </div><!--end col-->
-
-                                        <div class="col-md-auto mt-4 mt-sm-0">
-                                            <div class="d-grid d-md-block">
-                                                <button type="submit" class="btn btn-primary">Search</button>
-                                            </div>
-                                        </div><!--end col-->
-                                    </div><!--end row-->
-                                </form><!--end form-->
-                            </div>
+                                <tbody>
+                                    <c:forEach var="s" items="${requestScope.services}">
+                                        <tr>
+                                            <td class="h5 p-3 text-center"><a href="../c/deleteCart?id=${s.id}" class="text-danger"><i class="uil uil-times"></i></a></td>
+                                            <td class="p-3">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="../assets/images/pharmacy/shop/ashwagandha.jpg" class="img-fluid avatar avatar-small rounded shadow" style="height:auto;" alt="">
+                                                    <h6 class="mb-0 ms-3">${s.name}</h6>
+                                                </div>
+                                            </td>
+                                            <td class="text-center p-3">${s.description}</td>
+                                            <td class="text-center shop-list p-3">$ ${s.price}</td>
+                                            <td>
+                                                <div class="qty-icons">
+                                                    <form id="fbook" action="BookingStaff" method="post">
+                                                        <input type="hidden" name="service_id" value="${s.id}"/>
+                                                        <input type="hidden" name="service_name" value="${s.name}"/>
+                                                        <input type="hidden" name="isFromCart" value="true"/>
+<!--                                                        <button class="btn btn-primary">Book</button>-->
+                                                        <input type="submit" class="btn btn-primary" value="Book"/>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
                         </div>
                     </div><!--end col-->
+                </div><!--end row-->
+                <div class="row">
+                    <div class="col-lg-8 col-md-6 mt-4 pt-2">
+                        <a href="../service-list" class="btn btn-primary">Add More Services</a>
+                    </div>
                 </div><!--end row-->
             </div><!--end container-->
         </section><!--end section-->
-        <!-- End Hero -->
-
-        <!-- Start -->
-        <section class="section bg-white pb-0">
-            <!--Blog-->
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12">
-                        <div class="section-title mb-4 pb-2 text-center">
-                            <h4 class="title mb-4">Our Children Care Newest Blog</h4>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-
-                <c:set var="b" value="${requestScope.blog}"/>
-
-                <div class="row align-items-center">
-                    <div class="col-lg-5 col-md-6">
-                        <div class="position-relative">
-                            <img src="../assets/images/blog/${blog.featuredImage}" class="img-fluid" alt="">
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col-lg-7 col-md-6 mt-4 pt-2 mt-sm-0 pt-sm-0">
-                        <div class="section-title ms-lg-5">
-                            <span class="badge badge-pill badge-soft-primary">About Children Care</span>
-                            <h4 class="title mt-3 mb-4">${blog.title}</h4>
-                            <p class="para-desc text-muted">${blog.content}</p>
-                            <div class="mt-4">
-                                <a href="../blog?id=2" class="btn btn-soft-primary">Read More</a>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-
-
-            <!-- Start Post List with Tiny Slider -->
-            <div class="container mt-100 mt-60">
-                <div class="row justify-content-center">
-                    <div class="col-12">
-                        <div class="section-title mb-4 pb-2 text-center">
-                            <h4 class="title mb-4">Our Children Care Posts</h4>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-
-                <div class="tiny-slider">
-                    <div class="row">
-                        <c:forEach var="p" items="${requestScope.posts}">
-                            <div class="col-xl-3 col-md-4 col-12 mt-5">
-                                <div class="card features feature-primary bg-transparent border-0">
-                                    <div class="card-body p-0 mt-3">
-                                        <img src="../${p.img}" class="img-fluid" alt="">
-                                        <a href="#" class="title text-dark h5">${p.title}</a>
-                                        <p class="text-muted mt-3">${p.content}</p>
-                                        <a href="#" class="link">View More <i class="ri-arrow-right-line align-middle"></i></a>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                        </c:forEach>
-                    </div><!--end row-->
-                </div><!--end tiny-slider-->
-            </div><!--end container-->
-            <!-- End Post List -->
-
-
-
-            <div class="container mt-100 mt-60">
-                <div class="row justify-content-center">
-                    <div class="col-12">
-                        <div class="section-title mb-4 pb-2 text-center">
-                            <h4 class="title mb-4">Our Children Care Services</h4>
-                            <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-
-                <div class="row">
-                    <c:forEach var="s" items="${requestScope.services}">
-                        <div class="col-xl-3 col-md-4 col-12 mt-5">
-                            <div class="card features feature-primary bg-transparent border-0">
-                                <div class="card-body p-0 mt-3">
-                                    <a href="#" class="title text-dark h5">${s.name}</a>
-                                    <p class="text-muted mt-3">${s.description}</p>
-                                    <a href="#" class="link">View More <i class="ri-arrow-right-line align-middle"></i></a>
-                                </div>
-                            </div>
-                        </div><!--end col-->
-                    </c:forEach>
-                </div><!--end row-->
-            </div><!--end container-->
-        </section>
-
-        </br>
-        </br>
+        <!-- End -->
 
         <!-- Start -->
         <footer class="bg-footer">
@@ -457,25 +283,25 @@
                             <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                                 <h5 class="text-light title-dark footer-head">Company</h5>
                                 <ul class="list-unstyled footer-list mt-4">
-                                    <li><a href="aboutus.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> About us</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Services</a></li>
-                                    <li><a href="doctor-team-two.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Team</a></li>
-                                    <li><a href="blog-detail.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Project</a></li>
-                                    <li><a href="blogs.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Blog</a></li>
-                                    <li><a href="login.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Login</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> About us</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Services</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Team</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Project</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Blog</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Login</a></li>
                                 </ul>
                             </div><!--end col-->
 
                             <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                                 <h5 class="text-light title-dark footer-head">Departments</h5>
                                 <ul class="list-unstyled footer-list mt-4">
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Eye Care</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Psychotherapy</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Dental Care</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Orthopedic</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Cardiology</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Gynecology</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Neurology</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Eye Care</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Psychotherapy</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Dental Care</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Orthopedic</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Cardiology</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Gynecology</a></li>
+                                    <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Neurology</a></li>
                                 </ul>
                             </div><!--end col-->
 
@@ -515,7 +341,7 @@
                     <div class="row align-items-center">
                         <div class="col-sm-6">
                             <div class="text-sm-start text-center">
-
+                                <p class="mb-0"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.</p>
                             </div>
                         </div><!--end col-->
 
@@ -606,106 +432,12 @@
         </div>
         <!-- Offcanvas End -->
 
-        <!-- MOdal Start -->
-        <div class="modal fade" id="watchvideomodal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content video-modal rounded overflow-hidden">
-                    <video class="w-100" controls autoplay muted loop>
-                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">>
-                        <!--Browser does not support <video> tag -->
-                    </video>
-                </div>
-            </div>
-        </div>
-        <!-- MOdal End -->
-
         <!-- javascript -->
-        <script src="../assets/js/jquery.min.js"></script>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
-        <!-- SLIDER -->
-        <script src="../assets/js/tiny-slider.js"></script>
-        <script src="../assets/js/tiny-slider-init.js"></script>
-        <script src="../assets/js/easy_background.js"></script>
-
-        <!-- Select2 -->
-        <script src="../assets/js/select2.min.js"></script>
-        <script src="../assets/js/select2.init.js"></script>
-        <!-- Datepicker -->
-        <script src="../assets/js/flatpickr.min.js"></script>
-        <script src="../assets/js/flatpickr.init.js"></script>
-        <!-- Datepicker -->
-        <script src="../assets/js/jquery.timepicker.min.js"></script> 
-        <script src="../assets/js/timepicker.init.js"></script> 
         <!-- Icons -->
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
-        <script>
-                                        var sliderImages = [
-            <c:forEach var="s" items="${sliders}">
-                                            "../${s.getImg()}",
-            </c:forEach>
-                                        ];
-
-                                        easy_background("#home", {
-                                            slide: sliderImages,
-                                            delay: [3000, 3000, 3000]
-                                        });
-        </script>
-
-
-
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-
-                                        var alertMessage = '<%= session.getAttribute("alertMessage") != null ? session.getAttribute("alertMessage") : "" %>';
-                                        var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "" %>';
-
-                                        // Kiểm tra nếu alertMessage và alertType không rỗng thì hiển thị Swal.fire
-                                        if (alertMessage.trim() !== "" && alertType.trim() !== "") {
-                                            Swal.fire({
-                                                icon: alertType,
-                                                title: alertMessage,
-                                                showConfirmButton: false,
-                                                timer: 3000
-                                            });
-                                        }
-
-
-            <%
-            session.removeAttribute("alertMessage");
-            session.removeAttribute("alertType");
-            %>
-        </script>
-
-        <script src="../assets/js/tiny-slider.js"></script>
-        <script src="../assets/js/tiny-slider-init.js"></script>
-        <script>
-                                        var slider = tns({
-                                            container: '.tiny-slider .row',
-                                            items: 4, // Hiển thị 4 bài viết trên mỗi slide
-                                            slideBy: 'page',
-                                            autoplay: true,
-                                            autoplayButtonOutput: false,
-                                            controls: false, // Cho phép điều khiển slide
-                                            nav: true, // Cho phép navigation
-                                            controlsPosition: 'outside', // Đặt nút prev, next bên ngoài slider
-                                            responsive: {
-                                                '0': {
-                                                    items: 1, // 1 item cho các màn hình nhỏ
-                                                },
-                                                '600': {
-                                                    items: 2, // 2 items cho các màn hình trung bình
-                                                },
-                                                '1024': {
-                                                    items: 4, // 4 items cho màn hình lớn
-                                                }
-                                            }
-                                        });
-        </script>
-
-
-
     </body>
 
 </html>
