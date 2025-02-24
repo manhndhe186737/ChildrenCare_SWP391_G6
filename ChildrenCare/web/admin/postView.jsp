@@ -32,6 +32,8 @@
             body {
                 font-family: 'Inter', sans-serif;
                 background-color: #f8f9fa;
+                margin: 0;
+                padding: 0;
             }
 
             /* Post Details Container */
@@ -42,7 +44,47 @@
                 padding: 30px;
                 border-radius: 12px;
                 box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-                text-align: center;
+            }
+
+            /* Post Header */
+            .post-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .post-avatar {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-right: 15px;
+                border: 2px solid #1877f2;
+            }
+
+            .post-author-info {
+                text-align: left;
+            }
+
+            .post-author {
+                font-size: 18px;
+                font-weight: 600;
+                color: #1877f2;
+                margin: 0;
+            }
+
+            .post-timestamp {
+                font-size: 12px;
+                color: #606770;
+                margin-top: 3px;
+            }
+
+            /* Post Title */
+            .post-details-container h3 {
+                font-size: 28px;
+                font-weight: 700;
+                color: #343a40;
+                margin: 20px 0 10px;
             }
 
             /* Post Image */
@@ -51,28 +93,73 @@
                 max-height: 400px;
                 object-fit: cover;
                 border-radius: 10px;
-                margin-bottom: 20px;
+                margin: 20px 0;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
-            /* Post Title */
-            .post-details-container h3 {
-                font-size: 28px;
-                font-weight: 700;
-                color: #343a40;
-                margin-bottom: 15px;
+            /* Post Content */
+            .post-content {
+                text-align: left;
+                font-size: 16px;
+                color: #1c1e21;
+                line-height: 1.6;
+                margin-top: 20px;
             }
 
             /* Post Information */
-            .post-details-container p {
-                font-size: 16px;
+            .post-info p {
+                font-size: 14px;
                 color: #555;
-                margin: 10px 0;
+                margin: 5px 0;
             }
 
-            .post-details-container p strong {
+            .post-info p strong {
                 color: #212529;
                 font-weight: 600;
+            }
+
+            /* Action Buttons Row */
+            .post-actions {
+                display: flex;
+                justify-content: center; /* Căn giữa các nút */
+                gap: 20px;
+                margin-top: 20px;
+                padding-top: 15px;
+                border-top: 1px solid #ddd;
+            }
+
+            /* Edit Button */
+            .btn-edit {
+                background-color: #e7f3ff;
+                border: 1px solid #1877f2;
+                color: #1877f2;
+                border-radius: 6px;
+                padding: 8px 16px;
+                font-size: 14px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+            }
+
+            /* Hover hiệu ứng cho Edit */
+            .btn-edit:hover {
+                background-color: #d0e7ff;
+            }
+
+            /* Delete Button */
+            .btn-delete {
+                background-color: #ffe5e5;
+                border: 1px solid #dc3545;
+                color: #dc3545;
+                border-radius: 6px;
+                padding: 8px 16px;
+                font-size: 14px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+            }
+
+            /* Hover hiệu ứng cho Delete */
+            .btn-delete:hover {
+                background-color: #f8d7da;
             }
 
             /* Back Button */
@@ -103,7 +190,7 @@
                     font-size: 24px;
                 }
 
-                .back-btn {
+                .btn-edit, .btn-delete, .back-btn {
                     padding: 10px 15px;
                     font-size: 14px;
                 }
@@ -322,22 +409,44 @@
                                 </nav>
                             </div>
                         </div>
-                        <div class="container">
-                            <h2>Post Details</h2>
+                        <div class="post-details-container">
+                            <%
+                                // Lấy đối tượng post từ request attribute
+                                Post post = (Post) request.getAttribute("post");
+                                // Nếu không lấy được avatar từ DB, dùng ảnh mặc định
+                                String authorAvatar = (post.getAuthorAvatar() != null && !post.getAuthorAvatar().isEmpty())
+                                                      ? post.getAuthorAvatar() : "./assets/images/default-avatar.png";
+                            %>
+                            <div class="post-header">
+                                <img src="<%= authorAvatar %>" alt="Avatar" class="post-avatar">
+                                <div class="post-author-info">
+                                    <p class="post-author"><%= post.getAuthor() %></p>
+                                    <p class="post-timestamp">Posted on <%= post.getCreatedate() %></p>
+                                </div>
+                            </div>
 
-                            <% Post post = (Post) request.getAttribute("post"); %>
-
-                            <img src="<%= post.getImg() %>" class="thumbnail">
                             <h3><%= post.getTitle() %></h3>
-                            <p><strong>Category:</strong> <%= post.getCategory() %></p>
-                            <p><strong>Author:</strong> <%= post.getAuthor() %></p>
-                            <p><strong>Status:</strong> <%= post.getStatus().equals("1") ? "Active" : "Hidden" %></p>
-                            <p><strong>Content:</strong></p>
-                            <p><%= post.getContent() %></p>
+
+                            <div class="post-info">
+                                <p><strong>Category:</strong> <%= post.getCategory() %></p>
+                                <p><strong>Status:</strong> <%= post.getStatus().equals("1") ? "Active" : "Hidden" %></p>
+                            </div>
+
+                            <img src="<%= post.getImg() %>" alt="Thumbnail" class="thumbnail">
+
+                            <div class="post-content">
+                                <p><%= post.getContent() %></p>
+                            </div>
+
+                            <div class="post-actions">
+                                <a href="post-edit?id=<%= post.getId() %>" class="btn-edit"><i class="mdi mdi-pencil-outline"></i> Edit</a>
+                                <a href="post-delete?id=<%= post.getId() %>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this post?');">
+                                    <i class="mdi mdi-delete-outline"></i> Delete
+                                </a>
+                            </div>
 
                             <a href="post-list" class="back-btn">Back to Post List</a>
                         </div>
-
                         </main>
                         <!--End page-content" -->
                     </div>
