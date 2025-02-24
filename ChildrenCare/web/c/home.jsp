@@ -210,7 +210,7 @@
                                                 <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
                                             </a>
                                         </c:if>
-                                        <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
+                                        <a class="dropdown-item text-dark" href="../profile">
                                             <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
                                         </a>
                                         <div class="dropdown-divider border-top"></div>
@@ -268,7 +268,7 @@
                             <ul class="submenu">
                                 <li><a href="../service-list" class="sub-menu-item">Services List</a></li>
                                     <c:if test="${sessionScope.role.contains('Customer')}">
-                                    <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">My Reservation</a></li>
+                                    <li><a href="pharmacy-shop-cart.jsp" class="sub-menu-item">My Reservation</a></li>
                                     <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
                                     </c:if>
                                 <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>

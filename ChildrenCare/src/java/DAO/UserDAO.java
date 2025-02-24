@@ -51,7 +51,7 @@ public class UserDAO extends DBContext {
 
     public User getUserByEmail(String email) {
         User user = null;
-        String sql = "SELECT user_id, fullname, address, dob, phone, avatar, is_verified, email, password\n"
+        String sql = "SELECT user_id, fullname, address, dob, bio, phone, avatar, is_verified, email, password\n"
                 + "FROM users\n"
                 + "WHERE email = ?;";
         try (
@@ -67,7 +67,7 @@ public class UserDAO extends DBContext {
                     user.setPhone(rs.getString("phone"));
                     user.setAvatar(rs.getString("avatar"));
                     user.setIsVerified(rs.getBoolean("is_verified"));
-
+                    user.setBio(rs.getString("bio"));
                     Account account = new Account();
                     account.setEmail(email);
                     account.setPassword(rs.getString("password"));

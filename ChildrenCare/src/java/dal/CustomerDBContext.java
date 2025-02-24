@@ -35,7 +35,7 @@ public class CustomerDBContext extends DBContext {
             orderByClause = "ORDER BY u.dob ASC";
         }
 
-        String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.avatar, u.phone, u.email, u.password, r.role_name FROM users u\n"
+        String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.bio, u.avatar, u.phone, u.email, u.password, r.role_name FROM users u\n"
                 + "JOIN userroles ur ON ur.email = u.email\n"
                 + "JOIN roles r ON r.role_id = ur.role_id\n"
                 + "WHERE r.role_name = ? AND u.fullname LIKE ?\n"
@@ -55,7 +55,7 @@ public class CustomerDBContext extends DBContext {
                     u.setAvatar(rs.getString("avatar"));
                     u.setPhone(rs.getString("phone"));
                     u.setGender(rs.getBoolean("gender"));
-
+                    u.setBio(rs.getString("bio"));    
                     Account a = new Account();
                     a.setEmail(rs.getString("email"));
                     a.setPassword(rs.getString("password"));
@@ -165,6 +165,10 @@ public class CustomerDBContext extends DBContext {
         if (customer.getDob() != null) {
             sql.append("dob = ?, ");
             params.add(new java.sql.Date(customer.getDob().getTime()));
+        }
+        if (customer.getBio() != null && customer.getBio().length() != 0) {
+            sql.append("bio = ?, ");
+            params.add(customer.getBio());
         }
         if (customer.getPhone() != null && customer.getPhone().length() != 0) {
             sql.append("phone = ?, ");
