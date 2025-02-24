@@ -1,4 +1,7 @@
-
+<%@ page import="model.Service" %>
+<%@ page import="java.util.List" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,7 +51,7 @@
                             <img src="../assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
-                    
+
                     <ul class="sidebar-menu pt-3">
                         <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
@@ -91,9 +94,7 @@
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li><a href="shop.html">Shop</a></li>
-                                    <li><a href="product-detail.html">Shop Detail</a></li>
-                                    <li><a href="shopcart.html">Shopcart</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li>
+
                                 </ul>
                             </div>
                         </li>
@@ -180,7 +181,7 @@
                                 </div>
                             </div>
                         </div>
-        
+
                         <ul class="list-unstyled mb-0">
                             <li class="list-inline-item mb-0">
                                 <div class="dropdown dropdown-primary">
@@ -192,28 +193,28 @@
                                                 <small class="text-dark mb-0">Chinese</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/european.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">European</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/indian.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">Indian</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/japanese.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">Japanese</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/russian.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
@@ -234,7 +235,7 @@
                                 <div class="dropdown dropdown-primary">
                                     <button type="button" class="btn btn-icon btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="mail" class="fea icon-sm"></i></button>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">4 <span class="visually-hidden">unread mail</span></span>
-                                    
+
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow rounded border-0 mt-3 px-2 py-2" data-simplebar style="height: 320px; width: 300px;">
                                         <a href="#" class="d-flex align-items-center justify-content-between py-2">
                                             <div class="d-inline-flex position-relative overflow-hidden">
@@ -318,338 +319,80 @@
                             </div>
 
                             <div class="mt-4 mt-sm-0">
-                                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-product">Add Product</a>
+                                <a href="AddServiceServlet" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-product">Add Services</a>
                             </div>
                         </div>
 
                         <h6 class="mt-4 mb-0">Most Viewed Products</h6>
-                        
                         <div class="row row-cols-md-2 row-cols-lg-5">
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <ul class="label list-unstyled mb-0">
-                                        <li><a href="javascript:void(0)" class="badge badge-pill badge-success">Featured</a></li>
-                                    </ul>
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/thermometer.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-        
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Thermometer</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/stethoscope.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-        
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Stethoscope</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/pulse-oximeter.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-        
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Pulse oximeter</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/medicine.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-        
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Medicine pills</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/smoking-habit.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-        
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Smokill smoking habit</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/sanitizer.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-        
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Sanitizer</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/nicotex.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-        
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Nicotex</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/medigrip.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-        
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Medigrip</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
+                            <c:choose>
+                                <c:when test="${not empty services}">
+                                    <c:forEach var="service" items="${services}">
+                                        <div class="col mt-4">
+                                            <div class="card shop-list border-0 overflow-hidden rounded shadow">
+                                                <ul class="label list-unstyled mb-0">
+                                                    <li>
+                                                        <!-- Kiểm tra giá trị của isActive và hiển thị Active/Inactive -->
+                                                        <a href="javascript:void(0)" class="badge badge-pill badge-success">
+                                                            <c:choose>
+                                                                <c:when test="${service.isActive}">
+                                                                    Active
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    Deactive
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                                <div class="shop-image position-relative overflow-hidden">
+                                                    <a href="serviceDetails?id=${service.id}">
+                                                        <img src="${not empty service.img ? service.img : '../assets/images/staff/staff03.jpg'}" 
+                                                             class="img-fluid" alt="Service Image">
+                                                    </a>
+                                                    <ul class="list-unstyled shop-icons">
+                                                        <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
+                                                        <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
+                                                        <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
+                                                    </ul>
 
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <ul class="label list-unstyled mb-0">
-                                        <li><a href="javascript:void(0)" class="badge badge-pill badge-success">Featured</a></li>
-                                    </ul>
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/masks.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-        
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
+                                                    <div class="qty-icons">
+                                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" 
+                                                                class="btn btn-pills btn-icon btn-primary minus">-</button>
+                                                        <input min="0" name="quantity" value="0" type="number" 
+                                                               class="btn btn-pills btn-icon btn-primary qty-btn quantity">
+                                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" 
+                                                                class="btn btn-pills btn-icon btn-primary plus">+</button>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body content p-4 border-top">
+                                                    <a href="${pageContext.request.contextPath}/admin/serviceDetails?id=${service.id}" class="text-dark product-name h6">
+                                                        ${not empty service.name ? service.name : "Tên dịch vụ"}
+                                                    </a>
+
+                                                    <div class="d-flex justify-content-between mt-1">
+                                                        <h6 class="text-muted small font-italic mb-0 mt-1">
+                                                            $${service.price}
+                                                        </h6>
+                                                        <ul class="list-unstyled text-warning mb-0">
+                                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="col-12">
+                                        <p class="text-center text-danger font-weight-bold">Không có dịch vụ nào</p>
                                     </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Face masks</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/handwash.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-        
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Dettol handwash</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
+                                </c:otherwise>
+                            </c:choose> 
                         </div><!--end row-->
 
                         <h6 class="mt-4 mb-0">Categories</h6>
@@ -663,7 +406,7 @@
                                     </div>
                                 </a>
                             </div><!--end col-->
-                            
+
                             <div class="col mt-4 pt-2">
                                 <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
                                     <img src="../assets/images/pharmacy/sexual.jpg" class="img-fluid" alt="">
@@ -672,7 +415,7 @@
                                     </div>
                                 </a>
                             </div><!--end col-->
-                            
+
                             <div class="col mt-4 pt-2">
                                 <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
                                     <img src="../assets/images/pharmacy/weight.jpg" class="img-fluid" alt="">
@@ -681,7 +424,7 @@
                                     </div>
                                 </a>
                             </div><!--end col-->
-                            
+
                             <div class="col mt-4 pt-2">
                                 <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
                                     <img src="../assets/images/pharmacy/pain.jpg" class="img-fluid" alt="">
@@ -690,7 +433,7 @@
                                     </div>
                                 </a>
                             </div><!--end col-->
-                            
+
                             <div class="col mt-4 pt-2">
                                 <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
                                     <img src="../assets/images/pharmacy/heart.jpg" class="img-fluid" alt="">
@@ -699,7 +442,7 @@
                                     </div>
                                 </a>
                             </div><!--end col-->
-                            
+
                             <div class="col mt-4 pt-2">
                                 <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
                                     <img src="../assets/images/pharmacy/cough.jpg" class="img-fluid" alt="">
@@ -708,7 +451,7 @@
                                     </div>
                                 </a>
                             </div><!--end col-->
-                            
+
                             <div class="col mt-4 pt-2">
                                 <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
                                     <img src="../assets/images/pharmacy/diabetes.jpg" class="img-fluid" alt="">
@@ -717,7 +460,7 @@
                                     </div>
                                 </a>
                             </div><!--end col-->
-                            
+
                             <div class="col mt-4 pt-2">
                                 <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
                                     <img src="../assets/images/pharmacy/cancer.jpg" class="img-fluid" alt="">
@@ -740,7 +483,7 @@
                                             <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
                                             <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
                                         </ul>                                
-        
+
                                         <div class="qty-icons">
                                             <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
                                             <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
@@ -762,7 +505,7 @@
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            
+
                             <div class="col mt-4">
                                 <div class="card shop-list border-0 overflow-hidden rounded shadow">
                                     <div class="shop-image position-relative overflow-hidden">
@@ -772,7 +515,7 @@
                                             <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
                                             <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
                                         </ul>                                
-        
+
                                         <div class="qty-icons">
                                             <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
                                             <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
@@ -794,7 +537,7 @@
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            
+
                             <div class="col mt-4">
                                 <div class="card shop-list border-0 overflow-hidden rounded shadow">
                                     <div class="shop-image position-relative overflow-hidden">
@@ -804,7 +547,7 @@
                                             <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
                                             <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
                                         </ul>                                
-        
+
                                         <div class="qty-icons">
                                             <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
                                             <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
@@ -836,7 +579,7 @@
                                             <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
                                             <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
                                         </ul>                                
-        
+
                                         <div class="qty-icons">
                                             <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
                                             <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
@@ -858,7 +601,7 @@
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            
+
                             <div class="col mt-4">
                                 <div class="card shop-list border-0 overflow-hidden rounded shadow">
                                     <div class="shop-image position-relative overflow-hidden">
@@ -868,7 +611,7 @@
                                             <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
                                             <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
                                         </ul>                                
-        
+
                                         <div class="qty-icons">
                                             <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
                                             <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
@@ -972,48 +715,49 @@
                                 <div class="d-grid me-md-4">
                                     <p class="text-muted">Upload your shop image here, Please click "Upload Image" Button.</p>
                                     <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
-                                    <input type="file" id="input-file" name="input-file" accept="image/*" onchange={handleChange()} hidden />
+                                    <input type="file" id="input-file" name="img" accept="image/*" onchange="handleChange()" hidden />
                                     <label class="btn-upload btn btn-primary mt-4" for="input-file">Upload Image</label>
                                 </div>
-                            </div><!--end col-->
+                            </div>
 
                             <div class="col-md-6 mt-4 mt-sm-0">
-                                <form>
+                                <form id="add-product-form" method="Get" action="AddServiceServlet" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="mb-3">
-                                                <label class="form-label">Shop Title <span class="text-danger">*</span></label>
-                                                <input name="name" id="name" type="text" class="form-control" placeholder="Title :">
+                                                <label class="form-label">Services Name <span class="text-danger">*</span></label>
+                                                <input name="name" id="name" type="text" value="x" class="form-control" placeholder="Title :">
                                             </div>
+                                            
                                         </div><!--end col-->
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label"> Price: </label>
+                                                <label class="form-label">Price: </label>
                                                 <div class="input-group mb-3">
                                                     <span class="input-group-text border bg-transparent" id="basic-addon1">$</span>
-                                                    <input type="number" min="0" class="form-control" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1">
+                                                    <input type="number" name="price" min="0" class="form-control" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1">
                                                 </div>
                                             </div>
                                         </div><!--end col-->
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Label:</label>
-                                                <select class="form-control">
-                                                    <option value="FE">Featured</option>
-                                                    <option value="NE">New</option>
-                                                    <option value="PO">Popular</option>
-                                                    <option value="RE">Recent</option>
-                                                    <option value="FR">Free</option>
+                                                <label class="form-label">Category : </label>
+                                                <select class="form-control" name="category">
+                                                    <c:forEach var="category" items="${categories}">
+                                                        <option value="${category.id}">${category.categoryname} </option>
+                                                    </c:forEach>
                                                 </select>
+
+
                                             </div>
                                         </div><!--end col-->
 
                                         <div class="col-md-12">
                                             <div class="mb-3">
-                                                <label class="form-label"> Rating : </label>
-                                                <input name="time" type="text" class="form-control" id="time" value="0">
+                                                <label class="form-label">Description: </label>
+                                                <textarea name="description" class="form-control" placeholder="Enter description here"></textarea>
                                             </div>
                                         </div><!--end col-->
 
@@ -1030,6 +774,7 @@
         </div>
         <!-- End modal -->
 
+
         <!-- javascript -->
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <!-- simplebar -->
@@ -1038,28 +783,28 @@
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
-        
-        <script>
-            const handleChange = () => {
-            const fileUploader = document.querySelector('#input-file');
-                const getFile = fileUploader.files
-                if (getFile.length !== 0) {
-                    const uploadedFile = getFile[0];
-                    readFile(uploadedFile);
-                }
-            }
 
-            const readFile = (uploadedFile) => {
-                if (uploadedFile) {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                    const parent = document.querySelector('.preview-box');
-                    parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
-                    };
-                    
-                    reader.readAsDataURL(uploadedFile);
-                }
-            };
+        <script>
+                                        const handleChange = () => {
+                                            const fileUploader = document.querySelector('#input-file');
+                                            const getFile = fileUploader.files
+                                            if (getFile.length !== 0) {
+                                                const uploadedFile = getFile[0];
+                                                readFile(uploadedFile);
+                                            }
+                                        }
+
+                                        const readFile = (uploadedFile) => {
+                                            if (uploadedFile) {
+                                                const reader = new FileReader();
+                                                reader.onload = () => {
+                                                    const parent = document.querySelector('.preview-box');
+                                                    parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
+                                                };
+
+                                                reader.readAsDataURL(uploadedFile);
+                                            }
+                                        };
         </script>
     </body>
 
