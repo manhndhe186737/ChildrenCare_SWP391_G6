@@ -101,7 +101,7 @@
                             <a href="javascript:void(0)"><i class="uil uil-shopping-cart me-2 d-inline-block"></i>Pharmacy</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="shop.html">Shop</a></li>
+                                    <li><a href="ServiceListServlet">Shop</a></li>
                                     <li><a href="product-detail.html">Shop Detail</a></li>
                                     <li><a href="shopcart.html">Shopcart</a></li>
                                     <li><a href="checkout.html">Checkout</a></li>

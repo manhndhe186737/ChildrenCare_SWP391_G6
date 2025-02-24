@@ -5,6 +5,18 @@
         <servlet-class>controller.manage.customer.ListCustomers</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ServiceListServlet</servlet-name>
+        <servlet-class>controller.manage.service.ServiceListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServiceDetailServlet</servlet-name>
+        <servlet-class>controller.manage.service.ServiceDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProductServlet</servlet-name>
+        <servlet-class>controller.manage.service.UpdateProductServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LoginController</servlet-name>
         <servlet-class>controller.auth.LoginController</servlet-class>
     </servlet>
@@ -199,5 +211,17 @@
     <servlet-mapping>
         <servlet-name>Booking Reservation</servlet-name>
         <url-pattern>/c/booking-reserv</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServiceListServlet</servlet-name>
+        <url-pattern>/admin/ServiceListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServiceDetailServlet</servlet-name>
+        <url-pattern>/admin/serviceDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProductServlet</servlet-name>
+        <url-pattern>/admin/UpdateProductServlet</url-pattern>
     </servlet-mapping>
 </web-app>

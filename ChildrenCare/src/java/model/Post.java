@@ -12,6 +12,7 @@ public class Post {
     private String img;
     private String category;
     private String author; 
+    private String authorAvatar;
 
     public Post(int id, String title, String content, Date updatedate, Date createdate, String status, String img, String category, String author) {
         this.id = id;
@@ -22,12 +23,13 @@ public class Post {
         this.status = status;
         this.img = img;
         this.category = category;
-        this.author = author; 
+        this.author = author;
     }
 
     public Post() {
     }
 
+    // Getters and setters cho các thuộc tính cũ...
     public int getId() {
         return id;
     }
@@ -98,5 +100,13 @@ public class Post {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getAuthorAvatar() {
+        return authorAvatar;
+    }
+
+    public void setAuthorAvatar(String authorAvatar) {
+        this.authorAvatar = authorAvatar;
     }
 }

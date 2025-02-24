@@ -437,7 +437,7 @@
                             <p class="card-text text-muted"><%= s.getDescription() %></p>
                             <h6>$<%= s.getPrice() %></h6>
                             <div class="mt-3 service-actions">
-                                <a href="ServiceDetailServlet?id=<%= s.getId() %>" class="btn btn-info">Details</a>
+                                <a href="service-detail?id=<%= s.getId() %>" class="btn btn-info">Details</a>
                                 <c:if test="${sessionScope.role.contains('Customer')}">
                                     
                                     <form id="freserv" action="c/BookingStaff" method="post">

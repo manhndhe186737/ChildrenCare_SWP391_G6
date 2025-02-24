@@ -119,32 +119,34 @@ public class PostDBContext extends DBContext {
         return 0;
     }
 
-    // Lấy chi tiết bài viết theo ID
-    public Post getPostById(int id) {
-        String sql = "SELECT p.*, u.fullname AS author_name FROM posts p "
-                + "LEFT JOIN users u ON p.author_id = u.user_id WHERE p.post_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new Post(
-                        rs.getInt("post_id"),
-                        rs.getString("title"),
-                        rs.getString("content"),
-                        rs.getDate("updatedate"),
-                        rs.getDate("createdate"),
-                        rs.getString("status"),
-                        rs.getString("image"),
-                        rs.getString("category"),
-                        rs.getString("author_name")
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-
+   public Post getPostById(int id) {
+    String sql = "SELECT p.*, u.fullname AS author_name, u.avatar AS author_avatar FROM posts p "
+               + "LEFT JOIN users u ON p.author_id = u.user_id WHERE p.post_id = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            Post post = new Post(
+                    rs.getInt("post_id"),
+                    rs.getString("title"),
+                    rs.getString("content"),
+                    rs.getDate("updatedate"),
+                    rs.getDate("createdate"),
+                    rs.getString("status"),
+                    rs.getString("image"),
+                    rs.getString("category"),
+                    rs.getString("author_name")
+            );
+            // Gán avatar từ kết quả truy vấn cho post
+            post.setAuthorAvatar(rs.getString("author_avatar"));
+            return post;
         }
-        return null;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return null;
+}
+
 
     // Thêm bài viết mới
     public void addPost(Post post) {
@@ -226,7 +228,8 @@ public class PostDBContext extends DBContext {
         List<String[]> authors = new ArrayList<>();
         String sql = "SELECT u.user_id, u.fullname "
                 + "FROM users u "
-                + "JOIN userroles ur ON u.email = ur.email "
+                + "JOIN accounts a ON u.user_id = a.user_id "
+                + "JOIN userroles ur ON a.email = ur.email "
                 + "JOIN roles r ON ur.role_id = r.role_id "
                 + "WHERE r.role_name = ?";
 
@@ -269,6 +272,51 @@ public class PostDBContext extends DBContext {
         } catch (Exception e) {
         }
         return posts;
+    }
+
+   // Tìm kiếm bài viết có phân trang
+    public List<Post> searchPosts(String searchQuery, int currentPage, int itemsPerPage) {
+        List<Post> posts = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM posts WHERE title LIKE ? OR content LIKE ? ORDER BY updatedate DESC LIMIT ? OFFSET ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, "%" + searchQuery + "%");
+            stm.setString(2, "%" + searchQuery + "%");
+            stm.setInt(3, itemsPerPage);
+            stm.setInt(4, (currentPage - 1) * itemsPerPage);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Post post = new Post();
+                post.setId(rs.getInt("post_id"));
+                post.setTitle(rs.getString("title"));
+                post.setContent(rs.getString("content"));
+                post.setCreatedate(rs.getDate("createdate"));
+                post.setImg(rs.getString("image"));
+                posts.add(post);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return posts;
+    }
+
+    // Đếm tổng số bài viết theo từ khóa tìm kiếm
+    public int getTotalPosts(String searchQuery) {
+        try {
+            String sql = "SELECT COUNT(*) FROM posts WHERE title LIKE ? OR content LIKE ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, "%" + searchQuery + "%");
+            stm.setString(2, "%" + searchQuery + "%");
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }
