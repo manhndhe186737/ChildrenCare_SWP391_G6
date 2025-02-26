@@ -38,7 +38,7 @@
         <!-- Loader -->
 
         <div class="back-to-home rounded d-none d-sm-block">
-            <a href="index.html" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
+            <a href="c/home" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
         </div>
 
         <!-- Hero Start -->
@@ -46,11 +46,10 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-5 col-md-8">
-                        <img src="./assets/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
                         <div class="card login-page bg-white shadow mt-4 rounded border-0">
                             <div class="card-body">
                                 <h4 class="text-center">Sign In</h4>  
-                                <form action="account?service=login" class="login-form mt-4" method="POST">
+                                <form action="login?service=login" class="login-form mt-4" method="POST">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
@@ -73,7 +72,7 @@
                                                         <label class="form-check-label" for="remember-check">Remember me</label>
                                                     </div>
                                                 </div>
-                                                <a href="account?service=forgotPassword" class="text-dark h6 mb-0">Forgot password ?</a>
+                                                <a href="login?service=forgotPassword" class="text-dark h6 mb-0">Forgot password ?</a>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 mb-0">
@@ -81,11 +80,8 @@
                                                 <button type="submit" name="buttonSubmit" class="btn btn-primary">Sign in</button>
                                             </div>
                                         </div>
-                                        <c:if test="${not empty message}">
-                                            <div class="alert alert-success">
-                                                <p>${message}</p>
-                                            </div>
-                                        </c:if>
+                                        
+                                        
 
                                         <c:if test="${not empty error}">
                                             <div class="alert alert-error"style="
@@ -106,11 +102,11 @@
                                         </div><!--end col-->
 
                                             <div class="d-grid">
-                                                <a href="#" class="btn btn-soft-primary"><i class="uil uil-google"></i> Google</a>
+                                                <a href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile&redirect_uri=http://localhost:8080/ChildrenCare/logingoogle&response_type=code&client_id=101952113442-4io3q1t71ct7onapubshkg195qmv61rs.apps.googleusercontent.com&approval_prompt=force" class="btn btn-soft-primary"><i class="uil uil-google"></i> Google</a>
                                             </div>
 
                                         <div class="col-12 text-center">
-                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Don't have an account ?</small> <a href="account?service=register" class="text-dark fw-bold">Sign Up</a></p>
+                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Don't have an account ?</small> <a href="login?service=register" class="text-dark fw-bold">Sign Up</a></p>
                                         </div>
                                     </div>
                                 </form>

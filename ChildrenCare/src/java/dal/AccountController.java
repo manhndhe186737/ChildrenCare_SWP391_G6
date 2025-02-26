@@ -17,7 +17,7 @@ public class AccountController extends DBContext {
 
     public Account getAccount(String email, String password) {
         Account acc = null;
-        String sql = "select email, password from swp391.accounts\n"
+        String sql = "select email, password from users\n"
                     + "where email = ? and password = ?";
         
         try (PreparedStatement stm = connection.prepareStatement(sql)){
@@ -39,7 +39,7 @@ public class AccountController extends DBContext {
         List<Account> list = new ArrayList<>();
         PreparedStatement stm = null;
         try {
-            String sql = "select email, password from swp391.accounts";
+            String sql = "select email, password from users";
             stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
 
@@ -57,7 +57,7 @@ public class AccountController extends DBContext {
     
     public List<User> getAllUsers(){
         List<User> users = new ArrayList<>();
-        String query = "SELECT user_id, fullname FROM Users";
+        String query = "SELECT user_id, fullname FROM users";
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ResultSet rs = ps.executeQuery();

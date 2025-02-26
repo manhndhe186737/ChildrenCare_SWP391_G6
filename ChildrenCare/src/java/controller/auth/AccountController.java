@@ -24,11 +24,12 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
+import model.Account;
+import model.Role;
 
 import model.User;
 
-
-@WebServlet(name = "AccountController", urlPatterns = {"/account"})
+@WebServlet(name = "AccountController", urlPatterns = {"/login"})
 public class AccountController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -56,13 +57,26 @@ public class AccountController extends HttpServlet {
 
                 UserDAO userDAO = new UserDAO();
                 User user = userDAO.getUserByEmail(email);
+                Account acc = userDAO.getUserRoles(email);
+                user.setAccount(acc);
+
+                String roles = "";
+                if (acc != null) {
+                    for (Role r : acc.getRoles()) {
+                        roles += r.getRname() + ", ";
+                    }
+                }
 
                 if (user != null && PasswordUtil.verifyPassword(password, user.getAccount().getPassword())) {
                     if (user.isIsVerified()) {
                         HttpSession session = request.getSession();
                         session.setAttribute("user", user);
+                        session.setAttribute("account", acc);
+                        session.setAttribute("role", roles);
                         session.setAttribute("isLoggedIn", true);
-                        response.sendRedirect("dashboard.jsp");
+                        session.setAttribute("alertMessage", "Đăng nhập thành công!");
+                        session.setAttribute("alertType", "success");
+                        response.sendRedirect("c/home");
                     } else {
                         request.setAttribute("error", "Tài khoản của bạn chưa được xác minh.");
                         request.getRequestDispatcher("account/login.jsp").forward(request, response);
@@ -202,9 +216,8 @@ public class AccountController extends HttpServlet {
                     return;
                 }
 
-                
                 AccountDAO accountDAO = new AccountDAO();
-                accountDAO.updatePassword(email, newPassword);  
+                accountDAO.updatePassword(email, newPassword);
 
                 tokenDAO.deleteToken(token);
 

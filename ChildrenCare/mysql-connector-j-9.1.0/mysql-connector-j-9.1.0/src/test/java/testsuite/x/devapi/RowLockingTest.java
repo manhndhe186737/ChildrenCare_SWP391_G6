@@ -156,7 +156,8 @@ public class RowLockingTest extends BaseCollectionTestCase {
             } catch (Exception e) {
                 System.err.print("InterruptedException: ");
                 System.err.println(e.getMessage());
-                e.printStackTrace();
+                ex.printStackTrace();
+
                 throw new RuntimeException(e);
             } finally {
                 if (this.shouldWait != 1) {
@@ -251,7 +252,8 @@ public class RowLockingTest extends BaseCollectionTestCase {
             } catch (Exception e) {
                 System.err.print("InterruptedException: ");
                 System.err.println(e.getMessage());
-                e.printStackTrace();
+                ex.printStackTrace();
+
                 throw new RuntimeException(e);
             } finally {
                 if (this.shouldWait != 1) {
@@ -351,7 +353,8 @@ public class RowLockingTest extends BaseCollectionTestCase {
             } catch (Exception e) {
                 System.err.print("InterruptedException: ");
                 System.err.println(e.getMessage());
-                e.printStackTrace();
+                ex.printStackTrace();
+
                 throw new RuntimeException(e);
             } finally {
                 if (sess != null) {
@@ -437,7 +440,8 @@ public class RowLockingTest extends BaseCollectionTestCase {
             } catch (Exception e) {
                 System.err.print("InterruptedException: ");
                 System.err.println(e.getMessage());
-                e.printStackTrace();
+                ex.printStackTrace();
+
                 throw new RuntimeException(e);
             } finally {
                 if (sess != null) {

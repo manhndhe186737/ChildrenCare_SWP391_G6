@@ -2,42 +2,226 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
         <servlet-name>CustomerList</servlet-name>
-        <servlet-class>controller.manage.ListCustomers</servlet-class>
+        <servlet-class>controller.manage.customer.ListCustomers</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Login</servlet-name>
+        <servlet-name>ServiceListServlet</servlet-name>
+        <servlet-class>controller.manage.service.ServiceListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServiceDetailServlet</servlet-name>
+        <servlet-class>controller.manage.service.ServiceDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProductServlet</servlet-name>
+        <servlet-class>controller.manage.service.UpdateProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginController</servlet-name>
         <servlet-class>controller.auth.LoginController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccountController</servlet-name>
+        <servlet-class>controller.auth.AccountController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServiceList</servlet-name>
+        <servlet-class>controller.manage.service.ServiceList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Test</servlet-name>
+        <servlet-class>controller.manage.Test</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostList</servlet-name>
+        <servlet-class>controller.manage.post.PostList</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddCustomer</servlet-name>
         <servlet-class>controller.manage.AddCustomer</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Edit Customer</servlet-name>
-        <servlet-class>controller.manage.EditCustomer</servlet-class>
+        <servlet-name>EditCustomer</servlet-name>
+        <servlet-class>controller.manage.customer.EditCustomer</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Remove Customer</servlet-name>
-        <servlet-class>controller.manage.RemoveCustomer</servlet-class>
+        <servlet-name>RemoveCustomer</servlet-name>
+        <servlet-class>controller.manage.customer.RemoveCustomer</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PostView</servlet-name>
+        <servlet-class>controller.manage.post.PostView</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostEdit</servlet-name>
+        <servlet-class>controller.manage.post.PostEdit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostAdd</servlet-name>
+        <servlet-class>controller.manage.post.PostAdd</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListStaff</servlet-name>
+        <servlet-class>controller.manage.staff.ListStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffProfile</servlet-name>
+        <servlet-class>controller.manage.staff.StaffProfile</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Staff Dashboard</servlet-name>
+        <servlet-class>controller.manage.staff.StaffDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin Dashboard</servlet-name>
+        <servlet-class>controller.manage.AdminDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>controller.auth.LogoutController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Add Staff</servlet-name>
+        <servlet-class>controller.manage.staff.AddStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Update Staff</servlet-name>
+        <servlet-class>controller.manage.staff.UpdateStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Slider Edit</servlet-name>
+        <servlet-class>controller.manage.SliderEdit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Slider List</servlet-name>
+        <servlet-class>controller.manage.SliderList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Blog List</servlet-name>
+        <servlet-class>controller.manage.blog.BlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Blog Search</servlet-name>
+        <servlet-class>controller.manage.blog.BlogSearchServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Delete Staff</servlet-name>
+        <servlet-class>controller.manage.staff.DeleteStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Booking Reservation</servlet-name>
+        <servlet-class>controller.manage.reservation.BookingReservation</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/logingoogle</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountController</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CustomerList</servlet-name>
         <url-pattern>/admin/customers</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Login</servlet-name>
-        <url-pattern>/login</url-pattern>
+        <servlet-name>ServiceList</servlet-name>
+        <url-pattern>/service-list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Test</servlet-name>
+        <url-pattern>/Test</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostList</servlet-name>
+        <url-pattern>/post-list</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddCustomer</servlet-name>
         <url-pattern>/admin/add-customer</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Edit Customer</servlet-name>
+        <servlet-name>EditCustomer</servlet-name>
         <url-pattern>/admin/editCustomer</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Remove Customer</servlet-name>
+        <servlet-name>RemoveCustomer</servlet-name>
         <url-pattern>/admin/removeCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostView</servlet-name>
+        <url-pattern>/post-view</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostEdit</servlet-name>
+        <url-pattern>/post-edit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostAdd</servlet-name>
+        <url-pattern>/post-add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListStaff</servlet-name>
+        <url-pattern>/admin/staff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffProfile</servlet-name>
+        <url-pattern>/admin/staff-profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Staff Dashboard</servlet-name>
+        <url-pattern>/c/staff-dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin Dashboard</servlet-name>
+        <url-pattern>/admin/dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Add Staff</servlet-name>
+        <url-pattern>/admin/add-staff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Update Staff</servlet-name>
+        <url-pattern>/admin/update-staff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Slider Edit</servlet-name>
+        <url-pattern>/slider-edit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Slider List</servlet-name>
+        <url-pattern>/slider</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Blog List</servlet-name>
+        <url-pattern>/blog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Blog Search</servlet-name>
+        <url-pattern>/blog-search</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Delete Staff</servlet-name>
+        <url-pattern>/admin/delete-staff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Booking Reservation</servlet-name>
+        <url-pattern>/c/booking-reserv</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServiceListServlet</servlet-name>
+        <url-pattern>/admin/ServiceListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServiceDetailServlet</servlet-name>
+        <url-pattern>/admin/serviceDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProductServlet</servlet-name>
+        <url-pattern>/admin/UpdateProductServlet</url-pattern>
     </servlet-mapping>
 </web-app>

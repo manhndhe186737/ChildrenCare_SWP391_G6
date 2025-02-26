@@ -4,7 +4,6 @@
  */
 package model;
 
-import java.util.Locale.Category;
 
 /**
  *
@@ -15,7 +14,45 @@ public class Service {
     private String name;
     private String description;
     private float price;
-    private Category category;
+    private ServiceCategory category;
+    private int categoryId;
+    public String img;
+    public Boolean isActive;
+
+    public Service(int id, String name, String description, float price, ServiceCategory category, int categoryId, String img, Boolean isActive) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.category = category;
+        this.categoryId = categoryId;
+        this.img = img;
+        this.isActive = isActive;
+    }
+
+    public Service(int id, String name, String description, float price, int categoryId, String img, Boolean isActive) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.categoryId = categoryId;
+        this.img = img;
+        this.isActive = isActive;
+    }
+
+    public Service(String name, String description, float price, int categoryId, String img, Boolean isActive) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.categoryId = categoryId;
+        this.img = img;
+        this.isActive = isActive;
+    }
+    
+    
+
+    public Service() {
+    }
 
     public int getId() {
         return id;
@@ -49,22 +86,48 @@ public class Service {
         this.price = price;
     }
 
-    public Category getCategory() {
+    public ServiceCategory getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(ServiceCategory category) {
         this.category = category;
     }
 
-    public Service(int id, String name, String description, float price, Category category) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.category = category;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public Service() {
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+    
+    
+    
+    
+    @Override
+    public String toString() {
+        return "Service{id=" + id + ", name='" + name + "', description='" + description + "', price=" + price +
+                ", categoryId=" + categoryId + ", img='" + img + "'}";
+    }
+    
+    
+    
+    
 }

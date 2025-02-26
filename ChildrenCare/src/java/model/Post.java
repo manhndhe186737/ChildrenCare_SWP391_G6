@@ -1,13 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
+
 import java.sql.Date;
-/**
- *
- * @author FPTSHOP
- */
+
 public class Post {
     private int id;
     private String title;
@@ -17,8 +11,10 @@ public class Post {
     private String status;
     private String img;
     private String category;
+    private String author; 
+    private String authorAvatar;
 
-    public Post(int id, String title, String content, Date updatedate, Date createdate, String status, String img, String category) {
+    public Post(int id, String title, String content, Date updatedate, Date createdate, String status, String img, String category, String author) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -27,11 +23,13 @@ public class Post {
         this.status = status;
         this.img = img;
         this.category = category;
+        this.author = author;
     }
 
     public Post() {
     }
 
+    // Getters and setters cho các thuộc tính cũ...
     public int getId() {
         return id;
     }
@@ -94,5 +92,21 @@ public class Post {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getAuthorAvatar() {
+        return authorAvatar;
+    }
+
+    public void setAuthorAvatar(String authorAvatar) {
+        this.authorAvatar = authorAvatar;
     }
 }

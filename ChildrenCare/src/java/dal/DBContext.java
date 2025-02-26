@@ -16,11 +16,11 @@ import java.util.logging.Logger;
  */
 public abstract class DBContext {
 
-    protected Connection connection;
+     protected Connection connection;
 
     public DBContext() {
         try {
-            String url = "jdbc:mysql://localhost:3306/swp391";
+            String url = "jdbc:mysql://localhost:3306/swp391_fix";
             String username = "root";
             String password = "123456";
             Class.forName("com.mysql.cj.jdbc.Driver");

@@ -4064,7 +4064,8 @@ public class StatementsTest extends BaseTestCase {
                 this.rs.beforeFirst();
                 this.rs.next();
             } catch (SQLException e) {
-                e.printStackTrace();
+                ex.printStackTrace();
+
                 fail("Should not have thrown an Exception while executing \"" + query + "\"");
             }
         }
