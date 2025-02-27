@@ -93,7 +93,7 @@
                             <a href="javascript:void(0)"><i class="uil uil-shopping-cart me-2 d-inline-block"></i>Pharmacy</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="shop.html">Shop</a></li>
+                                    <li><a href="ServiceListServlet">Shop</a></li>
 
                                 </ul>
                             </div>
@@ -172,9 +172,9 @@
                             </a>
                             <div class="search-bar p-0 d-none d-lg-block ms-2">
                                 <div id="search" class="menu-search mb-0">
-                                    <form role="search" method="get" id="searchform" class="searchform">
+                                    <form role="search" method="get" action="ServiceListServlet" id="searchform" class="searchform">
                                         <div>
-                                            <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords...">
+                                            <input type="text" class="form-control border rounded-pill" name="search" id="s" placeholder="Search Keywords...">
                                             <input type="submit" id="searchsubmit" value="Search">
                                         </div>
                                     </form>
@@ -355,15 +355,6 @@
                                                         <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
                                                         <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
                                                     </ul>
-
-                                                    <div class="qty-icons">
-                                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" 
-                                                                class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                                        <input min="0" name="quantity" value="0" type="number" 
-                                                               class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" 
-                                                                class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                                    </div>
                                                 </div>
                                                 <div class="card-body content p-4 border-top">
                                                     <a href="${pageContext.request.contextPath}/admin/serviceDetails?id=${service.id}" class="text-dark product-name h6">
@@ -374,13 +365,6 @@
                                                         <h6 class="text-muted small font-italic mb-0 mt-1">
                                                             $${service.price}
                                                         </h6>
-                                                        <ul class="list-unstyled text-warning mb-0">
-                                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
@@ -398,242 +382,18 @@
                         <h6 class="mt-4 mb-0">Categories</h6>
 
                         <div class="row row-cols-md-2 row-cols-lg-5">
-                            <div class="col mt-4 pt-2">
-                                <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
-                                    <img src="../assets/images/pharmacy/skin.jpg" class="img-fluid" alt="">
-                                    <div class="category-title">
-                                        <span class="text-dark title-white"><span class="h5">Skin</span><br>Care</span>
-                                    </div>
-                                </a>
-                            </div><!--end col-->
-
-                            <div class="col mt-4 pt-2">
-                                <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
-                                    <img src="../assets/images/pharmacy/sexual.jpg" class="img-fluid" alt="">
-                                    <div class="category-title">
-                                        <span class="text-dark title-white"><span class="h5">Sexual</span><br>Wallness</span>
-                                    </div>
-                                </a>
-                            </div><!--end col-->
-
-                            <div class="col mt-4 pt-2">
-                                <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
-                                    <img src="../assets/images/pharmacy/weight.jpg" class="img-fluid" alt="">
-                                    <div class="category-title">
-                                        <span class="text-dark title-white"><span class="h5">Weight</span><br>Management</span>
-                                    </div>
-                                </a>
-                            </div><!--end col-->
-
-                            <div class="col mt-4 pt-2">
-                                <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
-                                    <img src="../assets/images/pharmacy/pain.jpg" class="img-fluid" alt="">
-                                    <div class="category-title">
-                                        <span class="text-dark title-white"><span class="h5">Pain</span><br>Relief</span>
-                                    </div>
-                                </a>
-                            </div><!--end col-->
-
-                            <div class="col mt-4 pt-2">
-                                <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
-                                    <img src="../assets/images/pharmacy/heart.jpg" class="img-fluid" alt="">
-                                    <div class="category-title">
-                                        <span class="text-dark title-white"><span class="h5">Heart</span><br>Health</span>
-                                    </div>
-                                </a>
-                            </div><!--end col-->
-
-                            <div class="col mt-4 pt-2">
-                                <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
-                                    <img src="../assets/images/pharmacy/cough.jpg" class="img-fluid" alt="">
-                                    <div class="category-title">
-                                        <span class="text-dark title-white"><span class="h5">Cough</span><br> & Cold</span>
-                                    </div>
-                                </a>
-                            </div><!--end col-->
-
-                            <div class="col mt-4 pt-2">
-                                <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
-                                    <img src="../assets/images/pharmacy/diabetes.jpg" class="img-fluid" alt="">
-                                    <div class="category-title">
-                                        <span class="text-dark title-white"><span class="h5">Diabetes</span><br>Care</span>
-                                    </div>
-                                </a>
-                            </div><!--end col-->
-
-                            <div class="col mt-4 pt-2">
-                                <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
-                                    <img src="../assets/images/pharmacy/cancer.jpg" class="img-fluid" alt="">
-                                    <div class="category-title">
-                                        <span class="text-dark title-white"><span class="h5">Cancer</span><br>Care</span>
-                                    </div>
-                                </a>
-                            </div><!--end col-->
+                            <c:forEach var="category" items="${categories}">
+                                <div class="col mt-4 pt-2">
+                                    <a href="ServiceListServlet?categoryId=${category.id}" class="card pharpachy-categories border-0 rounded overflow-hidden">
+                                        <img src="../assets/images/pharmacy/skin.jpg" class="img-fluid" alt="">
+                                        <div class="category-title">
+                                            <span class="text-dark title-white"><span class="h5">${category.categoryname}</span></span>
+                                        </div>
+                                    </a>
+                                </div><!--end col-->
+                            </c:forEach>
                         </div><!--end row-->
 
-                        <h6 class="mt-4 mb-0">Popular Products</h6>
-
-                        <div class="row row-cols-md-2 row-cols-lg-5">                            
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/ashwagandha.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Ashwagandha churna</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/beby-products.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Beby products</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/kidney-tray.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Kidney tray</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/herbal-care.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Herbal care product</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-
-                            <div class="col mt-4">
-                                <div class="card shop-list border-0 overflow-hidden rounded shadow">
-                                    <div class="shop-image position-relative overflow-hidden">
-                                        <a href="product-detail.html"><img src="../assets/images/pharmacy/shop/medical-equptment.jpg" class="img-fluid" alt=""></a>
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>                                
-
-                                        <div class="qty-icons">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                            <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body content p-4 border-top">
-                                        <a href="product-detail.html" class="text-dark product-name h6">Medical equptment</a>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
                     </div>
                 </div><!--end container-->
 
@@ -702,76 +462,79 @@
 
         <!-- Start Modal -->
         <div class="modal fade" id="add-product" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header border-bottom p-3">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Shop Product</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom p-3">
+                <h5 class="modal-title" id="exampleModalLabel">Add Shop Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-3 pt-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-grid me-md-4">
+                            <p class="text-muted">Upload your shop image here, Please click "Upload Image" Button.</p>
+                            <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1">
+                                <img id="preview-image" src="#" alt="Preview Image" style="max-width: 100%; display: none;" />
+                            </div>
+                            <input type="file" id="input-file" name="productImage" accept="image/*" onchange="previewImage(event)" required hidden />
+                            <label>Upload Image:</label>
+                                <input type="file" name="imageFile" accept="image/*"onchange="previewImage(event)">
+                        </div>
                     </div>
 
-                    <div class="modal-body p-3 pt-4">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="d-grid me-md-4">
-                                    <p class="text-muted">Upload your shop image here, Please click "Upload Image" Button.</p>
-                                    <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
-                                    <input type="file" id="input-file" name="img" accept="image/*" onchange="handleChange()" hidden />
-                                    <label class="btn-upload btn btn-primary mt-4" for="input-file">Upload Image</label>
+                    <div class="col-md-6 mt-4 mt-sm-0">
+                        <form id="add-product-form" method="Post" action="AddServiceServlet" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Services Name <span class="text-danger">*</span></label>
+                                        <input name="name" id="name" type="text" class="form-control" placeholder="Title :" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Price: </label>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text border bg-transparent">$</span>
+                                            <input type="number" name="price" min="0" class="form-control" placeholder="Price" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Category: </label>
+                                        <select class="form-control" name="category">
+                                            <c:forEach var="category" items="${categories}">
+                                                <option value="${category.id}">${category.categoryname}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Description: </label>
+                                        <textarea name="description" class="form-control" placeholder="Enter description here"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Input hidden để lưu ảnh vào form -->
+                                <input type="hidden" name="imagePath" id="imagePath">
+
+                                <div class="col-lg-12 text-end">
+                                    <button type="submit" class="btn btn-primary">Add Product</button>
                                 </div>
                             </div>
-
-                            <div class="col-md-6 mt-4 mt-sm-0">
-                                <form id="add-product-form" method="Get" action="AddServiceServlet" enctype="multipart/form-data">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="mb-3">
-                                                <label class="form-label">Services Name <span class="text-danger">*</span></label>
-                                                <input name="name" id="name" type="text" value="x" class="form-control" placeholder="Title :">
-                                            </div>
-                                            
-                                        </div><!--end col-->
-
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Price: </label>
-                                                <div class="input-group mb-3">
-                                                    <span class="input-group-text border bg-transparent" id="basic-addon1">$</span>
-                                                    <input type="number" name="price" min="0" class="form-control" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1">
-                                                </div>
-                                            </div>
-                                        </div><!--end col-->
-
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Category : </label>
-                                                <select class="form-control" name="category">
-                                                    <c:forEach var="category" items="${categories}">
-                                                        <option value="${category.id}">${category.categoryname} </option>
-                                                    </c:forEach>
-                                                </select>
-
-
-                                            </div>
-                                        </div><!--end col-->
-
-                                        <div class="col-md-12">
-                                            <div class="mb-3">
-                                                <label class="form-label">Description: </label>
-                                                <textarea name="description" class="form-control" placeholder="Enter description here"></textarea>
-                                            </div>
-                                        </div><!--end col-->
-
-                                        <div class="col-lg-12 text-end">
-                                            <button type="submit" class="btn btn-primary">Add Product</button>
-                                        </div><!--end col-->
-                                    </div>
-                                </form>
-                            </div><!--end col-->
-                        </div><!--end row-->
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div> 
+</div>
         <!-- End modal -->
 
 
@@ -806,6 +569,19 @@
                                             }
                                         };
         </script>
+        
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        const reader = new FileReader();
+        reader.onload = function () {
+            const imgElement = document.getElementById("preview-image");
+            imgElement.src = reader.result;
+            imgElement.style.display = "block";
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+</script>
     </body>
 
 </html>

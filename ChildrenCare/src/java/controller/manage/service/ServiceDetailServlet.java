@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import dal.ServiceDAO;
+import java.util.List;
 import model.Service;
 
 /**
@@ -68,6 +69,12 @@ public class ServiceDetailServlet extends HttpServlet {
             response.sendRedirect("error.jsp");
             return;
         }
+        ServiceDAO s = new ServiceDAO();
+        List<Service> services1;
+        services1 = s.getAllServices();
+        request.setAttribute("services1", services1);
+        
+        
 
         // Forward đến JSP để hiển thị thông tin sản phẩm
         request.getRequestDispatcher("/admin/product-detail.jsp").forward(request, response);

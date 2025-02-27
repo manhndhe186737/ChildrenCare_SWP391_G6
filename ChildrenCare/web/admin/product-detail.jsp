@@ -1,13 +1,9 @@
-<%-- 
-    Document   : product-detail
-    Created on : Feb 24, 2025, 3:30:32 PM
-    Author     : vucon
---%>
-
-
+<%@ page import="model.Service" %>
+<%@ page import="java.util.List" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="utf-8" />
         <title>Doctris - Doctor Appointment Booking System</title>
@@ -326,570 +322,344 @@
                                 </ul>
                             </nav>
                         </div>
-                        <c:choose>
-                            <c:when test="${not empty services}">
-                                <c:forEach var="service" items="${services}">
-                                    <div class="card border-0 rounded shadow p-4 mt-4">
-                                        <div class="row align-items-center">
-                                            <div class="col-lg-4 col-md-5">
-                                                <div class="slider slider-for">
-                                                    <div>
-                                                        <img src="${not empty service.img ? service.img : "../assets/images/pharmacy/shop/01.jpg"}" class="img-fluid rounded" alt="Product Image">
 
-                                                    </div>
-                                                </div>
+                        <div class="card border-0 rounded shadow p-4 mt-4">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4 col-md-5">
+                                    <div class="slider slider-for">
+                                        <div>
+                                            <img src="${not empty service.img ? service.img : "../assets/images/pharmacy/shop/01.jpg"}" class="img-fluid rounded" alt="Product Image">
 
-                                            </div><!--end col-->
-
-                                            <div class="col-lg-8 col-md-7 mt-4 mt-sm-0">
-                                                <div class="ms-md-4">
-                                                    <!-- Hi?n th? tên d?ch v? -->
-                                                    <h4 class="title">${not empty service.name ? service.name : ""}</h4>
-
-                                                    <!-- Hi?n th? giá d?ch v? -->
-                                                    <h5 class="text-muted">$${service.price}</h5>
-                                                    <!-- Mô t? s?n ph?m -->
-                                                    <h5 class="mt-4 py-2">Product Overview</h5>
-                                                    <p class="text-muted">${not empty service.description ? service.description : "Mô t? ?ang c?p nh?t."}</p>
-                                                    <!-- Nút hành ??ng -->
-                                                    <div class="mt-4 pt-2">
-                                                        <!-- Nút Update -->
-                                                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-product" 
-                                                           data-id="${service.id}" data-name="${service.name}" data-price="${service.price}" 
-                                                           data-description="${service.description}" data-img="${service.img}">Update Product</a>
-                                                        <!-- Nút ?? chuy?n tr?ng thái Active/Deactivate -->
-                                                        <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateStatusModal"
-                                                           data-id="${service.id}" data-currentstatus="${service.isActive}">
-                                                            ${service.isActive ? "Deactivate" : "Activate"} Product
-                                                        </a>
-
-                                                    </div>
-                                                </div> 
-                                            </div><!--end col-->
-                                        </div><!--end row-->
+                                        </div>
                                     </div>
 
-                                    <div class="row mt-4">
-                                        <div class="col-12">
-                                            <h5 class="mb-0">Related Products:</h5>
-                                        </div><!--end col-->
-                                    </div><!--end row-->
+                                </div><!--end col-->
 
-                                    <div class="row">
-                                        <div class="col-lg-12 mt-4">
-                                            <div class="slider-range-four">
-                                                <div class="tiny-slide">
-                                                    <div class="card shop-list border-0 overflow-hidden rounded shadow m-1">
-                                                        <ul class="label list-unstyled mb-0">
-                                                            <li><a href="javascript:void(0)" class="badge badge-pill badge-success">Featured</a></li>
-                                                        </ul>
-                                                        <div class="shop-image position-relative overflow-hidden">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html"><img src="../assets/images/pharmacy/shop/thermometer.jpg" class="img-fluid" alt=""></a>
-                                                            <ul class="list-unstyled shop-icons">
-                                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                                            </ul>                                
+                                <div class="col-lg-8 col-md-7 mt-4 mt-sm-0">
+                                    <div class="ms-md-4">
+                                        <!-- Hi?n th? tÃªn d?ch v? -->
+                                        <h4 class="title">${not empty service.name ? service.name : ""}</h4>
 
-                                                            <div class="qty-icons">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                                                <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body content pt-4 border-top">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html" class="text-dark product-name h6">Thermometer</a>
-                                                            <div class="d-flex justify-content-between mt-1">
-                                                                <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                                                <ul class="list-unstyled text-warning mb-0">
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div><!--end col-->
+                                        <!-- Hi?n th? giÃ¡ d?ch v? -->
+                                        <h5 class="text-muted">$${service.price}</h5>
+                                        <!-- MÃ´ t? s?n ph?m -->
+                                        <h5 class="mt-4 py-2">Product Overview</h5>
+                                        <p class="text-muted">${not empty service.description ? service.description : "MÃ´ t? ?ang c?p nh?t."}</p>
+                                        <!-- NÃºt hÃ nh ??ng -->
+                                        <div class="mt-4 pt-2">
+                                            <!-- NÃºt Update -->
+                                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-product" 
+                                               data-id="${service.id}" data-name="${service.name}" data-price="${service.price}" 
+                                               data-description="${service.description}" data-img="${service.img}">Update Product</a>
+                                            <!-- NÃºt ?? chuy?n tr?ng thÃ¡i Active/Deactivate -->
+                                            <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateStatusModal"
+                                               data-id="${service.id}" data-currentstatus="${service.isActive}">
+                                                ${service.isActive ? "Deactivate" : "Activate"} Product
+                                            </a>
 
-                                                <div class="tiny-slide">
-                                                    <div class="card shop-list border-0 overflow-hidden rounded shadow m-1">
-                                                        <div class="shop-image position-relative overflow-hidden">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html"><img src="../assets/images/pharmacy/shop/stethoscope.jpg" class="img-fluid" alt=""></a>
-                                                            <ul class="list-unstyled shop-icons">
-                                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                                            </ul>                                
+                                        </div>
+                                    </div> 
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div>
 
-                                                            <div class="qty-icons">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                                                <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body content pt-4 border-top">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html" class="text-dark product-name h6">Stethoscope</a>
-                                                            <div class="d-flex justify-content-between mt-1">
-                                                                <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                                                <ul class="list-unstyled text-warning mb-0">
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div><!--end col-->
-
-                                                <div class="tiny-slide">
-                                                    <div class="card shop-list border-0 overflow-hidden rounded shadow m-1">
-                                                        <div class="shop-image position-relative overflow-hidden">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html"><img src="./assets/images/pharmacy/shop/pulse-oximeter.jpg" class="img-fluid" alt=""></a>
-                                                            <ul class="list-unstyled shop-icons">
-                                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                                            </ul>                                
-
-                                                            <div class="qty-icons">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                                                <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body content pt-4 border-top">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html" class="text-dark product-name h6">Pulse oximeter</a>
-                                                            <div class="d-flex justify-content-between mt-1">
-                                                                <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                                                <ul class="list-unstyled text-warning mb-0">
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div><!--end col-->
-
-                                                <div class="tiny-slide">
-                                                    <div class="card shop-list border-0 overflow-hidden rounded shadow m-1">
-                                                        <div class="shop-image position-relative overflow-hidden">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html"><img src="./assets/images/pharmacy/shop/medicine.jpg" class="img-fluid" alt=""></a>
-                                                            <ul class="list-unstyled shop-icons">
-                                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                                            </ul>                                
-
-                                                            <div class="qty-icons">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                                                <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body content pt-4 border-top">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html" class="text-dark product-name h6">Medicine pills</a>
-                                                            <div class="d-flex justify-content-between mt-1">
-                                                                <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                                                <ul class="list-unstyled text-warning mb-0">
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div><!--end col-->
-
-                                                <div class="tiny-slide">
-                                                    <div class="card shop-list border-0 overflow-hidden rounded shadow m-1">
-                                                        <div class="shop-image position-relative overflow-hidden">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html"><img src="./assets/images/pharmacy/shop/smoking-habit.jpg" class="img-fluid" alt=""></a>
-                                                            <ul class="list-unstyled shop-icons">
-                                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                                            </ul>                                
-
-                                                            <div class="qty-icons">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                                                <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body content pt-4 border-top">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html" class="text-dark product-name h6">Smokill smoking habit</a>
-                                                            <div class="d-flex justify-content-between mt-1">
-                                                                <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                                                <ul class="list-unstyled text-warning mb-0">
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div><!--end col-->
-
-                                                <div class="tiny-slide">
-                                                    <div class="card shop-list border-0 overflow-hidden rounded shadow m-1">
-                                                        <div class="shop-image position-relative overflow-hidden">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html"><img src="./assets/images/pharmacy/shop/sanitizer.jpg" class="img-fluid" alt=""></a>
-                                                            <ul class="list-unstyled shop-icons">
-                                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                                            </ul>                                
-
-                                                            <div class="qty-icons">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                                                <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body content pt-4 border-top">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html" class="text-dark product-name h6">Sanitizer</a>
-                                                            <div class="d-flex justify-content-between mt-1">
-                                                                <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                                                <ul class="list-unstyled text-warning mb-0">
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div><!--end col-->
-
-                                                <div class="tiny-slide">
-                                                    <div class="card shop-list border-0 overflow-hidden rounded shadow m-1">
-                                                        <div class="shop-image position-relative overflow-hidden">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html"><img src="./assets/images/pharmacy/shop/nicotex.jpg" class="img-fluid" alt=""></a>
-                                                            <ul class="list-unstyled shop-icons">
-                                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                                            </ul>                                
-
-                                                            <div class="qty-icons">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                                                <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body content pt-4 border-top">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html" class="text-dark product-name h6">Nicotex</a>
-                                                            <div class="d-flex justify-content-between mt-1">
-                                                                <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                                                <ul class="list-unstyled text-warning mb-0">
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div><!--end col-->
-
-                                                <div class="tiny-slide">
-                                                    <div class="card shop-list border-0 overflow-hidden rounded shadow m-1">
-                                                        <div class="shop-image position-relative overflow-hidden">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html"><img src="./assets/images/pharmacy/shop/medigrip.jpg" class="img-fluid" alt=""></a>
-                                                            <ul class="list-unstyled shop-icons">
-                                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                                            </ul>                                
-
-                                                            <div class="qty-icons">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
-                                                                <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
-                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body content pt-4 border-top">
-                                                            <a href="https://shreethemes.in/doctris/layouts/admin/pharmacy-product-detail.html" class="text-dark product-name h6">Medigrip</a>
-                                                            <div class="d-flex justify-content-between mt-1">
-                                                                <h6 class="text-muted small font-italic mb-0 mt-1">$16.00 </h6>
-                                                                <ul class="list-unstyled text-warning mb-0">
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h5 class="mb-0">Related Products:</h5>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                        <div class="row">
+                            <div class="col-lg-12 mt-4">
+                                <div class="slider-range-four">
+                                    <c:forEach var="service" items="${services1}">
+                                        <div class="tiny-slide">
+                                            <div class="card shop-list border-0 overflow-hidden rounded shadow m-1">
+                                                <ul class="label list-unstyled mb-0">
+                                                    <li> <a href="javascript:void(0)" class="badge badge-pill badge-success">
+                                                            <c:choose>
+                                                                <c:when test="${service.isActive}">
+                                                                    Active
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    Deactive
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </a></li>
+                                                </ul>
+                                                <div class="shop-image position-relative overflow-hidden">
+                                                    <a href="${pageContext.request.contextPath}/admin/serviceDetails?id=${service.id}">
+                                                        <img src="${not empty service.img ? service.img : '../assets/images/pharmacy/shop/thermometer.jpg'}" class="img-fluid" alt="${service.name}">
+                                                    </a>
+                                                    <ul class="list-unstyled shop-icons">
+                                                        <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
+                                                        <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
+                                                        <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
+                                                    </ul>                                
+                                                </div>
+                                                <div class="card-body content pt-4 border-top">
+                                                    <a href="${pageContext.request.contextPath}/admin/serviceDetails?id=${service.id}" class="text-dark product-name h6">${not empty service.name ? service.name : "TÃªn sáº£n pháº©m"}</a>
+                                                    <div class="d-flex justify-content-between mt-1">
+                                                        <h6 class="text-muted small font-italic mb-0 mt-1">$${service.price}</h6>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div><!--end col-->
-                                    </div><!--end row-->
-                                    </div>
-                                    </div><!--end container-->
+                                        </div><!--end tiny-slide-->
+                                    </c:forEach>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
 
-                                    <!-- Start Modal -->
-                                    <!-- Modal Update Product -->
-                                    <div class="modal fade" id="add-product" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header border-bottom p-3">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body p-3 pt-4">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="d-grid me-md-4">
-                                                                <p class="text-muted">Upload your shop image here, Please click "Upload Image" Button.</p>
-                                                                <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
-                                                                <input type="file" id="input-file" name="input-file" accept="image/*" onchange="handleChange()" hidden />
-                                                                <label class="btn-upload btn btn-primary mt-4" for="input-file">Upload Image</label>
-                                                            </div>
-                                                        </div><!--end col-->
+                    </div>
+                </div><!--end container--> 
 
-                                                        <div class="col-md-6 mt-4 mt-sm-0">
-                                                            <form action="UpdateProductServlet" method="Post">
-                                                                <div class="row">
-                                                                    <div class="col-12">
-                                                                        <input type=hidden name="id" value="${requestScope.service.id}"/>
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">Shop Title <span class="text-danger">*</span></label>
-                                                                            <input name="name" id="name" type="text" class="form-control" placeholder="Title :" value="${requestScope.service.name}">
-                                                                        </div>
-                                                                    </div><!--end col-->
-
-                                                                    <div class="col-md-6">
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">Price: </label>
-                                                                            <div class="input-group mb-3">
-                                                                                <span class="input-group-text border bg-transparent" id="basic-addon1">$</span>
-                                                                                <input type="number" min="0" name="price" class="form-control" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1" value="${requestScope.service.price}">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div><!--end col-->
-
-                                                                    <div class="col-md-6">
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">Label:</label>
-                                                                            <select class="form-control">
-                                                                                <option value="FE">Featured</option>
-                                                                                <option value="NE">New</option>
-                                                                                <option value="PO">Popular</option>
-                                                                                <option value="RE">Recent</option>
-                                                                                <option value="FR">Free</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div><!--end col-->
-
-                                                                    <div class="col-md-12">
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">Description : </label>
-                                                                            <input name="description" type="text" class="form-control" id="time" value="${requestScope.service.description}">
-                                                                        </div>
-                                                                    </div><!--end col-->
-
-                                                                    <div class="col-lg-12 text-end">
-                                                                        <button type="submit" class="btn btn-primary">Update Product</button>
-                                                                    </div><!--end col-->
-                                                                </div>
-                                                            </form>
-                                                        </div><!--end col-->
-                                                    </div><!--end row-->
-                                                </div>
-                                            </div>
+                <!-- Start Modal -->
+                <!-- Modal Update Product -->
+                <div class="modal fade" id="add-product" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header border-bottom p-3">
+                                <h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-3 pt-4">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="d-grid me-md-4">
+                                            <p class="text-muted">Upload your shop image here, Please click "Upload Image" Button.</p>
+                                            <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
+                                            <input type="file" id="input-file" name="input-file" accept="image/*" onchange="handleChange()" hidden />
+                                            <label class="btn-upload btn btn-primary mt-4" for="input-file">Upload Image</label>
                                         </div>
-                                    </div>
-                                    <!-- Modal Confirm Active/Deactivate -->
-                                    <div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="updateStatusModalLabel">Confirm Status Change</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Are you sure you want to <strong id="status-action"></strong> this product?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                    <form id="update-status-form" method="POST" action="UpdateStatusServlet">
-                                                        <input type="hidden" name="id" id="product-id" value="${requestScope.service.id}">
-                                                         <input type="hidden" name="currentStatus" id="current-status" value="${requestScope.service.isActive}">
-                                                        <button type="submit" class="btn btn-primary">Confirm</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <script>
-                                        // Khi submit form, ng?ng hành ??ng m?c ??nh
-                                        $('form').submit(function (e) {
-                                            e.preventDefault(); // Ng?ng g?i form m?c ??nh
+                                    </div><!--end col-->
 
-                                            // L?y thông tin t? các tr??ng input trong form
-                                            var name = $('#name').val();
-                                            var price = $('#price').val();
-                                            var description = $('#description').val();
-                                            var img = $('#input-file').val(); // X? lý ?nh n?u có
-
-                                            // Th?c hi?n yêu c?u AJAX ?? c?p nh?t s?n ph?m
-                                            $.ajax({
-                                                url: 'updateProduct', // ???ng d?n ??n servlet x? lý update
-                                                type: 'POST', // Ph??ng th?c g?i yêu c?u
-                                                data: {
-                                                    id: productId, // ID c?a s?n ph?m c?n c?p nh?t
-                                                    name: name,
-                                                    price: price,
-                                                    description: description,
-                                                    img: img
-                                                },
-                                                success: function (response) {
-                                                    // X? lý khi update thành công
-                                                    $('#add-product').modal('hide');  // ?óng modal
-                                                    alert('Product updated successfully!');  // Thông báo thành công
-                                                },
-                                                error: function () {
-                                                    // X? lý khi có l?i
-                                                    alert('Failed to update product!');
-                                                }
-                                            });
-                                        });
-                                        $('#updateStatusModal').on('show.bs.modal', function (event) {
-                                            var button = $(event.relatedTarget); // L?y thông tin t? nút b?m
-                                            var productId = button.data('id');
-                                            var currentStatus = button.data('currentstatus');
-
-                                            // C?p nh?t thông tin vào modal
-                                            var modal = $(this);
-                                            modal.find('#product-id').val(productId);
-                                            modal.find('#current-status').val(currentStatus);
-                                            modal.find('#status-action').text(currentStatus ? "Deactivate" : "Activate");
-                                        });
-
-                                        $('#update-status-form').submit(function (e) {
-                                            e.preventDefault(); // Ng?ng g?i form m?c ??nh
-
-                                            var productId = $('#product-id').val(); // L?y ID
-                                            var currentStatus = $('#current-status').val(); // Tr?ng thái hi?n t?i
-                                            var newStatus = currentStatus === "true" ? false : true; // ??i tr?ng thái ng??c l?i
-
-                                            $.ajax({
-                                                url: 'updateStatusServlet', // ??m b?o ???ng d?n ?úng
-                                                type: 'POST',
-                                                data: {
-                                                    id: productId,
-                                                    currentStatus: currentStatus  // Truy?n tr?ng thái hi?n t?i
-                                                },
-                                                success: function (response) {
-                                                    if (response === "success") {
-                                                        alert("Status updated successfully!");
-                                                        location.reload(); // Reload l?i trang ?? tr?ng thái m?i ???c hi?n th?
-                                                    } else {
-                                                        alert("Failed to update status!");
-                                                    }
-                                                },
-                                                error: function () {
-                                                    alert("Error while updating!");
-                                                }
-                                            });
-                                        });
-
-
-                                    </script>
-
-                                    <!-- Footer Start -->
-                                    <footer class="bg-white shadow py-3">
-                                        <div class="container-fluid">
-                                            <div class="row align-items-center">
-                                                <div class="col">
-                                                    <div class="text-sm-start text-center">
-                                                        <p class="mb-0 text-muted"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="./././index.html" target="_blank" class="text-reset">Shreethemes</a>.</p>
-                                                    </div>
-                                                </div><!--end col-->
-                                            </div><!--end row-->
-                                        </div><!--end container-->
-                                    </footer><!--end footer-->
-                                    <!-- End -->
-                                    </main>
-                                    <!--End page-content" -->
-                                    </div>
-                                    <!-- page-wrapper -->
-
-                                    <!-- Offcanvas Start -->
-                                    <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                                        <div class="offcanvas-header p-4 border-bottom">
-                                            <h5 id="offcanvasRightLabel" class="mb-0">
-                                                <img src="./assets/images/logo-dark.png" height="24" class="light-version" alt="">
-                                                <img src="./assets/images/logo-light.png" height="24" class="dark-version" alt="">
-                                            </h5>
-                                            <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
-                                        </div>
-                                        <div class="offcanvas-body p-4 px-md-5">
+                                    <div class="col-md-6 mt-4 mt-sm-0">
+                                        <form action="UpdateProductServlet" method="Post">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <!-- Style switcher -->
-                                                    <div id="style-switcher">
-                                                        <div>
-                                                            <ul class="text-center list-unstyled mb-0">
-                                                                <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="./assets/images/layouts/light-dash-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                                                <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="./assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                                                <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="./assets/images/layouts/dark-dash-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                                                <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="./assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                                                <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="./assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
-                                                                <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="./assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                                                <li class="d-grid"><a href="./c/index.html" target="_blank" class="mt-4"><img src="./assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Landing Demos</span></a></li>
-                                                            </ul>
+                                                    <input type=hidden name="id" value="${requestScope.service.id}"/>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Shop Title <span class="text-danger">*</span></label>
+                                                        <input name="name" id="name" type="text" class="form-control" placeholder="Title :" value="${requestScope.service.name}">
+                                                    </div>
+                                                </div><!--end col-->
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Price: </label>
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text border bg-transparent" id="basic-addon1">$</span>
+                                                            <input type="number" min="0" name="price" class="form-control" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1" value="${requestScope.service.price}">
                                                         </div>
                                                     </div>
-                                                    <!-- end Style switcher -->
                                                 </div><!--end col-->
-                                            </div><!--end row-->
-                                        </div>
 
-                                        <div class="offcanvas-footer p-4 border-top text-center">
-                                            <ul class="list-unstyled social-icon mb-0">
-                                                <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
-                                                <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
-                                                <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
-                                                <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
-                                                <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
-                                                <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
-                                                <li class="list-inline-item mb-0"><a href="./././index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
-                                            </ul><!--end icon-->
-                                        </div>
-                                    </div>
-                                    <!-- Offcanvas End -->
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Label:</label>
+                                                        <select class="form-control">
+                                                            <option value="FE">Featured</option>
+                                                            <option value="NE">New</option>
+                                                            <option value="PO">Popular</option>
+                                                            <option value="RE">Recent</option>
+                                                            <option value="FR">Free</option>
+                                                        </select>
+                                                    </div>
+                                                </div><!--end col-->
 
-                                    <!-- javascript -->
-                                    <script src="../assets/js/jquery.min.js"></script>
-                                    <script src="../assets/js/bootstrap.bundle.min.js"></script>
-                                    <!-- simplebar -->
-                                    <script src="../assets/js/simplebar.min.js"></script>
-                                    <!-- SLIDER -->
-                                    <script src="../assets/js/tiny-slider.js"></script>
-                                    <script src="../assets/js/tiny-slider-init.js"></script>
-                                    <script src="../assets/js/slick.min.js"></script>
-                                    <script src="../assets/js/slick.init.js"></script>
-                                    <!-- Icons -->
-                                    <script src="../assets/js/feather.min.js"></script>
-                                    <!-- Main Js -->
-                                    <script src="../assets/js/app.js"></script>
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Description : </label>
+                                                        <input name="description" type="text" class="form-control" id="time" value="${requestScope.service.description}">
+                                                    </div>
+                                                </div><!--end col-->
 
-                                    </body>
+                                                <div class="col-lg-12 text-end">
+                                                    <button type="submit" class="btn btn-primary">Update Product</button>
+                                                </div><!--end col-->
+                                            </div>
+                                        </form>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Confirm Active/Deactivate -->
+                <div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateStatusModalLabel">Confirm Status Change</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to <strong id="status-action"></strong> this product?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <form id="update-status-form" method="POST" action="UpdateStatusServlet">
+                                    <input type="hidden" name="id" id="product-id" value="${requestScope.service.id}">
+                                    <input type="hidden" name="currentStatus" id="current-status" value="${requestScope.service.isActive}">
+                                    <button type="submit" class="btn btn-primary">Confirm</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    // Khi submit form, ng?ng hÃ nh ??ng m?c ??nh
+                    $('form').submit(function (e) {
+                        e.preventDefault(); // Ng?ng g?i form m?c ??nh
 
-                                    </html>
+                        // L?y thÃ´ng tin t? cÃ¡c tr??ng input trong form
+                        var name = $('#name').val();
+                        var price = $('#price').val();
+                        var description = $('#description').val();
+                        var img = $('#input-file').val(); // X? lÃ½ ?nh n?u cÃ³
+
+                        // Th?c hi?n yÃªu c?u AJAX ?? c?p nh?t s?n ph?m
+                        $.ajax({
+                            url: 'updateProduct', // ???ng d?n ??n servlet x? lÃ½ update
+                            type: 'POST', // Ph??ng th?c g?i yÃªu c?u
+                            data: {
+                                id: productId, // ID c?a s?n ph?m c?n c?p nh?t
+                                name: name,
+                                price: price,
+                                description: description,
+                                img: img
+                            },
+                            success: function (response) {
+                                // X? lÃ½ khi update thÃ nh cÃ´ng
+                                $('#add-product').modal('hide');  // ?Ã³ng modal
+                                alert('Product updated successfully!');  // ThÃ´ng bÃ¡o thÃ nh cÃ´ng
+                            },
+                            error: function () {
+                                // X? lÃ½ khi cÃ³ l?i
+                                alert('Failed to update product!');
+                            }
+                        });
+                    });
+                    $('#updateStatusModal').on('show.bs.modal', function (event) {
+                        var button = $(event.relatedTarget); // L?y thÃ´ng tin t? nÃºt b?m
+                        var productId = button.data('id');
+                        var currentStatus = button.data('currentstatus');
+
+                        // C?p nh?t thÃ´ng tin vÃ o modal
+                        var modal = $(this);
+                        modal.find('#product-id').val(productId);
+                        modal.find('#current-status').val(currentStatus);
+                        modal.find('#status-action').text(currentStatus ? "Deactivate" : "Activate");
+                    });
+
+                    $('#update-status-form').submit(function (e) {
+                        e.preventDefault(); // Ng?ng g?i form m?c ??nh
+
+                        var productId = $('#product-id').val(); // L?y ID
+                        var currentStatus = $('#current-status').val(); // Tr?ng thÃ¡i hi?n t?i
+                        var newStatus = currentStatus === "true" ? false : true; // ??i tr?ng thÃ¡i ng??c l?i
+
+                        $.ajax({
+                            url: 'updateStatusServlet', // ??m b?o ???ng d?n ?Ãºng
+                            type: 'POST',
+                            data: {
+                                id: productId,
+                                currentStatus: currentStatus  // Truy?n tr?ng thÃ¡i hi?n t?i
+                            },
+                            success: function (response) {
+                                if (response === "success") {
+                                    alert("Status updated successfully!");
+                                    location.reload(); // Reload l?i trang ?? tr?ng thÃ¡i m?i ???c hi?n th?
+                                } else {
+                                    alert("Failed to update status!");
+                                }
+                            },
+                            error: function () {
+                                alert("Error while updating!");
+                            }
+                        });
+                    });
+
+
+                </script>
+
+                <!-- Footer Start -->
+                <footer class="bg-white shadow py-3">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="text-sm-start text-center">
+                                    <p class="mb-0 text-muted"><script>document.write(new Date().getFullYear())</script> Â© Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="./././index.html" target="_blank" class="text-reset">Shreethemes</a>.</p>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div><!--end container-->
+                </footer><!--end footer-->
+                <!-- End -->
+            </main>
+            <!--End page-content" -->
+        </div>
+        <!-- page-wrapper -->
+
+        <!-- Offcanvas Start -->
+        <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header p-4 border-bottom">
+                <h5 id="offcanvasRightLabel" class="mb-0">
+                    <img src="./assets/images/logo-dark.png" height="24" class="light-version" alt="">
+                    <img src="./assets/images/logo-light.png" height="24" class="dark-version" alt="">
+                </h5>
+                <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+            </div>
+            <div class="offcanvas-body p-4 px-md-5">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Style switcher -->
+                        <div id="style-switcher">
+                            <div>
+                                <ul class="text-center list-unstyled mb-0">
+                                    <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="./assets/images/layouts/light-dash-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="./assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="./assets/images/layouts/dark-dash-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="./assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="./assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="./assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
+                                    <li class="d-grid"><a href="./c/index.html" target="_blank" class="mt-4"><img src="./assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Landing Demos</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- end Style switcher -->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+
+            <div class="offcanvas-footer p-4 border-top text-center">
+                <ul class="list-unstyled social-icon mb-0">
+                    <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="./././index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
+                </ul><!--end icon-->
+            </div>
+        </div>
+        <!-- Offcanvas End -->
+
+        <!-- javascript -->
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/bootstrap.bundle.min.js"></script>
+        <!-- simplebar -->
+        <script src="../assets/js/simplebar.min.js"></script>
+        <!-- SLIDER -->
+        <script src="../assets/js/tiny-slider.js"></script>
+        <script src="../assets/js/tiny-slider-init.js"></script>
+        <script src="../assets/js/slick.min.js"></script>
+        <script src="../assets/js/slick.init.js"></script>
+        <!-- Icons -->
+        <script src="../assets/js/feather.min.js"></script>
+        <!-- Main Js -->
+        <script src="../assets/js/app.js"></script>
+
+    </body>
+
+</html>
