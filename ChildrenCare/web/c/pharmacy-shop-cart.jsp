@@ -21,15 +21,15 @@
         <meta name="website" content="https://shreethemes.in" />
         <meta name="Version" content="v1.2.0" />
         <!-- favicon -->
-        <link rel="shortcut icon" href="../assets/images/favicon.ico.png">
+        <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/favicon.ico.png">
         <!-- Bootstrap -->
-        <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- Icons -->
-        <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/css/remixicon.css" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/assets/css/remixicon.css" rel="stylesheet" type="text/css" />
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
-        <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <link href="${pageContext.request.contextPath}/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
     </head>
 
@@ -50,8 +50,8 @@
             <div class="container">
                 <!-- Logo container-->
                     <a class="logo" href="./home">
-                    <img src="../assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
-                    <img src="../assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                 </a>                
                 <!-- Logo End -->
                 
@@ -90,14 +90,14 @@
                             <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
                             <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
                                 <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                    <img src="../assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                    <img src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
                                     <div class="flex-1 ms-2">
                                         <span class="mt-3 mb-1">${sessionScope.user.fullname}</span>
                                         <small class="text-muted">Orthopedic</small>
                                          
                                     </div>
                                 </a>
-                                <a class="dropdown-item text-dark" href="../profile"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                <a class="dropdown-item text-dark" href="${pageContext.request.contextPath}/profile"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                 <div class="dropdown-divider border-top"></div>
                                 <a class="dropdown-item text-dark" href="login.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
                             </div>
@@ -185,181 +185,123 @@
                                 <li><a href="contact.html" class="sub-menu-item">Contact</a></li>
                             </ul>
                         </li>
-                        <li><a href="../admin/index.html" class="sub-menu-item" target="_blank">Admin</a></li>
+                        <li><a href="${pageContext.request.contextPath}/admin/index.html" class="sub-menu-item" target="_blank">Admin</a></li>
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->
         </header><!--end header-->
         <!-- Navbar End -->
 
-        <!-- Hero Start -->
-        <section class="bg-half-170 d-table w-100 bg-light">
-            <div class="container">
-                <div class="row mt-5 justify-content-center">
-                    <div class="col-12">
-                        <div class="section-title text-center">
-                            <h3 class="sub-title mb-4">Shop Cart</h3>
-                            <p class="para-desc mx-auto text-muted">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
-                        
-                            <nav aria-label="breadcrumb" class="d-inline-block mt-3">
-                                <ul class="breadcrumb bg-light rounded mb-0 bg-transparent">
-                                    <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
-                                    <li class="breadcrumb-item"><a href="pharmacy.html">Pharmacy</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Shop Cart</li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </section><!--end section-->
-        <div class="position-relative">
-            <div class="shape overflow-hidden text-white">
-                <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
-                </svg>
+     
+        
+<section class="section">
+    <div class="container">
+        <!-- Search and Filter Row -->
+        <div class="row mb-3">
+            <!-- Search Box -->
+            <div class="col-md-4">
+                <form action="myreservation" method="get">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search Service Name" value="${param.search}">
+                        <button class="btn btn-outline-primary" type="submit">Search</button>
+                    </div>
+                </form>
             </div>
         </div>
-        <!-- Hero End -->
 
-        <!-- Start -->
-        <section class="section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="table-responsive bg-white shadow rounded">
-                            <table class="table table-center table-padding mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="border-bottom p-3" style="min-width:20px "></th>
-                                        <th class="border-bottom p-3" style="min-width: 300px;">Product</th>
-                                        <th class="border-bottom text-center p-3" style="min-width: 160px;">Price</th>
-                                        <th class="border-bottom text-center p-3" style="min-width: 190px;">Qty</th>
-                                        <th class="border-bottom text-end p-3" style="min-width: 50px;">Total</th>
-                                    </tr>
-                                </thead>
+        <!-- Reservation Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive bg-white shadow rounded">
+                    <table class="table table-center table-padding mb-0">
+                        <thead>
+                            <tr>
+                                <!-- Sortable Column: Service Name -->
+                                <th class="border-bottom p-3">
+                                    <a href="myreservation?search=${param.search}&status=${param.status}
+                                            &sort=${param.sort == 'asc' ? 'desc' : 'asc'}"
+                                       class="text-decoration-none text-dark">
+                                        Service Name
+                                        <c:if test="${param.sort == 'asc'}">A-Z</c:if>
+                                        <c:if test="${param.sort == 'desc'}">Z-A</c:if>
+                                    </a>
+                                </th>
+                                <th class="border-bottom p-3">DateBook</th>
+                                <!-- Price Column -->
+                                <th class="border-bottom p-3">Price</th>
 
-                                <tbody>
-                                    <tr>
-                                        <td class="h5 p-3 text-center"><a href="#" class="text-danger"><i class="uil uil-times"></i></a></td>
-                                        <td class="p-3">
-                                            <div class="d-flex align-items-center">
-                                                <img src="../assets/images/pharmacy/shop/ashwagandha.jpg" class="img-fluid avatar avatar-small rounded shadow" style="height:auto;" alt="">
-                                                <h6 class="mb-0 ms-3">Ashwagandha Churna</h6>
-                                            </div>
-                                        </td>
-                                        <td class="text-center p-3">$ 255.00</td>
-                                        <td class="text-center shop-list p-3">
-                                            <div class="qty-icons">
-                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-icon btn-primary minus">-</button>
-                                                <input min="0" name="quantity" value="0" type="number" class="btn btn-icon btn-primary qty-btn quantity">
-                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-icon btn-primary plus">+</button>
-                                            </div>
-                                        </td>
-                                        <td class="text-end font-weight-bold p-3">$510.00</td>
-                                    </tr>
+                                <!-- Sortable Column: Status -->
+                                <th class="border-bottom text-center p-3">
+                                    <a href="myreservation?search=${param.search}&status=${param.status}
+                                            &sort=${param.sort}
+                                            &sortStatus=${param.sortStatus == 'asc' ? 'desc' : 'asc'}" 
+                                       class="text-decoration-none text-dark">
+                                        Status
+                                        <c:if test="${param.sortStatus == 'asc'}">🔼</c:if>
+                                        <c:if test="${param.sortStatus == 'desc'}">🔽</c:if>
+                                    </a>
+                                </th>
 
-                                    <tr>
-                                        <td class="h5 p-3 text-center"><a href="#" class="text-danger"><i class="uil uil-times"></i></a></td>
-                                        <td class="p-3">
-                                            <div class="d-flex align-items-center">
-                                                <img src="../assets/images/pharmacy/shop/diabend.jpg" class="img-fluid avatar avatar-small rounded shadow" style="height:auto;" alt="">
-                                                <h6 class="mb-0 ms-3">Diabend</h6>
-                                            </div>
-                                        </td>
-                                        <td class="text-center p-3">$ 520.00</td>
-                                        <td class="text-center shop-list p-3">
-                                            <div class="qty-icons">
-                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-icon btn-primary minus">-</button>
-                                                <input min="0" name="quantity" value="0" type="number" class="btn btn-icon btn-primary qty-btn quantity">
-                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-icon btn-primary plus">+</button>
-                                            </div>
-                                        </td>
-                                        <td class="text-end font-weight-bold p-3">$520.00</td>
-                                    </tr>
+                                <th class="border-bottom text-center p-3">Start Time</th>
+                                <th class="border-bottom text-center p-3">End Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loop Through Sorted Reservations -->
+                            <c:forEach var="reservation" items="${paginatedReservations}">
+                                <tr>
+                                    <td class="p-3">${reservation.service.name}</td>
+                                    <td class="p-3"><fmt:formatDate value="${reservation.bookdate}" pattern="yyyy-MM-dd" /></td>
+                                    <td class="text-center p-3">${reservation.service.price}</td>
+                                    <td class="text-center p-3">
+                                        <span class="badge 
+                                            ${reservation.status == 'Completed' ? 'badge-success' : 
+                                              reservation.status == 'Pending' ? 'badge-warning' : 'badge-danger'}">
+                                            ${reservation.status}
+                                        </span>
+                                    </td>
+                                    <td class="p-3"><fmt:formatDate value="${reservation.start}" pattern="HH:mm" /></td>
+                                    <td class="p-3"><fmt:formatDate value="${reservation.end}" pattern="HH:mm" /></td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-                                    <tr>
-                                        <td class="h5 p-3 text-center"><a href="#" class="text-danger"><i class="uil uil-times"></i></a></td>
-                                        <td class="p-3">
-                                            <div class="d-flex align-items-center">
-                                                <img src="../assets/images/pharmacy/shop/facewash.jpg" class="img-fluid avatar avatar-small rounded shadow" style="height:auto;" alt="">
-                                                <h6 class="mb-0 ms-3">Facewash</h6>
-                                            </div>
-                                        </td>
-                                        <td class="text-center p-3">$ 160.00</td>
-                                        <td class="text-center shop-list p-3">
-                                            <div class="qty-icons">
-                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-icon btn-primary minus">-</button>
-                                                <input min="0" name="quantity" value="0" type="number" class="btn btn-icon btn-primary qty-btn quantity">
-                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-icon btn-primary plus">+</button>
-                                            </div>
-                                        </td>
-                                        <td class="text-end font-weight-bold p-3">$640.00</td>
-                                    </tr>
+        <!-- Pagination Controls -->
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <c:if test="${currentPage > 1}">
+                    <a href="myreservation?page=${currentPage - 1}&search=${param.search}&sort=${param.sort}" class="btn btn-secondary">Previous</a>
+                </c:if>
 
-                                    <tr>
-                                        <td class="h5 p-3 text-center"><a href="#" class="text-danger"><i class="uil uil-times"></i></a></td>
-                                        <td class="p-3">
-                                            <div class="d-flex align-items-center">
-                                                <img src="../assets/images/pharmacy/shop/handwash.jpg" class="img-fluid avatar avatar-small rounded shadow" style="height:auto;" alt="">
-                                                <h6 class="mb-0 ms-3">Dettol handwash</h6>
-                                            </div>
-                                        </td>
-                                        <td class="text-center p-3">$ 260.00</td>
-                                        <td class="text-center shop-list p-3">
-                                            <div class="qty-icons">
-                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-icon btn-primary minus">-</button>
-                                                <input min="0" name="quantity" value="0" type="number" class="btn btn-icon btn-primary qty-btn quantity">
-                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-icon btn-primary plus">+</button>
-                                            </div>
-                                        </td>
-                                        <td class="text-end font-weight-bold p-3">$520.00</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-                <div class="row">
-                    <div class="col-lg-8 col-md-6 mt-4 pt-2">
-                        <a href="#" class="btn btn-primary">Shop More</a>
-                        <a href="#" class="btn btn-soft-primary ms-2">Update Cart</a>
-                    </div>
-                    <div class="col-lg-4 col-md-6 ms-auto mt-4 pt-2">
-                        <div class="table-responsive bg-white rounded shadow">
-                            <table class="table table-center table-padding mb-0">
-                                <tbody>
-                                    <tr>
-                                        <td class="h6 p-3">Subtotal</td>
-                                        <td class="text-end font-weight-bold p-3">$ 2190</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="h6 p-3">Taxes</td>
-                                        <td class="text-end font-weight-bold p-3">$ 219</td>
-                                    </tr>
-                                    <tr class="bg-light">
-                                        <td class="h6 p-3">Total</td>
-                                        <td class="text-end font-weight-bold p-3">$ 2409</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="mt-4 pt-2 text-end">
-                            <a href="#" class="btn btn-primary">Proceed to checkout</a>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </section><!--end section-->
-        <!-- End -->
+                <c:forEach var="i" begin="1" end="${totalPages}">
+                    <c:if test="${i == currentPage}">
+                        <span class="btn btn-primary">${i}</span>
+                    </c:if>
+                    <c:if test="${i != currentPage}">
+                        <a href="myreservation?page=${i}&search=${param.search}&sort=${param.sort}" class="btn btn-outline-primary">${i}</a>
+                    </c:if>
+                </c:forEach>
 
-        <!-- Start -->
+                <c:if test="${currentPage < totalPages}">
+                    <a href="myreservation?page=${currentPage + 1}&search=${param.search}&sort=${param.sort}" class="btn btn-secondary">Next</a>
+                </c:if>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+     <!-- Start -->
         <footer class="bg-footer">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
                         <a href="#" class="logo-footer">
-                            <img src="../assets/images/logo-light.png" height="22" alt="">
+                            <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="22" alt="">
                         </a>
                         <p class="mt-4 me-xl-5">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
                     </div><!--end col-->
@@ -427,7 +369,7 @@
                     <div class="row align-items-center">
                         <div class="col-sm-6">
                             <div class="text-sm-start text-center">
-                                <p class="mb-0"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.</p>
+                                <p class="mb-0"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="${pageContext.request.contextPath}/${pageContext.request.contextPath}/${pageContext.request.contextPath}/index.html" target="_blank" class="text-reset">Shreethemes</a>.</p>
                             </div>
                         </div><!--end col-->
     
@@ -456,7 +398,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="text-center">
-                                <h4>Search now.....</h4>
+                                <h4>Search now${pageContext.request.contextPath}${pageContext.request.contextPath}.</h4>
                                 <div class="subcribe-form mt-4">
                                     <form>
                                         <div class="mb-0">
@@ -477,8 +419,8 @@
         <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header p-4 border-bottom">
                 <h5 id="offcanvasRightLabel" class="mb-0">
-                    <img src="../assets/images/logo-dark.png" height="24" class="light-version" alt="">
-                    <img src="../assets/images/logo-light.png" height="24" class="dark-version" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" height="24" class="light-version" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="24" class="dark-version" alt="">
                 </h5>
                 <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
             </div>
@@ -489,13 +431,13 @@
                         <div id="style-switcher">
                             <div>
                                 <ul class="text-center list-unstyled mb-0">
-                                    <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="../assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="../assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                    <li class="d-grid"><a href="../admin/index.html" target="_blank" class="mt-4"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
+                                    <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
+                                    <li class="d-grid"><a href="${pageContext.request.contextPath}/admin/index.html" target="_blank" class="mt-4"><img src="${pageContext.request.contextPath}/assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -512,18 +454,20 @@
                     <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
                     <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
                     <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="${pageContext.request.contextPath}/${pageContext.request.contextPath}/${pageContext.request.contextPath}/index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
                 </ul><!--end icon-->
             </div>
         </div>
         <!-- Offcanvas End -->
         
         <!-- javascript -->
-        <script src="../assets/js/bootstrap.bundle.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
         <!-- Icons -->
-        <script src="../assets/js/feather.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/feather.min.js"></script>
         <!-- Main Js -->
-        <script src="../assets/js/app.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+        
+
     </body>
 
 </html>

@@ -268,7 +268,7 @@
                             <ul class="submenu">
                                 <li><a href="../service-list" class="sub-menu-item">Services List</a></li>
                                     <c:if test="${sessionScope.role.contains('Customer')}">
-                                    <li><a href="pharmacy-shop-cart.jsp" class="sub-menu-item">My Reservation</a></li>
+                                    <li><a href="../myreservation" class="sub-menu-item">My Reservation</a></li>
                                     <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
                                     </c:if>
                                 <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>

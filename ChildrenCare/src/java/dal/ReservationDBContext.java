@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import model.Service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Date;
 import model.User;
+import model.Reservation;
 
 /**
  *
@@ -102,6 +104,78 @@ public class ReservationDBContext extends DBContext {
         return staff;
     }
 
+public ArrayList<Reservation> getReservationByUserId(int userId, String sortColumn, String sortOrder, String searchQuery, String statusFilter) {
+    ArrayList<Reservation> reservations = new ArrayList<>();
+    
+    // Truy vấn SQL cho phép tìm kiếm theo tên dịch vụ (s.name) và lọc theo trạng thái
+    String sql = "SELECT r.reserv_id, r.dateBook, r.status, r.createDate, r.updateDate, r.note, r.starttime, r.endtime, " +
+                 "r.service_id, s.name, s.price " +
+                 "FROM reservations r " +
+                 "JOIN users u ON r.user_id = u.user_id " +
+                 "JOIN services s ON r.service_id = s.service_id " +
+                 "WHERE u.user_id = ? ";
+
+    // Thêm điều kiện tìm kiếm nếu có từ khóa
+    if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+        sql += "AND s.name LIKE ? ";
+    }
+
+    // Thêm điều kiện lọc theo trạng thái
+    if (statusFilter != null && !statusFilter.trim().isEmpty()) {
+        sql += "AND r.status = ? ";
+    }
+
+    // Thêm điều kiện sắp xếp theo cột
+    if (sortColumn != null && !sortColumn.isEmpty()) {
+        sql += "ORDER BY " + sortColumn + " " + sortOrder;
+    } else {
+        sql += "ORDER BY s.name ASC"; // Mặc định sắp xếp theo tên dịch vụ (tăng dần)
+    }
+
+    try (PreparedStatement stm = connection.prepareStatement(sql)) {
+        stm.setInt(1, userId); // Đặt user_id vào câu lệnh truy vấn
+        
+        // Nếu có từ khóa tìm kiếm, đặt tham số tìm kiếm vào câu lệnh SQL
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            stm.setString(2, "%" + searchQuery + "%"); // Tìm kiếm theo tên dịch vụ (s.name)
+        }
+
+        // Nếu có trạng thái lọc, đặt tham số trạng thái vào câu lệnh SQL
+        if (statusFilter != null && !statusFilter.trim().isEmpty()) {
+            stm.setString(3, statusFilter); // Lọc theo trạng thái
+        }
+
+        try (ResultSet rs = stm.executeQuery()) {
+            while (rs.next()) {
+                Reservation reservation = new Reservation();
+                reservation.setId(rs.getInt("reserv_id"));
+                reservation.setBookdate(rs.getDate("dateBook"));
+                reservation.setStatus(rs.getString("status"));
+                reservation.setUpdatedate(rs.getDate("updateDate"));
+                reservation.setCreatedate(rs.getDate("createDate"));
+                reservation.setNote(rs.getString("note"));
+                reservation.setStart(rs.getTime("starttime"));
+                reservation.setEnd(rs.getTime("endtime"));
+
+                // Lấy thông tin dịch vụ (service)
+                Service service = new Service();
+                service.setId(rs.getInt("service_id"));
+                service.setName(rs.getString("name"));
+                service.setPrice(rs.getFloat("price"));
+                reservation.setService(service);
+
+                reservations.add(reservation);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return reservations;
+}
+
+
+
     public ArrayList<User> getAvailableStaff(String date, String startTime, String endTime) {
         ArrayList<User> staff = new ArrayList<>();
         String sql = "SELECT * FROM users usr\n"
@@ -177,18 +251,17 @@ public class ReservationDBContext extends DBContext {
             return false;
         }
     }
-    
-    public void deleteCart(int user_id, int cart_id){
+
+    public void deleteCart(int user_id, int cart_id) {
         String sql = "delete from cart where user_id = ? and service_id = ?";
-        
+
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, user_id);
             stm.setInt(2, cart_id);
-            
+
             stm.executeUpdate();
-            
+
         } catch (Exception e) {
         }
     }
-
 }
