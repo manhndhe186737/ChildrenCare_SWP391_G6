@@ -69,7 +69,7 @@ public class AddServiceServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String name = request.getParameter("name");
         String priceStr = request.getParameter("price");
@@ -103,20 +103,22 @@ public class AddServiceServlet extends HttpServlet {
         }
 
         // Xử lý file ảnh
-    Part filePart = request.getPart("imageFile");
-    if (filePart != null && filePart.getSize() > 0) {
-        // Đường dẫn lưu ảnh
-        String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) uploadDir.mkdir();
+        Part filePart = request.getPart("imageFile"); // Đảm bảo rằng 'imageFile' đúng với tên trường trong form.
+        if (filePart != null && filePart.getSize() > 0) {
+            // Đường dẫn lưu ảnh
+            String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads"; // Đảm bảo thư mục này tồn tại
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs(); // Tạo thư mục nếu chưa tồn tại
+            }
 
-        // Lưu file
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        imagePath = "uploads/" + fileName;
-        filePart.write(uploadPath + File.separator + fileName);
-    } else {
-        imagePath = request.getParameter("image");
-    }
+            // Lưu file
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            imagePath = "uploads/" + fileName; // Lưu đường dẫn tới thư mục uploads
+            filePart.write(uploadPath + File.separator + fileName); // Lưu file vào thư mục
+        } else {
+            imagePath = request.getParameter("image"); // Lấy ảnh mặc định từ form nếu không có ảnh tải lên
+        }
 
         // Tạo đối tượng service và lưu vào DB
         Service service = new Service(name, description, price, category, imagePath, Boolean.TRUE);

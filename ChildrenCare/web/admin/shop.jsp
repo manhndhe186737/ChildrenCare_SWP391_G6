@@ -27,7 +27,36 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <style>
+            /* Căn chỉnh bố cục Add Product Form */
+            #add-product-form {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
 
+            /* Thiết lập vùng preview ảnh */
+            .preview-box {
+                width: 100%;
+                max-width: 250px;
+                height: 250px;
+                border: 2px dashed #ddd;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f8f9fa;
+                overflow: hidden;
+                margin: auto;
+            }
+
+            .preview-content {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+        </style>
     </head>
 
     <body>
@@ -345,8 +374,8 @@
                                                 </ul>
                                                 <div class="shop-image position-relative overflow-hidden">
                                                     <a href="serviceDetails?id=${service.id}">
-                                                        <img src="${not empty service.img ? service.img : '../assets/images/staff/staff03.jpg'}" 
-                                                             class="img-fluid" alt="Service Image">
+                                                        <img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="Service Image">
+
                                                     </a>
                                                     <ul class="list-unstyled shop-icons">
                                                         <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
@@ -459,80 +488,72 @@
         <!-- Offcanvas End -->
 
         <!-- Start Modal -->
+        <!-- Start Modal -->
         <div class="modal fade" id="add-product" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-bottom p-3">
-                <h5 class="modal-title" id="exampleModalLabel">Add Shop Product</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body p-3 pt-4">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="d-grid me-md-4">
-                            <p class="text-muted">Upload your shop image here, Please click "Upload Image" Button.</p>
-                            <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1">
-                                <img id="preview-image" src="#" alt="Preview Image" style="max-width: 100%; display: none;" />
-                            </div>
-                            <input type="file" id="input-file" name="productImage" accept="image/*" onchange="previewImage(event)" required hidden />
-                            <label>Upload Image:</label>
-                                <input type="file" name="imageFile" accept="image/*"onchange="previewImage(event)">
-                        </div>
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header border-bottom p-3">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Shop Product</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <div class="col-md-6 mt-4 mt-sm-0">
-                        <form id="add-product-form" method="Post" action="AddServiceServlet" enctype="multipart/form-data">
-                            <div class="row">
-                                <div class="col-12">
+                    <div class="modal-body p-4">
+                        <div class="row">
+                            <!-- Form Inputs -->
+                            <div class="col-md-6">
+                                <form id="add-product-form" method="POST" action="AddServiceServlet" enctype="multipart/form-data">
                                     <div class="mb-3">
-                                        <label class="form-label">Services Name <span class="text-danger">*</span></label>
-                                        <input name="name" id="name" type="text" class="form-control" placeholder="Title :" required>
+                                        <label class="form-label">Service Name <span class="text-danger">*</span></label>
+                                        <input name="name" type="text" class="form-control" placeholder="Enter Service Name" required>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Price: </label>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text border bg-transparent">$</span>
-                                            <input type="number" name="price" min="0" class="form-control" placeholder="Price" required>
+                                        <label class="form-label">Price:</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" name="price" min="0" class="form-control" placeholder="Enter Price" required>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Category: </label>
+                                        <label class="form-label">Category:</label>
                                         <select class="form-control" name="category">
                                             <c:forEach var="category" items="${categories}">
                                                 <option value="${category.id}">${category.categoryname}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
-                                </div>
 
-                                <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label class="form-label">Description: </label>
-                                        <textarea name="description" class="form-control" placeholder="Enter description here"></textarea>
+                                        <label class="form-label">Description:</label>
+                                        <textarea name="description" class="form-control" rows="3" placeholder="Enter Description"></textarea>
                                     </div>
-                                </div>
 
-                                <!-- Input hidden để lưu ảnh vào form -->
-                                <input type="hidden" name="imagePath" id="imagePath">
+                                    <!-- Upload Image -->
+                                    <div class="mb-3">
+                                        <label class="form-label">Upload Image:</label>
+                                        <input type="file" name="imageFile" accept="image/*" class="form-control" onchange="previewImage(event)" required>
+                                    </div>
 
-                                <div class="col-lg-12 text-end">
-                                    <button type="submit" class="btn btn-primary">Add Product</button>
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-primary">Add Product</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Image Preview -->
+                            <div class="col-md-6 text-center">
+                                <div class="preview-box">
+                                    <img id="preview-image" class="preview-content" src="../assets/images/placeholder.jpg" alt="Preview Image">
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div> 
         </div>
-    </div> 
-</div>
+        <!-- End modal -->
+
         <!-- End modal -->
 
 
@@ -546,40 +567,40 @@
         <script src="../assets/js/app.js"></script>
 
         <script>
-                                        const handleChange = () => {
-                                            const fileUploader = document.querySelector('#input-file');
-                                            const getFile = fileUploader.files
-                                            if (getFile.length !== 0) {
-                                                const uploadedFile = getFile[0];
-                                                readFile(uploadedFile);
+                                            const handleChange = () => {
+                                                const fileUploader = document.querySelector('#input-file');
+                                                const getFile = fileUploader.files
+                                                if (getFile.length !== 0) {
+                                                    const uploadedFile = getFile[0];
+                                                    readFile(uploadedFile);
+                                                }
                                             }
-                                        }
 
-                                        const readFile = (uploadedFile) => {
-                                            if (uploadedFile) {
-                                                const reader = new FileReader();
-                                                reader.onload = () => {
-                                                    const parent = document.querySelector('.preview-box');
-                                                    parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
-                                                };
+                                            const readFile = (uploadedFile) => {
+                                                if (uploadedFile) {
+                                                    const reader = new FileReader();
+                                                    reader.onload = () => {
+                                                        const parent = document.querySelector('.preview-box');
+                                                        parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
+                                                    };
 
-                                                reader.readAsDataURL(uploadedFile);
-                                            }
-                                        };
+                                                    reader.readAsDataURL(uploadedFile);
+                                                }
+                                            };
         </script>
-        
-<script>
-    function previewImage(event) {
-        const input = event.target;
-        const reader = new FileReader();
-        reader.onload = function () {
-            const imgElement = document.getElementById("preview-image");
-            imgElement.src = reader.result;
-            imgElement.style.display = "block";
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-</script>
+
+        <script>
+            function previewImage(event) {
+                const input = event.target;
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const imgElement = document.getElementById("preview-image");
+                    imgElement.src = reader.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+
+        </script>
     </body>
 
 </html>

@@ -324,7 +324,7 @@
                                 <div class="col-lg-4 col-md-5">
                                     <div class="slider slider-for">
                                         <div>
-                                            <img src="${not empty service.img ? service.img : "../assets/images/pharmacy/shop/01.jpg"}" class="img-fluid rounded" alt="Product Image">
+                                            <img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid rounded" alt="Product Image">
 
                                         </div>
                                     </div>
