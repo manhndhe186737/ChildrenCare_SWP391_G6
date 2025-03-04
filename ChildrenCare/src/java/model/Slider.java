@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
+
 import java.sql.Date;
+
 /**
  *
  * @author FPTSHOP
@@ -16,9 +18,13 @@ public class Slider {
     private Date createdate;
     private Date updatedate;
     private Boolean visibility;
+    private String backlink; 
     private User author;
 
-    public Slider(int id, String title, String img, String status, Date createdate, Date updatedate, Boolean visibility, User author) {
+    
+
+ 
+    public Slider(int id, String title, String img, String status, Date createdate, Date updatedate, Boolean visibility, String backlink, User author) {
         this.id = id;
         this.title = title;
         this.img = img;
@@ -26,9 +32,10 @@ public class Slider {
         this.createdate = createdate;
         this.updatedate = updatedate;
         this.visibility = visibility;
+        this.backlink = backlink; 
         this.author = author;
     }
-
+ 
     public Slider() {
     }
 
@@ -88,11 +95,19 @@ public class Slider {
         this.visibility = visibility;
     }
 
+    public String getBacklink() {
+        return backlink;
+    }
+
+    public void setBacklink(String backlink) {
+        this.backlink = backlink;
+    }
+
     public User getAuthor() {
         return author;
     }
 
     public void setAuthor(User author) {
         this.author = author;
-    }
+    }  
 }

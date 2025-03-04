@@ -126,6 +126,23 @@
                 text-decoration: underline;
             }
 
+            .background-link {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1; /* Đặt dưới các phần tử khác */
+            }
+
+            /* Đảm bảo các input, button, và nội dung không bị chặn */
+            #home .container,
+            #home form,
+            #home input,
+            #home button {
+                position: relative;
+                z-index: 2;
+            }
 
         </style>
 
@@ -304,6 +321,7 @@
 
         <!-- Start Hero -->
         <section class="bg-half-170 d-table w-100" id="home">
+            <a id="background-link" href="#" class="background-link"></a> 
             <div class="bg-overlay bg-overlay-dark"></div>
             <div class="container">
                 <div class="row justify-content-center mt-5">
@@ -311,38 +329,45 @@
                         <div class="heading-title text-center">
                             <img src="../assets/images/logo-icon.png" height="50" alt="">
                             <h4 class="heading fw-bold text-white title-dark mt-3 mb-4">Booking Your Appointments</h4>
-                            <p class="para-desc mx-auto text-white-50 mb-0">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
+                            <p class="para-desc mx-auto text-white-50 mb-0">
+                                Great doctor if you need your family member to get effective immediate assistance,
+                                emergency treatment or a simple consultation.
+                            </p>
 
                             <div class="mt-4 pt-2">
                                 <form class="rounded text-start shadow p-4 bg-white-50">
                                     <div class="row align-items-center">
                                         <div class="col-md">
                                             <div class="input-group bg-white border rounded" style="opacity: 0.7;">
-                                                <span class="input-group-text bg-white border-0"><i class="ri-map-pin-line text-primary h5 fw-normal mb-0"></i></span>
+                                                <span class="input-group-text bg-white border-0">
+                                                    <i class="ri-map-pin-line text-primary h5 fw-normal mb-0"></i>
+                                                </span>
                                                 <input name="name" id="location" type="text" class="form-control border-0" placeholder="Location:">
                                             </div>
-                                        </div><!--end col-->
-
+                                        </div>
                                         <div class="col-md mt-4 mt-sm-0">
                                             <div class="input-group bg-white border rounded" style="opacity: 0.7;">
-                                                <span class="input-group-text bg-white border-0"><i class="ri-user-2-line text-primary h5 fw-normal mb-0"></i></span>
+                                                <span class="input-group-text bg-white border-0">
+                                                    <i class="ri-user-2-line text-primary h5 fw-normal mb-0"></i>
+                                                </span>
                                                 <input name="name" id="name" type="text" class="form-control border-0" placeholder="Doctor Name:">
                                             </div>
-                                        </div><!--end col-->
-
+                                        </div>
                                         <div class="col-md-auto mt-4 mt-sm-0">
                                             <div class="d-grid d-md-block">
                                                 <button type="submit" class="btn btn-primary">Search</button>
                                             </div>
-                                        </div><!--end col-->
-                                    </div><!--end row-->
-                                </form><!--end form-->
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
+
                         </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </section><!--end section-->
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- End Hero -->
 
         <!-- Start -->
@@ -701,6 +726,47 @@
                                                 }
                                             }
                                         });
+        </script>
+
+        <script>
+            var sliderImages = [];
+            var sliderLinks = [];
+            var currentSlideIndex = 0;
+
+            // Lặp qua danh sách sliders từ JSP và thêm vào mảng JavaScript
+            <c:forEach var="s" items="${sliders}">
+            sliderImages.push("../${s.img}");
+            sliderLinks.push("${s.backlink != null ? s.backlink : '#'}");
+            </c:forEach>;
+
+            function updateBackgroundAndLink(index) {
+                var backgroundLink = document.getElementById("background-link");
+                if (backgroundLink) {
+                    console.log("Cập nhật backlink:", sliderLinks[index]); // Debug
+                    backgroundLink.href = sliderLinks[index];
+                }
+            }
+
+            // Khởi tạo slider với ảnh nền
+            easy_background("#home", {
+                slide: sliderImages,
+                delay: [3000, 3000, 3000], // Mỗi ảnh hiển thị trong 3 giây
+                transition: "fade",
+                transitionDuration: 1000,
+                onSlideChange: function (index) {
+                    console.log("Slide chuyển đến:", index, "Backlink:", sliderLinks[index]);
+                    currentSlideIndex = index;
+                }
+            });
+
+            // Cập nhật backlink mỗi 3 giây để đồng bộ với ảnh
+            setInterval(() => {
+                currentSlideIndex = (currentSlideIndex + 1) % sliderImages.length;
+                updateBackgroundAndLink(currentSlideIndex);
+            }, 3000);
+
+            // Cập nhật backlink đầu tiên ngay khi trang load
+            setTimeout(() => updateBackgroundAndLink(0), 500);
         </script>
 
 
