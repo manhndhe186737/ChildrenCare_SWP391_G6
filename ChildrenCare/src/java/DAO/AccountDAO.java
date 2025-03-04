@@ -33,5 +33,16 @@ public class AccountDAO extends DBContext {
             return false;
         }
     }
+     public String getPasswordByEmail(String email) throws Exception {
+        String sql = "SELECT password FROM users WHERE email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("password");
+            }
+        }
+        return null;
+    }
 
 }

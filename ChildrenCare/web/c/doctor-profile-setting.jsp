@@ -54,6 +54,37 @@
                 background-color: #0056b3;
             }
 
+            .alert {
+                padding: 12px 15px;
+                border-radius: 6px;
+                font-size: 16px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                margin-top: 10px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                transition: opacity 0.3s ease-in-out;
+            }
+
+            .alert-danger {
+                background-color: #f8d7da;
+                color: #721c24;
+                border-left: 5px solid #dc3545;
+            }
+
+            .alert-success {
+                background-color: #d4edda;
+                color: #155724;
+                border-left: 5px solid #28a745;
+            }
+
+            .alert i {
+                margin-right: 10px;
+            }
+
+            .fade-out {
+                opacity: 0;
+            }
 
         </style>
 
@@ -75,16 +106,11 @@
         <header id="topnav" class="defaultscroll sticky">
             <div class="container">
                 <!-- Logo container-->
-                <div>
-                    <a class="logo" href="./c/home">
-                        <span class="logo-light-mode">
-                            <img src="./assets/images/logo-icon-child.png" class="l-dark" height="24" alt="">
-                            <img src="./assets/images/logo-icon-child.png" class="l-light" height="24" alt="">
-                        </span>
-                        <img src="./assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
-                    </a>
-                </div>
-                <!-- End Logo container-->
+                <a class="logo" href="./c/home">
+                    <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
+                </a>                
+                <!-- Logo End -->
 
                 <!-- Start Mobile Toggle -->
                 <div class="menu-extras">
@@ -104,14 +130,11 @@
 
                 <!-- Start Dropdown -->
                 <ul class="dropdowns list-inline mb-0">
-
-                    <c:if test="${sessionScope.role.contains('Customer')}">
-                        <li class="list-inline-item mb-0">
-                            <a href="Cart">
-                                <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
-                            </a>
-                        </li>
-                    </c:if>
+                    <li class="list-inline-item mb-0">
+                        <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="settings" class="fea icon-sm"></i></div>
+                        </a>
+                    </li>
 
                     <li class="list-inline-item mb-0 ms-1">
                         <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
@@ -120,85 +143,86 @@
                     </li>
 
                     <li class="list-inline-item mb-0 ms-1">
-                        <c:choose>
-                            <c:when test="${sessionScope.user ne null}">
-                                <div class="dropdown dropdown-primary">
-                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
-                                    </button>
-                                    <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                        <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                            <div class="flex-1 ms-2">
-                                                <span class="d-block mb-1">${sessionScope.user.fullname}</span>
-                                            </div>
-                                        </a>
-                                        <c:if test="${sessionScope.role.contains('Admin')}">
-                                            <a class="dropdown-item text-dark" href="doctor-dashboard.html">
-                                                <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
-                                            </a>
-                                        </c:if>
-                                        <a class="dropdown-item text-dark" href="./profile">
-                                            <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
-                                        </a>
-                                        <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="./logout">
-                                            <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
-                                        </a>
-                                    </div>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="./login" class="btn btn-soft-primary btn-sm">
-                                    <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
-                                </a>
-                            </c:otherwise>
-                        </c:choose>
-                    </li>
+                        <div class="dropdown dropdown-primary">
+                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
+                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
+                                    <img src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                    <div class="flex-1 ms-2">
+                                        <span class="mt-3 mb-1">${sessionScope.user.fullname}</span>
+                                        <small class="text-muted">Orthopedic</small>
 
+                                    </div>
+                                </a>
+                                <a class="dropdown-item text-dark" href="../profile">
+                                    <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
+                                </a>
+                                <div class="dropdown-divider border-top"></div>
+                                <a class="dropdown-item text-dark" href="../logout">
+                                    <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
                 <!-- Start Dropdown -->
 
                 <div id="navigation">
                     <!-- Navigation Menu-->   
-                    <ul class="navigation-menu nav-left nav-dark">
-
-                        <li class="has-submenu parent-parent-menu-item">
-                            <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
+                    <ul class="navigation-menu nav-left">
+                        <li class="has-submenu parent-menu-item">
+                            <a href="javascript:void(0)">Home</a><span class="menu-arrow"></span>
                             <ul class="submenu">
-                                <li class="has-submenu parent-menu-item">
-                                    <c:if test="${sessionScope.role.contains('Staff')}">
-                                    <li><a href="./c/staff-dashboard" class="sub-menu-item">Dashboard</a></li>
-                                    <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
-                                    <li><a href="patient-list.html" class="sub-menu-item">Customers</a></li>
-                                    <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                    <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
-                                    <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
-                                    </c:if>
-                                <li><a href="doctor-dashboard.html" class="sub-menu-item">Staff List</a></li>
+                                <li><a href="index.html" class="sub-menu-item">Index One</a></li>
+                                <li><a href="index-two.html" class="sub-menu-item">Index Two</a></li>
+                                <li><a href="index-three.html" class="sub-menu-item">Index Three</a></li>
                             </ul>
                         </li>
 
-                        <c:if test="${sessionScope.role.contains('Customer')}">
-                            <li class="has-submenu parent-menu-item">
-                                <a href="javascript:void(0)">Customers</a><span class="menu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a href="patient-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                    <li><a href="patient-profile.html" class="sub-menu-item">Profile</a></li>
-                                    <li><a href="booking-appointment.html" class="sub-menu-item">Book Services</a></li>
-                                    <li><a href="patient-invoice.html" class="sub-menu-item">Invoice</a></li>
-                                </ul>
-                            </li>
-                        </c:if>
+                        <li class="has-submenu parent-parent-menu-item">
+                            <a href="javascript:void(0)">Doctors</a><span class="menu-arrow"></span>
+                            <ul class="submenu">
+                                <li class="has-submenu parent-menu-item">
+                                    <a href="javascript:void(0)" class="menu-item"> Dashboard </a><span class="submenu-arrow"></span>
+                                    <ul class="submenu">
+                                        <li><a href="doctor-dashboard.html" class="sub-menu-item">Dashboard</a></li>
+                                        <li><a href="doctor-appointment.html" class="sub-menu-item">Appointment</a></li>
+                                        <li><a href="patient-list.html" class="sub-menu-item">Patients</a></li>
+                                        <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
+                                        <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
+                                        <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
+                                        <li><a href="doctor-messages.html" class="sub-menu-item">Messages</a></li>
+                                        <li><a href="doctor-profile.html" class="sub-menu-item">Profile</a></li>
+                                        <li><a href="doctor-profile-setting.html" class="sub-menu-item">Profile Settings</a></li>
+                                        <li><a href="doctor-chat.html" class="sub-menu-item">Chat</a></li>
+                                        <li><a href="login.html" class="sub-menu-item">Login</a></li>
+                                        <li><a href="signup.html" class="sub-menu-item">Sign Up</a></li>
+                                        <li><a href="forgot-password.html" class="sub-menu-item">Forgot Password</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="doctor-team-one.html" class="sub-menu-item">Doctors One</a></li>
+                                <li><a href="doctor-team-two.html" class="sub-menu-item">Doctors Two</a></li>
+                                <li><a href="doctor-team-three.html" class="sub-menu-item">Doctors Three</a></li>
+                            </ul>
+                        </li>
 
                         <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
+                            <a href="javascript:void(0)">Patients</a><span class="menu-arrow"></span>
                             <ul class="submenu">
-                                <li><a href="./service-list" class="sub-menu-item">Services List</a></li>
-                                    <c:if test="${sessionScope.role.contains('Customer')}">
-                                    <li><a href="./myreservation" class="sub-menu-item">My Reservation</a></li>
-                                    <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
-                                    </c:if>
+                                <li><a href="patient-dashboard.html" class="sub-menu-item">Dashboard</a></li>
+                                <li><a href="patient-profile.html" class="sub-menu-item">Profile</a></li>
+                                <li><a href="booking-appointment.html" class="sub-menu-item">Book Appointment</a></li>
+                                <li><a href="patient-invoice.html" class="sub-menu-item">Invoice</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="has-submenu parent-menu-item">
+                            <a href="javascript:void(0)">Pharmacy</a><span class="menu-arrow"></span>
+                            <ul class="submenu">
+                                <li><a href="pharmacy.html" class="sub-menu-item">Pharmacy</a></li>
+                                <li><a href="pharmacy-shop.html" class="sub-menu-item">Shop</a></li>
+                                <li><a href="pharmacy-product-detail.html" class="sub-menu-item">Medicine Detail</a></li>
+                                <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">Shop Cart</a></li>
                                 <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
                                 <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
                             </ul>
@@ -207,21 +231,22 @@
                         <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)">Pages</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="aboutus.html" class="sub-menu-item"> About Us</a></li>
+                                <li><a href="departments.html" class="sub-menu-item">Departments</a></li>
                                 <li><a href="faqs.html" class="sub-menu-item">FAQs</a></li>
                                 <li class="has-submenu parent-menu-item">
-                                <li><a href="blog" class="sub-menu-item">Blogs</a></li>
-
-                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                    <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
-                                    <li><a href="./slider" class="sub-menu-item">Sliders - Management</a></li>
-                                    </c:if>
+                                    <a href="javascript:void(0)" class="menu-item"> Blogs </a><span class="submenu-arrow"></span>
+                                    <ul class="submenu">
+                                        <li><a href="blogs.html" class="sub-menu-item">Blogs</a></li>
+                                        <li><a href="blog-detail.html" class="sub-menu-item">Blog Details</a></li>
+                                    </ul>
+                                </li>
                                 <li><a href="terms.html" class="sub-menu-item">Terms & Policy</a></li>
                                 <li><a href="privacy.html" class="sub-menu-item">Privacy Policy</a></li>
+                                <li><a href="error.html" class="sub-menu-item">404 !</a></li>
+                                <li><a href="contact.html" class="sub-menu-item">Contact</a></li>
                             </ul>
                         </li>
-                        <c:if test="${sessionScope.role.contains('Admin')}">
-                            <li><a href="./admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
-                            </c:if>
+                        <li><a href="${pageContext.request.contextPath}/admin/index.html" class="sub-menu-item" target="_blank">Admin</a></li>
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->
@@ -254,7 +279,12 @@
                                 <li class="navbar-item"><a href="patient-review.html" class="navbar-link"><i class="ri-chat-1-line align-middle navbar-icon"></i> Patients Review</a></li>
                                 <li class="navbar-item"><a href="doctor-chat.html" class="navbar-link"><i class="ri-chat-voice-line align-middle navbar-icon"></i> Chat</a></li>
                                 <li class="navbar-item"><a href="login.html" class="navbar-link"><i class="ri-login-circle-line align-middle navbar-icon"></i> Login</a></li>
-                                <li class="navbar-item"><a href="forgot-password.html" class="navbar-link"><i class="ri-device-recover-line align-middle navbar-icon"></i> Forgot Password</a></li>
+                                <li class="navbar-item">
+                                    <a href="#" class="navbar-link" data-bs-toggle="modal" data-bs-target="#forgot-password"><i class="ri-device-recover-line align-middle navbar-icon"></i>
+                                        Change Password
+                                    </a>
+                                </li>
+
                             </ul>
                         </div>
                     </div><!--end col-->
@@ -325,48 +355,64 @@
 
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <input type="submit" id="submitBtn" name="send" class="btn btn-success ms-2" value="Save changes"  />
+                                            <input type="submit" id="submitBtn" name="send" class="btn btn-success ms-2" value="Save changes" />
+
+                                            <% if (request.getAttribute("errorMessage") != null) { %>
+                                            <div class="alert alert-danger ms-2">
+                                                <i class="fas fa-exclamation-circle"></i> 
+                                                <%= request.getAttribute("errorMessage") %>
+                                            </div>
+                                            <% } %>
+
+                                            <% if (request.getAttribute("successMessage") != null) { %>
+                                            <div class="alert alert-success ms-2">
+                                                <i class="fas fa-check-circle"></i> 
+                                                <%= request.getAttribute("successMessage") %>
+                                            </div>
+                                            <% } %>
                                         </div>
+
                                     </div>
+
+
                                 </form>
                             </div>
                         </div>
                     </div><!--end col-->
 
                     <div class="rounded shadow mt-4">
-                        <div class="p-4 border-bottom">
-                            <h5 class="mb-0">Change Password :</h5>
-                        </div>
+                        <div class="modal fade" id="forgot-password" tabindex="-1" aria-labelledby="forgotPasswordLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header border-bottom p-3">
+                                        <h5 class="modal-title" id="forgotPasswordLabel">Forgot Password</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
 
-                        <div class="p-4">
-                            <form>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Old password :</label>
-                                            <input type="password" class="form-control" placeholder="Old password" required="">
-                                        </div>
-                                    </div><!--end col-->
+                                    <div class="modal-body p-3 pt-4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <form action="ChangePasswordServlet" method="POST">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Old Password:</label>
+                                                        <input type="password" name="oldPassword" class="form-control" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">New Password:</label>
+                                                        <input type="password" name="newPassword" class="form-control" required>
+                                                    </div>
 
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">New password :</label>
-                                            <input type="password" class="form-control" placeholder="New password" required="">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Re-type New password :</label>
-                                            <input type="password" class="form-control" placeholder="Re-type New password" required="">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-lg-12 mt-2 mb-0">
-                                        <button class="btn btn-primary">Save password</button>
-                                    </div><!--end col-->
-                                </div><!--end row-->
-                            </form>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Confirm New Password:</label>
+                                                        <input type="password" name="confirmPassword" class="form-control" required>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Change Password</button>
+                                                </form>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>  
                         </div>
                     </div>
 
@@ -542,6 +588,52 @@
                     </div><!--end col-->
                 </div><!--end row-->
             </div>
+            <div class="modal fade" id="forgot-password" tabindex="-1" aria-labelledby="forgotPasswordLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-bottom p-3">
+                            <h5 class="modal-title" id="forgotPasswordLabel">Forgot Password</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body p-3 pt-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form id="forgot-password-form" method="POST" action="ForgotPasswordServlet">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                                                    <input name="email" id="email" type="email" class="form-control" placeholder="Enter your email" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">New Password <span class="text-danger">*</span></label>
+                                                    <input name="newPassword" id="newPassword" type="password" class="form-control" placeholder="Enter new password" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Confirm New Password <span class="text-danger">*</span></label>
+                                                    <input name="confirmPassword" id="confirmPassword" type="password" class="form-control" placeholder="Re-enter new password" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12 text-end">
+                                                <button type="submit" class="btn btn-primary">Reset Password</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>  
+            </div>
+
 
             <div class="offcanvas-footer p-4 border-top text-center">
                 <ul class="list-unstyled social-icon mb-0">
@@ -564,7 +656,7 @@
         <!-- Main Js -->
         <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
-        <!-- Javascript to enable editing and submit changes -->
+         <!--Javascript to enable editing and submit changes--> 
         <script>
                                         // Function to preview the uploaded image
                                         function previewImage() {
@@ -579,6 +671,16 @@
                                                 reader.readAsDataURL(file); // Preview the uploaded image
                                             }
                                         }
+
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            setTimeout(() => {
+                                                document.querySelectorAll(".alert").forEach(alert => {
+                                                    alert.classList.add("fade-out");
+                                                    setTimeout(() => alert.style.display = "none", 500);
+                                                });
+                                            }, 3000);
+                                        });
+
         </script>
     </body>
 
