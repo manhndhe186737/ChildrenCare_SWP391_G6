@@ -224,28 +224,28 @@ public class PostDBContext extends DBContext {
         return categories;
     }
 
-    public List<String[]> getAllAuthors() {
-        List<String[]> authors = new ArrayList<>();
-        String sql = "SELECT u.user_id, u.fullname "
-                + "FROM users u "
-                + "JOIN accounts a ON u.user_id = a.user_id "
-                + "JOIN userroles ur ON a.email = ur.email "
-                + "JOIN roles r ON ur.role_id = r.role_id "
-                + "WHERE r.role_name = ?";
+   public List<String[]> getAllAuthors() {
+    List<String[]> authors = new ArrayList<>();
+    String sql = "SELECT u.user_id, u.fullname " +
+                 "FROM users u " +
+                 "JOIN userroles ur ON u.email = ur.email " +
+                 "JOIN roles r ON ur.role_id = r.role_id " +
+                 "WHERE r.role_name = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, "Marketing Staff");
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setString(1, "Marketing Staff");
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    authors.add(new String[]{rs.getString("user_id"), rs.getString("fullname")});
-                }
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                authors.add(new String[]{rs.getString("user_id"), rs.getString("fullname")});
             }
-        } catch (SQLException e) {
-            System.err.println("Error fetching marketing authors: " + e.getMessage());
         }
-        return authors;
+    } catch (SQLException e) {
+        System.err.println("Error fetching marketing authors: " + e.getMessage());
     }
+    return authors;
+}
+
 
     public ArrayList<Post> getHomePosts() {
         ArrayList<Post> posts = new ArrayList<>();
