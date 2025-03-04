@@ -1,5 +1,6 @@
 package controller.manage.reservation;
 
+import controller.auth.BaseRBAC;
 import dal.ReservationDBContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import model.Account;
 import model.Reservation;
 import model.User;
 
@@ -16,12 +18,12 @@ import model.User;
  * Servlet for managing user reservations
  */
 @WebServlet(name = "MyReservation", urlPatterns = {"/myreservation"})
-public class MyReservation extends HttpServlet {
+public class MyReservation extends BaseRBAC {
 
     private ReservationDBContext reservationDBContext = new ReservationDBContext();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
@@ -46,8 +48,7 @@ public class MyReservation extends HttpServlet {
                 if ("asc".equals(sortByPrice) || "desc".equals(sortByPrice)) {
                     sortColumn = "s.price";
                     sortOrderFinal = sortByPrice;
-                }
-                // Kiểm tra để xác định xem có yêu cầu sắp xếp theo Service Name không
+                } // Kiểm tra để xác định xem có yêu cầu sắp xếp theo Service Name không
                 else if ("asc".equals(sortByName) || "desc".equals(sortByName)) {
                     sortColumn = "s.name";
                     sortOrderFinal = sortByName;
@@ -60,30 +61,43 @@ public class MyReservation extends HttpServlet {
                 int totalItems = reservations.size();
                 int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
 
-                // Kiểm tra để tránh lỗi phân trang
+// Kiểm tra để tránh lỗi phân trang
                 if (currentPage > totalPages) {
                     currentPage = totalPages;
                 }
-                int startIndex = (currentPage - 1) * itemsPerPage;
-                int endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-                ArrayList<Reservation> paginatedReservations = new ArrayList<>(reservations.subList(startIndex, endIndex));
+                if (currentPage < 1) {
+                    currentPage = 1;
+                }
 
-                // Set attributes để gửi đến JSP
+                int startIndex = (currentPage - 1) * itemsPerPage;
+                if (startIndex < 0) {
+                    startIndex = 0;
+                }
+                int endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+
+// Kiểm tra danh sách có đủ phần tử không trước khi subList
+                ArrayList<Reservation> paginatedReservations = new ArrayList<>();
+                if (!reservations.isEmpty() && startIndex < reservations.size()) {
+                    paginatedReservations = new ArrayList<>(reservations.subList(startIndex, endIndex));
+                }
+
+// Set attributes để gửi đến JSP
                 request.setAttribute("paginatedReservations", paginatedReservations);
                 request.setAttribute("totalPages", totalPages);
                 request.setAttribute("currentPage", currentPage);
                 request.setAttribute("search", searchQuery);
                 request.setAttribute("status", statusFilter);
-                request.setAttribute("sort", sortByName); // Chỉ truyền sort theo tên dịch vụ
-                request.setAttribute("sortPrice", sortByPrice); // Chuyển thông tin sắp xếp theo giá
+                request.setAttribute("sort", sortByName);
+                request.setAttribute("sortPrice", sortByPrice);
 
-                // Thêm thông báo nếu không có kết quả tìm kiếm
+// Thêm thông báo nếu không có kết quả tìm kiếm
                 if (totalItems == 0) {
                     request.setAttribute("noResults", "No reservations found with the specified criteria.");
                 }
 
-                // Forward đến trang JSP
+// Forward đến trang JSP
                 request.getRequestDispatcher("c/pharmacy-shop-cart.jsp").forward(request, response);
+
             } else {
                 response.sendRedirect("login");
             }
@@ -95,5 +109,10 @@ public class MyReservation extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Servlet that handles user reservations with search, sorting by service name or price, and pagination";
+    }
+
+    @Override
+    protected void doAuthorizedPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

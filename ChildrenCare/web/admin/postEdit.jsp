@@ -359,7 +359,7 @@
                                                         <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
                                                     </a>
                                                 </c:if>
-                                                <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
+                                                <a class="dropdown-item text-dark" href="./profile">
                                                     <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
                                                 </a>
                                                 <div class="dropdown-divider border-top"></div>

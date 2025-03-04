@@ -9,7 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
-    <html lang="en">
+<html lang="en">
 
     <head>
         <meta charset="utf-8" />
@@ -31,32 +31,32 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="${pageContext.request.contextPath}/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
-  <style>
-      /* Ẩn nút "choose file" mặc định */
-input[type="file"] {
-    display: none;
-}
+        <style>
+            /* Ẩn nút "choose file" mặc định */
+            input[type="file"] {
+                display: none;
+            }
 
-/* Tạo kiểu cho nút tùy chỉnh */
-.custom-file-upload {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
+            /* Tạo kiểu cho nút tùy chỉnh */
+            .custom-file-upload {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }
 
-/* Khi người dùng hover lên nút */
-.custom-file-upload:hover {
-    background-color: #0056b3;
-}
+            /* Khi người dùng hover lên nút */
+            .custom-file-upload:hover {
+                background-color: #0056b3;
+            }
 
-        
-      </style>
-        
+
+        </style>
+
     </head>
 
     <body>
@@ -70,17 +70,22 @@ input[type="file"] {
             </div>
         </div>
         <!-- Loader -->
-        
+
         <!-- Navbar STart -->
         <header id="topnav" class="defaultscroll sticky">
             <div class="container">
                 <!-- Logo container-->
-                 <a class="logo" href="./c/home">
-                    <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
-                    <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
-                </a>                
-                <!-- Logo End -->
-                
+                <div>
+                    <a class="logo" href="./c/home">
+                        <span class="logo-light-mode">
+                            <img src="./assets/images/logo-icon-child.png" class="l-dark" height="24" alt="">
+                            <img src="./assets/images/logo-icon-child.png" class="l-light" height="24" alt="">
+                        </span>
+                        <img src="./assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
+                    </a>
+                </div>
+                <!-- End Logo container-->
+
                 <!-- Start Mobile Toggle -->
                 <div class="menu-extras">
                     <div class="menu-item">
@@ -99,11 +104,14 @@ input[type="file"] {
 
                 <!-- Start Dropdown -->
                 <ul class="dropdowns list-inline mb-0">
-                    <li class="list-inline-item mb-0">
-                        <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="settings" class="fea icon-sm"></i></div>
-                        </a>
-                    </li>
+
+                    <c:if test="${sessionScope.role.contains('Customer')}">
+                        <li class="list-inline-item mb-0">
+                            <a href="Cart">
+                                <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
+                            </a>
+                        </li>
+                    </c:if>
 
                     <li class="list-inline-item mb-0 ms-1">
                         <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
@@ -112,110 +120,108 @@ input[type="file"] {
                     </li>
 
                     <li class="list-inline-item mb-0 ms-1">
-                        <div class="dropdown dropdown-primary">
-                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
-                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                    <img src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
-                                   <div class="flex-1 ms-2">
-                                        <span class="mt-3 mb-1">${sessionScope.user.fullname}</span>
-                                        <small class="text-muted">Orthopedic</small>
-                                         
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-dark" href="../profile">
+                        <c:choose>
+                            <c:when test="${sessionScope.user ne null}">
+                                <div class="dropdown dropdown-primary">
+                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                    </button>
+                                    <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                        <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
+                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                            <div class="flex-1 ms-2">
+                                                <span class="d-block mb-1">${sessionScope.user.fullname}</span>
+                                            </div>
+                                        </a>
+                                        <c:if test="${sessionScope.role.contains('Admin')}">
+                                            <a class="dropdown-item text-dark" href="doctor-dashboard.html">
+                                                <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                            </a>
+                                        </c:if>
+                                        <a class="dropdown-item text-dark" href="./profile">
                                             <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
                                         </a>
-                                <div class="dropdown-divider border-top"></div>
-                                  <a class="dropdown-item text-dark" href="../logout">
+                                        <div class="dropdown-divider border-top"></div>
+                                        <a class="dropdown-item text-dark" href="./logout">
                                             <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
-                                  </a>
-                            </div>
-                        </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="./login" class="btn btn-soft-primary btn-sm">
+                                    <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
                     </li>
+
                 </ul>
                 <!-- Start Dropdown -->
-        
+
                 <div id="navigation">
                     <!-- Navigation Menu-->   
-                    <ul class="navigation-menu nav-left">
-                        <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Home</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li><a href="index.html" class="sub-menu-item">Index One</a></li>
-                                <li><a href="index-two.html" class="sub-menu-item">Index Two</a></li>
-                                <li><a href="index-three.html" class="sub-menu-item">Index Three</a></li>
-                            </ul>
-                        </li>
+                    <ul class="navigation-menu nav-left nav-dark">
 
                         <li class="has-submenu parent-parent-menu-item">
-                            <a href="javascript:void(0)">Doctors</a><span class="menu-arrow"></span>
+                            <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
-                                    <a href="javascript:void(0)" class="menu-item"> Dashboard </a><span class="submenu-arrow"></span>
-                                    <ul class="submenu">
-                                        <li><a href="doctor-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                        <li><a href="doctor-appointment.html" class="sub-menu-item">Appointment</a></li>
-                                        <li><a href="patient-list.html" class="sub-menu-item">Patients</a></li>
-                                        <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                        <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
-                                        <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
-                                        <li><a href="doctor-messages.html" class="sub-menu-item">Messages</a></li>
-                                        <li><a href="doctor-profile.html" class="sub-menu-item">Profile</a></li>
-                                        <li><a href="doctor-profile-setting.html" class="sub-menu-item">Profile Settings</a></li>
-                                        <li><a href="doctor-chat.html" class="sub-menu-item">Chat</a></li>
-                                        <li><a href="login.html" class="sub-menu-item">Login</a></li>
-                                        <li><a href="signup.html" class="sub-menu-item">Sign Up</a></li>
-                                        <li><a href="forgot-password.html" class="sub-menu-item">Forgot Password</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="doctor-team-one.html" class="sub-menu-item">Doctors One</a></li>
-                                <li><a href="doctor-team-two.html" class="sub-menu-item">Doctors Two</a></li>
-                                <li><a href="doctor-team-three.html" class="sub-menu-item">Doctors Three</a></li>
+                                    <c:if test="${sessionScope.role.contains('Staff')}">
+                                    <li><a href="./c/staff-dashboard" class="sub-menu-item">Dashboard</a></li>
+                                    <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
+                                    <li><a href="patient-list.html" class="sub-menu-item">Customers</a></li>
+                                    <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
+                                    <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
+                                    <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
+                                    </c:if>
+                                <li><a href="doctor-dashboard.html" class="sub-menu-item">Staff List</a></li>
                             </ul>
                         </li>
 
-                        <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Patients</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li><a href="patient-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                <li><a href="patient-profile.html" class="sub-menu-item">Profile</a></li>
-                                <li><a href="booking-appointment.html" class="sub-menu-item">Book Appointment</a></li>
-                                <li><a href="patient-invoice.html" class="sub-menu-item">Invoice</a></li>
-                            </ul>
-                        </li>
+                        <c:if test="${sessionScope.role.contains('Customer')}">
+                            <li class="has-submenu parent-menu-item">
+                                <a href="javascript:void(0)">Customers</a><span class="menu-arrow"></span>
+                                <ul class="submenu">
+                                    <li><a href="patient-dashboard.html" class="sub-menu-item">Dashboard</a></li>
+                                    <li><a href="patient-profile.html" class="sub-menu-item">Profile</a></li>
+                                    <li><a href="booking-appointment.html" class="sub-menu-item">Book Services</a></li>
+                                    <li><a href="patient-invoice.html" class="sub-menu-item">Invoice</a></li>
+                                </ul>
+                            </li>
+                        </c:if>
 
                         <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Pharmacy</a><span class="menu-arrow"></span>
+                            <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                             <ul class="submenu">
-                                <li><a href="pharmacy.html" class="sub-menu-item">Pharmacy</a></li>
-                                <li><a href="pharmacy-shop.html" class="sub-menu-item">Shop</a></li>
-                                <li><a href="pharmacy-product-detail.html" class="sub-menu-item">Medicine Detail</a></li>
-                                <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">Shop Cart</a></li>
+                                <li><a href="./service-list" class="sub-menu-item">Services List</a></li>
+                                    <c:if test="${sessionScope.role.contains('Customer')}">
+                                    <li><a href="./myreservation" class="sub-menu-item">My Reservation</a></li>
+                                    <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
+                                    </c:if>
                                 <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
                                 <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
                             </ul>
                         </li>
-        
+
                         <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)">Pages</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="aboutus.html" class="sub-menu-item"> About Us</a></li>
-                                <li><a href="departments.html" class="sub-menu-item">Departments</a></li>
                                 <li><a href="faqs.html" class="sub-menu-item">FAQs</a></li>
                                 <li class="has-submenu parent-menu-item">
-                                    <a href="javascript:void(0)" class="menu-item"> Blogs </a><span class="submenu-arrow"></span>
-                                    <ul class="submenu">
-                                        <li><a href="blogs.html" class="sub-menu-item">Blogs</a></li>
-                                        <li><a href="blog-detail.html" class="sub-menu-item">Blog Details</a></li>
-                                    </ul>
-                                </li>
+                                <li><a href="blog" class="sub-menu-item">Blogs</a></li>
+
+                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
+                                    <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
+                                    <li><a href="./slider" class="sub-menu-item">Sliders - Management</a></li>
+                                    </c:if>
                                 <li><a href="terms.html" class="sub-menu-item">Terms & Policy</a></li>
                                 <li><a href="privacy.html" class="sub-menu-item">Privacy Policy</a></li>
-                                <li><a href="error.html" class="sub-menu-item">404 !</a></li>
-                                <li><a href="contact.html" class="sub-menu-item">Contact</a></li>
                             </ul>
                         </li>
-                        <li><a href="${pageContext.request.contextPath}/admin/index.html" class="sub-menu-item" target="_blank">Admin</a></li>
+                        <c:if test="${sessionScope.role.contains('Admin')}">
+                            <li><a href="./admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
+                            </c:if>
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->
@@ -228,10 +234,10 @@ input[type="file"] {
                 <div class="row justify-content-center">
                     <div class="col-xl-4 col-lg-4 col-md-5 col-12">
                         <div class="rounded shadow overflow-hidden sticky-bar">
-                          
+
 
                             <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
-                               <img src="<c:out value="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" />" class="rounded-circle shadow-md avatar avatar-md-md" alt="">
+                                <img src="<c:out value="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" />" class="rounded-circle shadow-md avatar avatar-md-md" alt="">
                                 <h5 class="mt-3 mb-1">${sessionScope.user.fullname}</h5>
                                 <p class="text-muted mb-0">Orthopedic</p>
                             </div>
@@ -252,206 +258,206 @@ input[type="file"] {
                             </ul>
                         </div>
                     </div><!--end col-->
-     <div class="col-xl-8 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
-                    <h5 class="mb-0 pb-2">Profile Settings</h5>
-                    <div class="rounded shadow mt-4">
-                        <div class="p-4 border-bottom">
-                            <h5 class="mb-0">Personal Information :</h5>
-                        </div>
-
-                        <div class="p-4 border-bottom">
-                            <form action="updateProfile" method="POST" enctype="multipart/form-data">
-                                <div class="row align-items-center">
-                                    <div class="col-lg-2 col-md-4">
-                                        <img id="avatarImage" src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="Avatar">
-                                    </div>
-
-                                    <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                        <h5 class="">Upload your picture</h5>
-                                        <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg or .png format</p>
-                                    </div>
-
-                                    <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
-                                        <label for="avatarUpload" class="custom-file-upload">Choose File</label>
-                                        <input type="file" name="avatar" id="avatarUpload" class="btn btn-primary ms-2" onchange="previewImage()" style="display: none;">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Full Name</label>
-                                            <input name="fullname" id="fullname" type="text" class="form-control" value="${sessionScope.user.fullname}" placeholder="Full Name" ">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Address</label>
-                                            <input name="address" id="address" type="text" class="form-control" value="${sessionScope.user.address}"  placeholder="Address" ">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Phone no.</label>
-                                            <input name="phone" id="phone" type="text" class="form-control" value="${sessionScope.user.phone}"  placeholder="Phone no." ">
-                                        </div>
-                                    </div>
-                                      
-                                     <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Date of Birth</label>
-                                        <input name="dob" id="dob" type="date" class="form-control" 
-                                               value="${sessionScope.user.dob}" placeholder="Date of Birth"
-                                               max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
-
-                                    </div>
-                                </div>
-
-
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Your Bio Here</label>
-                                            <textarea name="bio" id="bio" rows="4" class="form-control" placeholder="Bio">${sessionScope.user.bio}</textarea>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <input type="submit" id="submitBtn" name="send" class="btn btn-success ms-2" value="Save changes"  />
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div><!--end col-->
-      
+                    <div class="col-xl-8 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
+                        <h5 class="mb-0 pb-2">Profile Settings</h5>
                         <div class="rounded shadow mt-4">
                             <div class="p-4 border-bottom">
-                                <h5 class="mb-0">Change Password :</h5>
+                                <h5 class="mb-0">Personal Information :</h5>
                             </div>
 
-                            <div class="p-4">
-                                <form>
+                            <div class="p-4 border-bottom">
+                                <form action="updateProfile" method="POST" enctype="multipart/form-data">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-2 col-md-4">
+                                            <img id="avatarImage" src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="Avatar">
+                                        </div>
+
+                                        <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
+                                            <h5 class="">Upload your picture</h5>
+                                            <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg or .png format</p>
+                                        </div>
+
+                                        <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
+                                            <label for="avatarUpload" class="custom-file-upload">Choose File</label>
+                                            <input type="file" name="avatar" id="avatarUpload" class="btn btn-primary ms-2" onchange="previewImage()" style="display: none;">
+                                        </div>
+                                    </div>
                                     <div class="row">
-                                        <div class="col-lg-12">
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Old password :</label>
-                                                <input type="password" class="form-control" placeholder="Old password" required="">
+                                                <label class="form-label">Full Name</label>
+                                                <input name="fullname" id="fullname" type="text" class="form-control" value="${sessionScope.user.fullname}" placeholder="Full Name" ">
                                             </div>
-                                        </div><!--end col-->
-    
-                                        <div class="col-lg-12">
+                                        </div>
+
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">New password :</label>
-                                                <input type="password" class="form-control" placeholder="New password" required="">
+                                                <label class="form-label">Address</label>
+                                                <input name="address" id="address" type="text" class="form-control" value="${sessionScope.user.address}"  placeholder="Address" ">
                                             </div>
-                                        </div><!--end col-->
-    
-                                        <div class="col-lg-12">
+                                        </div>
+
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Re-type New password :</label>
-                                                <input type="password" class="form-control" placeholder="Re-type New password" required="">
+                                                <label class="form-label">Phone no.</label>
+                                                <input name="phone" id="phone" type="text" class="form-control" value="${sessionScope.user.phone}"  placeholder="Phone no." ">
                                             </div>
-                                        </div><!--end col-->
-    
-                                        <div class="col-lg-12 mt-2 mb-0">
-                                            <button class="btn btn-primary">Save password</button>
-                                        </div><!--end col-->
-                                    </div><!--end row-->
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Date of Birth</label>
+                                                <input name="dob" id="dob" type="date" class="form-control" 
+                                                       value="${sessionScope.user.dob}" placeholder="Date of Birth"
+                                                       max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Your Bio Here</label>
+                                                <textarea name="bio" id="bio" rows="4" class="form-control" placeholder="Bio">${sessionScope.user.bio}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <input type="submit" id="submitBtn" name="send" class="btn btn-success ms-2" value="Save changes"  />
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
-
-                        <div class="rounded shadow mt-4">
-                            <div class="p-4 border-bottom">
-                                <h5 class="mb-0">Account Notifications :</h5>
-                            </div>
-
-                            <div class="p-4">
-                                <div class="d-flex justify-content-between pb-4">
-                                    <h6 class="mb-0 fw-normal">When someone mentions me</h6>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" value="" id="customSwitch1">
-                                        <label class="form-check-label" for="customSwitch1"></label>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between py-4 border-top">
-                                    <h6 class="mb-0 fw-normal">When someone follows me</h6>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customSwitch2" checked>
-                                        <label class="form-check-label" for="customSwitch2"></label>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between py-4 border-top">
-                                    <h6 class="mb-0 fw-normal">When shares my activity</h6>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customSwitch3">
-                                        <label class="form-check-label" for="customSwitch3"></label>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between py-4 border-top">
-                                    <h6 class="mb-0 fw-normal">When someone messages me</h6>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customSwitch4" checked>
-                                        <label class="form-check-label" for="customSwitch4"></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="rounded shadow mt-4">
-                            <div class="p-4 border-bottom">
-                                <h5 class="mb-0">Marketing Notifications :</h5>
-                            </div>
-
-                            <div class="p-4">
-                                <div class="d-flex justify-content-between pb-4">
-                                    <h6 class="mb-0 fw-normal">There is a sale or promotion</h6>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customSwitch5" checked>
-                                        <label class="form-check-label" for="customSwitch5"></label>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between py-4 border-top">
-                                    <h6 class="mb-0 fw-normal">Company news</h6>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customSwitch6">
-                                        <label class="form-check-label" for="customSwitch6"></label>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between py-4 border-top">
-                                    <h6 class="mb-0 fw-normal">Weekly jobs</h6>
-                                    <div class="form-check"> 
-                                        <input type="checkbox" class="form-check-input" id="customSwitch7">
-                                        <label class="form-check-label" for="customSwitch7"></label>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between py-4 border-top">
-                                    <h6 class="mb-0 fw-normal">Unsubscribe News</h6>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customSwitch8" checked>
-                                        <label class="form-check-label" for="customSwitch8"></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="rounded shadow mt-4">
-                            <div class="p-4 border-bottom">
-                                <h5 class="mb-0 text-danger">Delete Account :</h5>
-                            </div>
-
-                            <div class="p-4">
-                                <h6 class="mb-0 fw-normal">Do you want to delete the account? Please press below "Delete" button</h6>
-                                <div class="mt-4">
-                                    <button class="btn btn-danger">Delete Account</button>
-                                </div><!--end col-->
-                            </div>
-                        </div>
                     </div><!--end col-->
-                </div><!--end row-->
+
+                    <div class="rounded shadow mt-4">
+                        <div class="p-4 border-bottom">
+                            <h5 class="mb-0">Change Password :</h5>
+                        </div>
+
+                        <div class="p-4">
+                            <form>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Old password :</label>
+                                            <input type="password" class="form-control" placeholder="Old password" required="">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">New password :</label>
+                                            <input type="password" class="form-control" placeholder="New password" required="">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Re-type New password :</label>
+                                            <input type="password" class="form-control" placeholder="Re-type New password" required="">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-lg-12 mt-2 mb-0">
+                                        <button class="btn btn-primary">Save password</button>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="rounded shadow mt-4">
+                        <div class="p-4 border-bottom">
+                            <h5 class="mb-0">Account Notifications :</h5>
+                        </div>
+
+                        <div class="p-4">
+                            <div class="d-flex justify-content-between pb-4">
+                                <h6 class="mb-0 fw-normal">When someone mentions me</h6>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" value="" id="customSwitch1">
+                                    <label class="form-check-label" for="customSwitch1"></label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between py-4 border-top">
+                                <h6 class="mb-0 fw-normal">When someone follows me</h6>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="customSwitch2" checked>
+                                    <label class="form-check-label" for="customSwitch2"></label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between py-4 border-top">
+                                <h6 class="mb-0 fw-normal">When shares my activity</h6>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="customSwitch3">
+                                    <label class="form-check-label" for="customSwitch3"></label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between py-4 border-top">
+                                <h6 class="mb-0 fw-normal">When someone messages me</h6>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="customSwitch4" checked>
+                                    <label class="form-check-label" for="customSwitch4"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rounded shadow mt-4">
+                        <div class="p-4 border-bottom">
+                            <h5 class="mb-0">Marketing Notifications :</h5>
+                        </div>
+
+                        <div class="p-4">
+                            <div class="d-flex justify-content-between pb-4">
+                                <h6 class="mb-0 fw-normal">There is a sale or promotion</h6>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="customSwitch5" checked>
+                                    <label class="form-check-label" for="customSwitch5"></label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between py-4 border-top">
+                                <h6 class="mb-0 fw-normal">Company news</h6>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="customSwitch6">
+                                    <label class="form-check-label" for="customSwitch6"></label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between py-4 border-top">
+                                <h6 class="mb-0 fw-normal">Weekly jobs</h6>
+                                <div class="form-check"> 
+                                    <input type="checkbox" class="form-check-input" id="customSwitch7">
+                                    <label class="form-check-label" for="customSwitch7"></label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between py-4 border-top">
+                                <h6 class="mb-0 fw-normal">Unsubscribe News</h6>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="customSwitch8" checked>
+                                    <label class="form-check-label" for="customSwitch8"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rounded shadow mt-4">
+                        <div class="p-4 border-bottom">
+                            <h5 class="mb-0 text-danger">Delete Account :</h5>
+                        </div>
+
+                        <div class="p-4">
+                            <h6 class="mb-0 fw-normal">Do you want to delete the account? Please press below "Delete" button</h6>
+                            <div class="mt-4">
+                                <button class="btn btn-danger">Delete Account</button>
+                            </div><!--end col-->
+                        </div>
+                    </div>
+                </div><!--end col-->
+            </div><!--end row-->
         </section><!--end section-->
         <!-- End -->
 
@@ -535,7 +541,7 @@ input[type="file"] {
                         <!-- end Style switcher -->
                     </div><!--end col-->
                 </div><!--end row-->
-                            </div>
+            </div>
 
             <div class="offcanvas-footer p-4 border-top text-center">
                 <ul class="list-unstyled social-icon mb-0">
@@ -550,30 +556,30 @@ input[type="file"] {
             </div>
         </div>
         <!-- Offcanvas End -->
-        
+
         <!-- javascript -->
         <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
         <!-- Icons -->
         <script src="${pageContext.request.contextPath}/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-        
-       <!-- Javascript to enable editing and submit changes -->
-<script>
-    // Function to preview the uploaded image
-    function previewImage() {
-        const file = document.getElementById("avatarUpload").files[0];
-        const reader = new FileReader();
 
-        reader.onloadend = function() {
-            document.getElementById("avatarImage").src = reader.result;
-        };
+        <!-- Javascript to enable editing and submit changes -->
+        <script>
+                                        // Function to preview the uploaded image
+                                        function previewImage() {
+                                            const file = document.getElementById("avatarUpload").files[0];
+                                            const reader = new FileReader();
 
-        if (file) {
-            reader.readAsDataURL(file); // Preview the uploaded image
-        }
-    }
-</script>
+                                            reader.onloadend = function () {
+                                                document.getElementById("avatarImage").src = reader.result;
+                                            };
+
+                                            if (file) {
+                                                reader.readAsDataURL(file); // Preview the uploaded image
+                                            }
+                                        }
+        </script>
     </body>
 
 </html>

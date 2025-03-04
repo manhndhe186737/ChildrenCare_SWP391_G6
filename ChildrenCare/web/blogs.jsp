@@ -118,17 +118,17 @@
 
                 <!-- Start Dropdown -->
                 <ul class="dropdowns list-inline mb-0">
-                    <li class="list-inline-item mb-0">
-                        <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                           aria-controls="offcanvasRight">
-                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="settings"
-                                                                               class="fea icon-sm"></i></div>
-                        </a>
-                    </li>
+
+                    <c:if test="${sessionScope.role.contains('Customer')}">
+                        <li class="list-inline-item mb-0">
+                            <a href="Cart">
+                                <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
+                            </a>
+                        </li>
+                    </c:if>
 
                     <li class="list-inline-item mb-0 ms-1">
-                        <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas"
-                           data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                        <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
                             <i class="uil uil-search"></i>
                         </a>
                     </li>
@@ -138,11 +138,11 @@
                             <c:when test="${sessionScope.user ne null}">
                                 <div class="dropdown dropdown-primary">
                                     <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                        <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
                                     </button>
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
                                         <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                            <img src="assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="flex-1 ms-2">
                                                 <span class="d-block mb-1">${sessionScope.user.fullname}</span>
                                             </div>
@@ -152,23 +152,24 @@
                                                 <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
                                             </a>
                                         </c:if>
-                                        <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
+                                        <a class="dropdown-item text-dark" href="./profile">
                                             <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
                                         </a>
                                         <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="logout">
+                                        <a class="dropdown-item text-dark" href="./logout">
                                             <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
                                         </a>
                                     </div>
                                 </div>
                             </c:when>
                             <c:otherwise>
-                                <a href="login" class="btn btn-soft-primary btn-sm">
+                                <a href="./login" class="btn btn-soft-primary btn-sm">
                                     <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
                                 </a>
                             </c:otherwise>
                         </c:choose>
                     </li>
+
                 </ul>
                 <!-- Start Dropdown -->
 
@@ -181,7 +182,7 @@
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
                                     <c:if test="${sessionScope.role.contains('Staff')}">
-                                    <li><a href="../c/staff-dashboard" class="sub-menu-item">Dashboard</a></li>
+                                    <li><a href="./c/staff-dashboard" class="sub-menu-item">Dashboard</a></li>
                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
                                     <li><a href="patient-list.html" class="sub-menu-item">Customers</a></li>
                                     <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
@@ -208,7 +209,10 @@
                             <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="./service-list" class="sub-menu-item">Services List</a></li>
-                                <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">My Reservation</a></li>
+                                    <c:if test="${sessionScope.role.contains('Customer')}">
+                                    <li><a href="./myreservation" class="sub-menu-item">My Reservation</a></li>
+                                    <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
+                                    </c:if>
                                 <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
                                 <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
                             </ul>
@@ -220,19 +224,17 @@
                                 <li><a href="faqs.html" class="sub-menu-item">FAQs</a></li>
                                 <li class="has-submenu parent-menu-item">
                                 <li><a href="blog" class="sub-menu-item">Blogs</a></li>
+
                                     <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                    <li><a href="blogs.html" class="sub-menu-item">Blogs - Management</a></li>
-                                    </c:if>
-                                <li><a href="terms.html" class="sub-menu-item">Posts</a></li>
-                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                    <li><a href="post-list" class="sub-menu-item">Posts - Management</a></li>
+                                    <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
+                                    <li><a href="./slider" class="sub-menu-item">Sliders - Management</a></li>
                                     </c:if>
                                 <li><a href="terms.html" class="sub-menu-item">Terms & Policy</a></li>
                                 <li><a href="privacy.html" class="sub-menu-item">Privacy Policy</a></li>
                             </ul>
                         </li>
                         <c:if test="${sessionScope.role.contains('Admin')}">
-                            <li><a href="../admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
+                            <li><a href="./admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
                             </c:if>
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
@@ -288,9 +290,9 @@
                                                 <fmt:formatDate value="${post.createdate}" pattern="yyyy-MM-dd" />
                                             </li>
                                         </ul>
-                                        <a href="/blog?id=${post.id}" class="text-dark title h5">${post.title}</a>
+                                        <a class="text-dark title h5">${post.title}</a>
                                         <p>${fn:substring(post.content, 0, 150)}...</p>
-                                        <a href="blog-detail?id=${post.id}" class="btn btn-primary">Read More</a>
+                                        <a href="./blog-detail?id=${post.id}" class="btn btn-primary">Read More</a>
                                     </div>
                                 </div>
                             </div>
@@ -309,27 +311,29 @@
                             <!-- Nút Previous -->
                             <c:if test="${currentPage > 1}">
                                 <li class="page-item">
-                                    <a class="page-link" href="blog?page=${currentPage - 1}" aria-label="Previous">Prev</a>
+                                    <a class="page-link" href="./blog?page=${currentPage - 1}" aria-label="Previous">Prev</a>
                                 </li>
                             </c:if>
 
                             <!-- Các số trang -->
                             <c:forEach begin="1" end="${totalPages}" var="page">
                                 <li class="page-item <c:if test='${page == currentPage}'>active</c:if>">
-                                    <a class="page-link" href="blog?page=${page}">${page}</a>
+                                    <a class="page-link" href="./blog?page=${page}">${page}</a>
                                 </li>
                             </c:forEach>
 
                             <!-- Nút Next -->
                             <c:if test="${currentPage < totalPages}">
                                 <li class="page-item">
-                                    <a class="page-link" href="blog?page=${currentPage + 1}" aria-label="Next">Next</a>
+                                    <a class="page-link" href="./blog?page=${currentPage + 1}" aria-label="Next">Next</a>
                                 </li>
                             </c:if>
                         </ul>
                     </div>
                 </div>
             </div>
+            
+            &nbsp;
 
 
         </div><!--end container-->

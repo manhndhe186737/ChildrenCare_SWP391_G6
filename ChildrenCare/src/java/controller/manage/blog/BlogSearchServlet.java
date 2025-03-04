@@ -58,7 +58,7 @@ public class BlogSearchServlet extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
 
         // Chuyển hướng đến `blogs.jsp`
-        RequestDispatcher dispatcher = request.getRequestDispatcher("blogs.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("./blogs.jsp");
         dispatcher.forward(request, response);
     }
 }

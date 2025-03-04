@@ -83,8 +83,8 @@
                                         </span>
                                         <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                                     </a>
-                                </div>            
-                                <!-- Logo End -->
+                                </div>
+                                <!-- End Logo container-->
 
                                 <!-- Start Mobile Toggle -->
                                 <div class="menu-extras">
@@ -104,9 +104,10 @@
 
                                 <!-- Start Dropdown -->
                                 <ul class="dropdowns list-inline mb-0">
+
                                     <li class="list-inline-item mb-0">
-                                        <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="settings" class="fea icon-sm"></i></div>
+                                        <a href="Cart">
+                                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
                                         </a>
                                     </li>
 
@@ -135,7 +136,7 @@
                                                                 <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
                                                             </a>
                                                         </c:if>
-                                                        <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
+                                                        <a class="dropdown-item text-dark" href="../profile">
                                                             <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
                                                         </a>
                                                         <div class="dropdown-divider border-top"></div>
@@ -152,6 +153,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </li>
+
                                 </ul>
                                 <!-- Start Dropdown -->
 
@@ -191,7 +193,10 @@
                                             <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                                             <ul class="submenu">
                                                 <li><a href="../service-list" class="sub-menu-item">Services List</a></li>
-                                                <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">My Reservation</a></li>
+                                                    <c:if test="${sessionScope.role.contains('Customer')}">
+                                                    <li><a href="../myreservation" class="sub-menu-item">My Reservation</a></li>
+                                                    <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
+                                                    </c:if>
                                                 <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
                                                 <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
                                             </ul>
@@ -206,7 +211,7 @@
                                                     <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                                     <li><a href="blogs.html" class="sub-menu-item">Blogs - Management</a></li>
                                                     </c:if>
-                                                <li><a href="terms.html" class="sub-menu-item">Posts</a></li>
+
                                                     <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                                     <li><a href="../post-list" class="sub-menu-item">Posts - Management</a></li>
                                                     <li><a href="../slider" class="sub-menu-item">Sliders - Management</a></li>

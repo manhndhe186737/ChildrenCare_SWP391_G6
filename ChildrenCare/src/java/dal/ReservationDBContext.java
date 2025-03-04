@@ -48,7 +48,7 @@ public class ReservationDBContext extends DBContext {
                 s.setName(rs.getString("name"));
                 s.setPrice(rs.getFloat("price"));
                 s.setDescription(rs.getString("description"));
-                
+
                 return s;
             }
         } catch (Exception e) {
@@ -104,77 +104,75 @@ public class ReservationDBContext extends DBContext {
         return staff;
     }
 
-public ArrayList<Reservation> getReservationByUserId(int userId, String sortColumn, String sortOrder, String searchQuery, String statusFilter) {
-    ArrayList<Reservation> reservations = new ArrayList<>();
-    
-    // Truy vấn SQL cho phép tìm kiếm theo tên dịch vụ (s.name) và lọc theo trạng thái
-    String sql = "SELECT r.reserv_id, r.dateBook, r.status, r.createDate, r.updateDate, r.note, r.starttime, r.endtime, " +
-                 "r.service_id, s.name, s.price " +
-                 "FROM reservations r " +
-                 "JOIN users u ON r.user_id = u.user_id " +
-                 "JOIN services s ON r.service_id = s.service_id " +
-                 "WHERE u.user_id = ? ";
+    public ArrayList<Reservation> getReservationByUserId(int userId, String sortColumn, String sortOrder, String searchQuery, String statusFilter) {
+        ArrayList<Reservation> reservations = new ArrayList<>();
 
-    // Thêm điều kiện tìm kiếm nếu có từ khóa
-    if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-        sql += "AND s.name LIKE ? ";
-    }
+        // Truy vấn SQL cho phép tìm kiếm theo tên dịch vụ (s.name) và lọc theo trạng thái
+        String sql = "SELECT r.reserv_id, r.dateBook, r.status, r.createDate, r.updateDate, r.note, r.starttime, r.endtime, "
+                + "r.service_id, s.name, s.price "
+                + "FROM reservations r "
+                + "JOIN users u ON r.user_id = u.user_id "
+                + "JOIN services s ON r.service_id = s.service_id "
+                + "WHERE u.user_id = ? ";
 
-    // Thêm điều kiện lọc theo trạng thái
-    if (statusFilter != null && !statusFilter.trim().isEmpty()) {
-        sql += "AND r.status = ? ";
-    }
-
-    // Thêm điều kiện sắp xếp theo cột
-    if (sortColumn != null && !sortColumn.isEmpty()) {
-        sql += "ORDER BY " + sortColumn + " " + sortOrder;
-    } else {
-        sql += "ORDER BY s.name ASC"; // Mặc định sắp xếp theo tên dịch vụ (tăng dần)
-    }
-
-    try (PreparedStatement stm = connection.prepareStatement(sql)) {
-        stm.setInt(1, userId); // Đặt user_id vào câu lệnh truy vấn
-        
-        // Nếu có từ khóa tìm kiếm, đặt tham số tìm kiếm vào câu lệnh SQL
+        // Thêm điều kiện tìm kiếm nếu có từ khóa
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-            stm.setString(2, "%" + searchQuery + "%"); // Tìm kiếm theo tên dịch vụ (s.name)
+            sql += "AND s.name LIKE ? ";
         }
 
-        // Nếu có trạng thái lọc, đặt tham số trạng thái vào câu lệnh SQL
+        // Thêm điều kiện lọc theo trạng thái
         if (statusFilter != null && !statusFilter.trim().isEmpty()) {
-            stm.setString(3, statusFilter); // Lọc theo trạng thái
+            sql += "AND r.status = ? ";
         }
 
-        try (ResultSet rs = stm.executeQuery()) {
-            while (rs.next()) {
-                Reservation reservation = new Reservation();
-                reservation.setId(rs.getInt("reserv_id"));
-                reservation.setBookdate(rs.getDate("dateBook"));
-                reservation.setStatus(rs.getString("status"));
-                reservation.setUpdatedate(rs.getDate("updateDate"));
-                reservation.setCreatedate(rs.getDate("createDate"));
-                reservation.setNote(rs.getString("note"));
-                reservation.setStart(rs.getTime("starttime"));
-                reservation.setEnd(rs.getTime("endtime"));
+        // Thêm điều kiện sắp xếp theo cột
+        if (sortColumn != null && !sortColumn.isEmpty()) {
+            sql += "ORDER BY " + sortColumn + " " + sortOrder;
+        } else {
+            sql += "ORDER BY s.name ASC"; // Mặc định sắp xếp theo tên dịch vụ (tăng dần)
+        }
 
-                // Lấy thông tin dịch vụ (service)
-                Service service = new Service();
-                service.setId(rs.getInt("service_id"));
-                service.setName(rs.getString("name"));
-                service.setPrice(rs.getFloat("price"));
-                reservation.setService(service);
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, userId); // Đặt user_id vào câu lệnh truy vấn
 
-                reservations.add(reservation);
+            // Nếu có từ khóa tìm kiếm, đặt tham số tìm kiếm vào câu lệnh SQL
+            if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+                stm.setString(2, "%" + searchQuery + "%"); // Tìm kiếm theo tên dịch vụ (s.name)
             }
+
+            // Nếu có trạng thái lọc, đặt tham số trạng thái vào câu lệnh SQL
+            if (statusFilter != null && !statusFilter.trim().isEmpty()) {
+                stm.setString(3, statusFilter); // Lọc theo trạng thái
+            }
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    Reservation reservation = new Reservation();
+                    reservation.setId(rs.getInt("reserv_id"));
+                    reservation.setBookdate(rs.getDate("dateBook"));
+                    reservation.setStatus(rs.getString("status"));
+                    reservation.setUpdatedate(rs.getDate("updateDate"));
+                    reservation.setCreatedate(rs.getDate("createDate"));
+                    reservation.setNote(rs.getString("note"));
+                    reservation.setStart(rs.getTime("starttime"));
+                    reservation.setEnd(rs.getTime("endtime"));
+
+                    // Lấy thông tin dịch vụ (service)
+                    Service service = new Service();
+                    service.setId(rs.getInt("service_id"));
+                    service.setName(rs.getString("name"));
+                    service.setPrice(rs.getFloat("price"));
+                    reservation.setService(service);
+
+                    reservations.add(reservation);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+
+        return reservations;
     }
-
-    return reservations;
-}
-
-
 
     public ArrayList<User> getAvailableStaff(String date, String startTime, String endTime) {
         ArrayList<User> staff = new ArrayList<>();

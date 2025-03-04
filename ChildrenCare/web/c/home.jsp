@@ -178,12 +178,14 @@
 
                 <!-- Start Dropdown -->
                 <ul class="dropdowns list-inline mb-0">
-                    
-                    <li class="list-inline-item mb-0">
-                        <a href="Cart">
-                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
-                        </a>
-                    </li>
+
+                    <c:if test="${sessionScope.role.contains('Customer')}">
+                        <li class="list-inline-item mb-0">
+                            <a href="Cart">
+                                <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
+                            </a>
+                        </li>
+                    </c:if>
 
                     <li class="list-inline-item mb-0 ms-1">
                         <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
@@ -282,11 +284,8 @@
                                 <li><a href="faqs.html" class="sub-menu-item">FAQs</a></li>
                                 <li class="has-submenu parent-menu-item">
                                 <li><a href="../blog" class="sub-menu-item">Blogs</a></li>
-                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                    <li><a href="blogs.html" class="sub-menu-item">Blogs - Management</a></li>
-                                    </c:if>
-                                <li><a href="terms.html" class="sub-menu-item">Posts</a></li>
-                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
+
+                                <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                     <li><a href="../post-list" class="sub-menu-item">Posts - Management</a></li>
                                     <li><a href="../slider" class="sub-menu-item">Sliders - Management</a></li>
                                     </c:if>
