@@ -50,14 +50,14 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                        <!--<a href="index.html">-->
+                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
 
                     <ul class="sidebar-menu pt-3">
-                        <li class="active"><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                        <li class=""><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
 
                         <li class="sidebar-dropdown">
@@ -80,7 +80,7 @@
                             </div>
                         </li>
 
-                        <li class="sidebar-dropdown">
+                        <li class="sidebar-dropdown ">
                             <a href="javascript:void(0)"><i class="uil uil-apps me-2 d-inline-block"></i>Apps</a>
                             <div class="sidebar-submenu">
                                 <ul>
@@ -91,15 +91,15 @@
                             </div>
                         </li>
 
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-shopping-cart me-2 d-inline-block"></i>Pharmacy</a>
-                            <div class="sidebar-submenu">
+                        <li class="sidebar-dropdown active">
+                            <a href="javascript:void(0)"><i class="uil uil-shopping-cart me-2 d-inline-block"></i>Services</a>
+                            <div class="sidebar-submenu" style="display: block;">
                                 <ul>
-                                    <li><a href="ServiceListServlet">Shop</a></li>
-
+                                    <li class="active"><a href="ServiceListServlet">Services List</a></li>
                                 </ul>
                             </div>
                         </li>
+
 
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Blogs</a>
@@ -163,10 +163,10 @@
                     <div class="header-bar d-flex justify-content-between border-bottom">
                         <div class="d-flex align-items-center">
                             <a href="#" class="logo-icon">
-                                <img src="./assets/images/logo-icon.png" height="30" class="small" alt="">
+                                <img src="../assets/images/logo-icon.png" height="30" class="small" alt="">
                                 <span class="big">
-                                    <img src="./assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
-                                    <img src="./assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
+                                    <img src="../assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
+                                    <img src="../assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                                 </span>
                             </a>
                             <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
@@ -174,9 +174,9 @@
                             </a>
                             <div class="search-bar p-0 d-none d-lg-block ms-2">
                                 <div id="search" class="menu-search mb-0">
-                                    <form role="search" method="get" id="searchform" class="searchform">
+                                    <form role="search" method="get" action="ServiceListServlet" id="searchform" class="searchform">
                                         <div>
-                                            <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords...">
+                                            <input type="text" class="form-control border rounded-pill" name="search" id="s" placeholder="Search Keywords...">
                                             <input type="submit" id="searchsubmit" value="Search">
                                         </div>
                                     </form>
@@ -195,28 +195,28 @@
                                                 <small class="text-dark mb-0">Chinese</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/european.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">European</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/indian.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">Indian</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/japanese.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">Japanese</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/russian.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
@@ -237,7 +237,7 @@
                                 <div class="dropdown dropdown-primary">
                                     <button type="button" class="btn btn-icon btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="mail" class="fea icon-sm"></i></button>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">4 <span class="visually-hidden">unread mail</span></span>
-                                    
+
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow rounded border-0 mt-3 px-2 py-2" data-simplebar style="height: 320px; width: 300px;">
                                         <a href="#" class="d-flex align-items-center justify-content-between py-2">
                                             <div class="d-inline-flex position-relative overflow-hidden">
@@ -383,8 +383,8 @@
                                                         </a></li>
                                                 </ul>
                                                 <div class="shop-image position-relative overflow-hidden">
-                                                    <a href="${pageContext.request.contextPath}/admin/serviceDetails?id=${service.id}">
-                                                        <img src="${not empty service.img ? service.img : '../assets/images/pharmacy/shop/thermometer.jpg'}" class="img-fluid" alt="${service.name}">
+                                                    <a href="serviceDetails?id=${service.id}">
+                                                        <img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="Service Image">
                                                     </a>
                                                     <ul class="list-unstyled shop-icons">
                                                         <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
@@ -418,64 +418,61 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body p-3 pt-4">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="d-grid me-md-4">
-                                            <p class="text-muted">Upload your shop image here, Please click "Upload Image" Button.</p>
-                                            <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
-                                            <input type="file" id="input-file" name="input-file" accept="image/*" onchange="handleChange()" hidden />
-                                            <label class="btn-upload btn btn-primary mt-4" for="input-file">Upload Image</label>
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6 mt-4 mt-sm-0">
-                                        <form action="UpdateProductServlet" method="Post">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <input type=hidden name="id" value="${requestScope.service.id}"/>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Shop Title <span class="text-danger">*</span></label>
-                                                        <input name="name" id="name" type="text" class="form-control" placeholder="Title :" value="${requestScope.service.name}">
+                                <div class="container-fluid">
+                                    <form action="UpdateProductServlet" method="POST" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <!-- Phần Upload Ảnh (bên trái) -->
+                                            <div class="col-md-6">
+                                                <div class="text-center border rounded p-4 bg-light d-flex flex-column align-items-center justify-content-center" style="min-height: 400px;">
+                                                    <label class="form-label d-block">Upload Image:</label>
+                                                    <input type="file" name="imageFile" accept="image/*" class="form-control mb-2" onchange="previewImage(event)">
+                                                    <input type="hidden" name="img" value="${requestScope.service.img}">
+                                                    <div class="mt-3">
+                                                        <img id="imagePreview" src="${pageContext.request.contextPath}/${requestScope.service.img}" class="img-fluid rounded" alt="Preview Image" style="max-width: 100%; height: auto;">
                                                     </div>
-                                                </div><!--end col-->
-
-                                                <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Price: </label>
-                                                        <div class="input-group mb-3">
-                                                            <span class="input-group-text border bg-transparent" id="basic-addon1">$</span>
-                                                            <input type="number" min="0" name="price" class="form-control" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1" value="${requestScope.service.price}">
-                                                        </div>
-                                                    </div>
-                                                </div><!--end col-->
-
-                                                <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Label:</label>
-                                                        <select class="form-control">
-                                                            <option value="FE">Featured</option>
-                                                            <option value="NE">New</option>
-                                                            <option value="PO">Popular</option>
-                                                            <option value="RE">Recent</option>
-                                                            <option value="FR">Free</option>
-                                                        </select>
-                                                    </div>
-                                                </div><!--end col-->
-
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Description : </label>
-                                                        <input name="description" type="text" class="form-control" id="time" value="${requestScope.service.description}">
-                                                    </div>
-                                                </div><!--end col-->
-
-                                                <div class="col-lg-12 text-end">
-                                                    <button type="submit" class="btn btn-primary">Update Product</button>
-                                                </div><!--end col-->
+                                                </div>
                                             </div>
-                                        </form>
-                                    </div><!--end col-->
-                                </div><!--end row-->
+
+                                            <!-- Phần Thông Tin Sản Phẩm (bên phải) -->
+                                            <div class="col-md-6">
+                                                <input type="hidden" name="id" value="${requestScope.service.id}">
+
+                                                <div class="mb-3">
+                                                    <label class="form-label">Shop Title <span class="text-danger">*</span></label>
+                                                    <input name="name" id="name" type="text" class="form-control" placeholder="Title :" value="${requestScope.service.name}">
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label">Price: </label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">$</span>
+                                                        <input type="number" min="0" name="price" class="form-control" placeholder="Price" value="${requestScope.service.price}">
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label">Label:</label>
+                                                    <select name="label" class="form-control">
+                                                        <option value="FE">Featured</option>
+                                                        <option value="NE">New</option>
+                                                        <option value="PO">Popular</option>
+                                                        <option value="RE">Recent</option>
+                                                        <option value="FR">Free</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label">Description:</label>
+                                                    <input name="description" type="text" class="form-control" value="${requestScope.service.description}">
+                                                </div>
+
+                                                <div class="text-end">
+                                                    <button type="submit" class="btn btn-primary">Update Product</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -655,6 +652,62 @@
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
+
+        <script>
+                                        const handleChange = () => {
+                                            const fileUploader = document.querySelector('#input-file');
+                                            const getFile = fileUploader.files
+                                            if (getFile.length !== 0) {
+                                                const uploadedFile = getFile[0];
+                                                readFile(uploadedFile);
+                                            }
+                                        }
+
+                                        const readFile = (uploadedFile) => {
+                                            if (uploadedFile) {
+                                                const reader = new FileReader();
+                                                reader.onload = () => {
+                                                    const parent = document.querySelector('.preview-box');
+                                                    parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
+                                                };
+
+                                                reader.readAsDataURL(uploadedFile);
+                                            }
+                                        };
+        </script>
+
+        <script>
+            function previewImage(event) {
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const output = document.getElementById('imagePreview');
+                    output.src = reader.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                $(".sidebar-dropdown > a").click(function () {
+                    var parent = $(this).parent();
+
+                    // Kiểm tra nếu menu đang mở, thì đóng lại
+                    if (parent.hasClass("toggled")) {
+                        parent.removeClass("toggled active");
+                        parent.find(".sidebar-submenu").slideUp(300);
+                    } else {
+                        // Đóng tất cả các menu khác trước khi mở cái mới
+                        $(".sidebar-dropdown").removeClass("toggled active").find(".sidebar-submenu").slideUp(300);
+
+                        // Mở dropdown này
+                        parent.addClass("toggled active");
+                        parent.find(".sidebar-submenu").slideDown(300);
+                    }
+                });
+            });
+        </script>
+
 
     </body>
 

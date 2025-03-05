@@ -54,6 +54,37 @@
                 background-color: #0056b3;
             }
 
+            .alert {
+                padding: 12px 15px;
+                border-radius: 6px;
+                font-size: 16px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                margin-top: 10px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                transition: opacity 0.3s ease-in-out;
+            }
+
+            .alert-danger {
+                background-color: #f8d7da;
+                color: #721c24;
+                border-left: 5px solid #dc3545;
+            }
+
+            .alert-success {
+                background-color: #d4edda;
+                color: #155724;
+                border-left: 5px solid #28a745;
+            }
+
+            .alert i {
+                margin-right: 10px;
+            }
+
+            .fade-out {
+                opacity: 0;
+            }
 
         </style>
 
@@ -107,7 +138,7 @@
 
                     <c:if test="${sessionScope.role.contains('Customer')}">
                         <li class="list-inline-item mb-0">
-                            <a href="Cart">
+                            <a href="c/Cart">
                                 <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
                             </a>
                         </li>
@@ -254,7 +285,12 @@
                                 <li class="navbar-item"><a href="patient-review.html" class="navbar-link"><i class="ri-chat-1-line align-middle navbar-icon"></i> Patients Review</a></li>
                                 <li class="navbar-item"><a href="doctor-chat.html" class="navbar-link"><i class="ri-chat-voice-line align-middle navbar-icon"></i> Chat</a></li>
                                 <li class="navbar-item"><a href="login.html" class="navbar-link"><i class="ri-login-circle-line align-middle navbar-icon"></i> Login</a></li>
-                                <li class="navbar-item"><a href="forgot-password.html" class="navbar-link"><i class="ri-device-recover-line align-middle navbar-icon"></i> Forgot Password</a></li>
+                                <li class="navbar-item">
+                                    <a href="#" class="navbar-link" data-bs-toggle="modal" data-bs-target="#forgot-password"><i class="ri-device-recover-line align-middle navbar-icon"></i>
+                                        Change Password
+                                    </a>
+                                </li>
+
                             </ul>
                         </div>
                     </div><!--end col-->
@@ -325,48 +361,64 @@
 
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <input type="submit" id="submitBtn" name="send" class="btn btn-success ms-2" value="Save changes"  />
+                                            <input type="submit" id="submitBtn" name="send" class="btn btn-success ms-2" value="Save changes" />
+
+                                            <% if (request.getAttribute("errorMessage") != null) { %>
+                                            <div class="alert alert-danger ms-2">
+                                                <i class="fas fa-exclamation-circle"></i> 
+                                                <%= request.getAttribute("errorMessage") %>
+                                            </div>
+                                            <% } %>
+
+                                            <% if (request.getAttribute("successMessage") != null) { %>
+                                            <div class="alert alert-success ms-2">
+                                                <i class="fas fa-check-circle"></i> 
+                                                <%= request.getAttribute("successMessage") %>
+                                            </div>
+                                            <% } %>
                                         </div>
+
                                     </div>
+
+
                                 </form>
                             </div>
                         </div>
                     </div><!--end col-->
 
                     <div class="rounded shadow mt-4">
-                        <div class="p-4 border-bottom">
-                            <h5 class="mb-0">Change Password :</h5>
-                        </div>
+                        <div class="modal fade" id="forgot-password" tabindex="-1" aria-labelledby="forgotPasswordLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header border-bottom p-3">
+                                        <h5 class="modal-title" id="forgotPasswordLabel">Forgot Password</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
 
-                        <div class="p-4">
-                            <form>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Old password :</label>
-                                            <input type="password" class="form-control" placeholder="Old password" required="">
-                                        </div>
-                                    </div><!--end col-->
+                                    <div class="modal-body p-3 pt-4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <form action="ChangePasswordServlet" method="POST">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Old Password:</label>
+                                                        <input type="password" name="oldPassword" class="form-control" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">New Password:</label>
+                                                        <input type="password" name="newPassword" class="form-control" required>
+                                                    </div>
 
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">New password :</label>
-                                            <input type="password" class="form-control" placeholder="New password" required="">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Re-type New password :</label>
-                                            <input type="password" class="form-control" placeholder="Re-type New password" required="">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-lg-12 mt-2 mb-0">
-                                        <button class="btn btn-primary">Save password</button>
-                                    </div><!--end col-->
-                                </div><!--end row-->
-                            </form>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Confirm New Password:</label>
+                                                        <input type="password" name="confirmPassword" class="form-control" required>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Change Password</button>
+                                                </form>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>  
                         </div>
                     </div>
 
@@ -542,6 +594,52 @@
                     </div><!--end col-->
                 </div><!--end row-->
             </div>
+            <div class="modal fade" id="forgot-password" tabindex="-1" aria-labelledby="forgotPasswordLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-bottom p-3">
+                            <h5 class="modal-title" id="forgotPasswordLabel">Forgot Password</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body p-3 pt-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form id="forgot-password-form" method="POST" action="ForgotPasswordServlet">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                                                    <input name="email" id="email" type="email" class="form-control" placeholder="Enter your email" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">New Password <span class="text-danger">*</span></label>
+                                                    <input name="newPassword" id="newPassword" type="password" class="form-control" placeholder="Enter new password" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Confirm New Password <span class="text-danger">*</span></label>
+                                                    <input name="confirmPassword" id="confirmPassword" type="password" class="form-control" placeholder="Re-enter new password" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12 text-end">
+                                                <button type="submit" class="btn btn-primary">Reset Password</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>  
+            </div>
+
 
             <div class="offcanvas-footer p-4 border-top text-center">
                 <ul class="list-unstyled social-icon mb-0">
@@ -564,7 +662,7 @@
         <!-- Main Js -->
         <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
-        <!-- Javascript to enable editing and submit changes -->
+         <!--Javascript to enable editing and submit changes--> 
         <script>
                                         // Function to preview the uploaded image
                                         function previewImage() {
@@ -579,6 +677,16 @@
                                                 reader.readAsDataURL(file); // Preview the uploaded image
                                             }
                                         }
+
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            setTimeout(() => {
+                                                document.querySelectorAll(".alert").forEach(alert => {
+                                                    alert.classList.add("fade-out");
+                                                    setTimeout(() => alert.style.display = "none", 500);
+                                                });
+                                            }, 3000);
+                                        });
+
         </script>
     </body>
 

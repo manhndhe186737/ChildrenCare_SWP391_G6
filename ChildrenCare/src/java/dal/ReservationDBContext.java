@@ -176,20 +176,24 @@ public class ReservationDBContext extends DBContext {
 
     public ArrayList<User> getAvailableStaff(String date, String startTime, String endTime) {
         ArrayList<User> staff = new ArrayList<>();
-        String sql = "SELECT * FROM users usr\n"
+        String sql = "SELECT * \n"
+                + "FROM users usr\n"
                 + "JOIN userroles ur ON ur.email = usr.email\n"
                 + "JOIN roles r ON r.role_id = ur.role_id\n"
-                + "WHERE r.role_name = 'Staff' AND usr.user_id NOT IN(\n"
-                + "SELECT staff_id\n"
-                + "FROM users u\n"
-                + "JOIN userroles ur ON ur.email = u.email\n"
-                + "JOIN roles r ON r.role_id = ur.role_id\n"
-                + "JOIN reservations res ON res.staff_id = u.user_id\n"
-                + "AND res.datebook = ? \n"
-                + "WHERE r.role_name = 'Staff'\n"
-                + "AND (\n"
-                + "    res.starttime <= ? AND res.endtime >= ? \n"
-                + "))";
+                + "WHERE r.role_name = 'Staff' \n"
+                + "AND usr.user_id NOT IN (\n"
+                + "    SELECT staff_id\n"
+                + "    FROM users u\n"
+                + "    JOIN userroles ur ON ur.email = u.email\n"
+                + "    JOIN roles r ON r.role_id = ur.role_id\n"
+                + "    JOIN reservations res ON res.staff_id = u.user_id\n"
+                + "    AND res.datebook = ? \n"
+                + "    WHERE r.role_name = 'Staff'\n"
+                + "    AND (\n"
+                + "        (res.starttime <= ? AND res.endtime >= ?)\n"
+                + "        AND res.status NOT LIKE 'Cancelled'\n"
+                + "    )\n"
+                + ")";
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setString(1, date);  // Ngày được chọn

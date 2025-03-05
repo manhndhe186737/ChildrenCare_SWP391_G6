@@ -212,7 +212,7 @@
                                                     <li><a href="blogs.html" class="sub-menu-item">Blogs - Management</a></li>
                                                     </c:if>
 
-                                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
+                                                <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                                     <li><a href="../post-list" class="sub-menu-item">Posts - Management</a></li>
                                                     <li><a href="../slider" class="sub-menu-item">Sliders - Management</a></li>
                                                     </c:if>
@@ -240,6 +240,12 @@
 
                                         </ul>
 
+                                        <c:if test="${not empty requestScope.err}">
+                                            <div class="alert alert-danger">
+                                                ${requestScope.err}
+                                            </div>
+                                        </c:if>
+
                                         <div class="tab-content p-4" id="pills-tabContent">
                                             <div class="tab-pane fade show active" id="pills-clinic" role="tabpanel" aria-labelledby="clinic-booking">
                                                 <form action="BookingStaff" method="POST" id="staff-form">                                     
@@ -247,7 +253,8 @@
                                                         <div class="col-md-3">
                                                             <div class="mb-3">
                                                                 <label class="form-label">Date <span class="text-danger">*</span></label>
-                                                                <input name="date" id="date" type="date" value="${requestScope.date}" class="form-control" placeholder="" >
+                                                                <input name="date" id="date" type="date" value="${requestScope.date}" class="form-control" min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>" placeholder="" >
+
                                                             </div> 
                                                         </div><!--end col-->
 

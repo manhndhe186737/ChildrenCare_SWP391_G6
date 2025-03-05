@@ -56,6 +56,22 @@
                 object-fit: contain;
             }
 
+            .pharpachy-categories {
+                min-height: 80px; /* Tăng chiều cao tối thiểu */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 10px;
+            }
+
+            .category-title {
+                white-space: normal; /* Để văn bản xuống dòng nếu quá dài */
+                overflow: visible;
+                font-size: 16px; /* Điều chỉnh font nếu cần */
+            }
+
+
         </style>
     </head>
 
@@ -76,14 +92,14 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                        <!--<a href="index.html">-->
+                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
 
                     <ul class="sidebar-menu pt-3">
-                        <li class="active"><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                        <li class=""><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
 
                         <li class="sidebar-dropdown">
@@ -118,10 +134,10 @@
                         </li>
 
                         <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-shopping-cart me-2 d-inline-block"></i>Pharmacy</a>
+                            <a href="javascript:void(0)"><i class="uil uil-shopping-cart me-2 d-inline-block"></i>Services</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="ServiceListServlet">Shop</a></li>
+                                    <li><a href="ServiceListServlet">Services List</a></li>
 
                                 </ul>
                             </div>
@@ -221,28 +237,28 @@
                                                 <small class="text-dark mb-0">Chinese</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/european.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">European</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/indian.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">Indian</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/japanese.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">Japanese</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/russian.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
@@ -263,7 +279,7 @@
                                 <div class="dropdown dropdown-primary">
                                     <button type="button" class="btn btn-icon btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="mail" class="fea icon-sm"></i></button>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">4 <span class="visually-hidden">unread mail</span></span>
-                                    
+
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow rounded border-0 mt-3 px-2 py-2" data-simplebar style="height: 320px; width: 300px;">
                                         <a href="#" class="d-flex align-items-center justify-content-between py-2">
                                             <div class="d-inline-flex position-relative overflow-hidden">
@@ -375,7 +391,6 @@
                                                 <div class="shop-image position-relative overflow-hidden">
                                                     <a href="serviceDetails?id=${service.id}">
                                                         <img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="Service Image">
-
                                                     </a>
                                                     <ul class="list-unstyled shop-icons">
                                                         <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
@@ -411,9 +426,8 @@
                         <div class="row row-cols-md-2 row-cols-lg-5">
                             <c:forEach var="category" items="${categories}">
                                 <div class="col mt-4 pt-2">
-                                    <a href="ServiceListServlet?categoryId=${category.id}" class="card pharpachy-categories border-0 rounded overflow-hidden">
-                                        <img src="../assets/images/pharmacy/skin.jpg" class="img-fluid" alt="">
-                                        <div class="category-title">
+                                    <a href="ServiceListServlet?categoryId=${category.id}" class="card pharpachy-categories border-0 rounded d-flex align-items-center justify-content-center p-3">
+                                        <div class="category-title text-center">
                                             <span class="text-dark title-white"><span class="h5">${category.categoryname}</span></span>
                                         </div>
                                     </a>
@@ -574,7 +588,7 @@
                                                     const uploadedFile = getFile[0];
                                                     readFile(uploadedFile);
                                                 }
-                                            }
+                                            };
 
                                             const readFile = (uploadedFile) => {
                                                 if (uploadedFile) {
