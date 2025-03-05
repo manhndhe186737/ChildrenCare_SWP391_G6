@@ -123,21 +123,19 @@ public class PostEdit extends BaseRBAC {
             response.sendRedirect("post-edit?id=" + postId + "&error=invalid_author");
             return;
         }
-
-        // Xử lý upload ảnh
+   
         String imagePath = null;
         Part filePart = request.getPart("imageFile");
         if (filePart != null && filePart.getSize() > 0) {
             String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
             File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
+            if (!uploadDir.exists()) uploadDir.mkdir();
+            
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             imagePath = "uploads/" + fileName;
             filePart.write(uploadPath + File.separator + fileName);
         } else {
-            imagePath = request.getParameter("currentImage");
+            imagePath = request.getParameter("currentImage"); // Giữ ảnh cũ nếu không có ảnh mới
         }
 
         // Cập nhật bài viết vào database
