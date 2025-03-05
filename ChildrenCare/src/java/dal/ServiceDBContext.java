@@ -59,7 +59,7 @@ public class ServiceDBContext extends DBContext {
     public ArrayList<Service> getServicesByCategoryId(int categoryId) {
         ArrayList<Service> services = new ArrayList<>();
         try {
-            String sql = "SELECT service_id, name, description, price FROM services WHERE category_id = ?";
+            String sql = "SELECT service_id, name, description, price, img FROM services WHERE isActive = 1 AND category_id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, categoryId);
             ResultSet rs = stm.executeQuery();
@@ -69,6 +69,7 @@ public class ServiceDBContext extends DBContext {
                 service.setName(rs.getString("name"));
                 service.setDescription(rs.getString("description"));
                 service.setPrice(rs.getFloat("price"));
+                service.setImg(rs.getString("img"));
 
                 services.add(service);
             }
@@ -84,7 +85,7 @@ public class ServiceDBContext extends DBContext {
         try {
             String sql = "SELECT s.service_id, s.name, s.description, s.price, c.category_id, c.name AS categoryname "
                     + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
-                    + "WHERE s.name LIKE ? ";
+                    + "WHERE s.isActive = 1 AND s.name LIKE ? ";
 
             if (selectedCategories != null && selectedCategories.length > 0) {
                 sql += "AND c.category_id IN (" + String.join(",", Collections.nCopies(selectedCategories.length, "?")) + ") ";
@@ -230,7 +231,7 @@ public class ServiceDBContext extends DBContext {
     public Service getServiceById(int serviceId) {
         Service service = null;
         try {
-            String sql = "SELECT s.service_id, s.name, s.description, s.price, c.category_id, c.name AS categoryname "
+            String sql = "SELECT s.service_id, s.name, s.description, s.price,s.img, c.category_id, c.name AS categoryname "
                     + "FROM services s "
                     + "INNER JOIN servicecategories c ON s.category_id = c.category_id "
                     + "WHERE s.service_id = ?";
@@ -248,6 +249,7 @@ public class ServiceDBContext extends DBContext {
                 service.setName(rs.getString("name"));
                 service.setDescription(rs.getString("description"));
                 service.setPrice(rs.getFloat("price"));
+                service.setImg(rs.getString("img"));
                 service.setCategory(category);
             }
         } catch (SQLException e) {
@@ -255,5 +257,24 @@ public class ServiceDBContext extends DBContext {
         }
         return service;
     }
+    public static void main(String[] args) {
+    ServiceDBContext serviceDBContext = new ServiceDBContext();
+
+    // Test với các tham số (page: 1, pageSize: 6, searchQuery: null, selectedCategories: null, selectedPriceRanges: null)
+    ArrayList<Service> services = serviceDBContext.getFilteredServices(1, 6, "", null, null);
+
+    // In ra danh sách dịch vụ
+    if (services.isEmpty()) {
+        System.out.println("Không có dịch vụ nào.");
+    } else {
+        for (Service service : services) {
+            System.out.println("Service ID: " + service.getId() +
+                               ", Name: " + service.getName() +
+                               ", Description: " + service.getDescription() +
+                               ", Price: " + service.getPrice() +
+                               ", Category: " + service.getCategory().getCategoryname());
+        }
+    }
+}
 
 }

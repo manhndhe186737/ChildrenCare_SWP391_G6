@@ -435,7 +435,7 @@
                             <img src="<%= post.getImg() %>" alt="Thumbnail" class="thumbnail">
 
                             <div class="post-content">
-                                <p><%= post.getContent() %></p>
+                                ${post.content}
                             </div>
 
                             <div class="post-actions">

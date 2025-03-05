@@ -24,6 +24,9 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="./assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <style>
+
+        </style>
     </head>
 
     <body>
@@ -172,8 +175,8 @@
                                 <li><a href="faqs.html" class="sub-menu-item">FAQs</a></li>
                                 <li class="has-submenu parent-menu-item">
                                 <li><a href="./blog" class="sub-menu-item">Blogs</a></li>
-                                    
-                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
+
+                                <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                     <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
                                     <li><a href="./slider" class="sub-menu-item">Sliders - Management</a></li>
                                     </c:if>
@@ -236,13 +239,18 @@
                     <div class="col-md-5">
                         <div class="slider slider-for">
                             <!-- Nếu service có hình ảnh thì thay đổi theo thuộc tính của service -->
-                            <div><img src="./assets/images/services/default.jpg" class="img-fluid rounded" alt="${service.name}"></div>
-                            <!-- Có thể thêm nhiều slide nếu có nhiều hình -->
+                            <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid rounded" alt="${service.name}"></div>
+                            <!-- Nếu có thêm nhiều slide, có thể thêm nhiều div ở đây -->
                         </div>
 
                         <div class="slider slider-nav">
-                            <div><img src="./assets/images/services/default.jpg" class="img-fluid" alt="${service.name}"></div>
+                            <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="${service.name}"></div>
+                            <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="${service.name}"></div>
+
+                            <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="${service.name}"></div>
+
                         </div>
+
                     </div><!--end col-->
 
                     <!-- Service Detail Section -->
@@ -278,51 +286,53 @@
         </section>
 
         <section class="section">
-    <div class="container mt-100 mt-60">
-        <div class="row">
-            <div class="col-12">
-                <h5 class="mb-0">Related Products:</h5>
-            </div><!--end col-->
-        </div><!--end row-->
+            <div class="container mt-100 mt-60">
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="mb-0">Related Products:</h5>
+                    </div><!--end col-->
+                </div><!--end row-->
 
-        <div class="row">
-            <div class="col-lg-12 mt-4 pt-2">
-                <div class="slider-range-four">
-                    <c:forEach var="rel" items="${relatedServices}">
-                        <div class="tiny-slide">
-                            <div class="card shop-list border-0">
-                                <ul class="label list-unstyled mb-0">
-                                    <li><a href="javascript:void(0)" class="badge badge-pill badge-success">Featured</a></li>
-                                </ul>
-                                <div class="shop-image position-relative overflow-hidden">
-                                   
-                                    <ul class="list-unstyled shop-icons">
-                                        <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                        <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                        <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                    </ul>
-                                </div>
-                                <div class="card-body content pt-4 p-2">
-                                    <a href="service-detail?id=${rel.id}" class="text-dark product-name h6">${rel.name}</a>
-                                    <div class="d-flex justify-content-between mt-1">
-                                        <h6 class="text-muted small font-italic mb-0 mt-1">$${rel.price}</h6>
-                                        <ul class="list-unstyled text-warning mb-0">
-                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                <div class="row">
+                    <div class="col-lg-12 mt-4 pt-2">
+                        <div class="slider-range-four">
+                            <c:forEach var="rel" items="${relatedServices}">
+                                <div class="tiny-slide">
+                                    <div class="card shop-list border-0">
+                                        <ul class="label list-unstyled mb-0">
+                                            <li><a href="javascript:void(0)" class="badge badge-pill badge-success">Featured</a></li>
                                         </ul>
+                                        <div class="shop-image position-relative overflow-hidden">
+                                            <!-- Hiển thị hình ảnh dịch vụ liên quan -->
+                                            <img src="${pageContext.request.contextPath}/${rel.img}" class="img-fluid rounded" alt="${rel.name}">
+                                            <ul class="list-unstyled shop-icons">
+                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
+                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
+                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="card-body content pt-4 p-2">
+                                            <a href="service-detail?id=${rel.id}" class="text-dark product-name h6">${rel.name}</a>
+                                            <div class="d-flex justify-content-between mt-1">
+                                                <h6 class="text-muted small font-italic mb-0 mt-1">$${rel.price}</h6>
+                                                <ul class="list-unstyled text-warning mb-0">
+                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </c:forEach>
                         </div>
-                    </c:forEach>
-                </div>
-            </div><!--end col-->
-        </div><!--end row-->
-    </div><!--end container-->
-</section>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section>
+
 
 
         <!-- Footer Start -->

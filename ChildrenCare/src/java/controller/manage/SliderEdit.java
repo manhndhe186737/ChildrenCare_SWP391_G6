@@ -21,9 +21,9 @@ import model.Slider;
  * @author DELL
  */
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-    maxFileSize = 1024 * 1024 * 10,      // 10MB
-    maxRequestSize = 1024 * 1024 * 50    // 50MB
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 public class SliderEdit extends BaseRBAC {
 
@@ -88,6 +88,7 @@ public class SliderEdit extends BaseRBAC {
         int id = Integer.parseInt(idParam);
         String title = request.getParameter("title");
         String status = request.getParameter("status");
+        String backlink = request.getParameter("backlink"); // Lấy backlink từ form
 
         SliderDBContext db = new SliderDBContext();
         Slider slider = db.getSliderById(id);
@@ -116,7 +117,9 @@ public class SliderEdit extends BaseRBAC {
         // Cập nhật slider trong database
         slider.setTitle(title);
         slider.setImg(imagePath);
+        slider.setBacklink(backlink); // Cập nhật backlink
         slider.setStatus(status);
+
         db.updateSlider(slider);
 
         response.sendRedirect("slider");

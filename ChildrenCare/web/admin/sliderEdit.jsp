@@ -352,6 +352,9 @@
                                         <label>Title:</label>
                                         <input type="text" name="title" value="<%= slider.getTitle() %>" required>
 
+                                        <label>Backlink:</label>
+                                        <input type="text" name="backlink" value="<%= slider.getBacklink() %>" required> <!-- Thêm backlink -->
+
                                         <label>Current Image:</label>
                                         <img src="<%= slider.getImg() %>" alt="Current Image" class="image-preview" id="preview">
 
@@ -369,6 +372,7 @@
                                             <a href="slider" class="cancel-btn">Cancel</a>
                                         </div>
                                     </form>
+
                                 </div>
                             </div>
                         </div>

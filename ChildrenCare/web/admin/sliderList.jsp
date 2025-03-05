@@ -330,40 +330,40 @@
                             </li>
 
                             <li class="list-inline-item mb-0 ms-1">
-                            <c:choose>
-                                <c:when test="${sessionScope.user ne null}">
-                                    <div class="dropdown dropdown-primary">
-                                        <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
-                                        </button>
-                                        <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                            <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                                <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="flex-1 ms-2">
-                                                    <span class="d-block mb-1">${sessionScope.user.fullname}</span>
-                                                </div>
-                                            </a>
-                                            <c:if test="${sessionScope.role.contains('Admin')}">
-                                                <a class="dropdown-item text-dark" href="doctor-dashboard.html">
-                                                    <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                <c:choose>
+                                    <c:when test="${sessionScope.user ne null}">
+                                        <div class="dropdown dropdown-primary">
+                                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                            </button>
+                                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                                <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
+                                                    <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                    <div class="flex-1 ms-2">
+                                                        <span class="d-block mb-1">${sessionScope.user.fullname}</span>
+                                                    </div>
                                                 </a>
-                                            </c:if>
-                                            <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
-                                                <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
-                                            </a>
-                                            <div class="dropdown-divider border-top"></div>
-                                            <a class="dropdown-item text-dark" href="logout">
-                                                <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
-                                            </a>
+                                                <c:if test="${sessionScope.role.contains('Admin')}">
+                                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html">
+                                                        <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                                    </a>
+                                                </c:if>
+                                                <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
+                                                    <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
+                                                </a>
+                                                <div class="dropdown-divider border-top"></div>
+                                                <a class="dropdown-item text-dark" href="logout">
+                                                    <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="login" class="btn btn-soft-primary btn-sm">
-                                        <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
-                                    </a>
-                                </c:otherwise>
-                            </c:choose>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="login" class="btn btn-soft-primary btn-sm">
+                                            <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
                             </li>
                         </ul>
                     </div>
@@ -417,6 +417,7 @@
                                             <th>ID</th>
                                             <th>Title</th>
                                             <th>Image</th>
+                                            <th>Backlink</th> <!-- Thêm cột Backlink -->
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
@@ -425,6 +426,7 @@
                                             <td><%= s.getId() %></td>
                                             <td><%= s.getTitle() %></td>
                                             <td><img src="<%=s.getImg() %>" alt="Slider Image"></td>
+                                            <td><a href="<%= s.getBacklink() %>" target="_blank"><%= s.getBacklink() %></a></td> <!-- Hiển thị backlink -->
                                             <td>
                                                 <form action="slider" method="post">
                                                     <input type="hidden" name="sliderId" value="<%= s.getId() %>">
@@ -440,6 +442,7 @@
                                         </tr>
                                         <% } %>
                                     </table>
+
 
                                     <div class="pagination">
                                         <% for (int i = 1; i <= totalPages; i++) { %>

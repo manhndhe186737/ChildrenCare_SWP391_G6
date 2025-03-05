@@ -26,6 +26,9 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="./assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+
+        <script src="https://cdn.jsdelivr.net/npm/tinymce/tinymce.min.js"></script>
+
         <style>
             /* General Styles */
             body {
@@ -108,6 +111,81 @@
                 background: #4455c9;
             }
 
+
+            /* Container bọc cả ảnh hiện tại và preview */
+            .image-container {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+            }
+
+            /* Khung chứa ảnh hiện tại */
+            .current-image-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                background-color: #f4f4f4;
+                border-radius: 10px;
+                border: 2px dashed #bbb;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                width: 180px;
+                height: 180px;
+            }
+
+            /* Ẩn khung preview khi chưa có ảnh */
+            .preview-container {
+                display: none;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                background-color: #f4f4f4;
+                border-radius: 10px;
+                border: 2px dashed #28a745;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                width: 180px;
+                height: 180px;
+                transition: all 0.3s ease-in-out;
+            }
+
+            /* Ảnh trong cả current và preview */
+            .current-image-container img,
+            .preview-container img {
+                max-width: 100%;
+                max-height: 160px;
+                border-radius: 8px;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            /* Hiệu ứng hover làm ảnh to nhẹ lên */
+            .preview-container img:hover,
+            .current-image-container img:hover {
+                transform: scale(1.05);
+            }
+
+            /* Nút upload ảnh */
+            .btn-upload {
+                display: inline-block;
+                padding: 12px 18px;
+                background-color: #ff7f50; /* Màu cam nhạt */
+                color: white;
+                font-weight: bold;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.3s ease-in-out;
+                text-align: center;
+                font-size: 14px;
+            }
+
+            /* Hover vào nút upload sẽ đậm hơn */
+            .btn-upload:hover {
+                background-color: #e66a38;
+            }
+
+            /* Ẩn input file mặc định */
+            input[type="file"] {
+                display: none;
+            }
             /* Back Button */
             .back-btn {
                 display: block;
@@ -126,7 +204,6 @@
             .back-btn:hover {
                 background: white;
             }
-
         </style>
     </head>
 
@@ -342,12 +419,13 @@
                         <div class="container">
                             <h2>Add New Post</h2>
 
-                            <form method="POST" action="post-add" enctype="multipart/form-data">
+                            <form method="POST" action="${pageContext.request.contextPath}/post-add" enctype="multipart/form-data">
                                 <label>Title:</label>
                                 <input type="text" name="title" required>
 
                                 <label>Content:</label>
-                                <textarea name="content" required></textarea>
+                                <textarea id="content-editor" name="content" ></textarea>
+
 
                                 <label>Category:</label>
                                 <select name="category">
@@ -362,9 +440,18 @@
                                     <option value="1">Active</option>
                                     <option value="0">Hidden</option>
                                 </select>
-
                                 <label>Upload Image:</label>
-                                <input type="file" name="imageFile" accept="image/*">
+                                <div class="image-container">
+                                    <div class="current-image-container" id="currentImageContainer">
+                                        <img id="currentImage" src="./assets/images/placeholder.png" alt="Current Image">
+                                    </div>
+                                    <div class="preview-container" id="preview-container">
+                                        <img id="preview-image" src="" alt="Preview Image">
+                                    </div>
+                                </div>
+                                <label for="imageFile" class="btn-upload">📸 Upload</label>
+                                <input type="file" name="imageFile" accept="image/*" id="imageFile" onchange="previewImage(event)">
+
 
                                 <label>Author:</label>
                                 <select name="author">
@@ -566,6 +653,44 @@
                                                             reader.readAsDataURL(uploadedFile);
                                                         }
                                                     };
+                    </script>
+                    <script>
+                        function previewImage(event) {
+                            const input = event.target;
+                            const reader = new FileReader();
+                            const previewContainer = document.getElementById("preview-container");
+                            const previewImage = document.getElementById("preview-image");
+                            const currentImageContainer = document.getElementById("currentImageContainer");
+
+                            reader.onload = function () {
+                                previewImage.src = reader.result;
+                                previewContainer.style.display = "flex";
+                                currentImageContainer.style.display = "none";
+                            };
+
+                            if (input.files && input.files[0]) {
+                                reader.readAsDataURL(input.files[0]);
+                            } else {
+                                previewContainer.style.display = "none";
+                                currentImageContainer.style.display = "flex";
+                            }
+                        }
+                    </script>
+                    <script>
+                        tinymce.init({
+                            selector: 'textarea#content-editor',
+                            height: 300,
+                            menubar: false,
+                            plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste help',
+                            toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+                            content_css: 'https://www.tiny.cloud/css/codepen.min.css',
+                            setup: function (editor) {
+                                editor.on('change', function () {
+                                    editor.save(); // Cập nhật nội dung vào textarea thật
+                                });
+                            }
+                        });
+
                     </script>
                     </body>
 

@@ -31,7 +31,6 @@ public class ServiceDetail extends HttpServlet {
         // Lấy thông tin chi tiết của dịch vụ từ database
         ServiceDBContext serviceDB = new ServiceDBContext();
         Service service = serviceDB.getServiceById(serviceId);
-
         // Kiểm tra nếu dịch vụ không tồn tại
         if (service == null) {
             response.sendRedirect("service-list");

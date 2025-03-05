@@ -181,6 +181,80 @@
                 background: #dc3545;
                 color: white;
             }
+            /* Container bọc cả ảnh hiện tại và preview */
+            .image-container {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+            }
+
+            /* Khung chứa ảnh hiện tại */
+            .current-image-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                background-color: #f4f4f4;
+                border-radius: 10px;
+                border: 2px dashed #bbb;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                width: 180px;
+                height: 180px;
+            }
+
+            /* Ẩn khung preview khi chưa có ảnh */
+            .preview-container {
+                display: none;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                background-color: #f4f4f4;
+                border-radius: 10px;
+                border: 2px dashed #28a745;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                width: 180px;
+                height: 180px;
+                transition: all 0.3s ease-in-out;
+            }
+
+            /* Ảnh trong cả current và preview */
+            .current-image-container img,
+            .preview-container img {
+                max-width: 100%;
+                max-height: 160px;
+                border-radius: 8px;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            /* Hiệu ứng hover làm ảnh to nhẹ lên */
+            .preview-container img:hover,
+            .current-image-container img:hover {
+                transform: scale(1.05);
+            }
+
+            /* Nút upload ảnh */
+            .btn-upload {
+                display: inline-block;
+                padding: 12px 18px;
+                background-color: #ff7f50; /* Màu cam nhạt */
+                color: white;
+                font-weight: bold;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.3s ease-in-out;
+                text-align: center;
+                font-size: 14px;
+            }
+
+            /* Hover vào nút upload sẽ đậm hơn */
+            .btn-upload:hover {
+                background-color: #e66a38;
+            }
+
+            /* Ẩn input file mặc định */
+            input[type="file"] {
+                display: none;
+            }
 
         </style>
     </head>
@@ -409,7 +483,8 @@
                                 <input type="text" name="title" value="<%= post.getTitle() %>" required>
 
                                 <label>Content:</label>
-                                <textarea name="content" required><%= post.getContent() %></textarea>
+                                <textarea id="content-editor" name="content"><%= post.getContent() %></textarea>
+
 
                                 <label>Category:</label>
                                 <select name="category">
@@ -423,9 +498,28 @@
                                     <option value="1" <%= post.getStatus().equals("1") ? "selected" : "" %>>Active</option>
                                     <option value="0" <%= post.getStatus().equals("0") ? "selected" : "" %>>Hidden</option>
                                 </select>
+                                <input type="hidden" name="currentImage" value="<%= post.getImg() %>">
+                                <div class="image-container">
+                                    <!-- Ảnh hiện tại -->
+                                    <div class="current-image-container">
+                                        <img id="currentImage" src="<%= post.getImg() %>" alt="Current Image">
+                                    </div>
 
-                                <label>Upload Image:</label>
-                                <input type="file" name="imageFile" accept="image/*">
+                                    <!-- Khu vực Preview (Ẩn ban đầu) -->
+                                    <div class="preview-container" id="preview-container">
+                                        <img id="preview-image" src="" alt="Preview Image">
+                                    </div>
+                                </div>
+
+                                <!-- Nút Upload -->
+                                <label for="imageFile" class="btn-upload">📸 Upload</label>
+                                <input type="file" name="imageFile" accept="image/*" onchange="previewImage(event)" id="imageFile">
+
+
+
+
+
+
 
                                 <% 
      List<String[]> authors = (List<String[]>) request.getAttribute("authors");
@@ -627,6 +721,44 @@
                                                             reader.readAsDataURL(uploadedFile);
                                                         }
                                                     };
+                    </script>
+                    <!-- TinyMCE - Rich Text Editor -->
+                    <script src="https://cdn.jsdelivr.net/npm/tinymce/tinymce.min.js"></script>
+
+                    <script>
+                                                    tinymce.init({
+                                                        selector: 'textarea#content-editor', // ID của textarea
+                                                        height: 300, // Độ cao của ô nhập liệu
+                                                        menubar: false, // Ẩn menu trên cùng
+                                                        plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste help',
+                                                        toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+                                                        content_css: 'https://www.tiny.cloud/css/codepen.min.css'
+                                                    });
+                    </script>
+                    <script>
+                        function previewImage(event) {
+                            const input = event.target;
+                            const reader = new FileReader();
+                            const previewContainer = document.getElementById("preview-container");
+                            const previewImage = document.getElementById("preview-image");
+                            const currentImage = document.getElementById("currentImage");
+                            const currentImageContainer = document.querySelector(".current-image-container");
+
+                            reader.onload = function () {
+                                previewImage.src = reader.result;
+                                previewContainer.style.display = "flex"; // Hiển thị preview khi có ảnh mới
+                                currentImageContainer.style.display = "none"; // Ẩn ảnh hiện tại
+                            };
+
+                            if (input.files && input.files[0]) {
+                                reader.readAsDataURL(input.files[0]);
+                            } else {
+                                previewContainer.style.display = "none"; // Ẩn preview nếu không có ảnh mới
+                                currentImageContainer.style.display = "flex"; // Hiển thị lại ảnh hiện tại
+                            }
+                        }
+
+
                     </script>
                     </body>
 
