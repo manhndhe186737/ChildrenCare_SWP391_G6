@@ -30,6 +30,7 @@
     </head>
 
     <body>
+        
         <!-- Loader -->
         <div id="preloader">
             <div id="status">
@@ -129,7 +130,7 @@
 
                 <div id="navigation">
                     <!-- Navigation Menu-->   
-                    <ul class="navigation-menu nav-left nav-dark">
+                    <ul class="navigation-menu nav-left nav-light">
 
                         <li class="has-submenu parent-parent-menu-item">
                             <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
@@ -175,8 +176,8 @@
                                 <li><a href="faqs.html" class="sub-menu-item">FAQs</a></li>
                                 <li class="has-submenu parent-menu-item">
                                 <li><a href="./blog" class="sub-menu-item">Blogs</a></li>
-
-                                <c:if test="${sessionScope.role.contains('Marketing Staff')}">
+                                    
+                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                     <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
                                     <li><a href="./slider" class="sub-menu-item">Sliders - Management</a></li>
                                     </c:if>
@@ -193,35 +194,81 @@
         </header><!--end header-->
         <!-- Navbar End -->
 
+        <!-- Start Hero -->
+        <section class="home-slider position-relative">
+            <div id="carouselExampleInterval" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="bg-half-170 d-table align-items-center w-100" style="background:url('./assets/images/posts/wintercare.jpg') center center;">
+                            <div class="bg-overlay bg-overlay-dark"></div>
+                            <div class="container">
+                                <div class="row mt-5">
+                                    <div class="col-lg-12">
+                                        <div class="heading-title">
+                                            <h1 class="fw-bold mb-4">Professional & Safe <br> Child Care Services</h1>
+                                            <p class="para-desc mb-0">Providing loving and dedicated care for your little ones, ensuring peace of mind for parents with our trusted childcare services.</p>
 
-        <!-- Hero Start -->
-        <section class="bg-half-170 d-table w-100 bg-light">
-            <div class="container">
-                <div class="row mt-5 justify-content-center">
-                    <div class="col-12">
-                        <div class="section-title text-center">
-                            <!-- Sử dụng tên của service từ database -->
-                            <h3 class="sub-title mb-4">${service.name}</h3>
-                            <p class="para-desc mx-auto text-muted">
-                                <!-- Có thể hiển thị thêm thông tin ví dụ: danh mục -->
-                                <c:if test="${not empty service.category}">
-                                    Category: ${service.category.categoryname}
-                                </c:if>
-                            </p>
-
-                            <nav aria-label="breadcrumb" class="d-inline-block mt-3">
-                                <ul class="breadcrumb bg-light rounded mb-0 bg-transparent">
-                                    <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
-                                    <li class="breadcrumb-item"><a href="service-list">Services</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Detail</li>
-                                </ul>
-                            </nav>
+                                            <div class="mt-4 pt-2">
+                                                <a href="#" class="btn btn-primary">Learn More</a>
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </div><!--end container-->
                         </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </section>
-        <!-- Hero End -->
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="bg-half-170 d-table align-items-center w-100" style="background:url('./assets/images/posts/sporting.jpg') center center;">
+                            <div class="bg-overlay bg-overlay-dark"></div>
+                            <div class="container">
+                                <div class="row mt-5">
+                                    <div class="col-lg-12">
+                                        <div class="heading-title">
+                                            <h1 class="fw-bold mb-4">Expert Babysitters <br> You Can Trust</h1>
+                                            <p class="para-desc mb-0">Our experienced and caring babysitters ensure your child's safety, happiness, and development while you're away.</p>
+
+                                            <div class="mt-4 pt-2">
+                                                <a href="#" class="btn btn-primary">Book a Sitter</a>
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </div><!--end container-->
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="bg-half-170 d-table align-items-center w-100" style="background:url('./assets/images/posts/massage.jpg') center center;">
+                            <div class="bg-overlay bg-overlay-dark"></div>
+                            <div class="container">
+                                <div class="row mt-5">
+                                    <div class="col-lg-12">
+                                        <div class="heading-title">
+                                            <h1 class="fw-bold mb-4">Fun & Engaging <br> Learning Activities</h1>
+                                            <p class="para-desc mb-0">We offer creative and educational activities to nurture your child's growth, curiosity, and development in a safe environment.</p>
+
+                                            <div class="mt-4 pt-2">
+                                                <a href="#" class="btn btn-primary">Explore Programs</a>
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </div><!--end container-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+        </div>
+    </section><!--end section-->
+    <!-- End Hero -->
+
+        
 
         <div class="position-relative">
             <div class="shape overflow-hidden text-white">
