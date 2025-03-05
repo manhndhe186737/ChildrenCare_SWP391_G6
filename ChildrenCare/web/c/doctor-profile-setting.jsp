@@ -106,11 +106,16 @@
         <header id="topnav" class="defaultscroll sticky">
             <div class="container">
                 <!-- Logo container-->
-                <a class="logo" href="./c/home">
-                    <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
-                    <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
-                </a>                
-                <!-- Logo End -->
+                <div>
+                    <a class="logo" href="./c/home">
+                        <span class="logo-light-mode">
+                            <img src="./assets/images/logo-icon-child.png" class="l-dark" height="24" alt="">
+                            <img src="./assets/images/logo-icon-child.png" class="l-light" height="24" alt="">
+                        </span>
+                        <img src="./assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
+                    </a>
+                </div>
+                <!-- End Logo container-->
 
                 <!-- Start Mobile Toggle -->
                 <div class="menu-extras">
@@ -130,11 +135,14 @@
 
                 <!-- Start Dropdown -->
                 <ul class="dropdowns list-inline mb-0">
-                    <li class="list-inline-item mb-0">
-                        <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="settings" class="fea icon-sm"></i></div>
-                        </a>
-                    </li>
+
+                    <c:if test="${sessionScope.role.contains('Customer')}">
+                        <li class="list-inline-item mb-0">
+                            <a href="c/Cart">
+                                <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
+                            </a>
+                        </li>
+                    </c:if>
 
                     <li class="list-inline-item mb-0 ms-1">
                         <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
@@ -143,86 +151,85 @@
                     </li>
 
                     <li class="list-inline-item mb-0 ms-1">
-                        <div class="dropdown dropdown-primary">
-                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
-                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                    <img src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
-                                    <div class="flex-1 ms-2">
-                                        <span class="mt-3 mb-1">${sessionScope.user.fullname}</span>
-                                        <small class="text-muted">Orthopedic</small>
-
+                        <c:choose>
+                            <c:when test="${sessionScope.user ne null}">
+                                <div class="dropdown dropdown-primary">
+                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                    </button>
+                                    <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                        <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
+                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                            <div class="flex-1 ms-2">
+                                                <span class="d-block mb-1">${sessionScope.user.fullname}</span>
+                                            </div>
+                                        </a>
+                                        <c:if test="${sessionScope.role.contains('Admin')}">
+                                            <a class="dropdown-item text-dark" href="doctor-dashboard.html">
+                                                <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                            </a>
+                                        </c:if>
+                                        <a class="dropdown-item text-dark" href="./profile">
+                                            <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
+                                        </a>
+                                        <div class="dropdown-divider border-top"></div>
+                                        <a class="dropdown-item text-dark" href="./logout">
+                                            <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
+                                        </a>
                                     </div>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="./login" class="btn btn-soft-primary btn-sm">
+                                    <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
                                 </a>
-                                <a class="dropdown-item text-dark" href="../profile">
-                                    <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
-                                </a>
-                                <div class="dropdown-divider border-top"></div>
-                                <a class="dropdown-item text-dark" href="../logout">
-                                    <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
-                                </a>
-                            </div>
-                        </div>
+                            </c:otherwise>
+                        </c:choose>
                     </li>
+
                 </ul>
                 <!-- Start Dropdown -->
 
                 <div id="navigation">
                     <!-- Navigation Menu-->   
-                    <ul class="navigation-menu nav-left">
-                        <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Home</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li><a href="index.html" class="sub-menu-item">Index One</a></li>
-                                <li><a href="index-two.html" class="sub-menu-item">Index Two</a></li>
-                                <li><a href="index-three.html" class="sub-menu-item">Index Three</a></li>
-                            </ul>
-                        </li>
+                    <ul class="navigation-menu nav-left nav-dark">
 
                         <li class="has-submenu parent-parent-menu-item">
-                            <a href="javascript:void(0)">Doctors</a><span class="menu-arrow"></span>
+                            <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
-                                    <a href="javascript:void(0)" class="menu-item"> Dashboard </a><span class="submenu-arrow"></span>
-                                    <ul class="submenu">
-                                        <li><a href="doctor-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                        <li><a href="doctor-appointment.html" class="sub-menu-item">Appointment</a></li>
-                                        <li><a href="patient-list.html" class="sub-menu-item">Patients</a></li>
-                                        <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                        <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
-                                        <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
-                                        <li><a href="doctor-messages.html" class="sub-menu-item">Messages</a></li>
-                                        <li><a href="doctor-profile.html" class="sub-menu-item">Profile</a></li>
-                                        <li><a href="doctor-profile-setting.html" class="sub-menu-item">Profile Settings</a></li>
-                                        <li><a href="doctor-chat.html" class="sub-menu-item">Chat</a></li>
-                                        <li><a href="login.html" class="sub-menu-item">Login</a></li>
-                                        <li><a href="signup.html" class="sub-menu-item">Sign Up</a></li>
-                                        <li><a href="forgot-password.html" class="sub-menu-item">Forgot Password</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="doctor-team-one.html" class="sub-menu-item">Doctors One</a></li>
-                                <li><a href="doctor-team-two.html" class="sub-menu-item">Doctors Two</a></li>
-                                <li><a href="doctor-team-three.html" class="sub-menu-item">Doctors Three</a></li>
+                                    <c:if test="${sessionScope.role.contains('Staff')}">
+                                    <li><a href="./c/staff-dashboard" class="sub-menu-item">Dashboard</a></li>
+                                    <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
+                                    <li><a href="patient-list.html" class="sub-menu-item">Customers</a></li>
+                                    <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
+                                    <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
+                                    <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
+                                    </c:if>
+                                <li><a href="doctor-dashboard.html" class="sub-menu-item">Staff List</a></li>
                             </ul>
                         </li>
 
-                        <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Patients</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li><a href="patient-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                <li><a href="patient-profile.html" class="sub-menu-item">Profile</a></li>
-                                <li><a href="booking-appointment.html" class="sub-menu-item">Book Appointment</a></li>
-                                <li><a href="patient-invoice.html" class="sub-menu-item">Invoice</a></li>
-                            </ul>
-                        </li>
+                        <c:if test="${sessionScope.role.contains('Customer')}">
+                            <li class="has-submenu parent-menu-item">
+                                <a href="javascript:void(0)">Customers</a><span class="menu-arrow"></span>
+                                <ul class="submenu">
+                                    <li><a href="patient-dashboard.html" class="sub-menu-item">Dashboard</a></li>
+                                    <li><a href="patient-profile.html" class="sub-menu-item">Profile</a></li>
+                                    <li><a href="booking-appointment.html" class="sub-menu-item">Book Services</a></li>
+                                    <li><a href="patient-invoice.html" class="sub-menu-item">Invoice</a></li>
+                                </ul>
+                            </li>
+                        </c:if>
 
                         <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Pharmacy</a><span class="menu-arrow"></span>
+                            <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                             <ul class="submenu">
-                                <li><a href="pharmacy.html" class="sub-menu-item">Pharmacy</a></li>
-                                <li><a href="pharmacy-shop.html" class="sub-menu-item">Shop</a></li>
-                                <li><a href="pharmacy-product-detail.html" class="sub-menu-item">Medicine Detail</a></li>
-                                <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">Shop Cart</a></li>
+                                <li><a href="./service-list" class="sub-menu-item">Services List</a></li>
+                                    <c:if test="${sessionScope.role.contains('Customer')}">
+                                    <li><a href="./myreservation" class="sub-menu-item">My Reservation</a></li>
+                                    <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
+                                    </c:if>
                                 <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
                                 <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
                             </ul>
@@ -231,22 +238,21 @@
                         <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)">Pages</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="aboutus.html" class="sub-menu-item"> About Us</a></li>
-                                <li><a href="departments.html" class="sub-menu-item">Departments</a></li>
                                 <li><a href="faqs.html" class="sub-menu-item">FAQs</a></li>
                                 <li class="has-submenu parent-menu-item">
-                                    <a href="javascript:void(0)" class="menu-item"> Blogs </a><span class="submenu-arrow"></span>
-                                    <ul class="submenu">
-                                        <li><a href="blogs.html" class="sub-menu-item">Blogs</a></li>
-                                        <li><a href="blog-detail.html" class="sub-menu-item">Blog Details</a></li>
-                                    </ul>
-                                </li>
+                                <li><a href="blog" class="sub-menu-item">Blogs</a></li>
+
+                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
+                                    <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
+                                    <li><a href="./slider" class="sub-menu-item">Sliders - Management</a></li>
+                                    </c:if>
                                 <li><a href="terms.html" class="sub-menu-item">Terms & Policy</a></li>
                                 <li><a href="privacy.html" class="sub-menu-item">Privacy Policy</a></li>
-                                <li><a href="error.html" class="sub-menu-item">404 !</a></li>
-                                <li><a href="contact.html" class="sub-menu-item">Contact</a></li>
                             </ul>
                         </li>
-                        <li><a href="${pageContext.request.contextPath}/admin/index.html" class="sub-menu-item" target="_blank">Admin</a></li>
+                        <c:if test="${sessionScope.role.contains('Admin')}">
+                            <li><a href="./admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
+                            </c:if>
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->

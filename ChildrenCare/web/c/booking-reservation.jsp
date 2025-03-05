@@ -62,8 +62,8 @@
                         </span>
                         <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                     </a>
-                </div>
-                <!-- End Logo container-->
+                </div>            
+                <!-- Logo End -->
 
                 <!-- Start Mobile Toggle -->
                 <div class="menu-extras">
@@ -83,10 +83,9 @@
 
                 <!-- Start Dropdown -->
                 <ul class="dropdowns list-inline mb-0">
-
                     <li class="list-inline-item mb-0">
-                        <a href="Cart">
-                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
+                        <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="settings" class="fea icon-sm"></i></div>
                         </a>
                     </li>
 
@@ -115,7 +114,7 @@
                                                 <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
                                             </a>
                                         </c:if>
-                                        <a class="dropdown-item text-dark" href="../profile">
+                                        <a class="dropdown-item text-dark" href="doctor-profile-setting.html">
                                             <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
                                         </a>
                                         <div class="dropdown-divider border-top"></div>
@@ -132,7 +131,6 @@
                             </c:otherwise>
                         </c:choose>
                     </li>
-
                 </ul>
                 <!-- Start Dropdown -->
 
@@ -172,10 +170,7 @@
                             <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="../service-list" class="sub-menu-item">Services List</a></li>
-                                    <c:if test="${sessionScope.role.contains('Customer')}">
-                                    <li><a href="../myreservation" class="sub-menu-item">My Reservation</a></li>
-                                    <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
-                                    </c:if>
+                                <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">My Reservation</a></li>
                                 <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
                                 <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
                             </ul>
@@ -190,8 +185,8 @@
                                     <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                     <li><a href="blogs.html" class="sub-menu-item">Blogs - Management</a></li>
                                     </c:if>
-
-                                <c:if test="${sessionScope.role.contains('Marketing Staff')}">
+                                <li><a href="terms.html" class="sub-menu-item">Posts</a></li>
+                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                     <li><a href="../post-list" class="sub-menu-item">Posts - Management</a></li>
                                     <li><a href="../slider" class="sub-menu-item">Sliders - Management</a></li>
                                     </c:if>
@@ -232,10 +227,22 @@
 
                             <div class="tab-content p-4" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-clinic" role="tabpanel" aria-labelledby="clinic-booking">
-                                    <form action="booking-reserv" method="POST" id="staff-form">                                     
+                                    <form action="vn-pay" method="POST" id="staff-form">                                     
                                         <div class="row">
+                                            <input type="hidden" name="amount" value="${requestScope.service.price}" />
+                                            <input type="hidden" name="vnp_OrderInfo" value="Thanh toán dịch vụ ${requestScope.service.name}" />
+                                            <input type="hidden" name="ordertype" value="medical_service" />
+                                            <input type="hidden" name="language" value="vn" />
+                                            <input type="hidden" name="txt_billing_mobile" value="${sessionScope.user.phone}" />
+                                            <input type="hidden" name="txt_billing_email" value="${sessionScope.account.email}" />
+                                            <input type="hidden" name="txt_billing_fullname" value="${sessionScope.user.fullname}" />
+                                            <input type="hidden" name="txt_inv_addr1" value="${sessionScope.user.address}" />
+                                            <input type="hidden" name="txt_bill_city" value="Hanoi" />
+                                            <input type="hidden" name="txt_bill_country" value="Vietnam" />
+
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
+                                                    <input type="hidden" name="price" value="${requestScope.service.price}" />
                                                     <label class="form-label">Name <span class="text-danger">*</span></label>
                                                     <input name="name" id="name" type="text" value="${sessionScope.user.fullname}" class="form-control" placeholder="Name :">
                                                 </div>
@@ -266,7 +273,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Service</label>
                                                     <select name="service" class="form-control department-name select2input">
-                                                        <option value="${requestScope.service.id}">${requestScope.service.name} - ${applicationScope.isFromCart}</option>
+                                                        <option value="${requestScope.service.id}">${requestScope.service.name}</option>
                                                     </select>
                                                 </div>
                                             </div><!--end col-->
@@ -297,7 +304,7 @@
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Address <span class="text-danger">*</span></label>
-                                                    <input name="address" id="name" type="text" value="${sessionScope.user.address}" class="form-control" placeholder="Name :">
+                                                    <input name="address" id="address" type="text" value="${sessionScope.user.address}" class="form-control" placeholder="Address :">
                                                 </div>
                                             </div><!--end col-->
 
@@ -505,6 +512,61 @@
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
+
+        <script>
+                                        $(document).ready(function () {
+                                            $("#staff-form").submit(function (e) {
+                                                e.preventDefault();
+                                                let isValid = true;
+                                                $(".text-danger").remove(); // Xóa tất cả thông báo lỗi cũ
+
+                                                // Validate Name
+                                                let name = $("#name").val().trim();
+                                                if (name === "") {
+                                                    $("#name").after('<small class="text-danger">Name is required.</small>');
+                                                    isValid = false;
+                                                }
+
+                                                // Validate Email
+                                                let email = $("#email").val().trim();
+                                                let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                                if (email === "" || !emailPattern.test(email)) {
+                                                    $("#email").after('<small class="text-danger">Enter a valid email address.</small>');
+                                                    isValid = false;
+                                                }
+
+                                                // Validate Phone
+                                                let phone = $("#phone").val().trim();
+                                                let phonePattern = /^[0-9]{10,11}$/;
+                                                if (phone === "" || !phonePattern.test(phone)) {
+                                                    $("#phone").after('<small class="text-danger">Enter a valid phone number (10-11 digits).</small>');
+                                                    isValid = false;
+                                                }
+
+                                                // Validate Address
+                                                let address = $("#address").val().trim();
+                                                if (address === "") {
+                                                    $("#address").after('<small class="text-danger">Address is required.</small>');
+                                                    isValid = false;
+                                                }
+
+
+
+
+                                                // Nếu có lỗi thì ngăn form submit và hiển thị thông báo
+                                                if (!isValid) {
+                                                    Swal.fire({
+                                                        icon: "error",
+                                                        title: "Validation Error",
+                                                        text: "Please correct the errors in the form before submitting."
+                                                    });
+                                                } else {
+                                                    this.submit(); // Submit nếu không có lỗi
+                                                }
+                                            });
+                                        });
+
+        </script>
 
     </body>
 

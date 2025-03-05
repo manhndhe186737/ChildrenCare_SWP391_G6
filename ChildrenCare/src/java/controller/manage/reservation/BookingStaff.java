@@ -55,7 +55,7 @@ public class BookingStaff extends BaseRBAC {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account acocunt)
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         ReservationDBContext sdb = new ReservationDBContext();
         String date = request.getParameter("date");
@@ -67,30 +67,28 @@ public class BookingStaff extends BaseRBAC {
         LocalTime currentTimeEnd = currentTimeStart.plusHours(1);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm");
 
-        if (date == null) {
-            date = currentDate.toString();
+        // Set default values if parameters are null
+        date = (date == null) ? currentDate.toString() : date;
+        start = (start == null) ? currentTimeStart.format(format) : start;
+        end = (end == null) ? currentTimeEnd.format(format) : end;
+
+        // Check if end time is at least 30 minutes after start time
+        if (!LocalTime.parse(end).isAfter(LocalTime.parse(start).plusMinutes(30))) {
+            request.setAttribute("err", "End time must be greater than start time by at least 30 minutes!");
         }
 
-        if (start == null) {
-            start = currentTimeStart.format(format);
-        }
-
-        if (end == null) {
-            end = currentTimeEnd.format(format);
-        }
-
+        // Common attributes for request
         String id_raw = request.getParameter("service_id");
         String sname_raw = request.getParameter("service_name");
-        
         String[] serviceList = request.getParameterValues("inputSelectedService");
         String serviceCart = request.getParameter("serviceCart");
-        
-        if(serviceList != null && serviceList.length != 0){
+        String isFromCart = request.getParameter("isFromCart");
+
+        if (serviceList != null && serviceList.length != 0) {
             request.setAttribute("service", serviceList[0]);
         }
-        
-        String isFromCart = request.getParameter("isFromCart");
-        
+
+        // Set all common attributes
         request.setAttribute("isFromCart", isFromCart);
         request.setAttribute("service_id", id_raw);
         request.setAttribute("service_name", sname_raw);
@@ -99,11 +97,9 @@ public class BookingStaff extends BaseRBAC {
         request.setAttribute("endtime", end);
         request.setAttribute("date", date);
         request.setAttribute("staff", sdb.getAvailableStaff(date, start, end));
-        request.getRequestDispatcher("../c/booking-staff.jsp").forward(request, response);
 
-//        response.getWriter().println(date);
-//        response.getWriter().println(start);
-//        response.getWriter().println(end);
+        // Forward to the booking staff page
+        request.getRequestDispatcher("../c/booking-staff.jsp").forward(request, response);
     }
 
     /**
