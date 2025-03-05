@@ -19,12 +19,36 @@ public class Reservation {
     private String note;
     private Time start;
     private Time end;
+    private String customerName;
+    private String customerAddress;
     private User customer;
     private User staff;
     private Service service;
     private ArrayList<Feedback> feedbacks;
     private ArrayList<Payment> payments;
     private ArrayList<Schedule> schedules;
+
+    public Reservation() {
+    }
+
+    public Reservation(int id, Date bookdate, String status, Date updatedate, Date createdate, String note, Time start, Time end, String customerName, String customerAddress, User customer, User staff, Service service, ArrayList<Feedback> feedbacks, ArrayList<Payment> payments, ArrayList<Schedule> schedules) {
+        this.id = id;
+        this.bookdate = bookdate;
+        this.status = status;
+        this.updatedate = updatedate;
+        this.createdate = createdate;
+        this.note = note;
+        this.start = start;
+        this.end = end;
+        this.customerName = customerName;
+        this.customerAddress = customerAddress;
+        this.customer = customer;
+        this.staff = staff;
+        this.service = service;
+        this.feedbacks = feedbacks;
+        this.payments = payments;
+        this.schedules = schedules;
+    }
 
     public int getId() {
         return id;
@@ -90,6 +114,22 @@ public class Reservation {
         this.end = end;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerAddress() {
+        return customerAddress;
+    }
+
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
+    }
+
     public User getCustomer() {
         return customer;
     }
@@ -138,23 +178,5 @@ public class Reservation {
         this.schedules = schedules;
     }
 
-    public Reservation(int id, Date bookdate, String status, Date updatedate, Date createdate, String note, Time start, Time end, User customer, User staff, Service service, ArrayList<Feedback> feedbacks, ArrayList<Payment> payments, ArrayList<Schedule> schedules) {
-        this.id = id;
-        this.bookdate = bookdate;
-        this.status = status;
-        this.updatedate = updatedate;
-        this.createdate = createdate;
-        this.note = note;
-        this.start = start;
-        this.end = end;
-        this.customer = customer;
-        this.staff = staff;
-        this.service = service;
-        this.feedbacks = feedbacks;
-        this.payments = payments;
-        this.schedules = schedules;
-    }
-
-    public Reservation() {
-    }
+   
 }

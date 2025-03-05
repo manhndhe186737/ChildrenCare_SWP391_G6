@@ -4,6 +4,7 @@
  */
 package vnpay;
 
+import com.sun.mail.smtp.SMTPSSLTransport;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -16,9 +17,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -27,6 +31,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import model.Reservation;
+import model.Service;
+import model.User;
 
 @WebServlet(name = "VNPayServlet", urlPatterns = {"/c/vn-pay"})
 public class VNPayServlet extends HttpServlet {
@@ -43,7 +50,49 @@ public class VNPayServlet extends HttpServlet {
         String vnp_OrderInfo = req.getParameter("vnp_OrderInfo");
         String orderType = req.getParameter("ordertype");
         String vnp_TmnCode = VNP_TMNCODE;
-        int amount = 200000 * 100;
+        
+        Reservation reservation = new Reservation();
+        reservation.setBookdate(java.sql.Date.valueOf(req.getParameter("date")));
+        LocalDate current = LocalDate.now();
+        reservation.setUpdatedate(java.sql.Date.valueOf(current));
+        reservation.setNote(req.getParameter("comment"));
+        reservation.setStart(Time.valueOf(req.getParameter("starttime") + ":00"));
+        reservation.setEnd(Time.valueOf(req.getParameter("endtime") + ":00"));
+        reservation.setCustomerName(req.getParameter("name"));
+        reservation.setCustomerAddress(req.getParameter("address"));
+        
+        User customer = new User();
+        customer.setId(Integer.parseInt(req.getParameter("cus_id")));
+        
+        User staff = new User();
+        staff.setId(Integer.parseInt(req.getParameter("staff")));
+        
+        Service s = new Service();
+        s.setId(Integer.parseInt(req.getParameter("service")));
+        
+        reservation.setCustomer(customer);
+        reservation.setStaff(staff);
+        reservation.setService(s);
+        
+        HttpSession session = req.getSession();
+        session.setAttribute("reservation", reservation);
+        
+        int amount = 0;
+        double amountVND = 0;
+
+        String amount_raw = req.getParameter("service_price");
+
+        if (amount_raw != null && !amount_raw.isEmpty()) {
+
+            double amountUSD = Double.parseDouble(amount_raw);
+
+            double exchangeRate = 23500.0;
+
+            amountVND = amountUSD * exchangeRate;
+        }
+        
+        amount = (int)amountVND * 100;
+        
         String vnp_IpAddr = req.getRemoteAddr();
 
         Map<String, String> vnp_Params = new HashMap<>();

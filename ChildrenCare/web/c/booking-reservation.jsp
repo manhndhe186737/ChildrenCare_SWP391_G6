@@ -245,6 +245,7 @@
                                                     <input type="hidden" name="price" value="${requestScope.service.price}" />
                                                     <label class="form-label">Name <span class="text-danger">*</span></label>
                                                     <input name="name" id="name" type="text" value="${sessionScope.user.fullname}" class="form-control" placeholder="Name :">
+                                                    <input name="cus_id" type="hidden" value="${sessionScope.user.id}"/>
                                                 </div>
                                             </div><!--end col-->
 
@@ -275,14 +276,15 @@
                                                     <select name="service" class="form-control department-name select2input">
                                                         <option value="${requestScope.service.id}">${requestScope.service.name}</option>
                                                     </select>
+                                                        <input type="hidden" value="${requestScope.service.price}" name="service_price"/>
                                                 </div>
                                             </div><!--end col-->
 
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Staff</label>
-                                                    <select class="form-control doctor-name select2input">
-                                                        <option value="${requestScope.staff.id}}">${requestScope.staff.fullname}</option>
+                                                    <select name="staff" class="form-control doctor-name select2input">
+                                                        <option value="${requestScope.staff.id}">${requestScope.staff.fullname}</option>
                                                     </select>
                                                 </div>
                                             </div><!--end col-->

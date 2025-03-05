@@ -239,7 +239,8 @@
                                             <td class="h5 p-3 text-center"><a href="../c/deleteCart?id=${s.id}" class="text-danger"><i class="uil uil-times"></i></a></td>
                                             <td class="p-3">
                                                 <div class="d-flex align-items-center">
-                                                    <img src="../assets/images/pharmacy/shop/ashwagandha.jpg" class="img-fluid avatar avatar-small rounded shadow" style="height:auto;" alt="">
+                                                    <img src="${pageContext.request.contextPath}/${s.img}" class="img-fluid" alt="Service Image" style="max-width: 100px; max-height: 100px;">
+<!--                                                    <input type="text" value="${s.img}"/>-->
                                                     <h6 class="mb-0 ms-3">${s.name}</h6>
                                                 </div>
                                             </td>

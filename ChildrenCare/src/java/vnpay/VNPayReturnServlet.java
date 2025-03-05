@@ -55,6 +55,6 @@ public class VNPayReturnServlet extends HttpServlet {
         } catch (Exception e) {
             req.setAttribute("message", "Payment verification error!");
         }
-        req.getRequestDispatcher("payment-result.jsp").forward(req, resp);
+        req.getRequestDispatcher("c/NewServlet").forward(req, resp);
     }
 }
