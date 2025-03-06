@@ -1,20 +1,12 @@
-<%-- 
-    Document   : admin-dashboard
-    Created on : Feb 8, 2025, 5:06:38 PM
-    Author     : FPTSHOP
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List, model.Post" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-
+<%@ page import="java.util.List, model.Post" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
         <meta charset="utf-8" />
-        <title>Children Care - Children Service Booking System</title>
+        <title>Children Care - Service Booking System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -28,17 +20,12 @@
         <link href="./assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- simplebar -->
         <link href="./assets/css/simplebar.css" rel="stylesheet" type="text/css" />
-        <!-- Select2 -->
-        <link href="./assets/css/select2.min.css" rel="stylesheet" />
         <!-- Icons -->
         <link href="./assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
         <link href="./assets/css/remixicon.css" rel="stylesheet" type="text/css" />
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
-        <!-- SLIDER -->
-        <link href="./assets/css/tiny-slider.css" rel="stylesheet" />
         <!-- Css -->
         <link href="./assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
-
         <style>
             /* General Styles */
             body {
@@ -193,6 +180,7 @@
 
         </style>
 
+
     </head>
 
     <body>
@@ -207,36 +195,15 @@
         </div>
         <!-- Loader -->
 
-        <div class="page-wrapper doctris-theme toggled">
+        <div class="page-wrapper doctris-theme">
             <nav id="sidebar" class="sidebar-wrapper">
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
-                        <a href="./c/home">
-                            <!--<a href="index.html">-->
-                            <img src="./assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
-                            <img src="./assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
+                        <a href="index.html">
+                            <img src="./assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
+                            <img src="./assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
-
-                    <ul class="sidebar-menu pt-3">
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Sliders</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="blogs.html">Sliders List</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Posts</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="blogs.html">Posts List</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
                     <!-- sidebar-menu  -->
                 </div>
                 <!-- sidebar-content  -->
@@ -262,19 +229,13 @@
                                     <img src="./assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                                 </span>
                             </a>
-                            <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
-                                <i class="uil uil-bars"></i>
-                            </a>
-                            <div class="search-bar p-0 d-none d-md-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <form role="search" method="get" id="searchform" class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords...">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
-                                    </form>
-                                </div>
+                            <div class="sidebar-brand">
+                                <a href="./c/home">
+                                    <!--<a href="index.html">-->
+                                    <img src="./assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
+                                </a>
                             </div>
+
                         </div>
 
                         <ul class="list-unstyled mb-0">
@@ -378,21 +339,40 @@
                             </li>
 
                             <li class="list-inline-item mb-0 ms-1">
-                                <div class="dropdown dropdown-primary">
-                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
-                                    <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                        <a class="dropdown-item d-flex align-items-center text-dark" href="https://shreethemes.in/doctris/layouts/admin/profile.html">
-                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                            <div class="flex-1 ms-2">
-                                                <span class="d-block mb-1">${sessionScope.user.fullname}</span>
+                                <c:choose>
+                                    <c:when test="${sessionScope.user ne null}">
+                                        <div class="dropdown dropdown-primary">
+                                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                            </button>
+                                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                                <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
+                                                    <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                    <div class="flex-1 ms-2">
+                                                        <span class="d-block mb-1">${sessionScope.user.fullname}</span>
+                                                    </div>
+                                                </a>
+                                                <c:if test="${sessionScope.role.contains('Admin')}">
+                                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html">
+                                                        <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                                    </a>
+                                                </c:if>
+                                                <a class="dropdown-item text-dark" href="./profile">
+                                                    <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
+                                                </a>
+                                                <div class="dropdown-divider border-top"></div>
+                                                <a class="dropdown-item text-dark" href="logout">
+                                                    <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
+                                                </a>
                                             </div>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="login" class="btn btn-soft-primary btn-sm">
+                                            <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
                                         </a>
-                                        <a class="dropdown-item text-dark" href="./admin/dashboard"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                        <a class="dropdown-item text-dark" href="./profile"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
-                                        <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="./logout"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
-                                    </div>
-                                </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </li>
                         </ul>
                     </div>
@@ -536,18 +516,10 @@
                     </div>
                 </div>
 
-                <!-- Footer Start -->
-                <footer class="bg-white shadow py-3">
-                    <div class="container-fluid">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <div class="text-sm-start text-center">
 
-                                </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </div><!--end container-->
-                </footer><!--end footer-->
+
+
+                <!-- Footer Start -->
                 <!-- End -->
             </main>
             <!--End page-content" -->
@@ -576,7 +548,7 @@
                                     <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="./assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
                                     <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="./assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
                                     <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="./assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                    <li class="d-grid"><a href="./c/index.html" target="_blank" class="mt-4"><img src="./assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Landing Demos</span></a></li>
+                                    <li class="d-grid"><a href="./landing/index.html" target="_blank" class="mt-4"><img src="./assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Landing Demos</span></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -598,6 +570,89 @@
             </div>
         </div>
         <!-- Offcanvas End -->
+
+        <!-- Start Modal -->
+        <div class="modal fade" id="newblogadd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header border-bottom p-3">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Blog</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body p-3 pt-4">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="d-grid">
+                                    <p class="text-muted">Upload your blog image here, Please click "Upload Image" Button.</p>
+                                    <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
+                                    <input type="file" id="input-file" name="input-file" accept="image/*" onchange={
+                                           handleChange()} hidden />
+                                    <label class="btn-upload btn btn-primary mt-4" for="input-file">Upload Image</label>
+                                </div>
+                            </div><!--end col-->
+
+                            <div class="col-md-8 mt-4 mt-sm-0">
+                                <div class="ms-md-4">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Blog Title <span class="text-danger">*</span></label>
+                                                    <input name="name" id="name" type="text" class="form-control" placeholder="Title :">
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label"> Date : </label>
+                                                    <input name="date" type="text" class="form-control" id="date" value="09 January 2021">
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label"> Time to read : </label>
+                                                    <input name="time" type="text" class="form-control" id="time" value="5 min read">
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tag</label>
+                                                    <select class="form-control">
+                                                        <option value="EY">Eye Care</option>
+                                                        <option value="GY">Gynecologist</option>
+                                                        <option value="PS">Psychotherapist</option>
+                                                        <option value="OR">Orthopedic</option>
+                                                        <option value="DE">Dentist</option>
+                                                        <option value="GA">Gastrologist</option>
+                                                        <option value="UR">Urologist</option>
+                                                        <option value="NE">Neurologist</option>
+                                                    </select>
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-lg-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Description <span class="text-danger">*</span></label>
+                                                    <textarea name="comments" id="comments" rows="4" class="form-control" placeholder="Blog description :"></textarea>
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-lg-12 text-end">
+                                                <button type="submit" class="btn btn-primary">Add Blog</button>
+                                            </div><!--end col-->
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End modal -->
 
         <!-- javascript -->
         <script src="./assets/js/bootstrap.bundle.min.js"></script>
@@ -630,8 +685,7 @@
                                             }
                                         };
         </script>
-
-
     </body>
+
 
 </html>

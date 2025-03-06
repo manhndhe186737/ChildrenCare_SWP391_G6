@@ -366,7 +366,7 @@
                             </div>
                         </div>
 
-                        <h6 class="mt-4 mb-0">Most Viewed Products</h6>
+                        <h6 class="mt-4 mb-0">Services List</h6>
                         <div class="row row-cols-md-2 row-cols-lg-5">
                             <c:choose>
                                 <c:when test="${not empty services}">

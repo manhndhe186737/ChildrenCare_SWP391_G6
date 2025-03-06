@@ -203,7 +203,7 @@
                 <ul class="dropdowns list-inline mb-0">
                     <c:if test="${sessionScope.role.contains('Customer')}">
                         <li class="list-inline-item mb-0">
-                            <a href="Cart">
+                            <a href="c/Cart">
                                 <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
                             </a>
                         </li>
