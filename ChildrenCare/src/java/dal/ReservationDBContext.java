@@ -116,7 +116,7 @@ public class ReservationDBContext extends DBContext {
                 + "on ur.email = u.email\n"
                 + "join roles r\n"
                 + "on r.role_id = ur.role_id\n"
-                + "where r.role_name = 'Staff'";
+                + "where r.role_name = 'Staffs'";
         try (PreparedStatement stm = connection.prepareStatement(sql); ResultSet rs = stm.executeQuery();) {
 
             while (rs.next()) {
@@ -207,7 +207,7 @@ public class ReservationDBContext extends DBContext {
                 + "FROM users usr\n"
                 + "JOIN userroles ur ON ur.email = usr.email\n"
                 + "JOIN roles r ON r.role_id = ur.role_id\n"
-                + "WHERE r.role_name = 'Staff' \n"
+                + "WHERE r.role_name = 'Staffs' \n"
                 + "AND usr.user_id NOT IN (\n"
                 + "    SELECT staff_id\n"
                 + "    FROM users u\n"
@@ -215,7 +215,7 @@ public class ReservationDBContext extends DBContext {
                 + "    JOIN roles r ON r.role_id = ur.role_id\n"
                 + "    JOIN reservations res ON res.staff_id = u.user_id\n"
                 + "    AND res.datebook = ? \n"
-                + "    WHERE r.role_name = 'Staff'\n"
+                + "    WHERE r.role_name = 'Staffs'\n"
                 + "    AND (\n"
                 + "        (res.starttime <= ? AND res.endtime >= ?)\n"
                 + "        AND res.status LIKE 'Scheduled'\n"
@@ -254,7 +254,7 @@ public class ReservationDBContext extends DBContext {
                 + "FROM users usr\n"
                 + "JOIN userroles ur ON ur.email = usr.email\n"
                 + "JOIN roles r ON r.role_id = ur.role_id\n"
-                + "WHERE r.role_name = 'Staff' \n"
+                + "WHERE r.role_name = 'Staffs' \n"
                 + "AND usr.user_id NOT IN (\n"
                 + "    SELECT staff_id\n"
                 + "    FROM users u\n"
@@ -262,7 +262,7 @@ public class ReservationDBContext extends DBContext {
                 + "    JOIN roles r ON r.role_id = ur.role_id\n"
                 + "    JOIN reservations res ON res.staff_id = u.user_id\n"
                 + "    AND res.datebook = ? \n"
-                + "    WHERE r.role_name = 'Staff'\n"
+                + "    WHERE r.role_name = 'Staffs'\n"
                 + "    AND (\n"
                 + "        (res.starttime <= ? AND res.endtime >= ?)\n"
                 + "        AND res.status LIKE 'Scheduled'\n"

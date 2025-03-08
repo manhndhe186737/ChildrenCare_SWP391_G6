@@ -165,29 +165,14 @@
                                             <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
                                             <ul class="submenu">
                                                 <li class="has-submenu parent-menu-item">
-                                                    <c:if test="${sessionScope.role.contains('Staff')}">
-                                                    <li><a href="../c/staff-dashboard" class="sub-menu-item">Dashboard</a></li>
+                                                    <c:if test="${sessionScope.role.contains('Staffs')}">
                                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
-                                                    <li><a href="patient-list.html" class="sub-menu-item">Customers</a></li>
                                                     <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                                    <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
                                                     <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
                                                     </c:if>
                                                 <li><a href="doctor-dashboard.html" class="sub-menu-item">Staff List</a></li>
                                             </ul>
                                         </li>
-
-                                        <c:if test="${sessionScope.role.contains('Customer')}">
-                                            <li class="has-submenu parent-menu-item">
-                                                <a href="javascript:void(0)">Customers</a><span class="menu-arrow"></span>
-                                                <ul class="submenu">
-                                                    <li><a href="patient-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                                    <li><a href="patient-profile.html" class="sub-menu-item">Profile</a></li>
-                                                    <li><a href="booking-appointment.html" class="sub-menu-item">Book Services</a></li>
-                                                    <li><a href="patient-invoice.html" class="sub-menu-item">Invoice</a></li>
-                                                </ul>
-                                            </li>
-                                        </c:if>
 
                                         <li class="has-submenu parent-menu-item">
                                             <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
@@ -197,32 +182,24 @@
                                                     <li><a href="../myreservation" class="sub-menu-item">My Reservation</a></li>
                                                     <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
                                                     </c:if>
-                                                <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
-                                                <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
                                             </ul>
                                         </li>
 
                                         <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)">Pages</a><span class="menu-arrow"></span>
                                             <ul class="submenu">
-                                                <li><a href="aboutus.html" class="sub-menu-item"> About Us</a></li>
-                                                <li><a href="faqs.html" class="sub-menu-item">FAQs</a></li>
                                                 <li class="has-submenu parent-menu-item">
                                                 <li><a href="../blog" class="sub-menu-item">Blogs</a></li>
-                                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                                    <li><a href="blogs.html" class="sub-menu-item">Blogs - Management</a></li>
-                                                    </c:if>
 
                                                 <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                                     <li><a href="../post-list" class="sub-menu-item">Posts - Management</a></li>
                                                     <li><a href="../slider" class="sub-menu-item">Sliders - Management</a></li>
                                                     </c:if>
-                                                <li><a href="terms.html" class="sub-menu-item">Terms & Policy</a></li>
-                                                <li><a href="privacy.html" class="sub-menu-item">Privacy Policy</a></li>
                                             </ul>
                                         </li>
                                         <c:if test="${sessionScope.role.contains('Admin')}">
                                             <li><a href="../admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
                                             </c:if>
+
                                     </ul><!--end navigation menu-->
                                 </div><!--end navigation-->
                             </div><!--end container-->

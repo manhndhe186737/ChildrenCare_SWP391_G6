@@ -83,7 +83,7 @@ public class ServiceDBContext extends DBContext {
     public ArrayList<Service> getFilteredServices(int page, int pageSize, String searchQuery, String[] selectedCategories, String[] selectedPriceRanges) {
         ArrayList<Service> services = new ArrayList<>();
         try {
-            String sql = "SELECT s.service_id, s.name, s.description, s.price, c.category_id, c.name AS categoryname "
+            String sql = "SELECT s.service_id, s.name, s.description, s.price, c.category_id, s.img, c.name AS categoryname "
                     + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
                     + "WHERE s.isActive = 1 AND s.name LIKE ? ";
 
@@ -140,7 +140,7 @@ public class ServiceDBContext extends DBContext {
                 service.setDescription(rs.getString("description"));
                 service.setPrice(rs.getFloat("price"));
                 service.setCategory(category);
-
+                service.setImg(rs.getString("img"));
                 services.add(service);
             }
         } catch (SQLException e) {

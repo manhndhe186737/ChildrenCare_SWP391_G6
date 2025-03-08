@@ -198,7 +198,7 @@
                             <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
-                                    <c:if test="${sessionScope.role.contains('Staff')}">
+                                    <c:if test="${sessionScope.role.contains('Staffs')}">
                                     <li><a href="./c/staff-dashboard" class="sub-menu-item">Dashboard</a></li>
                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
                                     <li><a href="patient-list.html" class="sub-menu-item">Customers</a></li>
