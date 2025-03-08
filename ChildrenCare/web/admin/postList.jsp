@@ -223,7 +223,7 @@
                             <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Sliders</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="blogs.html">Sliders List</a></li>
+                                    <li><a href="slider">Sliders List</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -232,7 +232,8 @@
                             <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Posts</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="blogs.html">Posts List</a></li>
+                                    <li><a href="post-list">Posts list</a></li>
+                                    <li><a href="post-add">Add post</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -265,16 +266,7 @@
                             <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
                                 <i class="uil uil-bars"></i>
                             </a>
-                            <div class="search-bar p-0 d-none d-md-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <form role="search" method="get" id="searchform" class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords...">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+                            
                         </div>
 
                         <ul class="list-unstyled mb-0">
