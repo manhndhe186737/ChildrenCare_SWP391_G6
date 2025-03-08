@@ -31,7 +31,7 @@ public class BookingStaff extends BaseRBAC {
             throws ServletException, IOException {
         ReservationDBContext sdb = new ReservationDBContext();
         LocalDate currentDate = LocalDate.now();
-        LocalTime currentTimeStart = LocalTime.now();
+        LocalTime currentTimeStart = LocalTime.now().plusHours(1);
         LocalTime currentTimeEnd = currentTimeStart.plusHours(1);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm");
         String start = currentTimeStart.format(format);
@@ -63,7 +63,7 @@ public class BookingStaff extends BaseRBAC {
         String end = request.getParameter("endtime");
 
         LocalDate currentDate = LocalDate.now();
-        LocalTime currentTimeStart = LocalTime.now();
+        LocalTime currentTimeStart = LocalTime.now().plusHours(1);
         LocalTime currentTimeEnd = currentTimeStart.plusHours(1);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -73,12 +73,13 @@ public class BookingStaff extends BaseRBAC {
         end = (end == null) ? currentTimeEnd.format(format) : end;
 
         // Check if end time is at least 30 minutes after start time
-        if (!LocalTime.parse(end).isAfter(LocalTime.parse(start).plusMinutes(30))) {
-            request.setAttribute("err", "End time must be greater than start time by at least 30 minutes!");
-        }
+//        if (!LocalTime.parse(end).isAfter(LocalTime.parse(start).plusMinutes(30))) {
+//            request.setAttribute("err", "End time must be greater than start time by at least 30 minutes!");
+//        }
 
         // Common attributes for request
         String id_raw = request.getParameter("service_id");
+        String id_sv = request.getParameter("service");
         String sname_raw = request.getParameter("service_name");
         String[] serviceList = request.getParameterValues("inputSelectedService");
         String serviceCart = request.getParameter("serviceCart");
@@ -89,6 +90,7 @@ public class BookingStaff extends BaseRBAC {
         }
 
         // Set all common attributes
+        request.setAttribute("sid", id_sv);
         request.setAttribute("isFromCart", isFromCart);
         request.setAttribute("service_id", id_raw);
         request.setAttribute("service_name", sname_raw);

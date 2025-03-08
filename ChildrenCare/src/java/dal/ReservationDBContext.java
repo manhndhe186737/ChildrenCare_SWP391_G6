@@ -48,12 +48,38 @@ public class ReservationDBContext extends DBContext {
                 s.setName(rs.getString("name"));
                 s.setPrice(rs.getFloat("price"));
                 s.setDescription(rs.getString("description"));
+                s.setCategoryId(rs.getInt("category_id"));
 
                 return s;
             }
         } catch (Exception e) {
         }
         return null;
+    }
+
+    public boolean insertReservation(Reservation reservation) {
+        String sql = "INSERT INTO reservations (dateBook, user_id, service_id, status, staff_id, createDate, updateDate, note, starttime, endtime, customer_name, customer_address) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setDate(1, reservation.getBookdate());
+            stm.setInt(2, reservation.getCustomer().getId());
+            stm.setInt(3, reservation.getService().getId());
+            stm.setString(4, reservation.getStatus());
+            stm.setInt(5, reservation.getStaff().getId());
+            stm.setDate(6, reservation.getCreatedate());
+            stm.setDate(7, reservation.getUpdatedate());
+            stm.setString(8, reservation.getNote());
+            stm.setTime(9, reservation.getStart());
+            stm.setTime(10, reservation.getEnd());
+            stm.setString(11, reservation.getCustomerName());
+            stm.setString(12, reservation.getCustomerAddress());
+
+            int rowsInserted = stm.executeUpdate();
+            return rowsInserted > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public ArrayList<Service> getServicesInCart(int userId) {
@@ -192,7 +218,7 @@ public class ReservationDBContext extends DBContext {
                 + "    WHERE r.role_name = 'Staff'\n"
                 + "    AND (\n"
                 + "        (res.starttime <= ? AND res.endtime >= ?)\n"
-                + "        AND res.status NOT LIKE 'Cancelled'\n"
+                + "        AND res.status LIKE 'Scheduled'\n"
                 + "    )\n"
                 + ")";
 
@@ -200,6 +226,54 @@ public class ReservationDBContext extends DBContext {
             stm.setString(1, date);  // Ngày được chọn
             stm.setString(2, endTime);  // Thời gian bắt đầu
             stm.setString(3, startTime);    // Thời gian kết thúc
+
+            int currentId = -1;
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    User u = new User();
+                    u.setId(rs.getInt("user_id"));
+                    u.setFullname(rs.getString("fullname"));
+                    u.setAvatar(rs.getString("avatar"));
+
+                    if (currentId != u.getId()) {
+                        staff.add(u);
+                        currentId = u.getId();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return staff;
+    }
+    
+    public ArrayList<User> getAvailableStaffById(String date, String startTime, String endTime, int id) {
+        ArrayList<User> staff = new ArrayList<>();
+        String sql = "SELECT * \n"
+                + "FROM users usr\n"
+                + "JOIN userroles ur ON ur.email = usr.email\n"
+                + "JOIN roles r ON r.role_id = ur.role_id\n"
+                + "WHERE r.role_name = 'Staff' \n"
+                + "AND usr.user_id NOT IN (\n"
+                + "    SELECT staff_id\n"
+                + "    FROM users u\n"
+                + "    JOIN userroles ur ON ur.email = u.email\n"
+                + "    JOIN roles r ON r.role_id = ur.role_id\n"
+                + "    JOIN reservations res ON res.staff_id = u.user_id\n"
+                + "    AND res.datebook = ? \n"
+                + "    WHERE r.role_name = 'Staff'\n"
+                + "    AND (\n"
+                + "        (res.starttime <= ? AND res.endtime >= ?)\n"
+                + "        AND res.status LIKE 'Scheduled'\n"
+                + "    )\n"
+                + ") AND usr.user_id = ?";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setString(1, date);  // Ngày được chọn
+            stm.setString(2, endTime);  // Thời gian bắt đầu
+            stm.setString(3, startTime);    // Thời gian kết thúc
+            stm.setInt(4, id);
 
             int currentId = -1;
 

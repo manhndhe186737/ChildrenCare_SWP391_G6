@@ -5,6 +5,7 @@
 package vnpay;
 
 import com.sun.mail.smtp.SMTPSSLTransport;
+import dal.ReservationDBContext;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,7 +41,7 @@ import model.User;
 public class VNPayServlet extends HttpServlet {
 
     private static final String VNP_TMNCODE = "3GUPFUSL";
-    private static final String VNP_HASH_SECRET = "23AW8VTNBO09FPULD7UPI7T6W72JIDOO";
+    static final String VNP_HASH_SECRET = "23AW8VTNBO09FPULD7UPI7T6W72JIDOO";
     private static final String VNP_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     private static final String RETURN_URL = "http://localhost:8080/ChildrenCare/vnpay-return";
 
@@ -50,33 +52,38 @@ public class VNPayServlet extends HttpServlet {
         String vnp_OrderInfo = req.getParameter("vnp_OrderInfo");
         String orderType = req.getParameter("ordertype");
         String vnp_TmnCode = VNP_TMNCODE;
-        
+
         Reservation reservation = new Reservation();
         reservation.setBookdate(java.sql.Date.valueOf(req.getParameter("date")));
         LocalDate current = LocalDate.now();
-        reservation.setUpdatedate(java.sql.Date.valueOf(current));
-        reservation.setNote(req.getParameter("comment"));
+        reservation.setCreatedate(java.sql.Date.valueOf(current));
+        reservation.setNote(req.getParameter("comments"));
+
+        Time starttime = Time.valueOf(req.getParameter("starttime") + ":00");
+        Time endtime = Time.valueOf(req.getParameter("endtime") + ":00");
         reservation.setStart(Time.valueOf(req.getParameter("starttime") + ":00"));
         reservation.setEnd(Time.valueOf(req.getParameter("endtime") + ":00"));
         reservation.setCustomerName(req.getParameter("name"));
         reservation.setCustomerAddress(req.getParameter("address"));
-        
+
         User customer = new User();
         customer.setId(Integer.parseInt(req.getParameter("cus_id")));
-        
+
         User staff = new User();
         staff.setId(Integer.parseInt(req.getParameter("staff")));
-        
-        Service s = new Service();
-        s.setId(Integer.parseInt(req.getParameter("service")));
-        
+
+        ReservationDBContext rdb = new ReservationDBContext();
+        Service s = rdb.getServicesById(Integer.parseInt(req.getParameter("service")));
+        //Service s = new Service();
+        //s.setId(Integer.parseInt(req.getParameter("service")));
+
         reservation.setCustomer(customer);
         reservation.setStaff(staff);
         reservation.setService(s);
-        
+
         HttpSession session = req.getSession();
         session.setAttribute("reservation", reservation);
-        
+
         int amount = 0;
         double amountVND = 0;
 
@@ -89,10 +96,19 @@ public class VNPayServlet extends HttpServlet {
             double exchangeRate = 23500.0;
 
             amountVND = amountUSD * exchangeRate;
+
+            // Tính số phút giữa starttime và endtime
+            long totalMinutes = Duration.between(starttime.toLocalTime(), endtime.toLocalTime()).toMinutes();
+            double totalHours = totalMinutes / 60.0; // Chuyển đổi thành giờ
+
+            // Nếu dịch vụ có categoryId = 5, nhân giá theo số giờ
+            if (s.getCategoryId() == 5) {
+                amountVND *= totalHours;
+            }
         }
-        
-        amount = (int)amountVND * 100;
-        
+
+        amount = (int) amountVND * 100;
+
         String vnp_IpAddr = req.getRemoteAddr();
 
         Map<String, String> vnp_Params = new HashMap<>();

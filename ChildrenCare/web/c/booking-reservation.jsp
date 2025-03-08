@@ -230,7 +230,7 @@
                                     <form action="vn-pay" method="POST" id="staff-form">                                     
                                         <div class="row">
                                             <input type="hidden" name="amount" value="${requestScope.service.price}" />
-                                            <input type="hidden" name="vnp_OrderInfo" value="Thanh toán dịch vụ ${requestScope.service.name}" />
+                                            <input type="hidden" name="vnp_OrderInfo" value="${requestScope.service.name}" />
                                             <input type="hidden" name="ordertype" value="medical_service" />
                                             <input type="hidden" name="language" value="vn" />
                                             <input type="hidden" name="txt_billing_mobile" value="${sessionScope.user.phone}" />
@@ -276,7 +276,7 @@
                                                     <select name="service" class="form-control department-name select2input">
                                                         <option value="${requestScope.service.id}">${requestScope.service.name}</option>
                                                     </select>
-                                                        <input type="hidden" value="${requestScope.service.price}" name="service_price"/>
+                                                    <input type="hidden" value="${requestScope.service.price}" name="service_price"/>
                                                 </div>
                                             </div><!--end col-->
 
@@ -312,16 +312,20 @@
 
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Comments <span class="text-danger">*</span></label>
+                                                    <label class="form-label">Notes <span class="text-danger">*</span></label>
                                                     <textarea name="comments" id="comments" rows="4" class="form-control" placeholder="Your Message :"></textarea>
                                                 </div>
                                             </div><!--end col-->
 
                                             <div class="col-lg-12">
-                                                <div class="d-grid">
+                                                <div class="d-flex justify-content-between">
+                                                    <button type="button" class="btn btn-outline-secondary" onclick="history.back();">
+                                                        Back
+                                                    </button>
                                                     <button type="submit" class="btn btn-primary">Confirm</button>
                                                 </div>
-                                            </div><!--end col-->
+                                            </div>
+
                                         </div><!--end row-->
                                     </form>
                                 </div>

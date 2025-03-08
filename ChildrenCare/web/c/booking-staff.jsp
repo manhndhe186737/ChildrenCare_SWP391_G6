@@ -285,7 +285,11 @@
                                                                         <label class="form-label">Services</label>
                                                                         <select name="service" class="form-control department-name select2input selectedService">
                                                                             <c:forEach var="s" items="${requestScope.services}">
-                                                                                <option value="${s.id}">${s.name}</option>
+                                                                                <option value="${s.id}"
+                                                                                        <c:if test="${requestScope.sid eq s.id}">
+                                                                                            selected
+                                                                                        </c:if>
+                                                                                        >${s.name}</option>
                                                                             </c:forEach>
                                                                         </select>
                                                                     </c:otherwise>
@@ -449,6 +453,9 @@
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
 
+        <!-- SweetAlert2 CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <script>
                                         document.addEventListener('DOMContentLoaded', function () {
                                             const staffList = document.getElementById('staff-list');
@@ -469,12 +476,12 @@
 
                                                 itemsToShow.forEach(item => item.style.display = 'block');
 
-                                                // Update page info
-                                                document.getElementById('page-info').textContent = `Page ${page} of ${totalPages}`;
-
                                                 // Disable/enable pagination buttons
-                                                document.getElementById('prev-page').disabled = (page === 1);
-                                                document.getElementById('next-page').disabled = (page === totalPages);
+                                                const prevButton = document.getElementById('prev-page');
+                                                const nextButton = document.getElementById('next-page');
+
+                                                prevButton.disabled = (page <= 1);  // Nếu trang là 1 thì disable prev
+                                                nextButton.disabled = (page >= totalPages); // Nếu trang là cuối cùng thì disable next
                                             }
 
                                             // Next page
@@ -497,10 +504,75 @@
                                             showPage(currentPage);
                                         });
 
+
                                         function submitStaff(element) {
-                                            var form = element.closest("form"); // Tìm form gần nhất chứa thẻ <a> được nhấn
-                                            form.submit(); // Gửi form tương ứng
+                                            var form = document.getElementById("staff-form"); // Form chọn ngày/giờ
+                                            var startTimeInput = form.querySelector("input[name='starttime']"); // Lấy input thời gian bắt đầu
+                                            var endTimeInput = form.querySelector("input[name='endtime']"); // Lấy input thời gian kết thúc
+                                            var dateInput = form.querySelector("input[name='date']"); // Lấy input ngày
+
+                                            if (!startTimeInput || !endTimeInput || !dateInput)
+                                                return; // Kiểm tra nếu không tìm thấy input
+
+                                            var selectedDate = dateInput.value;
+                                            var selectedStartTime = startTimeInput.value;
+                                            var selectedEndTime = endTimeInput.value;
+
+                                            if (!selectedDate || !selectedStartTime || !selectedEndTime) {
+                                                Swal.fire({
+                                                    icon: "warning",
+                                                    title: "Missing Information!",
+                                                    text: "Please select a date, start time, and end time before proceeding.",
+                                                });
+                                                return;
+                                            }
+
+                                            // Lấy thời gian hiện tại
+                                            var now = new Date();
+                                            var currentDate = now.toISOString().split("T")[0]; // Lấy ngày hiện tại (YYYY-MM-DD)
+                                            var currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0'); // Lấy giờ hiện tại (HH:mm)
+
+                                            // Chuyển đổi startTime thành số phút từ 00:00
+                                            function timeToMinutes(time) {
+                                                var parts = time.split(":");
+                                                return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+                                            }
+
+                                            var currentMinutes = timeToMinutes(currentTime);
+                                            var startMinutes = timeToMinutes(selectedStartTime);
+                                            var endMinutes = timeToMinutes(selectedEndTime);
+
+                                            // Kiểm tra nếu ngày được chọn là hôm nay và thời gian bắt đầu phải lớn hơn thời gian hiện tại ít nhất 60 phút
+                                            if (selectedDate === currentDate && startMinutes - currentMinutes < 50) {
+                                                Swal.fire({
+                                                    icon: "error",
+                                                    title: "Invalid Time!",
+                                                    text: "The start time must be at least 60 minutes later than the current time!",
+                                                });
+                                                return;
+                                            }
+
+                                            // Kiểm tra nếu End không lớn hơn Start ít nhất 60 phút
+                                            if (endMinutes - startMinutes < 60) {
+                                                Swal.fire({
+                                                    icon: "error",
+                                                    title: "Invalid Time!",
+                                                    text: "The end time must be at least 60 minutes later than the start time!",
+                                                });
+                                                return;
+                                            }
+
+                                            var staffForm = element.closest("form"); // Tìm form gần nhất chứa thẻ <a> được nhấn
+                                            staffForm.submit(); // Gửi form tương ứng
                                         }
+
+
+
+
+//                                        function submitStaff(element) {
+//                                            var form = element.closest("form"); // Tìm form gần nhất chứa thẻ <a> được nhấn
+//                                            form.submit(); // Gửi form tương ứng
+//                                        }
 
         </script>
 
@@ -528,7 +600,49 @@
                     });
                 }
             });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                var startTimeInput = document.getElementById("starttime");
+                var endTimeInput = document.getElementById("endtime");
+
+                function updateHiddenFields() {
+                    var hiddenStartTimeFields = document.querySelectorAll("input[name='starttime']");
+                    var hiddenEndTimeFields = document.querySelectorAll("input[name='endtime']");
+
+                    hiddenStartTimeFields.forEach(function (input) {
+                        input.value = startTimeInput.value;
+                    });
+
+                    hiddenEndTimeFields.forEach(function (input) {
+                        input.value = endTimeInput.value;
+                    });
+                }
+
+                if (startTimeInput && endTimeInput) {
+                    startTimeInput.addEventListener("input", updateHiddenFields);
+                    endTimeInput.addEventListener("input", updateHiddenFields);
+                }
+            });
+
         </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var notAvailableMessage = "<c:out value='${requestScope.notAvailable}' />";
+
+                if (notAvailableMessage && notAvailableMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: notAvailableMessage,
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        // Xóa requestScope.notAvailable bằng cách làm mới trạng thái lịch sử trình duyệt
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    });
+                }
+            });
+        </script>
+
 
 
     </body>

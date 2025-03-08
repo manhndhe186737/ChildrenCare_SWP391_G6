@@ -228,7 +228,7 @@
                                 <li><a href="./service-list" class="sub-menu-item">Services List</a></li>
                                     <c:if test="${sessionScope.role.contains('Customer')}">
                                     <li><a href="./myreservation" class="sub-menu-item">My Reservation</a></li>
-                                    <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
+                                    <li><a href="c/BookingStaff" class="sub-menu-item">Reservation</a></li>
                                     </c:if>
                                 <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
                                 <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
@@ -242,7 +242,7 @@
                                 <li class="has-submenu parent-menu-item">
                                 <li><a href="blog" class="sub-menu-item">Blogs</a></li>
 
-                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
+                                <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                     <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
                                     <li><a href="./slider" class="sub-menu-item">Sliders - Management</a></li>
                                     </c:if>
@@ -267,24 +267,17 @@
                         <div class="rounded shadow overflow-hidden sticky-bar">
 
 
-                            <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
-                                <img src="<c:out value="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" />" class="rounded-circle shadow-md avatar avatar-md-md" alt="">
+                            <div class="text-center avatar-profile position-relative pb-4 border-bottom mt-3">
+                                <img src="<c:out value="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" />"
+                                     class="rounded-circle shadow-md avatar avatar-md-md" 
+                                     alt="">
                                 <h5 class="mt-3 mb-1">${sessionScope.user.fullname}</h5>
-                                <p class="text-muted mb-0">Orthopedic</p>
                             </div>
 
+
+
                             <ul class="list-unstyled sidebar-nav mb-0">
-                                <li class="navbar-item"><a href="doctor-dashboard.html" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Dashboard</a></li>
-                                <li class="navbar-item"><a href="doctor-appointment.html" class="navbar-link"><i class="ri-calendar-check-line align-middle navbar-icon"></i> Appointment</a></li>
-                                <li class="navbar-item"><a href="doctor-schedule.html" class="navbar-link"><i class="ri-timer-line align-middle navbar-icon"></i> Schedule Timing</a></li>
-                                <li class="navbar-item"><a href="invoices.html" class="navbar-link"><i class="ri-pages-line align-middle navbar-icon"></i> Invoices</a></li>
-                                <li class="navbar-item"><a href="doctor-messages.html" class="navbar-link"><i class="ri-mail-unread-line align-middle navbar-icon"></i> Messages</a></li>
                                 <li class="navbar-item"><a href="doctor-profile.html" class="navbar-link"><i class="ri-user-line align-middle navbar-icon"></i> Profile</a></li>
-                                <li class="navbar-item"><a href="doctor-profile-setting.html" class="navbar-link"><i class="ri-user-settings-line align-middle navbar-icon"></i> Profile Settings</a></li>
-                                <li class="navbar-item"><a href="patient-list.html" class="navbar-link"><i class="ri-empathize-line align-middle navbar-icon"></i> Patients</a></li>
-                                <li class="navbar-item"><a href="patient-review.html" class="navbar-link"><i class="ri-chat-1-line align-middle navbar-icon"></i> Patients Review</a></li>
-                                <li class="navbar-item"><a href="doctor-chat.html" class="navbar-link"><i class="ri-chat-voice-line align-middle navbar-icon"></i> Chat</a></li>
-                                <li class="navbar-item"><a href="login.html" class="navbar-link"><i class="ri-login-circle-line align-middle navbar-icon"></i> Login</a></li>
                                 <li class="navbar-item">
                                     <a href="#" class="navbar-link" data-bs-toggle="modal" data-bs-target="#forgot-password"><i class="ri-device-recover-line align-middle navbar-icon"></i>
                                         Change Password
@@ -423,93 +416,22 @@
                     </div>
 
                     <div class="rounded shadow mt-4">
-                        <div class="p-4 border-bottom">
-                            <h5 class="mb-0">Account Notifications :</h5>
-                        </div>
 
-                        <div class="p-4">
-                            <div class="d-flex justify-content-between pb-4">
-                                <h6 class="mb-0 fw-normal">When someone mentions me</h6>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" value="" id="customSwitch1">
-                                    <label class="form-check-label" for="customSwitch1"></label>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between py-4 border-top">
-                                <h6 class="mb-0 fw-normal">When someone follows me</h6>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="customSwitch2" checked>
-                                    <label class="form-check-label" for="customSwitch2"></label>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between py-4 border-top">
-                                <h6 class="mb-0 fw-normal">When shares my activity</h6>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="customSwitch3">
-                                    <label class="form-check-label" for="customSwitch3"></label>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between py-4 border-top">
-                                <h6 class="mb-0 fw-normal">When someone messages me</h6>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="customSwitch4" checked>
-                                    <label class="form-check-label" for="customSwitch4"></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="rounded shadow mt-4">
-                        <div class="p-4 border-bottom">
-                            <h5 class="mb-0">Marketing Notifications :</h5>
-                        </div>
+                        <div class="rounded shadow mt-4">
+                            <div class="p-4 border-bottom">
+                                <h5 class="mb-0 text-danger">Delete Account :</h5>
+                            </div>
 
-                        <div class="p-4">
-                            <div class="d-flex justify-content-between pb-4">
-                                <h6 class="mb-0 fw-normal">There is a sale or promotion</h6>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="customSwitch5" checked>
-                                    <label class="form-check-label" for="customSwitch5"></label>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between py-4 border-top">
-                                <h6 class="mb-0 fw-normal">Company news</h6>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="customSwitch6">
-                                    <label class="form-check-label" for="customSwitch6"></label>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between py-4 border-top">
-                                <h6 class="mb-0 fw-normal">Weekly jobs</h6>
-                                <div class="form-check"> 
-                                    <input type="checkbox" class="form-check-input" id="customSwitch7">
-                                    <label class="form-check-label" for="customSwitch7"></label>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between py-4 border-top">
-                                <h6 class="mb-0 fw-normal">Unsubscribe News</h6>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="customSwitch8" checked>
-                                    <label class="form-check-label" for="customSwitch8"></label>
-                                </div>
+                            <div class="p-4">
+                                <h6 class="mb-0 fw-normal">Do you want to delete the account? Please press below "Delete" button</h6>
+                                <div class="mt-4">
+                                    <button class="btn btn-danger">Delete Account</button>
+                                </div><!--end col-->
                             </div>
                         </div>
-                    </div>
-
-                    <div class="rounded shadow mt-4">
-                        <div class="p-4 border-bottom">
-                            <h5 class="mb-0 text-danger">Delete Account :</h5>
-                        </div>
-
-                        <div class="p-4">
-                            <h6 class="mb-0 fw-normal">Do you want to delete the account? Please press below "Delete" button</h6>
-                            <div class="mt-4">
-                                <button class="btn btn-danger">Delete Account</button>
-                            </div><!--end col-->
-                        </div>
-                    </div>
-                </div><!--end col-->
-            </div><!--end row-->
+                    </div><!--end col-->
+                </div><!--end row-->
         </section><!--end section-->
         <!-- End -->
 
@@ -662,7 +584,7 @@
         <!-- Main Js -->
         <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
-         <!--Javascript to enable editing and submit changes--> 
+        <!--Javascript to enable editing and submit changes--> 
         <script>
                                         // Function to preview the uploaded image
                                         function previewImage() {

@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package vnpay;
 
+import dal.ReservationDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,12 +12,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import model.Reservation;
 import static vnpay.VNPayUtils.hmacSHA512;
 
 /**
@@ -26,11 +28,12 @@ import static vnpay.VNPayUtils.hmacSHA512;
  */
 @WebServlet(name = "VNPayReturnServlet", urlPatterns = {"/vnpay-return"})
 public class VNPayReturnServlet extends HttpServlet {
+
     private static final String VNP_HASH_SECRET = "23AW8VTNBO09FPULD7UPI7T6W72JIDOO";
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, String> fields = new HashMap<>();
-        for (Enumeration<String> params = req.getParameterNames(); params.hasMoreElements(); ) {
+        for (Enumeration<String> params = req.getParameterNames(); params.hasMoreElements();) {
             String fieldName = params.nextElement();
             String fieldValue = req.getParameter(fieldName);
             fields.put(fieldName, fieldValue);
@@ -55,6 +58,7 @@ public class VNPayReturnServlet extends HttpServlet {
         } catch (Exception e) {
             req.setAttribute("message", "Payment verification error!");
         }
+        //req.getRequestDispatcher("c/NewServlet").forward(req, resp);
         req.getRequestDispatcher("c/NewServlet").forward(req, resp);
     }
 }

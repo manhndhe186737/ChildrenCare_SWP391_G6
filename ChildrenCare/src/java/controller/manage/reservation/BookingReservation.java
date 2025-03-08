@@ -16,6 +16,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import model.Account;
 import model.Service;
+import model.User;
 
 
 /**
@@ -71,6 +72,17 @@ public class BookingReservation extends BaseRBAC{
         //resp.getWriter().print(isFromCart);
 //        resp.getWriter().println(serviceList[0]);
 //        resp.getWriter().print(serviceCart);
+        //resp.getWriter().print(id);
+        
+        //resp.getWriter().print(sdb.getAvailableStaffById(date, start, end, id).size());
+        
+        User staff = sdb.getStaffById(id);
+        
+        if(sdb.getAvailableStaffById(date, start, end, id).isEmpty()){
+            req.setAttribute("notAvailable", staff.getFullname() + " is not available!");
+            req.getRequestDispatcher("BookingStaff").forward(req, resp);
+            return;
+        }
         
         req.setAttribute("service", service);
         req.setAttribute("isFromCart", isFromCart);
