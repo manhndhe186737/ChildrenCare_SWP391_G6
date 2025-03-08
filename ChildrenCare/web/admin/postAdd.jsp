@@ -208,7 +208,7 @@
     </head>
 
     <body>
-        <!-- Loader -->
+   <!-- Loader -->
         <div id="preloader">
             <div id="status">
                 <div class="spinner">
@@ -219,16 +219,37 @@
         </div>
         <!-- Loader -->
 
-        <div class="page-wrapper doctris-theme">
+        <div class="page-wrapper doctris-theme toggled">
             <nav id="sidebar" class="sidebar-wrapper">
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
-                        <a href="index.html">
-                            <img src="./assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
-                            <img src="./assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
+                        <a href="./c/home">
+                            <!--<a href="index.html">-->
+                            <img src="./assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
+                            <img src="./assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
 
+                    <ul class="sidebar-menu pt-3">
+                        <li class="sidebar-dropdown">
+                            <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Sliders</a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li><a href="slider">Sliders List</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        
+                        <li class="sidebar-dropdown">
+                            <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Posts</a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li><a href="post-list">Posts list</a></li>
+                                    <li><a href="post-add">Add post</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
                     <!-- sidebar-menu  -->
                 </div>
                 <!-- sidebar-content  -->
@@ -254,12 +275,10 @@
                                     <img src="./assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                                 </span>
                             </a>
-                            <div class="sidebar-brand">
-                                <a href="./c/home">
-                                    <!--<a href="index.html">-->
-                                    <img src="./assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
-                                </a>
-                            </div>
+                            <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
+                                <i class="uil uil-bars"></i>
+                            </a>
+                            
                         </div>
 
                         <ul class="list-unstyled mb-0">
@@ -363,59 +382,26 @@
                             </li>
 
                             <li class="list-inline-item mb-0 ms-1">
-                                <c:choose>
-                                    <c:when test="${sessionScope.user ne null}">
-                                        <div class="dropdown dropdown-primary">
-                                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
-                                            </button>
-                                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                                <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                                    <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                    <div class="flex-1 ms-2">
-                                                        <span class="d-block mb-1">${sessionScope.user.fullname}</span>
-                                                    </div>
-                                                </a>
-                                                <c:if test="${sessionScope.role.contains('Admin')}">
-                                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html">
-                                                        <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
-                                                    </a>
-                                                </c:if>
-                                                <a class="dropdown-item text-dark" href="./profile">
-                                                    <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
-                                                </a>
-                                                <div class="dropdown-divider border-top"></div>
-                                                <a class="dropdown-item text-dark" href="logout">
-                                                    <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
-                                                </a>
+                                <div class="dropdown dropdown-primary">
+                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
+                                    <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                        <a class="dropdown-item d-flex align-items-center text-dark" href="https://shreethemes.in/doctris/layouts/admin/profile.html">
+                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                            <div class="flex-1 ms-2">
+                                                <span class="d-block mb-1">${sessionScope.user.fullname}</span>
                                             </div>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a href="login" class="btn btn-soft-primary btn-sm">
-                                            <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
                                         </a>
-                                    </c:otherwise>
-                                </c:choose>
+                                        <a class="dropdown-item text-dark" href="./admin/dashboard"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
+                                        <a class="dropdown-item text-dark" href="./profile"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                        <div class="dropdown-divider border-top"></div>
+                                        <a class="dropdown-item text-dark" href="./logout"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                                    </div>
+                                </div>
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="container-fluid">
-                    <div class="layout-specing">
-                        <div class="d-md-flex justify-content-between">
-                            <div>
-                                <nav aria-label="breadcrumb" class="d-inline-block mt-1">
-                                    <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
-                                        <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Posts</li>
-                                    </ul>
-                                </nav>
-                            </div>
-
-
-                        </div>
                         <div class="container">
                             <h2>Add New Post</h2>
 
