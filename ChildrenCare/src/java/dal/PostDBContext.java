@@ -119,33 +119,33 @@ public class PostDBContext extends DBContext {
         return 0;
     }
 
-   public Post getPostById(int id) {
-    String sql = "SELECT p.*, u.fullname AS author_name, u.avatar AS author_avatar FROM posts p "
-               + "LEFT JOIN users u ON p.author_id = u.user_id WHERE p.post_id = ?";
-    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-        stmt.setInt(1, id);
-        ResultSet rs = stmt.executeQuery();
-        if (rs.next()) {
-            Post post = new Post(
-                    rs.getInt("post_id"),
-                    rs.getString("title"),
-                    rs.getString("content"),
-                    rs.getDate("updatedate"),
-                    rs.getDate("createdate"),
-                    rs.getString("status"),
-                    rs.getString("image"),
-                    rs.getString("category"),
-                    rs.getString("author_name")
-            );
-            // Gán avatar từ kết quả truy vấn cho post
-            post.setAuthorAvatar(rs.getString("author_avatar"));
-            return post;
+    public Post getPostById(int id) {
+        String sql = "SELECT p.*, u.fullname AS author_name, u.avatar AS author_avatar FROM posts p "
+                + "LEFT JOIN users u ON p.author_id = u.user_id WHERE p.post_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Post post = new Post(
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getDate("updatedate"),
+                        rs.getDate("createdate"),
+                        rs.getString("status"),
+                        rs.getString("image"),
+                        rs.getString("category"),
+                        rs.getString("author_name")
+                );
+                // Gán avatar từ kết quả truy vấn cho post
+                post.setAuthorAvatar(rs.getString("author_avatar"));
+                return post;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
 
 
     // Thêm bài viết mới

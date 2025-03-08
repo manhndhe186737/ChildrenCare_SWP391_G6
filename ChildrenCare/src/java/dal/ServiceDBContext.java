@@ -202,7 +202,7 @@ public class ServiceDBContext extends DBContext {
     public ArrayList<Service> getHomeServices() {
         ArrayList<Service> services = new ArrayList<>();
         try {
-            String sql = "SELECT s.service_id, s.name, s.description, s.price, c.category_id, c.name AS categoryname "
+            String sql = "SELECT s.service_id, s.name, s.description, s.price, s.img, c.category_id, c.name AS categoryname "
                     + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
                     + "LIMIT 8";  // Chỉ lấy tối đa 8 dịch vụ
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -218,6 +218,7 @@ public class ServiceDBContext extends DBContext {
                 service.setName(rs.getString("name"));
                 service.setDescription(rs.getString("description"));
                 service.setPrice(rs.getFloat("price"));
+                service.setImg(rs.getString("img"));
                 service.setCategory(category);
 
                 services.add(service);

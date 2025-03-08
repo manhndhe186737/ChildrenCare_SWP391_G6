@@ -32,9 +32,9 @@ public class ListStaff extends BaseRBAC {
         int page = (pageParam != null && !pageParam.isEmpty()) ? Integer.parseInt(pageParam) : 1;
         int pageSize = 10;
 
-        ArrayList<User> staff = sdb.getUsers("Staff", search, sort, page, pageSize);
+        ArrayList<User> staff = sdb.getUsers("Staffs", search, sort, page, pageSize);
 
-        int totalStaff = sdb.getTotalUsers("Staff", search);
+        int totalStaff = sdb.getTotalUsers("Staffs", search);
         int totalPages = (int) Math.ceil((double) totalStaff / pageSize);
 
         req.setAttribute("staff", staff);

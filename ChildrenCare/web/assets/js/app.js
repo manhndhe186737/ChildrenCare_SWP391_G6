@@ -1,4 +1,4 @@
-/* Template Name: Doctris - Doctor Appointment Booking System
+/* Template Name: Children Care - Children Service Booking System Booking System
    Author: Shreethemes
    Website: https://shreethemes.in/
    Mail: support@shreethemes.in

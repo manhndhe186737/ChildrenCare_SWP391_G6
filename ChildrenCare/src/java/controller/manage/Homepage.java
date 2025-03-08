@@ -68,7 +68,7 @@ public class Homepage extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Account account = (Account) request.getSession().getAttribute("account");
-        String role = "Admin, Customer, Staff";
+        String role = "Admin, Customer, Staffs";
         String roles = "";
         String isLogin = "";
         if (account != null) {
@@ -86,7 +86,7 @@ public class Homepage extends HttpServlet {
         
         BlogDBContext bdb = new BlogDBContext();
         
-        request.setAttribute("blog", bdb.getNewestBlog());
+        request.setAttribute("blog", bdb.getPostNew());
         request.setAttribute("posts", posts);
         request.setAttribute("sliders", sliderDB.getActiveSliders());
         request.setAttribute("services", sdb.getHomeServices());

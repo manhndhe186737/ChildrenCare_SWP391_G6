@@ -144,6 +144,15 @@
                 z-index: 2;
             }
 
+            .my-slider .item {
+                margin-right: 15px; /* Thêm khoảng cách giữa các item */
+            }
+
+            .my-slider .item:last-child {
+                margin-right: 0; /* Loại bỏ khoảng cách sau item cuối cùng */
+            }
+
+
         </style>
 
 
@@ -310,38 +319,8 @@
                             <img src="../assets/images/logo-icon.png" height="50" alt="">
                             <h4 class="heading fw-bold text-white title-dark mt-3 mb-4">Booking Your Appointments</h4>
                             <p class="para-desc mx-auto text-white-50 mb-0">
-                                Great doctor if you need your family member to get effective immediate assistance,
-                                emergency treatment or a simple consultation.
+                                We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
                             </p>
-
-                            <div class="mt-4 pt-2">
-                                <form class="rounded text-start shadow p-4 bg-white-50">
-                                    <div class="row align-items-center">
-                                        <div class="col-md">
-                                            <div class="input-group bg-white border rounded" style="opacity: 0.7;">
-                                                <span class="input-group-text bg-white border-0">
-                                                    <i class="ri-map-pin-line text-primary h5 fw-normal mb-0"></i>
-                                                </span>
-                                                <input name="name" id="location" type="text" class="form-control border-0" placeholder="Location:">
-                                            </div>
-                                        </div>
-                                        <div class="col-md mt-4 mt-sm-0">
-                                            <div class="input-group bg-white border rounded" style="opacity: 0.7;">
-                                                <span class="input-group-text bg-white border-0">
-                                                    <i class="ri-user-2-line text-primary h5 fw-normal mb-0"></i>
-                                                </span>
-                                                <input name="name" id="name" type="text" class="form-control border-0" placeholder="Doctor Name:">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-auto mt-4 mt-sm-0">
-                                            <div class="d-grid d-md-block">
-                                                <button type="submit" class="btn btn-primary">Search</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -367,17 +346,17 @@
                 <div class="row align-items-center">
                     <div class="col-lg-5 col-md-6">
                         <div class="position-relative">
-                            <img src="../assets/images/blog/${blog.featuredImage}" class="img-fluid" alt="">
+                            <img src="${pageContext.request.contextPath}/${b.img}" class="img-fluid" alt="">
                         </div>
                     </div><!--end col-->
 
                     <div class="col-lg-7 col-md-6 mt-4 pt-2 mt-sm-0 pt-sm-0">
                         <div class="section-title ms-lg-5">
                             <span class="badge badge-pill badge-soft-primary">About Children Care</span>
-                            <h4 class="title mt-3 mb-4">${blog.title}</h4>
-                            <p class="para-desc text-muted">${blog.content}</p>
+                            <h4 class="title mt-3 mb-4">${b.title}</h4>
+                            <p class="para-desc text-muted">${b.content}</p>
                             <div class="mt-4">
-                                <a href="../blog?id=2" class="btn btn-soft-primary">Read More</a>
+                                <a href="../blog-detail?id=${b.id}" class="btn btn-soft-primary">Read More</a>
                             </div>
                         </div>
                     </div><!--end col-->
@@ -402,9 +381,7 @@
                                 <div class="card features feature-primary bg-transparent border-0">
                                     <div class="card-body p-0 mt-3">
                                         <img src="../${p.img}" class="img-fluid" alt="">
-                                        <a href="#" class="title text-dark h5">${p.title}</a>
-                                        <p class="text-muted mt-3">${p.content}</p>
-                                        <a href="#" class="link">View More <i class="ri-arrow-right-line align-middle"></i></a>
+                                        <a href="../blog-detail?id=${p.id}" class="title text-dark h5">${p.title}</a>
                                     </div>
                                 </div>
                             </div><!--end col-->
@@ -413,8 +390,6 @@
                 </div><!--end tiny-slider-->
             </div><!--end container-->
             <!-- End Post List -->
-
-
 
             <div class="container mt-100 mt-60">
                 <div class="row justify-content-center">
@@ -426,19 +401,20 @@
                     </div><!--end col-->
                 </div><!--end row-->
 
-                <div class="row">
-                    <c:forEach var="s" items="${requestScope.services}">
-                        <div class="col-xl-3 col-md-4 col-12 mt-5">
-                            <div class="card features feature-primary bg-transparent border-0">
-                                <div class="card-body p-0 mt-3">
-                                    <a href="#" class="title text-dark h5">${s.name}</a>
-                                    <p class="text-muted mt-3">${s.description}</p>
-                                    <a href="#" class="link">View More <i class="ri-arrow-right-line align-middle"></i></a>
+                <div class="tiny-slider">
+                    <div class="my-slider">
+                        <c:forEach var="s" items="${requestScope.services}">
+                            <div class="item">
+                                <div class="card features feature-primary bg-transparent border-0">
+                                    <div class="card-body p-0 mt-3">
+                                        <img src="${pageContext.request.contextPath}/${s.img}" class="img-fluid" alt="">
+                                        <a href="../service-detail?id=${s.id}" class="title text-dark h5">${s.name}</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </div><!--end col-->
-                    </c:forEach>
-                </div><!--end row-->
+                            </div><!--end item-->
+                        </c:forEach>
+                    </div><!--end my-slider-->
+                </div><!--end tiny-slider-->
             </div><!--end container-->
         </section>
 
@@ -450,91 +426,90 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
-                        <a href="#" class="logo-footer">
-                            <img src="../assets/images/logo-light.png" height="22" alt="">
+                        <a class="logo-footer">
                         </a>
-                        <p class="mt-4 me-xl-5">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
-                    </div><!--end col-->
+                        <p class="mt-4 me-xl-5">
+                            We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
+                        </p>
+                    </div>
 
                     <div class="col-xl-7 col-lg-8 col-md-12">
                         <div class="row">
                             <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Company</h5>
+                                <h5 class="text-light title-dark footer-head">About Us</h5>
                                 <ul class="list-unstyled footer-list mt-4">
-                                    <li><a href="aboutus.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> About us</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Services</a></li>
-                                    <li><a href="doctor-team-two.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Team</a></li>
-                                    <li><a href="blog-detail.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Project</a></li>
-                                    <li><a href="blogs.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Blog</a></li>
-                                    <li><a href="login.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Login</a></li>
+                                    <li>Our Mission</li>
+                                    <li>Our Team</li>
+                                    <li>Our Services</li>
+                                    <li>Success Stories</li>
+                                    <li>Blog & Updates</li>
                                 </ul>
-                            </div><!--end col-->
+                            </div>
 
                             <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Departments</h5>
+                                <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
                                 <ul class="list-unstyled footer-list mt-4">
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Eye Care</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Psychotherapy</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Dental Care</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Orthopedic</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Cardiology</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Gynecology</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Neurology</a></li>
+                                    <li>Quick Haircut</li>
+                                    <li>Massage</li>
+                                    <li>Babysitting</li>
+                                    <li>Special Skin Treatment</li>
+                                    <li>Physical Therapy</li>
                                 </ul>
-                            </div><!--end col-->
+                            </div>
 
                             <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Contact us</h5>
+                                <h5 class="text-light title-dark footer-head">Contact Us</h5>
                                 <ul class="list-unstyled footer-list mt-4">
                                     <li class="d-flex align-items-center">
                                         <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
-                                        <a href="mailto:contact@example.com" class="text-foot ms-2">contact@example.com</a>
+                                        <span class="text-foot ms-2">contact@childrencare.com</span>
                                     </li>
 
                                     <li class="d-flex align-items-center">
                                         <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
-                                        <a href="tel:+152534-468-854" class="text-foot ms-2">+152 534-468-854</a>
+                                        <span class="text-foot ms-2">+1 234 567 890</span>
                                     </li>
 
                                     <li class="d-flex align-items-center">
                                         <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
-                                        <a href="javascript:void(0)" class="video-play-icon text-foot ms-2">View on Google map</a>
+                                        <span class="video-play-icon text-foot ms-2">Find us on the map</span>
                                     </li>
                                 </ul>
 
                                 <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
-                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></a></li>
-                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></a></li>
-                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></a></li>
-                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></a></li>
-                                </ul><!--end icon-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
+                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></span></li>
+                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></span></li>
+                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></span></li>
+                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="container mt-5">
                 <div class="pt-4 footer-bar">
                     <div class="row align-items-center">
                         <div class="col-sm-6">
                             <div class="text-sm-start text-center">
-
+                                <p class="text-foot mb-0">© 2025 Children Care. All Rights Reserved.</p>
                             </div>
-                        </div><!--end col-->
+                        </div>
 
                         <div class="col-sm-6 mt-4 mt-sm-0">
                             <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
-                                <li class="list-inline-item"><a href="terms.html" class="text-foot me-2">Terms</a></li>
-                                <li class="list-inline-item"><a href="privacy.html" class="text-foot me-2">Privacy</a></li>
-                                <li class="list-inline-item"><a href="aboutus.html" class="text-foot me-2">About</a></li>
-                                <li class="list-inline-item"><a href="contact.html" class="text-foot me-2">Contact</a></li>
+                                <li class="list-inline-item">Terms</li>
+                                <li class="list-inline-item">Privacy</li>
+                                <li class="list-inline-item">About</li>
+                                <li class="list-inline-item">Contact</li>
                             </ul>
-                        </div><!--end col-->
-                    </div><!--end row-->
+                        </div>
+                    </div>
                 </div>
-            </div><!--end container-->
-        </footer><!--end footer-->
+            </div>
+        </footer>
+
         <!-- End -->
 
         <!-- Back to top -->
@@ -707,6 +682,31 @@
                                             }
                                         });
         </script>
+
+        <script>
+            var slider = tns({
+                container: '.my-slider', // Sử dụng class của slider container
+                items: 4, // Hiển thị 4 items trên mỗi slide
+                slideBy: 'page',
+                autoplay: true,
+                autoplayButtonOutput: false,
+                controls: false, // Cho phép điều khiển slide
+                nav: true, // Cho phép navigation
+                controlsPosition: 'outside', // Đặt nút prev, next bên ngoài slider
+                responsive: {
+                    '0': {
+                        items: 1, // 1 item cho các màn hình nhỏ
+                    },
+                    '600': {
+                        items: 2, // 2 items cho các màn hình trung bình
+                    },
+                    '1024': {
+                        items: 4, // 4 items cho màn hình lớn
+                    }
+                }
+            });
+        </script>
+
 
         <script>
             var sliderImages = [];

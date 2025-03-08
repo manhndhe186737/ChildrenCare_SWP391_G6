@@ -303,12 +303,6 @@
                                     <div class="card team border-0 rounded shadow overflow-hidden">
                                         <div class="team-img position-relative">
                                             <img src="../assets/images/${s.avatar}" class="img-fluid" alt="">
-                                            <ul class="list-unstyled team-social mb-0">
-                                                <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="facebook" class="icons"></i></a></li>
-                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="linkedin" class="icons"></i></a></li>
-                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="instagram" class="icons"></i></a></li>
-                                                <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="twitter" class="icons"></i></a></li>
-                                            </ul>
                                         </div>
                                         <div class="card-body content text-center">
                                             <form id="form-staff" action="booking-reserv" method="post">
@@ -358,18 +352,93 @@
                 </div>
 
 
-                <!-- Footer Start -->
-                <footer class="bg-white shadow py-3">
-                    <div class="container-fluid">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <div class="text-sm-start text-center">
+                <footer class="bg-footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
+                                <a class="logo-footer">
+                                </a>
+                                <p class="mt-4 me-xl-5">
+                                    We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
+                                </p>
+                            </div>
 
+                            <div class="col-xl-7 col-lg-8 col-md-12">
+                                <div class="row">
+                                    <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                        <h5 class="text-light title-dark footer-head">About Us</h5>
+                                        <ul class="list-unstyled footer-list mt-4">
+                                            <li>Our Mission</li>
+                                            <li>Our Team</li>
+                                            <li>Our Services</li>
+                                            <li>Success Stories</li>
+                                            <li>Blog & Updates</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                        <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
+                                        <ul class="list-unstyled footer-list mt-4">
+                                            <li>Quick Haircut</li>
+                                            <li>Massage</li>
+                                            <li>Babysitting</li>
+                                            <li>Special Skin Treatment</li>
+                                            <li>Physical Therapy</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                        <h5 class="text-light title-dark footer-head">Contact Us</h5>
+                                        <ul class="list-unstyled footer-list mt-4">
+                                            <li class="d-flex align-items-center">
+                                                <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
+                                                <span class="text-foot ms-2">contact@childrencare.com</span>
+                                            </li>
+
+                                            <li class="d-flex align-items-center">
+                                                <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
+                                                <span class="text-foot ms-2">+1 234 567 890</span>
+                                            </li>
+
+                                            <li class="d-flex align-items-center">
+                                                <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
+                                                <span class="video-play-icon text-foot ms-2">Find us on the map</span>
+                                            </li>
+                                        </ul>
+
+                                        <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
+                                            <li class="list-inline-item"><span class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></span></li>
+                                            <li class="list-inline-item"><span class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></span></li>
+                                            <li class="list-inline-item"><span class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></span></li>
+                                            <li class="list-inline-item"><span class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></span></li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </div><!--end container-->
-                </footer><!--end footer-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container mt-5">
+                        <div class="pt-4 footer-bar">
+                            <div class="row align-items-center">
+                                <div class="col-sm-6">
+                                    <div class="text-sm-start text-center">
+                                        <p class="text-foot mb-0">© 2025 Children Care. All Rights Reserved.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 mt-4 mt-sm-0">
+                                    <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
+                                        <li class="list-inline-item">Terms</li>
+                                        <li class="list-inline-item">Privacy</li>
+                                        <li class="list-inline-item">About</li>
+                                        <li class="list-inline-item">Contact</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
                 <!-- End -->
             </main>
             <!--End page-content" -->

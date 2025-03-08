@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Post;
 
 public class BlogDBContext extends DBContext {
 
@@ -48,25 +49,22 @@ public class BlogDBContext extends DBContext {
         return blog;
     }
 
- 
-public List<Blog> getLatestBlogs() {
-    // Lấy 3 bài viết có ID cao nhất (cuối cùng)
-    return getBlogsFromQuery("SELECT blog_id, title, content, created_at, updated_at, author_id, status, featured_image, slug, meta_description, meta_keywords FROM blogs ORDER BY blog_id DESC LIMIT 3");
-}
-
-
+    public List<Blog> getLatestBlogs() {
+        // Lấy 3 bài viết có ID cao nhất (cuối cùng)
+        return getBlogsFromQuery("SELECT blog_id, title, content, created_at, updated_at, author_id, status, featured_image, slug, meta_description, meta_keywords FROM blogs ORDER BY blog_id DESC LIMIT 3");
+    }
 
     // Tìm kiếm blog theo từ khóa trong title với phân trang
     public List<Blog> searchBlogs(String query, int page, int pageSize) {
         List<Blog> blogs = new ArrayList<>();
-        String sql = "SELECT blog_id, title, content, created_at, updated_at, author_id, status, featured_image, slug, meta_description, meta_keywords " +
-                     "FROM blogs WHERE title LIKE ? LIMIT ? OFFSET ?";  // Only search in title
+        String sql = "SELECT blog_id, title, content, created_at, updated_at, author_id, status, featured_image, slug, meta_description, meta_keywords "
+                + "FROM blogs WHERE title LIKE ? LIMIT ? OFFSET ?";  // Only search in title
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setString(1, "%" + query + "%");  // Tìm trong title
             stm.setInt(2, pageSize);  // Số lượng kết quả trên mỗi trang
             stm.setInt(3, (page - 1) * pageSize);  // Offset cho phân trang
-            
+
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     Blog blog = mapResultSetToBlog(rs);  // Assuming you have this method to map the result to Blog
@@ -84,7 +82,7 @@ public List<Blog> getLatestBlogs() {
         String sql = "SELECT COUNT(*) FROM blogs WHERE title LIKE ?";  // Only count in title
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setString(1, "%" + query + "%");  // Tìm trong title
-            
+
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt(1);  // Trả về tổng số bài viết
@@ -99,8 +97,7 @@ public List<Blog> getLatestBlogs() {
     // Phương thức dùng chung để lấy blogs từ một câu truy vấn
     private List<Blog> getBlogsFromQuery(String sql) {
         List<Blog> blogs = new ArrayList<>();
-        try (PreparedStatement stm = connection.prepareStatement(sql);
-             ResultSet rs = stm.executeQuery()) {
+        try (PreparedStatement stm = connection.prepareStatement(sql); ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
                 Blog blog = mapResultSetToBlog(rs);
                 blogs.add(blog);
@@ -150,53 +147,16 @@ public List<Blog> getLatestBlogs() {
         return blogDetail;
     }
 
-    // Phương thức main để kiểm tra kết nối và kiểm tra thông tin blog theo ID
-    public static void main(String[] args) {
-        BlogDBContext blogDBContext = new BlogDBContext();
-        
-        // Kiểm tra kết nối cơ sở dữ liệu
-        if (blogDBContext.testConnection()) {
-            System.out.println("✅ Kết nối cơ sở dữ liệu thành công!");
-        } else {
-            System.out.println("❌ Kết nối cơ sở dữ liệu thất bại!");
-            return;
-        }
-
-        // Kiểm tra lấy blog theo ID, ví dụ ID = 2
-        int testBlogId = 5; // Thay đổi ID này để kiểm tra blog khác
-        Blog blog = blogDBContext.getBlogById(testBlogId);
-        if (blog != null) {
-            System.out.println("Blog ID: " + blog.getBlogId());
-            System.out.println("Title: " + blog.getTitle());
-            System.out.println("Content: " + blog.getContent());
-            System.out.println("Created At: " + blog.getCreatedAt());
-            System.out.println("Updated At: " + blog.getUpdatedAt());
-        } else {
-            System.out.println("❌ Không tìm thấy blog với ID: " + testBlogId);
-        }
-
-        // Kiểm tra chi tiết của blog theo ID
-        BlogDetail blogDetail = blogDBContext.getBlogDetailByBlogId(testBlogId);
-        if (blogDetail != null) {
-            System.out.println("Blog Detail ID: " + blogDetail.getDetailId());
-            System.out.println("Blog ID: " + blogDetail.getBlogId());
-            System.out.println("Content: " + blogDetail.getContent());
-            System.out.println("Section Title: " + blogDetail.getSectionTitle());
-        } else {
-            System.out.println("❌ Không tìm thấy chi tiết cho blog với ID: " + testBlogId);
-        }
-    }
-    
     public Blog getNewestBlog() {
         Blog blog = new Blog();
-        String sql = "SELECT * FROM blogs\n"
+        String sql = "SELECT * FROM posts\n"
                 + "ORDER BY created_at DESC\n"
                 + "LIMIT 1";
-        
+
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             ResultSet rs = stm.executeQuery();
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 blog.setBlogId(rs.getInt("blog_id"));
                 blog.setTitle(rs.getString("title"));
                 blog.setContent(rs.getString("content"));
@@ -205,5 +165,35 @@ public List<Blog> getLatestBlogs() {
         } catch (Exception e) {
         }
         return blog;
+    }
+
+    public Post getPostNew() {
+        String sql = "SELECT p.*, u.fullname AS author_name, u.avatar AS author_avatar\n"
+                + "FROM posts p\n"
+                + "LEFT JOIN users u ON p.author_id = u.user_id\n"
+                + "ORDER BY createdate DESC\n"
+                + "LIMIT 1;";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Post post = new Post(
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getDate("updatedate"),
+                        rs.getDate("createdate"),
+                        rs.getString("status"),
+                        rs.getString("image"),
+                        rs.getString("category"),
+                        rs.getString("author_name")
+                );
+                // Gán avatar từ kết quả truy vấn cho post
+                post.setAuthorAvatar(rs.getString("author_avatar"));
+                return post;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
