@@ -108,9 +108,20 @@ public class resultCod extends HttpServlet {
             rdb.insertReservation(reservation);
 
         }
+        
+        String fromCart = request.getParameter("isFromCart");
+        //response.getWriter().print(fromCart);
+        if(fromCart != null && fromCart.length() != 0){
+            rdb.deleteCart(s.getId());
+        }
+        
+        //response.getWriter().print(s.getId());
 
         request.setAttribute("reservation", reservation);
         request.setAttribute("amount", amount);
+        
+        request.getSession().removeAttribute("reservation");
+        request.getSession().removeAttribute("isFromCart");
         request.getRequestDispatcher("result-cod.jsp").forward(request, response);
     }
 

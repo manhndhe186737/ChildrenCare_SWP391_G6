@@ -80,9 +80,12 @@ public class VNPayServlet extends HttpServlet {
         reservation.setCustomer(customer);
         reservation.setStaff(staff);
         reservation.setService(s);
+        
+        String fromCart = req.getParameter("isFromCart");
 
         HttpSession session = req.getSession();
         session.setAttribute("reservation", reservation);
+        session.setAttribute("isFromCart", fromCart);
 
         int amount = 0;
         double amountVND = 0;

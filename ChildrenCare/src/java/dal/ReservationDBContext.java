@@ -56,6 +56,17 @@ public class ReservationDBContext extends DBContext {
         }
         return null;
     }
+    
+    public Service deleteCart(int id) {
+        String sql = "DELETE FROM Cart WHERE service_id = ?;";
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, id);
+            stm.executeUpdate();
+            
+        } catch (Exception e) {
+        }
+        return null;
+    }
 
     public boolean insertReservation(Reservation reservation) {
         String sql = "INSERT INTO reservations (dateBook, user_id, service_id, status, staff_id, createDate, updateDate, note, starttime, endtime, customer_name, customer_address) "

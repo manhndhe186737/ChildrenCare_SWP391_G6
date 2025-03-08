@@ -282,6 +282,8 @@
                                                     <input name="phone" id="phone" type="tel" value="${sessionScope.user.phone}" class="form-control" placeholder="Your Phone :">
                                                 </div> 
                                             </div><!--end col-->
+                                            
+                                            <input type="hidden" name="isFromCart" value="${requestScope.isFromCart}"/>
 
                                             <div class="col-lg-12">
                                                 <div class="mb-3">

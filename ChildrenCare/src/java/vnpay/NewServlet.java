@@ -70,6 +70,7 @@ public class NewServlet extends HttpServlet {
                 // Lưu thông tin reservation vào database
                 HttpSession session = req.getSession();
                 Reservation r = (Reservation) session.getAttribute("reservation");
+                String fromCart = (String) session.getAttribute("isFromCart");
 
                 if (r != null) {
 
@@ -77,6 +78,10 @@ public class NewServlet extends HttpServlet {
 
                     ReservationDBContext rdb = new ReservationDBContext();
                     rdb.insertReservation(r);
+
+                    if (fromCart != null && fromCart.length() != 0) {
+                        rdb.deleteCart(r.getService().getId());
+                    }
 
                 }
             } else {
@@ -90,6 +95,9 @@ public class NewServlet extends HttpServlet {
         for (Map.Entry<String, String> entry : fields.entrySet()) {
             req.setAttribute(entry.getKey(), entry.getValue());
         }
+
+        req.getSession().removeAttribute("reservation");
+        req.getSession().removeAttribute("isFromCart");
 
         req.getRequestDispatcher("vnpay-return.jsp").forward(req, resp);
     }
