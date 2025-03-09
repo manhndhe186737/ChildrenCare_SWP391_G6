@@ -182,5 +182,18 @@ public class SliderDBContext extends DBContext {
     }
     return sliders;
 }
+    public void addSlider(Slider slider) {
+    String sql = "INSERT INTO sliders (title, image, status, createdate, updatedate, backlink) VALUES (?, ?, ?, NOW(), NOW(), ?)";
+    try (PreparedStatement stm = connection.prepareStatement(sql)) {
+        stm.setString(1, slider.getTitle());
+        stm.setString(2, slider.getImg());
+        stm.setString(3, slider.getStatus());
+        stm.setString(4, slider.getBacklink());
+        stm.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
     
 }

@@ -115,6 +115,36 @@
             .edit-slider-actions .cancel-btn:hover {
                 background: #e0e0e0;
             }
+html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            .page-wrapper {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh; 
+            }
+
+            
+
+            .bg-footer {
+                margin-top: auto;
+            }
+            .container-fluid {
+                max-width: 1200px;
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .layout-specing {
+                margin-left: 0;
+                margin-right: 0;
+                padding: 20px;
+            }
 
         </style>
 
@@ -144,6 +174,7 @@
                     </li>
                 </ul>
             </nav>
+            
             <!-- sidebar-wrapper  -->
 
             <!-- Start Page Content -->
@@ -336,78 +367,180 @@
                         </div>
                     </div>
                 </div>
+    <!-- Start -->
+                <footer class="bg-footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
+                                <a class="logo-footer">
+                                </a>
+                                <p class="mt-4 me-xl-5">
+                                    We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
+                                </p>
+                            </div>
 
-                <!-- Footer Start -->
-                <footer class="bg-white shadow py-3">
-                    <div class="container-fluid">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <div class="text-sm-start text-center">
+                            <div class="col-xl-7 col-lg-8 col-md-12">
+                                <div class="row">
+                                    <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                        <h5 class="text-light title-dark footer-head">About Us</h5>
+                                        <ul class="list-unstyled footer-list mt-4">
+                                            <li>Our Mission</li>
+                                            <li>Our Team</li>
+                                            <li>Our Services</li>
+                                            <li>Success Stories</li>
+                                            <li>Blog & Updates</li>
+                                        </ul>
+                                    </div>
 
+                                    <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                        <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
+                                        <ul class="list-unstyled footer-list mt-4">
+                                            <li>Quick Haircut</li>
+                                            <li>Massage</li>
+                                            <li>Babysitting</li>
+                                            <li>Special Skin Treatment</li>
+                                            <li>Physical Therapy</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                        <h5 class="text-light title-dark footer-head">Contact Us</h5>
+                                        <ul class="list-unstyled footer-list mt-4">
+                                            <li class="d-flex align-items-center">
+                                                <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
+                                                <span class="text-foot ms-2">contact@childrencare.com</span>
+                                            </li>
+
+                                            <li class="d-flex align-items-center">
+                                                <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
+                                                <span class="text-foot ms-2">+1 234 567 890</span>
+                                            </li>
+
+                                            <li class="d-flex align-items-center">
+                                                <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
+                                                <span class="video-play-icon text-foot ms-2">Find us on the map</span>
+                                            </li>
+                                        </ul>
+
+                                        <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
+                                            <li class="list-inline-item"><span class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></span></li>
+                                            <li class="list-inline-item"><span class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></span></li>
+                                            <li class="list-inline-item"><span class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></span></li>
+                                            <li class="list-inline-item"><span class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></span></li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </div><!--end container-->
-                </footer><!--end footer-->
-                <!-- End -->
-            </main>
-            <!--End page-content" -->
-        </div>
-        <!-- page-wrapper -->
-
-        <!-- Offcanvas Start -->
-        <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header p-4 border-bottom">
-                <h5 id="offcanvasRightLabel" class="mb-0">
-                    <img src="../assets/images/logo-dark.png" height="24" class="light-version" alt="">
-                    <img src="../assets/images/logo-light.png" height="24" class="dark-version" alt="">
-                </h5>
-                <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
-            </div>
-            <div class="offcanvas-body p-4 px-md-5">
-                <div class="row">
-                    <div class="col-12">
-                        <!-- Style switcher -->
-                        <div id="style-switcher">
-                            <div>
-                                <ul class="text-center list-unstyled mb-0">
-                                    <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="../assets/images/layouts/light-dash-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="../assets/images/layouts/dark-dash-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                    <li class="d-grid"><a href="../c/index.html" target="_blank" class="mt-4"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Landing Demos</span></a></li>
-                                </ul>
                             </div>
                         </div>
-                        <!-- end Style switcher -->
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div>
+                    </div>
 
-            <div class="offcanvas-footer p-4 border-top text-center">
-                <ul class="list-unstyled social-icon mb-0">
-                    <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
-                </ul><!--end icon-->
-            </div>
-        </div>
-        <!-- Offcanvas End -->
+                    <div class="container mt-5">
+                        <div class="pt-4 footer-bar">
+                            <div class="row align-items-center">
+                                <div class="col-sm-6">
+                                    <div class="text-sm-start text-center">
+                                        <p class="text-foot mb-0">© 2025 Children Care. All Rights Reserved.</p>
+                                    </div>
+                                </div>
 
-        <!-- javascript -->
-        <script src="./assets/js/bootstrap.bundle.min.js"></script>
-        <!-- simplebar -->
-        <script src="./assets/js/simplebar.min.js"></script>
-        <!-- Icons -->
-        <script src="./assets/js/feather.min.js"></script>
-        <!-- Main Js -->
-        <script src="./assets/js/app.js"></script>
+                                <div class="col-sm-6 mt-4 mt-sm-0">
+                                    <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
+                                        <li class="list-inline-item">Terms</li>
+                                        <li class="list-inline-item">Privacy</li>
+                                        <li class="list-inline-item">About</li>
+                                        <li class="list-inline-item">Contact</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End -->
+
+                <!-- Back to top -->
+                <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
+                <!-- Back to top -->
+
+                <!-- Offcanvas Start -->
+                <div class="offcanvas bg-white offcanvas-top" tabindex="-1" id="offcanvasTop">
+                    <div class="offcanvas-body d-flex align-items-center align-items-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="text-center">
+                                        <h4>Search now...</h4>
+                                        <div class="subcribe-form mt-4">
+                                            <form>
+                                                <div class="mb-0">
+                                                    <input type="text" id="help" name="name" class="border bg-white rounded-pill" required="" placeholder="Search">
+                                                    <button type="submit" class="btn btn-pills btn-primary">Search</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div><!--end container-->
+                    </div>
+                </div>
+                <!-- Offcanvas End -->
+
+                <!-- Offcanvas Start -->
+                <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                    <div class="offcanvas-header p-4 border-bottom">
+                        <h5 id="offcanvasRightLabel" class="mb-0">
+                            <img src="./assets/images/logo-dark.png" height="24" class="light-version" alt="">
+                            <img src="./assets/images/logo-light.png" height="24" class="dark-version" alt="">
+                        </h5>
+                        <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+                    </div>
+                    <div class="offcanvas-body p-4 px-md-5">
+                        <div class="row">
+                            <div class="col-12">
+                                <!-- Style switcher -->
+                                <div id="style-switcher">
+                                    <div>
+                                        <ul class="text-center list-unstyled mb-0">
+                                            <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="./assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                            <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="./assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                            <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="./assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                            <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="./assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                            <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="./assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
+                                            <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="./assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
+                                            <li class="d-grid"><a href="./admin/index.html" target="_blank" class="mt-4"><img src="./assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- end Style switcher -->
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div>
+
+                    <div class="offcanvas-footer p-4 border-top text-center">
+                        <ul class="list-unstyled social-icon mb-0">
+                            <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
+                            <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
+                            <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
+                            <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
+                            <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
+                            <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
+                            <li class="list-inline-item mb-0"><a href="./././index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
+                        </ul><!--end icon-->
+                    </div>
+                </div>
+                <!-- Offcanvas End -->
+
+                <!-- javascript -->
+                <script src="./assets/js/bootstrap.bundle.min.js"></script>
+                <!-- SLIDER -->
+                <script src="./assets/js/tiny-slider.js"></script>
+                <script src="./assets/js/tiny-slider-init.js"></script>
+                <!-- Icons -->
+                <script src="./assets/js/feather.min.js"></script>
+                <!-- Main Js -->
+                <script src="./assets/js/app.js"></script>
+
+
         <script>
                                         document.getElementById("imageFile").addEventListener("change", function (event) {
                                             const file = event.target.files[0];
