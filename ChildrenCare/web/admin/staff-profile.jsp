@@ -54,22 +54,22 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                        <!--<a href="index.html">-->
+                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
-                    
+
                     <ul class="sidebar-menu pt-3">
-                        <li class="active"><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                        <li class=""><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
 
-                        <li class="sidebar-dropdown">
+                        <li class="sidebar-dropdown active">
                             <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li><a href="../admin/staff">Staff</a></li>
-                                    <li><a href="../admin/add-staff">Add Staff</a></li>
+<!--                                    <li><a href="../admin/add-staff">Add Staff</a></li>-->
                                 </ul>
                             </div>
                         </li>
@@ -279,7 +279,7 @@
                         <div class="card bg-white rounded shadow overflow-hidden mt-4 border-0">
                             <div class="p-5 bg-primary bg-gradient"></div>
                             <div class="avatar-profile d-flex margin-nagative mt-n5 position-relative ps-3">
-                                <img src="../assets/images/${requestScope.staff.avatar}" class="rounded-circle shadow-md avatar avatar-medium" alt="">
+                                <img src="${pageContext.request.contextPath}/${requestScope.staff.avatar}" class="rounded-circle shadow-md avatar avatar-medium" alt="">
                                 <div class="mt-4 ms-3 pt-3">
                                     <h5 class="mt-3 mb-1">${requestScope.staff.fullname}</h5>
                                 </div>
@@ -540,24 +540,19 @@
                                                             </div>
 
                                                             <div class="p-4">
-                                                                <form class="mt-4" action="../admin/update-staff" method="post">
-                                                                    <div class="row align-items-center">
-                                                                        <!-- Hiển thị ảnh -->
+                                                                <form class="mt-4" action="../admin/update-staff" method="post" enctype="multipart/form-data">
+                                                                    <div class="row align-items-center" style="margin-bottom: 20px">
                                                                         <div class="col-lg-2 col-md-4">
-                                                                            <img id="previewImage" src="../assets/images/${staff.avatar}" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
-                                                                        </div><!--end col-->
-
-                                                                        <!-- Hướng dẫn upload -->
+                                                                            <img id="editProfileImg" src="${pageContext.request.contextPath}/${staff.avatar}" class="avatar avatar-md-md rounded-circle shadow mx-auto d-block" alt="Preview Image"/>
+                                                                        </div>
                                                                         <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                                                            <h6 class="">Upload your picture</h6>
-                                                                            <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg or .png format</p>
-                                                                        </div><!--end col-->
-
-                                                                        <!-- Input file để chọn ảnh -->
+                                                                            <label class="form-label d-block">Upload Image:</label>
+                                                                        </div>
                                                                         <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
-                                                                            <input type="file" id="avatarInput" accept="image/*" class="form-control">
-                                                                        </div><!--end col-->
-                                                                    </div><!--end row-->
+                                                                            <input type="file" name="imageFile" id="imageFileInput" accept="image/*" class="form-control mb-2" onchange="previewImage(event)">
+                                                                            <input type="hidden" name="oldImage" value="">
+                                                                        </div>
+                                                                    </div>
 
                                                                     <!-- Hidden input lưu URL ảnh -->
                                                                     <input type="hidden" name="avatar_url" id="avatar_url" value="${staff.avatar}">
@@ -610,13 +605,13 @@
                                                             </div>
                                                         </div>
                                                     </div><!--end row-->
-                                                    
+
                                                     <div class="col-lg-6">
                                                         <div class="rounded shadow mt-4">
                                                             <div class="p-4 border-bottom">
                                                                 <h6 class="mb-0">General Notifications :</h6>
                                                             </div>
-                                
+
                                                             <div class="p-4">
                                                                 <div class="p-4 border-bottom">
                                                                     <h5 class="mb-0 text-danger">Delete Staff :</h5>
@@ -726,6 +721,48 @@
                                                 document.getElementById("avatar_url").value = file.name;
                                             }
                                         });
+        </script>
+
+        <script>
+            const handleChange = () => {
+                const fileUploader = document.querySelector('#input-file');
+                const getFile = fileUploader.files
+                if (getFile.length !== 0) {
+                    const uploadedFile = getFile[0];
+                    readFile(uploadedFile);
+                }
+            }
+
+            const readFile = (uploadedFile) => {
+                if (uploadedFile) {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const parent = document.querySelector('.preview-box');
+                        parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
+                    };
+
+                    reader.readAsDataURL(uploadedFile);
+                }
+            };
+        </script>
+
+        <script>
+            function previewImage(event) {
+                var file = event.target.files[0];
+                var output = document.getElementById("editProfileImg"); // Đúng ID của ảnh xem trước
+
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        output.src = reader.result; // Hiển thị ảnh mới khi chọn
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    // Nếu không chọn ảnh mới, giữ ảnh cũ
+                    var oldImage = document.querySelector("input[name='oldImage']").value;
+                    output.src = oldImage ? "${pageContext.request.contextPath}/" + oldImage : "";
+                }
+            }
         </script>
     </body>
 

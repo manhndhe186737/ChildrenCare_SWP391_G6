@@ -65,15 +65,15 @@
                     </div>
                     
                     <ul class="sidebar-menu pt-3">
-                        <li class="active"><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                        <li class=""><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
 
                         <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
+                            <a class="" href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li><a href="../admin/staff">Staff</a></li>
-                                    <li><a href="../admin/add-staff">Add Staff</a></li>
+<!--                                    <li class=""><a href="../admin/add-staff">Add Staff</a></li>-->
                                 </ul>
                             </div>
                         </li>
@@ -308,7 +308,7 @@
                                 <div class="col mt-4">
                                     <div class="card team border-0 rounded shadow overflow-hidden">
                                         <div class="team-img position-relative">
-                                            <img src="../assets/images/${s.avatar}" class="img-fluid" alt="">
+                                            <img src="${pageContext.request.contextPath}/${s.avatar}" class="img-fluid" alt="">
                                         </div>
                                         <div class="card-body content text-center">
                                             <a href="staff-profile?staff_id=${s.id}" class="title text-dark h5 d-block mb-0">${s.fullname}</a>

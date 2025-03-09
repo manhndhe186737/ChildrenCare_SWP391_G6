@@ -53,12 +53,12 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                        <!--<a href="index.html">-->
+                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
-                    
+
                     <ul class="sidebar-menu pt-3">
                         <li class="active"><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
@@ -306,7 +306,7 @@
                                                     <td class="py-3">
                                                         <a href="#" class="text-dark">
                                                             <div class="d-flex align-items-center">
-                                                                <img src="../assets/images/${c.avatar}" class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                                <img src="${pageContext.request.contextPath}/${c.avatar}" class="avatar avatar-md-sm rounded-circle shadow" alt="">
                                                                 <span class="ms-2">${c.fullname}</span>
                                                             </div>
                                                         </a>
@@ -452,23 +452,21 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-3 pt-4">
-                        <form action="../admin/editCustomer" method="get" enctype="multipart/form-data">
+                        <form action="../admin/editCustomer" method="post" enctype="multipart/form-data">
                             <input type="hidden" id="editId" name="id">
 
-                            <!-- Upload Image -->
                             <div class="row align-items-center">
                                 <div class="col-lg-2 col-md-4">
-                                    <img id="editProfileImg" src="" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="Profile Image">
+                                    <img id="editProfileImg" src="" class="avatar avatar-md-md rounded-circle shadow mx-auto d-block" style="width: 80%; object-fit: cover;" alt="Preview Image" style="max-width: 100%; height: auto;">
                                 </div>
                                 <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                    <h6 class="">Upload your picture</h6>
-                                    <p class="text-muted mb-0">Use an image at least 256x256 in .jpg or .png format</p>
+                                    <label class="form-label d-block">Upload Image:</label>
                                 </div>
                                 <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
-                                    <input type="file" name="profileImage" id="profileImageInput" class="form-control" accept="image/*" onchange="previewProfileImage(event)">
+                                    <input type="file" name="imageFile" id="imageFileInput" accept="image/*" class="form-control mb-2" onchange="previewImage(event)">
+                                    <input type="hidden" name="oldImage" value="">
                                 </div>
                             </div>
-
 
                             <!-- Form Fields -->
                             <div class="row mt-4">
@@ -515,9 +513,10 @@
                                         <button type="submit" class="btn btn-primary">Save changes</button>
                                     </div>
                                 </div>
-                            </div><!--end row-->
-                        </form><!--end form-->
+                            </div>
+                        </form>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -586,45 +585,94 @@
         <script src="../assets/js/app.js"></script>
 
         <script>
-                                        function viewProfile(id, fullname, dob, gender, address, phone, email, imageUrl) {
-                                            document.getElementById("profileId").innerText = id;
-                                            document.getElementById("profileFullName").innerText = fullname;
-                                            document.getElementById("profileDob").innerText = dob;
-                                            document.getElementById("profileGender").innerText = gender === 'true' ? 'Male' : 'Female';
-                                            document.getElementById("profileAddress").innerText = address;
-                                            document.getElementById("profilePhone").innerText = phone;
-                                            document.getElementById("profileEmail").innerText = email;
-                                            document.getElementById("viewProfileImg").src = "../assets/images/" + imageUrl;
+                                        const handleChange = () => {
+                                            const fileUploader = document.querySelector('#input-file');
+                                            const getFile = fileUploader.files
+                                            if (getFile.length !== 0) {
+                                                const uploadedFile = getFile[0];
+                                                readFile(uploadedFile);
+                                            }
                                         }
 
-                                        function editProfile(id, fullname, dob, gender, address, phone, email, imageUrl) {
-                                            document.getElementById("editId").value = id;
-                                            document.getElementById("editFullName").value = fullname;
-                                            document.getElementById("editDob").value = dob;
-                                            document.getElementById("editGender").value = gender;
-                                            document.getElementById("editAddress").value = address;
-                                            document.getElementById("editPhone").value = phone;
-                                            document.getElementById("editProfileImg").src = "../assets/images/" + imageUrl;
-                                        }
-
-                                        function previewProfileImage(event) {
-                                            let profileImg = document.getElementById("editProfileImg");
-                                            let file = event.target.files[0];
-
-                                            if (file) {
-                                                let reader = new FileReader();
-                                                reader.onload = function (e) {
-                                                    profileImg.src = e.target.result;
+                                        const readFile = (uploadedFile) => {
+                                            if (uploadedFile) {
+                                                const reader = new FileReader();
+                                                reader.onload = () => {
+                                                    const parent = document.querySelector('.preview-box');
+                                                    parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
                                                 };
-                                                reader.readAsDataURL(file);
-                                            }
-                                        }
 
-                                        function confirmDelete(userId) {
-                                            if (confirm("Are you sure you want to delete this customer?")) {
-                                                window.location.href = "../admin/removeCustomer?user_id=" + userId;
+                                                reader.readAsDataURL(uploadedFile);
                                             }
-                                        }
+                                        };
+        </script>
+
+        <script>
+            function previewImage(event) {
+                var file = event.target.files[0];
+                var output = document.getElementById("editProfileImg"); // Đúng ID của ảnh xem trước
+
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        output.src = reader.result; // Hiển thị ảnh mới khi chọn
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    // Nếu không chọn ảnh mới, giữ ảnh cũ
+                    var oldImage = document.querySelector("input[name='oldImage']").value;
+                    output.src = oldImage ? "${pageContext.request.contextPath}/" + oldImage : "";
+                }
+            }
+        </script>
+
+
+        <script>
+            function viewProfile(id, fullname, dob, gender, address, phone, email, imageUrl) {
+                document.getElementById("profileId").innerText = id;
+                document.getElementById("profileFullName").innerText = fullname;
+                document.getElementById("profileDob").innerText = dob;
+                document.getElementById("profileGender").innerText = gender === 'true' ? 'Male' : 'Female';
+                document.getElementById("profileAddress").innerText = address;
+                document.getElementById("profilePhone").innerText = phone;
+                document.getElementById("profileEmail").innerText = email;
+                document.getElementById("viewProfileImg").src = "${pageContext.request.contextPath}/" + imageUrl;
+            }
+
+            function editProfile(id, fullname, dob, gender, address, phone, email, imageUrl) {
+                document.getElementById("editId").value = id;
+                document.getElementById("editFullName").value = fullname;
+                document.getElementById("editDob").value = dob;
+                document.getElementById("editGender").value = gender;
+                document.getElementById("editAddress").value = address;
+                document.getElementById("editPhone").value = phone;
+                document.getElementById("editProfileImg").src = "${pageContext.request.contextPath}/" + imageUrl;
+
+//                document.getElementById("oldImage").value = imageUrl;
+//
+//                document.getElementById("imagePreview").src = "${pageContext.request.contextPath}/" + imageUrl;
+            }
+
+
+
+//            function previewProfileImage(event) {
+//                let profileImg = document.getElementById("editProfileImg");
+//                let file = event.target.files[0];
+//
+//                if (file) {
+//                    let reader = new FileReader();
+//                    reader.onload = function (e) {
+//                        profileImg.src = e.target.result;
+//                    };
+//                    reader.readAsDataURL(file);
+//                }
+//            }
+
+            function confirmDelete(userId) {
+                if (confirm("Are you sure you want to delete this customer?")) {
+                    window.location.href = "../admin/removeCustomer?user_id=" + userId;
+                }
+            }
 
         </script>
 
