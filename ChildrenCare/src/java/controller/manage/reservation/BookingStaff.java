@@ -88,8 +88,14 @@ public class BookingStaff extends BaseRBAC {
         if (serviceList != null && serviceList.length != 0) {
             request.setAttribute("service", serviceList[0]);
         }
+        
+        Service sv = new Service();
+        if(id_sv != null && id_sv.length() != 0){
+            sv = sdb.getServicesById(Integer.parseInt(id_sv));
+        }
 
         // Set all common attributes
+        request.setAttribute("service_above", sv);
         request.setAttribute("sid", id_sv);
         request.setAttribute("isFromCart", isFromCart);
         request.setAttribute("service_id", id_raw);

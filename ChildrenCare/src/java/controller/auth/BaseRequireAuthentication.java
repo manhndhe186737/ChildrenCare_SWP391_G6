@@ -27,7 +27,8 @@ public abstract class BaseRequireAuthentication extends HttpServlet {
             Account account = (Account)req.getSession().getAttribute("account");
             doPost(req, resp, account);
         }else{
-            resp.getWriter().print("access denied!!");
+            //resp.getWriter().print("access denied!!");
+            resp.sendRedirect(req.getContextPath() + "/c/error.html");
         }
     }
 
@@ -37,7 +38,8 @@ public abstract class BaseRequireAuthentication extends HttpServlet {
             Account account = (Account)req.getSession().getAttribute("account");
             doGet(req, resp, account);
         }else{
-            resp.getWriter().print("access denied!!");
+            //resp.getWriter().print("access denied!!");
+            resp.sendRedirect(req.getContextPath() + "/c/error.html");
         }
     }
     

@@ -47,7 +47,8 @@ public abstract class BaseRBAC extends BaseRequireAuthentication {
         if (isAuthorize(account, req)) {
             doAuthorizedPost(req, resp, account);
         } else {
-            resp.sendError(403, "You cannot acces this page!!!");
+            //resp.sendError(403, "You cannot acces this page!!!");
+            resp.sendRedirect(req.getContextPath() + "/c/forbidden.html");
         }
     }
 
@@ -56,7 +57,8 @@ public abstract class BaseRBAC extends BaseRequireAuthentication {
         if (isAuthorize(account, req)) {
             doAuthorizedGet(req, resp, account);
         } else {
-            resp.sendError(403, "You cannot acces this page!!!");
+            //resp.sendError(403, "You cannot acces this page!!!");
+            resp.sendRedirect(req.getContextPath() + "/c/forbidden.html");
         }
     }
 

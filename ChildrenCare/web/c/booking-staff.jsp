@@ -627,25 +627,26 @@
                 const serviceSelect = document.querySelector(".selectedService");
 
                 if (serviceSelect) {
-                    // Lấy giá trị mặc định của option đầu tiên
-                    let defaultValue = serviceSelect.options[0].value;
+                    // Lấy giá trị được chọn hiện tại (nếu có)
+                    let selectedValue = serviceSelect.value;
 
-                    // Gán giá trị mặc định cho tất cả input[name='inputSelectedService']
+                    // Gán giá trị đã chọn vào input[name='inputSelectedService']
                     document.querySelectorAll("input[name='inputSelectedService']").forEach(input => {
-                        input.value = defaultValue;
+                        input.value = selectedValue;
                     });
 
                     // Lắng nghe sự kiện thay đổi dropdown
                     serviceSelect.addEventListener("change", function () {
-                        let selectedValue = this.value; // Lấy giá trị đã chọn
+                        let newValue = this.value; // Lấy giá trị đã chọn mới
 
-                        // Cập nhật giá trị của tất cả input[name="inputSelectedService"]
+                        // Cập nhật tất cả input[name='inputSelectedService']
                         document.querySelectorAll("input[name='inputSelectedService']").forEach(input => {
-                            input.value = selectedValue;
+                            input.value = newValue;
                         });
                     });
                 }
             });
+
 
             document.addEventListener("DOMContentLoaded", function () {
                 var startTimeInput = document.getElementById("starttime");
