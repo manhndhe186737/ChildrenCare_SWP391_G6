@@ -25,13 +25,13 @@ public class Reservation {
     private User staff;
     private Service service;
     private ArrayList<Feedback> feedbacks;
-    private ArrayList<Payment> payments;
+    private Payment payment;
     private ArrayList<Schedule> schedules;
 
     public Reservation() {
     }
 
-    public Reservation(int id, Date bookdate, String status, Date updatedate, Date createdate, String note, Time start, Time end, String customerName, String customerAddress, User customer, User staff, Service service, ArrayList<Feedback> feedbacks, ArrayList<Payment> payments, ArrayList<Schedule> schedules) {
+    public Reservation(int id, Date bookdate, String status, Date updatedate, Date createdate, String note, Time start, Time end, String customerName, String customerAddress, User customer, User staff, Service service, ArrayList<Feedback> feedbacks, Payment payment, ArrayList<Schedule> schedules) {
         this.id = id;
         this.bookdate = bookdate;
         this.status = status;
@@ -46,7 +46,7 @@ public class Reservation {
         this.staff = staff;
         this.service = service;
         this.feedbacks = feedbacks;
-        this.payments = payments;
+        this.payment = payment;
         this.schedules = schedules;
     }
 
@@ -162,12 +162,12 @@ public class Reservation {
         this.feedbacks = feedbacks;
     }
 
-    public ArrayList<Payment> getPayments() {
-        return payments;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setPayments(ArrayList<Payment> payments) {
-        this.payments = payments;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     public ArrayList<Schedule> getSchedules() {
@@ -178,5 +178,6 @@ public class Reservation {
         this.schedules = schedules;
     }
 
+    
    
 }

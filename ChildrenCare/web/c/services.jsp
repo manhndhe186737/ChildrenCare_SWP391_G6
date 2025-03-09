@@ -274,10 +274,10 @@
                         <li class="has-submenu parent-menu-item">
                             <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                             <ul class="submenu">
-                                <li><a href="../service-list" class="sub-menu-item">Services List</a></li>
+                                <li><a href="./service-list" class="sub-menu-item">Services List</a></li>
                                     <c:if test="${sessionScope.role.contains('Customer')}">
-                                    <li><a href="../myreservation" class="sub-menu-item">My Reservation</a></li>
-                                    <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
+                                    <li><a href="./myreservation" class="sub-menu-item">My Reservation</a></li>
+                                    <li><a href="c/BookingStaff" class="sub-menu-item">Reservation</a></li>
                                     </c:if>
                             </ul>
                         </li>
@@ -285,16 +285,16 @@
                         <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)">Pages</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
-                                <li><a href="../blog" class="sub-menu-item">Blogs</a></li>
+                                <li><a href="./blog" class="sub-menu-item">Blogs</a></li>
 
                                 <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                    <li><a href="../post-list" class="sub-menu-item">Posts - Management</a></li>
-                                    <li><a href="../slider" class="sub-menu-item">Sliders - Management</a></li>
+                                    <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
+                                    <li><a href="./slider" class="sub-menu-item">Sliders - Management</a></li>
                                     </c:if>
                             </ul>
                         </li>
                         <c:if test="${sessionScope.role.contains('Admin')}">
-                            <li><a href="../admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
+                            <li><a href="./admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
                             </c:if>
 
                     </ul><!--end navigation menu-->

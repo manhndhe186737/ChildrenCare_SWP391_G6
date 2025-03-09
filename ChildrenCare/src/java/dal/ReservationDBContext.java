@@ -4,11 +4,13 @@
  */
 package dal;
 
+import com.mysql.cj.xdevapi.Statement;
 import java.util.ArrayList;
 import model.Service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
+import model.Payment;
 import model.User;
 import model.Reservation;
 
@@ -56,19 +58,19 @@ public class ReservationDBContext extends DBContext {
         }
         return null;
     }
-    
+
     public Service deleteCart(int id) {
         String sql = "DELETE FROM Cart WHERE service_id = ?;";
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, id);
             stm.executeUpdate();
-            
+
         } catch (Exception e) {
         }
         return null;
     }
 
-    public boolean insertReservation(Reservation reservation) {
+    public boolean insertReservation1(Reservation reservation) {
         String sql = "INSERT INTO reservations (dateBook, user_id, service_id, status, staff_id, createDate, updateDate, note, starttime, endtime, customer_name, customer_address) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
@@ -85,12 +87,71 @@ public class ReservationDBContext extends DBContext {
             stm.setString(11, reservation.getCustomerName());
             stm.setString(12, reservation.getCustomerAddress());
 
+            // Log thông tin trước khi thực hiện truy vấn
+            System.out.println("Executing SQL: " + sql);
+            System.out.println("Values: " + reservation.toString());
+
             int rowsInserted = stm.executeUpdate();
+            System.out.println("Rows affected: " + rowsInserted);
+
             return rowsInserted > 0;
+        } catch (Exception e) {
+            e.printStackTrace();  // Hiển thị lỗi chi tiết
+        }
+        return false;
+    }
+
+    public int insertReservation(Reservation reservation) {
+        int generatedId = -1; // Giá trị mặc định nếu không lấy được ID
+        String sql = "INSERT INTO reservations (dateBook, user_id, service_id, status, staff_id, createDate, updateDate, note, starttime, endtime, customer_name, customer_address) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stm.setDate(1, reservation.getBookdate());
+            stm.setInt(2, reservation.getCustomer().getId());
+            stm.setInt(3, reservation.getService().getId());
+            stm.setString(4, reservation.getStatus());
+            stm.setInt(5, reservation.getStaff().getId());
+            stm.setDate(6, reservation.getCreatedate());
+            stm.setDate(7, reservation.getUpdatedate());
+            stm.setString(8, reservation.getNote());
+            stm.setTime(9, reservation.getStart());
+            stm.setTime(10, reservation.getEnd());
+            stm.setString(11, reservation.getCustomerName());
+            stm.setString(12, reservation.getCustomerAddress());
+
+            int rowsInserted = stm.executeUpdate();
+
+            if (rowsInserted > 0) {
+                try (ResultSet rs = stm.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        generatedId = rs.getInt(1); // Lấy ID tự động tăng sau khi insert
+                        reservation.setId(generatedId); // Cập nhật ID vào đối tượng Reservation nếu cần
+                    }
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return generatedId; // Trả về ID vừa insert (hoặc -1 nếu lỗi)
+    }
+
+    public boolean insertPayment(Payment payment) {
+        String sql = "INSERT INTO payment (reserv_id, date, amount, method, status) VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, payment.getReservation().getId());
+            stm.setDate(2, payment.getDate());
+            stm.setFloat(3, payment.getAmount());
+            stm.setString(4, payment.getMethod());
+            stm.setString(5, payment.getStatus());
+
+            int rowsInserted = stm.executeUpdate();
+            return rowsInserted > 0; // Trả về true nếu chèn thành công
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false; // Trả về false nếu có lỗi
+        }
     }
 
     public ArrayList<Service> getServicesInCart(int userId) {
@@ -258,7 +319,7 @@ public class ReservationDBContext extends DBContext {
         }
         return staff;
     }
-    
+
     public ArrayList<User> getAvailableStaffById(String date, String startTime, String endTime, int id) {
         ArrayList<User> staff = new ArrayList<>();
         String sql = "SELECT * \n"

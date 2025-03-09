@@ -33,6 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import model.Payment;
 import model.Reservation;
 import model.Service;
 import model.User;
@@ -83,10 +84,6 @@ public class VNPayServlet extends HttpServlet {
         
         String fromCart = req.getParameter("isFromCart");
 
-        HttpSession session = req.getSession();
-        session.setAttribute("reservation", reservation);
-        session.setAttribute("isFromCart", fromCart);
-
         int amount = 0;
         double amountVND = 0;
 
@@ -111,6 +108,18 @@ public class VNPayServlet extends HttpServlet {
         }
 
         amount = (int) amountVND * 100;
+        
+        Payment pay = new Payment();
+        pay.setAmount((int)amountVND);
+        pay.setMethod("Online banking");
+        pay.setDate(java.sql.Date.valueOf(current));
+        pay.setStatus("Paid");
+        
+        reservation.setPayment(pay);
+        
+        HttpSession session = req.getSession();
+        session.setAttribute("reservation", reservation);
+        session.setAttribute("isFromCart", fromCart);
 
         String vnp_IpAddr = req.getRemoteAddr();
 

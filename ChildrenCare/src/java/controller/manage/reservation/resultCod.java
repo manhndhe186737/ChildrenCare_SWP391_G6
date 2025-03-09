@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
+import model.Payment;
 import model.Reservation;
 import model.Service;
 import model.User;
@@ -101,12 +102,25 @@ public class resultCod extends HttpServlet {
         }
 
         amount = (int) amountVND;
+        
+        Payment pay = new Payment();
+        pay.setAmount(amount);
+        pay.setMethod("COD");
+        pay.setDate(java.sql.Date.valueOf(current));
+        pay.setStatus("Unpaid");
+        
+        reservation.setPayment(pay);
+        
+//        int reserv_id = -1;
 
         if (reservation != null) {
 
             reservation.setStatus("Scheduled");
-            rdb.insertReservation(reservation);
-
+            int reserv_id = rdb.insertReservation(reservation);
+            reservation.setId(reserv_id);
+            
+            pay.setReservation(reservation);
+            rdb.insertPayment(pay);
         }
         
         String fromCart = request.getParameter("isFromCart");

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import model.Payment;
 import model.Reservation;
 
 /**
@@ -62,28 +63,37 @@ public class NewServlet extends HttpServlet {
         }
         hashData.deleteCharAt(hashData.length() - 1);
 
+        // Lưu thông tin reservation vào database
+        HttpSession session = req.getSession();
+        Reservation r = (Reservation) session.getAttribute("reservation");
+        String fromCart = (String) session.getAttribute("isFromCart");
+
+        if (r != null) {
+
+            r.setStatus("Scheduled");
+
+            ReservationDBContext rdb = new ReservationDBContext();
+            int reserv_id = rdb.insertReservation(r);
+
+            r.setId(reserv_id);
+
+            Payment p = r.getPayment();
+            p.setReservation(r);
+            
+            rdb.insertPayment(p);
+
+            if (fromCart != null && fromCart.length() != 0) {
+                rdb.deleteCart(r.getService().getId());
+            }
+
+        }
+
+        //session.setAttribute("reserv", r);
         try {
             String calculatedHash = hmacSHA512(VNPayServlet.VNP_HASH_SECRET, hashData.toString());
             if (calculatedHash.equals(vnp_SecureHash) && "00".equals(fields.get("vnp_ResponseCode"))) {
                 req.setAttribute("message", "Payment successful!");
 
-                // Lưu thông tin reservation vào database
-                HttpSession session = req.getSession();
-                Reservation r = (Reservation) session.getAttribute("reservation");
-                String fromCart = (String) session.getAttribute("isFromCart");
-
-                if (r != null) {
-
-                    r.setStatus("Scheduled");
-
-                    ReservationDBContext rdb = new ReservationDBContext();
-                    rdb.insertReservation(r);
-
-                    if (fromCart != null && fromCart.length() != 0) {
-                        rdb.deleteCart(r.getService().getId());
-                    }
-
-                }
             } else {
                 req.setAttribute("message", "Payment failed!");
             }
@@ -98,7 +108,6 @@ public class NewServlet extends HttpServlet {
 
         req.getSession().removeAttribute("reservation");
         req.getSession().removeAttribute("isFromCart");
-
         req.getRequestDispatcher("vnpay-return.jsp").forward(req, resp);
     }
 
