@@ -1,21 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html lang="en">
-
-    <head>
-        <meta charset="utf-8" />
-        <title>Children Care - Service Booking System</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
-        <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
-        <meta name="author" content="Shreethemes" />
-        <meta name="email" content="support@shreethemes.in" />
-        <meta name="website" content="./././index.html" />
-        <meta name="Version" content="v1.2.0" />
-        <!-- favicon -->
-        <link rel="shortcut icon" href="./assets/images/favicon.ico.png">
+<head>
+    <meta charset="utf-8" />
+    <title>Add Slider - Children Care</title>
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="./assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+     <link rel="shortcut icon" href="./assets/images/favicon.ico.png">
         <!-- Bootstrap -->
         <link href="./assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- simplebar -->
@@ -26,207 +19,68 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="./assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
-
-        <script src="https://cdn.jsdelivr.net/npm/tinymce/tinymce.min.js"></script>
-
-        <style>
-            /* General Styles */
-            body {
-                font-family: 'Inter', sans-serif;
-                background-color: #f8f9fa;
-            }
-
-            /* Table Styling */
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                background: #fff;
-                border-radius: 10px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                overflow: hidden;
-            }
-
-            table th, table td {
-                padding: 12px 15px;
-                text-align: left;
-                border-bottom: 1px solid #ddd;
-            }
-
-            table th {
-                background: #556ee6;
-                color: #fff;
-                font-weight: 600;
-            }
-
-            table tr:hover {
-                background-color: #eef2ff;
-            }
-
-            table img {
-                border-radius: 5px;
-            }
-            .search-bar .menu-search form {
-                position: relative;
-                padding: 0px;
-            }
-            /* Form Styling */
-            form {
-                display: flex;
-                flex-direction: column;
-                gap: 15px;
-                background: #ffffff;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                max-width: 600px;
-                margin: auto;
-            }
-
-            form label {
-                font-weight: bold;
-            }
-
-            form input,
-            form select,
-            form textarea {
-                padding: 10px;
-                border: 1px solid #556ee6;
-                border-radius: 5px;
-                font-size: 14px;
-                width: 100%;
-            }
-
-            form button {
-                background: #556ee6;
-                color: white;
-                padding: 10px 15px;
-                border: none;
-                border-radius: 5px;
-                font-size: 16px;
-                cursor: pointer;
-                transition: background 0.3s;
-            }
-
-            form button:hover {
-                background: #4455c9;
-            }
-
-
-            /* Container bọc cả ảnh hiện tại và preview */
-            .image-container {
-                display: flex;
-                gap: 20px;
-                align-items: center;
-            }
-
-            /* Khung chứa ảnh hiện tại */
-            .current-image-container {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 10px;
-                background-color: #f4f4f4;
-                border-radius: 10px;
-                border: 2px dashed #bbb;
-                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-                width: 180px;
-                height: 180px;
-            }
-
-            /* Ẩn khung preview khi chưa có ảnh */
-            .preview-container {
-                display: none;
-                justify-content: center;
-                align-items: center;
-                padding: 10px;
-                background-color: #f4f4f4;
-                border-radius: 10px;
-                border: 2px dashed #28a745;
-                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-                width: 180px;
-                height: 180px;
-                transition: all 0.3s ease-in-out;
-            }
-
-            /* Ảnh trong cả current và preview */
-            .current-image-container img,
-            .preview-container img {
-                max-width: 100%;
-                max-height: 160px;
-                border-radius: 8px;
-                transition: transform 0.3s ease-in-out;
-            }
-
-            /* Hiệu ứng hover làm ảnh to nhẹ lên */
-            .preview-container img:hover,
-            .current-image-container img:hover {
-                transform: scale(1.05);
-            }
-
-            /* Nút upload ảnh */
-            .btn-upload {
-                display: inline-block;
-                padding: 12px 18px;
-                background-color: #ff7f50; /* Màu cam nhạt */
-                color: white;
-                font-weight: bold;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: background 0.3s ease-in-out;
-                text-align: center;
-                font-size: 14px;
-            }
-
-            /* Hover vào nút upload sẽ đậm hơn */
-            .btn-upload:hover {
-                background-color: #e66a38;
-            }
-
-            /* Ẩn input file mặc định */
-            input[type="file"] {
-                display: none;
-            }
-            /* Back Button */
-            .back-btn {
-                display: block;
-                width: max-content;
-                margin: 20px auto;
-                padding: 10px 15px;
-                background: #6c757d;
-                color: white;
-                text-decoration: none;
-                border-radius: 5px;
-                font-size: 14px;
-                text-align: center;
-                transition: background 0.3s;
-            }
-
-            .back-btn:hover {
-                background: white;
-            }
-            .defaultscroll.sticky {
-                top: 60px;
-                transition: top 0.3s ease;
-            }
-
-            .page-content {
-                padding-top: 80px;
-            }
-
-            @media (max-width: 768px) {
-                .defaultscroll.sticky {
-                    top: 10px;
-                }
-                .page-content {
-                    padding-top: 50px; /* Điều chỉnh padding trên màn hình nhỏ */
-                }
-            }
-            h2 {
-                text-align: center; /* Căn giữa văn bản */
-                color: #343a40; /* Màu chữ đồng bộ với thiết kế (tùy chọn) */
-                font-weight: 700; /* Tăng độ đậm cho tiêu đề (tùy chọn) */
-            }
-            html, body {
+    <style>
+        .add-slider-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .add-slider-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .add-slider-form label {
+            font-weight: 500;
+            color: #666;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .add-slider-form input,
+        .add-slider-form select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        .image-preview {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: block;
+            border: 1px solid #ddd;
+        }
+        .add-slider-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .add-slider-actions .save-btn {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .add-slider-actions .save-btn:hover {
+            background: #0056b3;
+        }
+        .add-slider-actions .cancel-btn {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        html, body {
                 height: 100%;
                 margin: 0;
                 padding: 0;
@@ -243,12 +97,23 @@
             .bg-footer {
                 margin-top: auto;
             }
+            .container-fluid {
+                max-width: 1200px;
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
 
-        </style>
-    </head>
-
-    <body>
-        <!-- Loader -->
+            .layout-specing {
+                margin-left: 0;
+                margin-right: 0;
+                padding: 20px;
+            }
+    </style>
+</head>
+<body>
+         <!-- Loader -->
         <div id="preloader">
             <div id="status">
                 <div class="spinner">
@@ -406,81 +271,36 @@
                         </header><!--end header-->
                     </div>
                 </div>
+    <div class="container-fluid">
+        <div class="layout-specing">
+            <div class="add-slider-container">
+                <h2 class="add-slider-title">Add New Slider</h2>
+                <form action="slider-add" method="post" enctype="multipart/form-data" class="add-slider-form">
+                    <label>Title:</label>
+                    <input type="text" name="title" required>
 
-                <div class="container">
-                    <h2>Add New Post</h2>
+                    <label>Backlink:</label>
+                    <input type="text" name="backlink" required>
 
-                    <form method="POST" action="${pageContext.request.contextPath}/post-add" enctype="multipart/form-data">
-                        <label>Title:</label>
-                        <input type="text" name="title" required>
+                    <label>Upload Image:</label>
+                    <input type="file" name="imageFile" id="imageFile" accept="image/*" required>
+                    <img id="preview" class="image-preview" style="display:none;">
 
-                        <label>Content:</label>
-                        <textarea id="content-editor" name="content" ></textarea>
+                    <label>Status:</label>
+                    <select name="status">
+                        <option value="1">Visible</option>
+                        <option value="0">Hidden</option>
+                    </select>
 
-
-                        <label>Category:</label>
-                        <select name="category">
-                            <% List<String> categories = (List<String>) request.getAttribute("categories");
-           for (String category : categories) { %>
-                            <option value="<%= category %>"><%= category %></option>
-                            <% } %>
-                        </select>
-
-                        <label>Status:</label>
-                        <select name="status">
-                            <option value="1">Active</option>
-                            <option value="0">Hidden</option>
-                        </select>
-                        <label>Upload Image:</label>
-                        <div class="image-container">
-                            <div class="current-image-container" id="currentImageContainer">
-                                <img id="currentImage" src="./assets/images/placeholder.png" alt="Current Image">
-                            </div>
-                            <div class="preview-container" id="preview-container">
-                                <img id="preview-image" src="" alt="Preview Image">
-                            </div>
-                        </div>
-                        <label for="imageFile" class="btn-upload">📸 Upload</label>
-                        <input type="file" name="imageFile" accept="image/*" id="imageFile" onchange="previewImage(event)">
-
-
-                        <label>Author:</label>
-                        <select name="author">
-                            <% 
-                                List<String[]> authors = (List<String[]>) request.getAttribute("authors"); 
-                                if (authors == null || authors.isEmpty()) { 
-                            %>
-                            <option value="">No authors available</option>
-                            <% 
-                                } else { 
-                                    for (String[] author : authors) { 
-                            %>
-                            <option value="<%= author[0] %>"><%= author[1] %></option>
-                            <% 
-                                    }
-                                } 
-                            %>
-                        </select>
-
-                        <% String error = request.getParameter("error"); %>
-                        <% if (error != null) { %>
-                        <p style="color: red;">
-                            <% if ("missing_author".equals(error)) { %>
-                            Please select an author.
-                            <% } else if ("invalid_author".equals(error)) { %>
-                            Invalid author selection.
-                            <% } %>
-                        </p>
-                        <% } %>
-
-                        <button type="submit">Add Post</button>
-                    </form>
-
-
-                    <a href="post-list" class="back-btn">Back to Post List</a>
-                </div>
-
-                <!-- Start -->
+                    <div class="add-slider-actions">
+                        <button type="submit" class="save-btn">Save</button>
+                        <a href="slider" class="cancel-btn">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<!-- Start -->
                 <footer class="bg-footer">
                     <div class="container">
                         <div class="row">
@@ -653,67 +473,18 @@
                 <!-- Main Js -->
                 <script src="./assets/js/app.js"></script>
 
-        <script>
-                                        const handleChange = () => {
-                                            const fileUploader = document.querySelector('#input-file');
-                                            const getFile = fileUploader.files
-                                            if (getFile.length !== 0) {
-                                                const uploadedFile = getFile[0];
-                                                readFile(uploadedFile);
-                                            }
-                                        }
-
-                                        const readFile = (uploadedFile) => {
-                                            if (uploadedFile) {
-                                                const reader = new FileReader();
-                                                reader.onload = () => {
-                                                    const parent = document.querySelector('.preview-box');
-                                                    parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
-                                                };
-
-                                                reader.readAsDataURL(uploadedFile);
-                                            }
-                                        };
-        </script>
-        <script>
-            function previewImage(event) {
-                const input = event.target;
+    <script>
+        document.getElementById("imageFile").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
                 const reader = new FileReader();
-                const previewContainer = document.getElementById("preview-container");
-                const previewImage = document.getElementById("preview-image");
-                const currentImageContainer = document.getElementById("currentImageContainer");
-
                 reader.onload = function () {
-                    previewImage.src = reader.result;
-                    previewContainer.style.display = "flex";
-                    currentImageContainer.style.display = "none";
+                    document.getElementById("preview").src = reader.result;
+                    document.getElementById("preview").style.display = "block";
                 };
-
-                if (input.files && input.files[0]) {
-                    reader.readAsDataURL(input.files[0]);
-                } else {
-                    previewContainer.style.display = "none";
-                    currentImageContainer.style.display = "flex";
-                }
+                reader.readAsDataURL(file);
             }
-        </script>
-        <script>
-            tinymce.init({
-                selector: 'textarea#content-editor',
-                height: 300,
-                menubar: false,
-                plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste help',
-                toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-                content_css: 'https://www.tiny.cloud/css/codepen.min.css',
-                setup: function (editor) {
-                    editor.on('change', function () {
-                        editor.save(); // Cập nhật nội dung vào textarea thật
-                    });
-                }
-            });
-
-        </script>
-
-    </body>
-
+        });
+    </script>
+</body>
 </html>
