@@ -302,7 +302,7 @@
                                 <div class="col mt-4">
                                     <div class="card team border-0 rounded shadow overflow-hidden">
                                         <div class="team-img position-relative">
-                                            <img src="../assets/images/${s.avatar}" class="img-fluid" alt="">
+                                            <img src="${pageContext.request.contextPath}/${s.avatar}" class="img-fluid" alt="">
                                         </div>
                                         <div class="card-body content text-center">
                                             <form id="form-staff" action="booking-reserv" method="post">

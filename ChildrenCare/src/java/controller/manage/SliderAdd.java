@@ -1,5 +1,6 @@
 package controller.manage;
 
+import controller.auth.BaseRBAC;
 import dal.SliderDBContext;
 import java.io.IOException;
 import java.io.File;
@@ -20,16 +21,16 @@ import model.Slider;
     maxFileSize = 1024 * 1024 * 10,
     maxRequestSize = 1024 * 1024 * 50
 )
-public class SliderAdd extends HttpServlet {
+public class SliderAdd extends BaseRBAC {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account acocunt)
             throws ServletException, IOException {
         request.getRequestDispatcher("/admin/sliderAdd.jsp").forward(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account acocunt)
             throws ServletException, IOException {
         // Lấy dữ liệu từ form
         String title = request.getParameter("title");
@@ -83,4 +84,5 @@ public class SliderAdd extends HttpServlet {
     public String getServletInfo() {
         return "Servlet for adding new sliders";
     }
+
 }

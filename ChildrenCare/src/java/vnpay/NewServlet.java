@@ -67,31 +67,32 @@ public class NewServlet extends HttpServlet {
         HttpSession session = req.getSession();
         Reservation r = (Reservation) session.getAttribute("reservation");
         String fromCart = (String) session.getAttribute("isFromCart");
+        Payment p = new Payment();
 
-        if (r != null) {
-
-            r.setStatus("Scheduled");
-
-            ReservationDBContext rdb = new ReservationDBContext();
-            int reserv_id = rdb.insertReservation(r);
-
-            r.setId(reserv_id);
-
-            Payment p = r.getPayment();
-            p.setReservation(r);
-            
-            rdb.insertPayment(p);
-
-            if (fromCart != null && fromCart.length() != 0) {
-                rdb.deleteCart(r.getService().getId());
-            }
-
-        }
-
+//        if (r != null) {
+//
+//            r.setStatus("Scheduled");
+//
+//            ReservationDBContext rdb = new ReservationDBContext();
+//            int reserv_id = rdb.insertReservation(r);
+//
+//            r.setId(reserv_id);
+//
+//            p = r.getPayment();
+//            p.setReservation(r);
+//
+//            rdb.insertPayment(p);
+//
+//            if (fromCart != null && fromCart.length() != 0) {
+//                rdb.deleteCart(r.getService().getId());
+//            }
+//
+//        }
         //session.setAttribute("reserv", r);
         try {
             String calculatedHash = hmacSHA512(VNPayServlet.VNP_HASH_SECRET, hashData.toString());
             if (calculatedHash.equals(vnp_SecureHash) && "00".equals(fields.get("vnp_ResponseCode"))) {
+
                 req.setAttribute("message", "Payment successful!");
 
             } else {

@@ -25,7 +25,12 @@
         <!-- Css -->
         <link href="./assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
         <style>
-
+            .section{
+                padding: 0px !important;
+            }
+            .content-section{
+                padding-top: 80px;
+            }
         </style>
     </head>
 
@@ -148,10 +153,10 @@
                         <li class="has-submenu parent-menu-item">
                             <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                             <ul class="submenu">
-                                <li><a href="../service-list" class="sub-menu-item">Services List</a></li>
+                                <li><a href="./service-list" class="sub-menu-item">Services List</a></li>
                                     <c:if test="${sessionScope.role.contains('Customer')}">
-                                    <li><a href="../myreservation" class="sub-menu-item">My Reservation</a></li>
-                                    <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
+                                    <li><a href="./myreservation" class="sub-menu-item">My Reservation</a></li>
+                                    <li><a href="c/BookingStaff" class="sub-menu-item">Reservation</a></li>
                                     </c:if>
                             </ul>
                         </li>
@@ -159,16 +164,16 @@
                         <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)">Pages</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
-                                <li><a href="../blog" class="sub-menu-item">Blogs</a></li>
+                                <li><a href="./blog" class="sub-menu-item">Blogs</a></li>
 
                                 <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                    <li><a href="../post-list" class="sub-menu-item">Posts - Management</a></li>
-                                    <li><a href="../slider" class="sub-menu-item">Sliders - Management</a></li>
+                                    <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
+                                    <li><a href="./slider" class="sub-menu-item">Sliders - Management</a></li>
                                     </c:if>
                             </ul>
                         </li>
                         <c:if test="${sessionScope.role.contains('Admin')}">
-                            <li><a href="../admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
+                            <li><a href="./admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
                             </c:if>
 
                     </ul><!--end navigation menu-->
@@ -261,71 +266,73 @@
         </div>
     </div>
 
-    <!-- Main Content Section -->
-    <section class="section">
-        <div class="container">
-            <div class="row align-items-center">
-                <!-- Slider / Image Section -->
-                <div class="col-md-5">
-                    <div class="slider slider-for">
-                        <!-- Nếu service có hình ảnh thì thay đổi theo thuộc tính của service -->
-                        <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid rounded" alt="${service.name}"></div>
-                        <!-- Nếu có thêm nhiều slide, có thể thêm nhiều div ở đây -->
-                    </div>
-
-                    <div class="slider slider-nav">
-                        <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="${service.name}"></div>
-                        <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="${service.name}"></div>
-
-                        <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="${service.name}"></div>
-
-                    </div>
-
-                </div><!--end col-->
-
-                <!-- Service Detail Section -->
-                <div class="col-md-7 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                    <div class="section-title ms-md-4">
-                        <!-- Tên dịch vụ -->
-                        <h4 class="title">${service.name}</h4>
-                        <!-- Giá dịch vụ -->
-                        <h5 class="text-muted">$${service.price}</h5>
-                        <!-- Có thể hiển thị đánh giá nếu có dữ liệu -->
-                        <ul class="list-unstyled text-warning h5 mb-0">
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item me-2 h6 text-muted">(20 Ratting)</li>
-
-                        </ul>
-
-                        <h5 class="mt-4 py-2">Overview :</h5>
-                        <!-- Mô tả dịch vụ -->
-                        <p class="text-muted">${service.description}</p>
-
-                        <div class="mt-4 pt-2">
-                            <c:if test="${sessionScope.role.contains('Customer')}">
-                                <div class="d-flex align-items-center">
-                                    <!-- Reserve Button -->
-                                    <form id="freserv" action="c/BookingStaff" method="post">
-                                        <input type="hidden" name="service_id" value="${service.id}"/>
-                                        <input type="hidden" name="service_name" value="${service.name}"/>
-                                        <a href="#" class="btn btn-success" onclick="submitCartItem(this);">Reserve</a>
-                                    </form>
-
-                                    <!-- Feedback Button -->
-                                    <a href="feedback.jsp?service_id=${service.id}" class="btn btn-soft-primary ms-2">Feedback</a>
-                                </div>
-                            </c:if>
+    <div class="content-section">
+        <!-- Main Content Section -->
+        <section class="section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <!-- Slider / Image Section -->
+                    <div class="col-md-5">
+                        <div class="slider slider-for">
+                            <!-- Nếu service có hình ảnh thì thay đổi theo thuộc tính của service -->
+                            <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid rounded" alt="${service.name}"></div>
+                            <!-- Nếu có thêm nhiều slide, có thể thêm nhiều div ở đây -->
                         </div>
 
-                    </div>
-                </div><!--end col-->
-            </div><!--end row-->
-        </div><!--end container-->
-    </section>
+                        <div class="slider slider-nav">
+                            <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="${service.name}"></div>
+                            <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="${service.name}"></div>
+
+                            <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="${service.name}"></div>
+
+                        </div>
+
+                    </div><!--end col-->
+
+                    <!-- Service Detail Section -->
+                    <div class="col-md-7 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                        <div class="section-title ms-md-4">
+                            <!-- Tên dịch vụ -->
+                            <h4 class="title">${service.name}</h4>
+                            <!-- Giá dịch vụ -->
+                            <h5 class="text-muted">$${service.price}</h5>
+                            <!-- Có thể hiển thị đánh giá nếu có dữ liệu -->
+                            <ul class="list-unstyled text-warning h5 mb-0">
+                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                <li class="list-inline-item me-2 h6 text-muted">(20 Ratting)</li>
+
+                            </ul>
+
+                            <h5 class="mt-4 py-2">Overview :</h5>
+                            <!-- Mô tả dịch vụ -->
+                            <p class="text-muted">${service.description}</p>
+
+                            <div class="mt-4 pt-2">
+                                <c:if test="${sessionScope.role.contains('Customer')}">
+                                    <div class="d-flex align-items-center">
+                                        <!-- Reserve Button -->
+                                        <form id="freserv" action="c/BookingStaff" method="post">
+                                            <input type="hidden" name="service_id" value="${service.id}"/>
+                                            <input type="hidden" name="service_name" value="${service.name}"/>
+                                            <a href="#" class="btn btn-success" onclick="submitCartItem(this);">Reserve</a>
+                                        </form>
+
+                                        <!-- Feedback Button -->
+                                        <a href="feedback.jsp?service_id=${service.id}" class="btn btn-soft-primary ms-2">Feedback</a>
+                                    </div>
+                                </c:if>
+                            </div>
+
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section>
+    </div>
 
     <section class="section">
         <div class="container mt-100 mt-60">
@@ -379,92 +386,92 @@
 
     <!-- Footer Start -->
     <footer class="bg-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
-                        <a class="logo-footer">
-                        </a>
-                        <p class="mt-4 me-xl-5">
-                            We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
-                        </p>
-                    </div>
-
-                    <div class="col-xl-7 col-lg-8 col-md-12">
-                        <div class="row">
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">About Us</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li>Our Mission</li>
-                                    <li>Our Team</li>
-                                    <li>Our Services</li>
-                                    <li>Success Stories</li>
-                                    <li>Blog & Updates</li>
-                                </ul>
-                            </div>
-
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li>Quick Haircut</li>
-                                    <li>Massage</li>
-                                    <li>Babysitting</li>
-                                    <li>Special Skin Treatment</li>
-                                    <li>Physical Therapy</li>
-                                </ul>
-                            </div>
-
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Contact Us</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="text-foot ms-2">contact@childrencare.com</span>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="text-foot ms-2">+1 234 567 890</span>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="video-play-icon text-foot ms-2">Find us on the map</span>
-                                    </li>
-                                </ul>
-
-                                <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
+                    <a class="logo-footer">
+                    </a>
+                    <p class="mt-4 me-xl-5">
+                        We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
+                    </p>
                 </div>
-            </div>
 
-            <div class="container mt-5">
-                <div class="pt-4 footer-bar">
-                    <div class="row align-items-center">
-                        <div class="col-sm-6">
-                            <div class="text-sm-start text-center">
-                                <p class="text-foot mb-0">© 2025 Children Care. All Rights Reserved.</p>
-                            </div>
+                <div class="col-xl-7 col-lg-8 col-md-12">
+                    <div class="row">
+                        <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                            <h5 class="text-light title-dark footer-head">About Us</h5>
+                            <ul class="list-unstyled footer-list mt-4">
+                                <li>Our Mission</li>
+                                <li>Our Team</li>
+                                <li>Our Services</li>
+                                <li>Success Stories</li>
+                                <li>Blog & Updates</li>
+                            </ul>
                         </div>
 
-                        <div class="col-sm-6 mt-4 mt-sm-0">
-                            <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
-                                <li class="list-inline-item">Terms</li>
-                                <li class="list-inline-item">Privacy</li>
-                                <li class="list-inline-item">About</li>
-                                <li class="list-inline-item">Contact</li>
+                        <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                            <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
+                            <ul class="list-unstyled footer-list mt-4">
+                                <li>Quick Haircut</li>
+                                <li>Massage</li>
+                                <li>Babysitting</li>
+                                <li>Special Skin Treatment</li>
+                                <li>Physical Therapy</li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                            <h5 class="text-light title-dark footer-head">Contact Us</h5>
+                            <ul class="list-unstyled footer-list mt-4">
+                                <li class="d-flex align-items-center">
+                                    <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
+                                    <span class="text-foot ms-2">contact@childrencare.com</span>
+                                </li>
+
+                                <li class="d-flex align-items-center">
+                                    <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
+                                    <span class="text-foot ms-2">+1 234 567 890</span>
+                                </li>
+
+                                <li class="d-flex align-items-center">
+                                    <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
+                                    <span class="video-play-icon text-foot ms-2">Find us on the map</span>
+                                </li>
+                            </ul>
+
+                            <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
+                                <li class="list-inline-item"><span class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></span></li>
+                                <li class="list-inline-item"><span class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></span></li>
+                                <li class="list-inline-item"><span class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></span></li>
+                                <li class="list-inline-item"><span class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></span></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </footer>
+        </div>
+
+        <div class="container mt-5">
+            <div class="pt-4 footer-bar">
+                <div class="row align-items-center">
+                    <div class="col-sm-6">
+                        <div class="text-sm-start text-center">
+                            <p class="text-foot mb-0">© 2025 Children Care. All Rights Reserved.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 mt-4 mt-sm-0">
+                        <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
+                            <li class="list-inline-item">Terms</li>
+                            <li class="list-inline-item">Privacy</li>
+                            <li class="list-inline-item">About</li>
+                            <li class="list-inline-item">Contact</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     <!-- Footer End -->
 
     <!-- Back to top -->

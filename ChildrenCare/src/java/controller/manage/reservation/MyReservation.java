@@ -41,8 +41,8 @@ public class MyReservation extends BaseRBAC {
                 int itemsPerPage = 5;
 
                 // Quyết định cột và thứ tự sắp xếp
-                String sortColumn = "s.name"; // Mặc định sắp xếp theo Service Name
-                String sortOrderFinal = "asc"; // Mặc định thứ tự tăng dần
+                String sortColumn = "r.dateBook"; // Mặc định sắp xếp theo Service Name
+                String sortOrderFinal = "desc"; 
 
                 // Kiểm tra để xác định xem có yêu cầu sắp xếp theo Price không
                 if ("asc".equals(sortByPrice) || "desc".equals(sortByPrice)) {
@@ -86,7 +86,7 @@ public class MyReservation extends BaseRBAC {
                 request.setAttribute("totalPages", totalPages);
                 request.setAttribute("currentPage", currentPage);
                 request.setAttribute("search", searchQuery);
-                request.setAttribute("status", statusFilter);
+                request.setAttribute("status", statusFilter);  // Truyền status vào JSP
                 request.setAttribute("sort", sortByName);
                 request.setAttribute("sortPrice", sortByPrice);
 

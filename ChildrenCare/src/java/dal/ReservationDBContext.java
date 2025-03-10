@@ -216,32 +216,34 @@ public class ReservationDBContext extends DBContext {
 
         // Thêm điều kiện tìm kiếm nếu có từ khóa
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-            sql += "AND s.name LIKE ? ";
+            sql += "AND s.name LIKE ? ";  // Tìm kiếm theo tên dịch vụ
         }
 
         // Thêm điều kiện lọc theo trạng thái
         if (statusFilter != null && !statusFilter.trim().isEmpty()) {
-            sql += "AND r.status = ? ";
+            sql += "AND r.status = ? ";  // Lọc theo trạng thái
         }
 
         // Thêm điều kiện sắp xếp theo cột
+        // Nếu không có cột sắp xếp (sortColumn), sử dụng mặc định là DateBook
         if (sortColumn != null && !sortColumn.isEmpty()) {
-            sql += "ORDER BY " + sortColumn + " " + sortOrder;
+            sql += "ORDER BY " + sortColumn + " " + sortOrder;  // Sắp xếp theo cột
         } else {
-            sql += "ORDER BY s.name ASC"; // Mặc định sắp xếp theo tên dịch vụ (tăng dần)
+            sql += "ORDER BY r.dateBook ASC";  // Mặc định sắp xếp theo DateBook (tăng dần)
         }
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, userId); // Đặt user_id vào câu lệnh truy vấn
 
             // Nếu có từ khóa tìm kiếm, đặt tham số tìm kiếm vào câu lệnh SQL
+            int parameterIndex = 2;  // Bắt đầu từ tham số thứ 2 (sau user_id)
             if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-                stm.setString(2, "%" + searchQuery + "%"); // Tìm kiếm theo tên dịch vụ (s.name)
+                stm.setString(parameterIndex++, "%" + searchQuery + "%");  // Tìm kiếm theo tên dịch vụ
             }
 
             // Nếu có trạng thái lọc, đặt tham số trạng thái vào câu lệnh SQL
             if (statusFilter != null && !statusFilter.trim().isEmpty()) {
-                stm.setString(3, statusFilter); // Lọc theo trạng thái
+                stm.setString(parameterIndex++, statusFilter);  // Lọc theo trạng thái
             }
 
             try (ResultSet rs = stm.executeQuery()) {

@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,6 +32,7 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="${pageContext.request.contextPath}/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.2/dist/sweetalert2.min.css" rel="stylesheet">
         <style>
             /* Ẩn nút "choose file" mặc định */
             input[type="file"] {
@@ -274,11 +276,22 @@
                             </div>
 
                             <div class="p-4 border-bottom">
-                                <form action="updateProfile" method="POST" enctype="multipart/form-data">
+                                <form action="updateProfile" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
                                     <div class="row align-items-center">
                                         <div class="col-lg-2 col-md-4">
-                                            <img id="avatarImage" src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="Avatar">
+                                            <c:choose>
+                                                <c:when test="${sessionScope.user.avatar.contains('upload')}">
+                                                    <img id="avatarImage" src="${pageContext.request.contextPath}/${sessionScope.user.avatar}"
+                                                         class="avatar avatar-ex-small rounded-circle" alt="Avatar">
+                                                </c:when>
+
+                                                <c:otherwise>
+                                                    <img id="avatarImage" src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}"
+                                                         class="avatar avatar-ex-small rounded-circle" alt="Avatar">
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
+
 
                                         <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
                                             <h5 class="">Upload your picture</h5>
@@ -290,38 +303,34 @@
                                             <input type="file" name="avatar" id="avatarUpload" class="btn btn-primary ms-2" onchange="previewImage()" style="display: none;">
                                         </div>
                                     </div>
+
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Full Name</label>
-                                                <input name="fullname" id="fullname" type="text" class="form-control" value="${sessionScope.user.fullname}" placeholder="Full Name" ">
+                                                <input name="fullname" id="fullname" type="text" class="form-control" value="${sessionScope.user.fullname}" placeholder="Full Name" required>
                                             </div>
                                         </div>
-
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Address</label>
-                                                <input name="address" id="address" type="text" class="form-control" value="${sessionScope.user.address}"  placeholder="Address" ">
+                                                <input name="address" id="address" type="text" class="form-control" value="${sessionScope.user.address}" placeholder="Address">
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Phone no.</label>
-                                                <input name="phone" id="phone" type="text" class="form-control" value="${sessionScope.user.phone}"  placeholder="Phone no." ">
+                                                <input name="phone" id="phone" type="text" class="form-control" value="${sessionScope.user.phone}" placeholder="Phone no." required>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Date of Birth</label>
-                                                <input name="dob" id="dob" type="date" class="form-control" 
-                                                       value="${sessionScope.user.dob}" placeholder="Date of Birth"
-                                                       max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
-
+                                                <input name="dob" id="dob" type="date" class="form-control" value="${sessionScope.user.dob}" placeholder="Date of Birth" max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
                                             </div>
                                         </div>
-
 
                                         <div class="col-md-12">
                                             <div class="mb-3">
@@ -334,31 +343,217 @@
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <input type="submit" id="submitBtn" name="send" class="btn btn-success ms-2" value="Save changes" />
-
-                                            <% if (request.getAttribute("errorMessage") != null) { %>
-                                            <div class="alert alert-danger ms-2">
-                                                <i class="fas fa-exclamation-circle"></i> 
-                                                <%= request.getAttribute("errorMessage") %>
-                                            </div>
-                                            <% } %>
-
-                                            <% if (request.getAttribute("successMessage") != null) { %>
-                                            <div class="alert alert-success ms-2">
-                                                <i class="fas fa-check-circle"></i> 
-                                                <%= request.getAttribute("successMessage") %>
-                                            </div>
-                                            <% } %>
                                         </div>
-
                                     </div>
-
-
                                 </form>
                             </div>
                         </div>
-                    </div><!--end col-->
 
-                    <div class="rounded shadow mt-4">
+
+                        <div class="rounded shadow mt-4">
+                            <div class="modal fade" id="forgot-password" tabindex="-1" aria-labelledby="forgotPasswordLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header border-bottom p-3">
+                                            <h5 class="modal-title" id="forgotPasswordLabel">Forgot Password</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="modal-body p-3 pt-4">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <form action="ChangePasswordServlet" method="POST">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Old Password:</label>
+                                                            <input type="password" name="oldPassword" class="form-control" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">New Password:</label>
+                                                            <input type="password" name="newPassword" class="form-control" required>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Confirm New Password:</label>
+                                                            <input type="password" name="confirmPassword" class="form-control" required>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Change Password</button>
+                                                    </form>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
+                        </div>
+
+                        <div class="rounded shadow mt-4">
+
+
+                            <div class="rounded shadow mt-4">
+                                <div class="p-4 border-bottom">
+                                    <h5 class="mb-0 text-danger">Delete Account :</h5>
+                                </div>
+
+                                <div class="p-4">
+                                    <h6 class="mb-0 fw-normal">Do you want to delete the account? Please press below "Delete" button</h6>
+                                    <div class="mt-4">
+                                        <button class="btn btn-danger">Delete Account</button>
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                    </section><!--end section-->
+                    <!-- End -->
+
+                    <!-- Footer Start -->
+                    <footer class="bg-footer">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
+                                    <a class="logo-footer">
+                                    </a>
+                                    <p class="mt-4 me-xl-5">
+                                        We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
+                                    </p>
+                                </div>
+
+                                <div class="col-xl-7 col-lg-8 col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                            <h5 class="text-light title-dark footer-head">About Us</h5>
+                                            <ul class="list-unstyled footer-list mt-4">
+                                                <li>Our Mission</li>
+                                                <li>Our Team</li>
+                                                <li>Our Services</li>
+                                                <li>Success Stories</li>
+                                                <li>Blog & Updates</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                            <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
+                                            <ul class="list-unstyled footer-list mt-4">
+                                                <li>Quick Haircut</li>
+                                                <li>Massage</li>
+                                                <li>Babysitting</li>
+                                                <li>Special Skin Treatment</li>
+                                                <li>Physical Therapy</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                            <h5 class="text-light title-dark footer-head">Contact Us</h5>
+                                            <ul class="list-unstyled footer-list mt-4">
+                                                <li class="d-flex align-items-center">
+                                                    <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
+                                                    <span class="text-foot ms-2">contact@childrencare.com</span>
+                                                </li>
+
+                                                <li class="d-flex align-items-center">
+                                                    <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
+                                                    <span class="text-foot ms-2">+1 234 567 890</span>
+                                                </li>
+
+                                                <li class="d-flex align-items-center">
+                                                    <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
+                                                    <span class="video-play-icon text-foot ms-2">Find us on the map</span>
+                                                </li>
+                                            </ul>
+
+                                            <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
+                                                <li class="list-inline-item"><span class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></span></li>
+                                                <li class="list-inline-item"><span class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></span></li>
+                                                <li class="list-inline-item"><span class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></span></li>
+                                                <li class="list-inline-item"><span class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container mt-5">
+                            <div class="pt-4 footer-bar">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-6">
+                                        <div class="text-sm-start text-center">
+                                            <p class="text-foot mb-0">© 2025 Children Care. All Rights Reserved.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 mt-4 mt-sm-0">
+                                        <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
+                                            <li class="list-inline-item">Terms</li>
+                                            <li class="list-inline-item">Privacy</li>
+                                            <li class="list-inline-item">About</li>
+                                            <li class="list-inline-item">Contact</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- End -->
+
+                    <!-- Back to top -->
+                    <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
+                    <!-- Back to top -->
+
+                    <!-- Offcanvas Start -->
+                    <div class="offcanvas bg-white offcanvas-top" tabindex="-1" id="offcanvasTop">
+                        <div class="offcanvas-body d-flex align-items-center align-items-center">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="text-center">
+                                            <h4>Search now${pageContext.request.contextPath}${pageContext.request.contextPath}.</h4>
+                                            <div class="subcribe-form mt-4">
+                                                <form>
+                                                    <div class="mb-0">
+                                                        <input type="text" id="help" name="name" class="border bg-white rounded-pill" required="" placeholder="Search">
+                                                        <button type="submit" class="btn btn-pills btn-primary">Search</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </div><!--end container-->
+                        </div>
+                    </div>
+                    <!-- Offcanvas End -->
+
+                    <!-- Offcanvas Start -->
+                    <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                        <div class="offcanvas-header p-4 border-bottom">
+                            <h5 id="offcanvasRightLabel" class="mb-0">
+                                <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" height="24" class="light-version" alt="">
+                                <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="24" class="dark-version" alt="">
+                            </h5>
+                            <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+                        </div>
+                        <div class="offcanvas-body p-4 px-md-5">
+                            <div class="row">
+                                <div class="col-12">
+                                    <!-- Style switcher -->
+                                    <div id="style-switcher">
+                                        <div>
+                                            <ul class="text-center list-unstyled mb-0">
+                                                <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                                <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                                <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                                <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                                <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
+                                                <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
+                                                <li class="d-grid"><a href="${pageContext.request.contextPath}/admin/index.html" target="_blank" class="mt-4"><img src="${pageContext.request.contextPath}/assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- end Style switcher -->
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div>
                         <div class="modal fade" id="forgot-password" tabindex="-1" aria-labelledby="forgotPasswordLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg modal-dialog-centered">
                                 <div class="modal-content">
@@ -370,21 +565,33 @@
                                     <div class="modal-body p-3 pt-4">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <form action="ChangePasswordServlet" method="POST">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Old Password:</label>
-                                                        <input type="password" name="oldPassword" class="form-control" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">New Password:</label>
-                                                        <input type="password" name="newPassword" class="form-control" required>
-                                                    </div>
+                                                <form id="forgot-password-form" method="POST" action="ForgotPasswordServlet">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                                                                <input name="email" id="email" type="email" class="form-control" placeholder="Enter your email" required>
+                                                            </div>
+                                                        </div>
 
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Confirm New Password:</label>
-                                                        <input type="password" name="confirmPassword" class="form-control" required>
+                                                        <div class="col-12">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">New Password <span class="text-danger">*</span></label>
+                                                                <input name="newPassword" id="newPassword" type="password" class="form-control" placeholder="Enter new password" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Confirm New Password <span class="text-danger">*</span></label>
+                                                                <input name="confirmPassword" id="confirmPassword" type="password" class="form-control" placeholder="Re-enter new password" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-12 text-end">
+                                                            <button type="submit" class="btn btn-primary">Reset Password</button>
+                                                        </div>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary">Change Password</button>
                                                 </form>
                                             </div>
                                         </div> 
@@ -392,270 +599,228 @@
                                 </div>
                             </div>  
                         </div>
-                    </div>
-
-                    <div class="rounded shadow mt-4">
 
 
-                        <div class="rounded shadow mt-4">
-                            <div class="p-4 border-bottom">
-                                <h5 class="mb-0 text-danger">Delete Account :</h5>
-                            </div>
-
-                            <div class="p-4">
-                                <h6 class="mb-0 fw-normal">Do you want to delete the account? Please press below "Delete" button</h6>
-                                <div class="mt-4">
-                                    <button class="btn btn-danger">Delete Account</button>
-                                </div><!--end col-->
-                            </div>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-        </section><!--end section-->
-        <!-- End -->
-
-        <!-- Footer Start -->
-        <footer class="bg-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
-                        <a class="logo-footer">
-                        </a>
-                        <p class="mt-4 me-xl-5">
-                            We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
-                        </p>
-                    </div>
-
-                    <div class="col-xl-7 col-lg-8 col-md-12">
-                        <div class="row">
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">About Us</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li>Our Mission</li>
-                                    <li>Our Team</li>
-                                    <li>Our Services</li>
-                                    <li>Success Stories</li>
-                                    <li>Blog & Updates</li>
-                                </ul>
-                            </div>
-
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li>Quick Haircut</li>
-                                    <li>Massage</li>
-                                    <li>Babysitting</li>
-                                    <li>Special Skin Treatment</li>
-                                    <li>Physical Therapy</li>
-                                </ul>
-                            </div>
-
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Contact Us</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="text-foot ms-2">contact@childrencare.com</span>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="text-foot ms-2">+1 234 567 890</span>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="video-play-icon text-foot ms-2">Find us on the map</span>
-                                    </li>
-                                </ul>
-
-                                <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></span></li>
-                                </ul>
-                            </div>
+                        <div class="offcanvas-footer p-4 border-top text-center">
+                            <ul class="list-unstyled social-icon mb-0">
+                                <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
+                                <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
+                                <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
+                                <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
+                                <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
+                                <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
+                                <li class="list-inline-item mb-0"><a href="${pageContext.request.contextPath}/${pageContext.request.contextPath}/${pageContext.request.contextPath}/index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
+                            </ul><!--end icon-->
                         </div>
                     </div>
-                </div>
-            </div>
+                    <!-- Offcanvas End -->
 
-            <div class="container mt-5">
-                <div class="pt-4 footer-bar">
-                    <div class="row align-items-center">
-                        <div class="col-sm-6">
-                            <div class="text-sm-start text-center">
-                                <p class="text-foot mb-0">© 2025 Children Care. All Rights Reserved.</p>
-                            </div>
-                        </div>
+                    <!-- javascript -->
+                    <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+                    <!-- Icons -->
+                    <script src="${pageContext.request.contextPath}/assets/js/feather.min.js"></script>
+                    <!-- Main Js -->
+                    <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.2/dist/sweetalert2.all.min.js"></script>
+                    <!--Javascript to enable editing and submit changes--> 
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.2/dist/sweetalert2.all.min.js"></script>
+                    <script>
+                                                    // Function to check if the input contains any dangerous characters
+                                                    function containsDangerousChars(input) {
+                                                        const forbiddenChars = /[<>\"\'&]/; // Chứa các ký tự <, >, " , ', &
+                                                        return forbiddenChars.test(input); // Kiểm tra xem có chứa ký tự không hợp lệ không
+                                                    }
 
-                        <div class="col-sm-6 mt-4 mt-sm-0">
-                            <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
-                                <li class="list-inline-item">Terms</li>
-                                <li class="list-inline-item">Privacy</li>
-                                <li class="list-inline-item">About</li>
-                                <li class="list-inline-item">Contact</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- End -->
+                                                    // Function to preview the uploaded image
+                                                    function previewImage() {
+                                                        const file = document.getElementById("avatarUpload").files[0];
+                                                        const reader = new FileReader();
 
-        <!-- Back to top -->
-        <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
-        <!-- Back to top -->
+                                                        reader.onloadend = function () {
+                                                            document.getElementById("avatarImage").src = reader.result;
+                                                        };
 
-        <!-- Offcanvas Start -->
-        <div class="offcanvas bg-white offcanvas-top" tabindex="-1" id="offcanvasTop">
-            <div class="offcanvas-body d-flex align-items-center align-items-center">
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <div class="text-center">
-                                <h4>Search now${pageContext.request.contextPath}${pageContext.request.contextPath}.</h4>
-                                <div class="subcribe-form mt-4">
-                                    <form>
-                                        <div class="mb-0">
-                                            <input type="text" id="help" name="name" class="border bg-white rounded-pill" required="" placeholder="Search">
-                                            <button type="submit" class="btn btn-pills btn-primary">Search</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div><!--end col-->
-                    </div><!--end row-->
-                </div><!--end container-->
-            </div>
-        </div>
-        <!-- Offcanvas End -->
+                                                        if (file) {
+                                                            reader.readAsDataURL(file); // Preview the uploaded image
+                                                        }
+                                                    }
 
-        <!-- Offcanvas Start -->
-        <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header p-4 border-bottom">
-                <h5 id="offcanvasRightLabel" class="mb-0">
-                    <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" height="24" class="light-version" alt="">
-                    <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="24" class="dark-version" alt="">
-                </h5>
-                <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
-            </div>
-            <div class="offcanvas-body p-4 px-md-5">
-                <div class="row">
-                    <div class="col-12">
-                        <!-- Style switcher -->
-                        <div id="style-switcher">
-                            <div>
-                                <ul class="text-center list-unstyled mb-0">
-                                    <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                    <li class="d-grid"><a href="${pageContext.request.contextPath}/admin/index.html" target="_blank" class="mt-4"><img src="${pageContext.request.contextPath}/assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- end Style switcher -->
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div>
-            <div class="modal fade" id="forgot-password" tabindex="-1" aria-labelledby="forgotPasswordLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header border-bottom p-3">
-                            <h5 class="modal-title" id="forgotPasswordLabel">Forgot Password</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
+                                                    document.addEventListener("DOMContentLoaded", function () {
+                                                        setTimeout(() => {
+                                                            document.querySelectorAll(".alert").forEach(alert => {
+                                                                alert.classList.add("fade-out");
+                                                                setTimeout(() => alert.style.display = "none", 500);
+                                                            });
+                                                        }, 3000);
+                                                    });
 
-                        <div class="modal-body p-3 pt-4">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <form id="forgot-password-form" method="POST" action="ForgotPasswordServlet">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Email Address <span class="text-danger">*</span></label>
-                                                    <input name="email" id="email" type="email" class="form-control" placeholder="Enter your email" required>
-                                                </div>
-                                            </div>
+                                                    // Function to display success message using SweetAlert2
+                                                    function showSuccessMessage(message = "Profile updated successfully!") {
+                                                        if (typeof Swal !== 'undefined') {
+                                                            Swal.fire({
+                                                                icon: 'success',
+                                                                title: 'Update Success',
+                                                                text: message,
+                                                                timer: 5000, // Auto-close after 5 seconds
+                                                                showConfirmButton: false
+                                                            });
 
-                                            <div class="col-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">New Password <span class="text-danger">*</span></label>
-                                                    <input name="newPassword" id="newPassword" type="password" class="form-control" placeholder="Enter new password" required>
-                                                </div>
-                                            </div>
+                                                            // Wait for 2 seconds before refreshing the page
+                                                            setTimeout(function () {
+                                                                window.location.reload();  // Reload the page after 2 seconds
+                                                            }, 2000);
+                                                    }
+                                                    }
 
-                                            <div class="col-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Confirm New Password <span class="text-danger">*</span></label>
-                                                    <input name="confirmPassword" id="confirmPassword" type="password" class="form-control" placeholder="Re-enter new password" required>
-                                                </div>
-                                            </div>
+                                                    // Function to show error message using SweetAlert2
+                                                    function showError(message) {
+                                                        if (typeof Swal !== 'undefined') {
+                                                            Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Oops...',
+                                                                text: message,
+                                                                timer: 5000, // Auto-close after 5 seconds
+                                                                showConfirmButton: false
+                                                            });
+                                                        }
+                                                    }
 
-                                            <div class="col-lg-12 text-end">
-                                                <button type="submit" class="btn btn-primary">Reset Password</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div> 
-                        </div>
-                    </div>
-                </div>  
-            </div>
+                                                    // Validate the form data
+                                                    function validateForm() {
+                                                        let fullname = document.getElementById("fullname").value.trim(); // Remove leading and trailing spaces
+                                                        let phone = document.getElementById("phone").value.trim(); // Remove leading and trailing spaces
+                                                        let address = document.getElementById("address").value.trim(); // Remove leading and trailing spaces
+
+                                                        // Check for dangerous characters in fullname, phone, and address
+                                                        if (containsDangerousChars(fullname)) {
+                                                            showError("Full Name contains forbidden characters.");
+                                                            return false;
+                                                        }
+
+                                                        if (containsDangerousChars(phone)) {
+                                                            showError("Phone number contains forbidden characters.");
+                                                            return false;
+                                                        }
+
+                                                        if (containsDangerousChars(address)) {
+                                                            showError("Address contains forbidden characters.");
+                                                            return false;
+                                                        }
+
+                                                        // Validate fullname (No numbers allowed, no extra spaces between words, no leading/trailing spaces)
+                                                        const nameRegex = /^[a-zA-Z\s]+$/;
+                                                        if (!nameRegex.test(fullname)) {
+                                                            showError("Full Name can only contain letters and spaces.");
+                                                            return false;
+                                                        }
+
+                                                        // Check for multiple spaces between words
+                                                        if (/ {2,}/.test(fullname)) {
+                                                            showError("Full Name cannot contain multiple consecutive spaces.");
+                                                            return false;
+                                                        }
+
+                                                        // Check for leading or trailing spaces in Full Name and remove them
+                                                        if (fullname !== fullname.trim()) {
+                                                            fullname = fullname.trim(); // Remove leading and trailing spaces
+                                                            document.getElementById("fullname").value = fullname; // Update the input field with trimmed value
+                                                        }
+
+                                                        // Validate phone number (Only numbers allowed, no spaces allowed)
+                                                        const phoneRegex = /^[0-9]+$/;
+                                                        if (!phoneRegex.test(phone)) {
+                                                            showError("Phone number must contain only numbers and no spaces.");
+                                                            return false;
+                                                        }
+
+                                                        // Check for spaces in Phone Number (no spaces allowed)
+                                                        if (/\s/.test(phone)) {
+                                                            showError("Phone number cannot contain spaces.");
+                                                            return false;
+                                                        }
+
+                                                        // Check if there's any leading/trailing space in Phone Number and remove it
+                                                        if (phone !== phone.trim()) {
+                                                            phone = phone.trim();  // Remove trailing and leading spaces
+                                                            document.getElementById("phone").value = phone; // Update the input field with trimmed value
+                                                        }
+
+                                                        // Validate address (No extra spaces between words, no leading/trailing spaces)
+                                                        if (/ {2,}/.test(address)) {
+                                                            showError("Address cannot contain multiple consecutive spaces.");
+                                                            return false;
+                                                        }
+
+                                                        // Check for leading or trailing spaces in Address and remove them
+                                                        if (address !== address.trim()) {
+                                                            address = address.trim(); // Remove leading and trailing spaces
+                                                            document.getElementById("address").value = address; // Update the input field with trimmed value
+                                                        }
+
+                                                        // If validation passes, show success message
+                                                        showSuccessMessage("Profile updated successfully!");
+
+                                                        // Allow form submission
+                                                        return true; // Form will be submitted
+                                                    }
+
+                                                    // Event listener to handle real-time input checking
+                                                    document.getElementById("fullname").addEventListener("input", function (e) {
+                                                        let inputValue = e.target.value;
+
+                                                        // Check if there are two consecutive spaces
+                                                        if (/ {2,}/.test(inputValue)) {
+                                                            // If yes, show an error and remove the extra spaces
+                                                            showError("Full Name cannot contain multiple consecutive spaces.");
+                                                            // Remove extra spaces
+                                                            e.target.value = inputValue.replace(/ {2,}/g, ' ');
+                                                        }
+
+                                                        // Check if input contains forbidden characters
+                                                        if (containsDangerousChars(inputValue)) {
+                                                            showError("Full Name contains forbidden characters.");
+                                                            e.target.value = e.target.value.replace(/[<>\"\'&]/g, ''); // Remove forbidden characters
+                                                        }
+                                                    });
+
+                                                    document.getElementById("phone").addEventListener("input", function (e) {
+                                                        let inputValue = e.target.value;
+
+                                                        // Check if there are any spaces
+                                                        if (/\s/.test(inputValue)) {
+                                                            // If yes, show an error and remove the space
+                                                            showError("Phone number cannot contain spaces.");
+                                                            // Remove space from phone number
+                                                            e.target.value = inputValue.replace(/\s/g, '');
+                                                        }
+
+                                                        // Check if input contains forbidden characters
+                                                        if (containsDangerousChars(inputValue)) {
+                                                            showError("Phone number contains forbidden characters.");
+                                                            e.target.value = e.target.value.replace(/[<>\"\'&]/g, ''); // Remove forbidden characters
+                                                        }
+                                                    });
+
+                                                    document.getElementById("address").addEventListener("input", function (e) {
+                                                        let inputValue = e.target.value;
+
+                                                        // Check if there are two consecutive spaces in Address
+                                                        if (/ {2,}/.test(inputValue)) {
+                                                            // If yes, show an error and remove the extra spaces
+                                                            showError("Address cannot contain multiple consecutive spaces.");
+                                                            // Remove extra spaces
+                                                            e.target.value = inputValue.replace(/ {2,}/g, ' ');
+                                                        }
+
+                                                        // Check if input contains forbidden characters
+                                                        if (containsDangerousChars(inputValue)) {
+                                                            showError("Address contains forbidden characters.");
+                                                            e.target.value = e.target.value.replace(/[<>\"\'&]/g, ''); // Remove forbidden characters
+                                                        }
+                                                    });
+                    </script>
 
 
-            <div class="offcanvas-footer p-4 border-top text-center">
-                <ul class="list-unstyled social-icon mb-0">
-                    <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="${pageContext.request.contextPath}/${pageContext.request.contextPath}/${pageContext.request.contextPath}/index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
-                </ul><!--end icon-->
-            </div>
-        </div>
-        <!-- Offcanvas End -->
+                    </body>
 
-        <!-- javascript -->
-        <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
-        <!-- Icons -->
-        <script src="${pageContext.request.contextPath}/assets/js/feather.min.js"></script>
-        <!-- Main Js -->
-        <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-
-        <!--Javascript to enable editing and submit changes--> 
-        <script>
-                                        // Function to preview the uploaded image
-                                        function previewImage() {
-                                            const file = document.getElementById("avatarUpload").files[0];
-                                            const reader = new FileReader();
-
-                                            reader.onloadend = function () {
-                                                document.getElementById("avatarImage").src = reader.result;
-                                            };
-
-                                            if (file) {
-                                                reader.readAsDataURL(file); // Preview the uploaded image
-                                            }
-                                        }
-
-                                        document.addEventListener("DOMContentLoaded", function () {
-                                            setTimeout(() => {
-                                                document.querySelectorAll(".alert").forEach(alert => {
-                                                    alert.classList.add("fade-out");
-                                                    setTimeout(() => alert.style.display = "none", 500);
-                                                });
-                                            }, 3000);
-                                        });
-
-        </script>
-    </body>
-
-</html>
+                    </html>

@@ -30,7 +30,55 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="${pageContext.request.contextPath}/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <style>
+/* Giới hạn chiều cao của bảng dữ liệu và làm cho nó có thể cuộn */
+.table-responsive {
+    max-height: 400px; /* Tùy chỉnh chiều cao tối đa theo yêu cầu */
+    overflow-y: auto; /* Cho phép cuộn dọc */
+}
 
+/* Giữ khoảng cách giữa phần nội dung và footer */
+.footer-spacing {
+    margin-top: 30px;
+}
+
+.table-container {
+    max-height: 400px; /* Cố định chiều cao */
+    margin-bottom: 30px; /* Fixed margin to maintain space between table and pagination */
+}
+
+.pagination-container {
+    margin-top: 30px; /* Ensure there's always a fixed gap above the pagination section */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Ngăn cản việc thay đổi chiều rộng cột */
+}
+
+.table th, .table td {
+    padding: 20px;
+    text-align: left;
+    border: 1px solid #ddd;
+    height: 60px;  /* Set a fixed height for each row */
+}
+
+/* Ensure empty rows take the same height */
+.empty-row td {
+    height: 60px;  /* Ensure empty rows have the same height */
+    background-color: #f8f9fa;  /* Optional: to differentiate empty rows */
+}
+
+/* Styling for responsive table */
+.table-responsive {
+    max-height: 400px; /* Cố định chiều cao */
+    overflow-y: auto;   /* Hiển thị thanh cuộn khi có nhiều dữ liệu */
+}
+
+
+
+        </style>
     </head>
 
     <body>
@@ -179,175 +227,173 @@
         </header><!--end header-->
         <!-- Navbar End -->
 
-
-
-        <section class="section">
-            <div class="container">
-                <!-- Search and Filter Row -->
-                <div class="row mb-3">
-                    <!-- Search Box -->
-                    <div class="col-md-4">
-                        <form action="myreservation" method="get">
-                            <div class="input-group">
-                                <input type="text" name="search" class="form-control" placeholder="Search Service Name" value="${param.search}">
-                                <button class="btn btn-outline-primary" type="submit">Search</button>
-                            </div>
-                        </form>
+<section class="section">
+    <div class="container">
+        <!-- Search and Filter Row -->
+        <div class="row mb-3">
+            <!-- Search Box -->
+            <div class="col-md-4">
+                <form action="myreservation" method="get">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search Service Name" value="${param.search}">
+                        <button class="btn btn-outline-primary" type="submit">Search</button>
                     </div>
-                </div>
+                </form>
+            </div>
 
-                <!-- Reservation Table -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="table-responsive bg-white shadow rounded">
-                            <table class="table table-center table-padding mb-0">
-                                <thead>
-                                    <tr>
-                                        <!-- Sortable Column: Service Name -->
-                                        <th class="border-bottom p-3">
-                                            <a href="myreservation?search=${param.search}&status=${param.status}
-                                               &sort=${param.sort == 'asc' ? 'desc' : 'asc'}"
-                                               class="text-decoration-none text-dark">
-                                                Service Name
-                                                <c:if test="${param.sort == 'asc'}">A-Z</c:if>
-                                                <c:if test="${param.sort == 'desc'}">Z-A</c:if>
-                                                </a>
-                                            </th>
-                                            <th class="border-bottom p-3">DateBook</th>
-                                            <!-- Price Column -->
-                                            <th class="border-bottom p-3">Price</th>
+            <!-- Status Filter -->
+            <div class="col-md-4">
+                <form action="myreservation" method="get">
+                    <div class="input-group">
+                        <select class="form-control" name="status">
+                            <option value="">All Status</option>
+                            <option value="Scheduled" ${param.status == 'Scheduled' ? 'selected' : ''}>Scheduled</option>
+                            <option value="Cancelled" ${param.status == 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                            <option value="Completed" ${param.status == 'Completed' ? 'selected' : ''}>Completed</option>
+                        </select>
+                        <button class="btn btn-outline-primary" type="submit">Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
-                                            <!-- Sortable Column: Status -->
-                                            <th class="border-bottom text-center p-3">
-                                                <a href="myreservation?search=${param.search}&status=${param.status}
-                                               &sort=${param.sort}
-                                               &sortStatus=${param.sortStatus == 'asc' ? 'desc' : 'asc'}" 
-                                               class="text-decoration-none text-dark">
-                                                Status
-                                                <c:if test="${param.sortStatus == 'asc'}">🔼</c:if>
-                                                <c:if test="${param.sortStatus == 'desc'}">🔽</c:if>
-                                                </a>
-                                            </th>
+        <!-- Reservation Table -->
+        <div class="table-container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive bg-white shadow rounded">
+                        <table class="table table-center table-padding mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="border-bottom text-center p-3" style="width: 250px;"> <!-- Cố định chiều rộng cho cột Service Name -->
+                                        <a href="myreservation?search=${param.search}&status=${param.status}&sort=${param.sort == 'asc' ? 'desc' : 'asc'}"
+                                           class="text-decoration-none text-dark">
+                                            Service Name
+                                        </a>
+                                    </th>
+                                    <th class="border-bottom text-center p-3" style="width: 150px;">DateBook</th> <!-- Cố định chiều rộng cho cột DateBook -->
+                                    <th class="border-bottom text-center p-3" style="width: 120px;">
+                                        <a href="myreservation?search=${param.search}&status=${param.status}&sortPrice=${param.sortPrice == 'asc' ? 'desc' : 'asc'}"
+                                            class="text-decoration-none text-dark">
+                                            Price
+                                        </a>
+                                    </th>
+                                    <th class="border-bottom text-center p-3" style="width: 120px;">Status</th>
+                                    <th class="border-bottom text-center p-3" style="width: 120px;">Start Time</th>
+                                    <th class="border-bottom text-center p-3" style="width: 120px;">End Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="reservation" items="${paginatedReservations}">
+                                    <tr class="table-row">
+                                        <td class="p-3 text-center">${reservation.service.name}</td>
+                                        <td class="p-3 text-center"><fmt:formatDate value="${reservation.bookdate}" pattern="yyyy-MM-dd" /></td>
+                                        <td class="text-center p-3">${reservation.service.price}</td>
+                                        <td class="text-center p-3">
+                                            <span class="badge
+                                                  ${reservation.status == 'Complete' ? 'badge-success' : 
+                                                    reservation.status == 'Cancelled' ? 'badge-warning' : 'badge-danger'}">
+                                                  ${reservation.status}
+                                            </span>
+                                        </td>
+                                        <td class="border-bottom text-center p-3"><fmt:formatDate value="${reservation.start}" pattern="HH:mm" /></td>
+                                        <td class="border-bottom text-center p-3"><fmt:formatDate value="${reservation.end}" pattern="HH:mm" /></td>
+                                    </tr>
+                                </c:forEach>
 
-                                            <th class="border-bottom text-center p-3">Start Time</th>
-                                            <th class="border-bottom text-center p-3">End Time</th>
+                                <!-- Add empty rows if there are fewer than 5 elements -->
+                                <c:if test="${paginatedReservations.size() < 5}">
+                                    <c:forEach var="i" begin="${paginatedReservations.size() + 1}" end="5">
+                                        <tr class="empty-row">
+                                            <td colspan="6"></td> <!-- Ensure empty rows span all columns -->
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Loop Through Sorted Reservations -->
-                                    <c:forEach var="reservation" items="${paginatedReservations}">
-                                        <tr>
-                                            <td class="p-3">${reservation.service.name}</td>
-                                            <td class="p-3"><fmt:formatDate value="${reservation.bookdate}" pattern="yyyy-MM-dd" /></td>
-                                            <td class="text-center p-3">${reservation.service.price}</td>
-                                            <td class="text-center p-3">
-                                                <span class="badge
-                                                      ${reservation.status == 'Completed' ? 'badge-success' : 
-                                                        reservation.status == 'Pending' ? 'badge-warning' : 'badge-danger'}">
-                                                          ${reservation.status}
-                                                      </span>
-                                                </td>
-                                                <td class="p-3"><fmt:formatDate value="${reservation.start}" pattern="HH:mm" /></td>
-                                                <td class="p-3"><fmt:formatDate value="${reservation.end}" pattern="HH:mm" /></td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pagination Controls -->
-                    <div class="row mt-4">
-                        <div class="col-12 text-center">
-                            <c:if test="${currentPage > 1}">
-                                <a href="myreservation?page=${currentPage - 1}&search=${param.search}&sort=${param.sort}" class="btn btn-secondary">Previous</a>
-                            </c:if>
-
-                            <c:forEach var="i" begin="1" end="${totalPages}">
-                                <c:if test="${i == currentPage}">
-                                    <span class="btn btn-primary">${i}</span>
+                                    </c:forEach>
                                 </c:if>
-                                <c:if test="${i != currentPage}">
-                                    <a href="myreservation?page=${i}&search=${param.search}&sort=${param.sort}" class="btn btn-outline-primary">${i}</a>
-                                </c:if>
-                            </c:forEach>
-
-                            <c:if test="${currentPage < totalPages}">
-                                <a href="myreservation?page=${currentPage + 1}&search=${param.search}&sort=${param.sort}" class="btn btn-secondary">Next</a>
-                            </c:if>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-
-            <!-- Start -->
-            <footer class="bg-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
-                        <a class="logo-footer">
-                        </a>
-                        <p class="mt-4 me-xl-5">
-                            We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
-                        </p>
-                    </div>
-
-                    <div class="col-xl-7 col-lg-8 col-md-12">
-                        <div class="row">
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">About Us</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li>Our Mission</li>
-                                    <li>Our Team</li>
-                                    <li>Our Services</li>
-                                    <li>Success Stories</li>
-                                    <li>Blog & Updates</li>
-                                </ul>
-                            </div>
-
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li>Quick Haircut</li>
-                                    <li>Massage</li>
-                                    <li>Babysitting</li>
-                                    <li>Special Skin Treatment</li>
-                                    <li>Physical Therapy</li>
-                                </ul>
-                            </div>
-
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Contact Us</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="text-foot ms-2">contact@childrencare.com</span>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="text-foot ms-2">+1 234 567 890</span>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="video-play-icon text-foot ms-2">Find us on the map</span>
-                                    </li>
-                                </ul>
-
-                                <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></span></li>
-                                </ul>
-                            </div>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+        </div>
+        <!-- Pagination Controls -->
+        <div class="pagination-container text-center">
+            <c:if test="${currentPage > 1}">
+                <a href="myreservation?page=${currentPage - 1}&search=${param.search}&status=${param.status}&sort=${param.sort}" class="btn btn-secondary">Previous</a>
+            </c:if>
+
+            <c:forEach var="i" begin="1" end="${totalPages}">
+                <c:if test="${i == currentPage}">
+                    <span class="btn btn-primary">${i}</span>
+                </c:if>
+                <c:if test="${i != currentPage}">
+                    <a href="myreservation?page=${i}&search=${param.search}&status=${param.status}&sort=${param.sort}" class="btn btn-outline-primary">${i}</a>
+                </c:if>
+            </c:forEach>
+
+            <c:if test="${currentPage < totalPages}">
+                <a href="myreservation?page=${currentPage + 1}&search=${param.search}&status=${param.status}&sort=${param.sort}" class="btn btn-secondary">Next</a>
+            </c:if>
+        </div>
+        
+    </div>
+</section>
+
+
+
+
+
+<!-- Footer with spacing -->
+<footer class="bg-footer footer-spacing">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
+                <p class="mt-4 me-xl-5">
+                    We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
+                </p>
+            </div>
+            <div class="col-xl-7 col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                        <h5 class="text-light title-dark footer-head">About Us</h5>
+                        <ul class="list-unstyled footer-list mt-4">
+                            <li>Our Mission</li>
+                            <li>Our Team</li>
+                            <li>Our Services</li>
+                            <li>Success Stories</li>
+                            <li>Blog & Updates</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                        <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
+                        <ul class="list-unstyled footer-list mt-4">
+                            <li>Quick Haircut</li>
+                            <li>Massage</li>
+                            <li>Babysitting</li>
+                            <li>Special Skin Treatment</li>
+                            <li>Physical Therapy</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                        <h5 class="text-light title-dark footer-head">Contact Us</h5>
+                        <ul class="list-unstyled footer-list mt-4">
+                            <li class="d-flex align-items-center">
+                                <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
+                                <span class="text-foot ms-2">contact@childrencare.com</span>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
+                                <span class="text-foot ms-2">+1 234 567 890</span>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
+                                <span class="video-play-icon text-foot ms-2">Find us on the map</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
             <div class="container mt-5">
                 <div class="pt-4 footer-bar">
@@ -369,12 +415,12 @@
                     </div>
                 </div>
             </div>
-        </footer>
-            <!-- End -->
+</footer>
 
             <!-- Back to top -->
-            <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
             <!-- Back to top -->
+
 
             <!-- Offcanvas Start -->
             <div class="offcanvas bg-white offcanvas-top" tabindex="-1" id="offcanvasTop">
@@ -454,5 +500,25 @@
 
 
         </body>
+
+        
+<script>
+    // Lắng nghe sự kiện submit của form
+    document.querySelector('form').addEventListener('submit', function(event) {
+        // Lấy giá trị từ trường select status
+        let status = document.querySelector('select[name="status"]').value.trim();
+
+        // Danh sách các trạng thái hợp lệ
+        const validStatuses = ['Scheduled', 'Cancelled', 'Completed'];
+
+        // Kiểm tra nếu giá trị của status không hợp lệ và không phải là giá trị trống
+        if (status && !validStatuses.includes(status)) {
+            // Ngừng việc gửi form và hiển thị thông báo lỗi
+            event.preventDefault();
+            alert("Vui lòng chọn trạng thái hợp lệ: Scheduled, Cancelled hoặc Completed.");
+        }
+    });
+</script>
+
 
     </html>

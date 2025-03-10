@@ -19,6 +19,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import model.Payment;
 import model.Reservation;
 import static vnpay.VNPayUtils.hmacSHA512;
 
@@ -47,10 +48,39 @@ public class VNPayReturnServlet extends HttpServlet {
             hashData.append(fieldName).append('=').append(fields.get(fieldName)).append('&');
         }
         hashData.deleteCharAt(hashData.length() - 1);
+        
+        HttpSession session = req.getSession();
+        Reservation r = (Reservation) session.getAttribute("reservation");
+        String fromCart = (String) session.getAttribute("isFromCart");
+        Payment p = new Payment();
+        
+        String responseCode = req.getParameter("vnp_ResponseCode");
+        
+        if (responseCode.equals("00")) {
+            if (r != null) {
+
+                r.setStatus("Scheduled");
+
+                ReservationDBContext rdb = new ReservationDBContext();
+                int reserv_id = rdb.insertReservation(r);
+
+                r.setId(reserv_id);
+
+                p = r.getPayment();
+                p.setReservation(r);
+
+                rdb.insertPayment(p);
+
+                if (fromCart != null && fromCart.length() != 0) {
+                    rdb.deleteCart(r.getService().getId());
+                }
+
+            }
+        }
 
         try {
             String calculatedHash = hmacSHA512(VNP_HASH_SECRET, hashData.toString());
-            if (calculatedHash.equals(vnp_SecureHash) && "00".equals(fields.get("vnp_ResponseCode"))) {
+            if (calculatedHash.equals(vnp_SecureHash) && "00".equals(fields.get("vnp_ResponseCode"))) {              
                 req.setAttribute("message", "Payment successful!");
             } else {
                 req.setAttribute("message", "Payment failed!");
@@ -58,7 +88,10 @@ public class VNPayReturnServlet extends HttpServlet {
         } catch (Exception e) {
             req.setAttribute("message", "Payment verification error!");
         }
-        //req.getRequestDispatcher("c/NewServlet").forward(req, resp);
-        req.getRequestDispatcher("c/NewServlet").forward(req, resp);
+        
+        req.getSession().removeAttribute("reservation");
+        req.getSession().removeAttribute("isFromCart");
+        req.getRequestDispatcher("c/vnpay-return.jsp").forward(req, resp);
+        //req.getRequestDispatcher("c/PaymentFinal").forward(req, resp);
     }
 }

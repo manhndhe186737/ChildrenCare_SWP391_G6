@@ -14,7 +14,7 @@ import model.Role;
 public class UserDAO extends DBContext {
 
     public int registerUser(User user, String email, String password) {
-        String sqlUser = "INSERT INTO users (fullname, address, dob, phone, avatar, is_verified, email, password) VALUES (?, ?, ?, ?, ?, false, ?, ?)";
+        String sqlUser = "INSERT INTO users (fullname, address, dob, phone, avatar, is_verified, email, password, isActive) VALUES (?, ?, ?, ?, ?, false, ?, ?, ?)";
         String sqlUserRole = "INSERT INTO userroles (role_id, email) VALUES (?, ?)";
 
         try {
@@ -27,6 +27,7 @@ public class UserDAO extends DBContext {
             psUser.setString(5, user.getAvatar());
             psUser.setString(6, email);
             psUser.setString(7, password);
+            psUser.setBoolean(8, true);
             psUser.executeUpdate();
 
             // Lấy user_id vừa tạo
