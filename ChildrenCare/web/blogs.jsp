@@ -118,7 +118,6 @@
 
                 <!-- Start Dropdown -->
                 <ul class="dropdowns list-inline mb-0">
-
                     <c:if test="${sessionScope.role.contains('Customer')}">
                         <li class="list-inline-item mb-0">
                             <a href="c/Cart">
@@ -128,27 +127,21 @@
                     </c:if>
 
                     <li class="list-inline-item mb-0 ms-1">
-                        <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                            <i class="uil uil-search"></i>
-                        </a>
-                    </li>
-
-                    <li class="list-inline-item mb-0 ms-1">
                         <c:choose>
                             <c:when test="${sessionScope.user ne null}">
                                 <div class="dropdown dropdown-primary">
                                     <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                        <img src="${pageContext.request.contextPath}/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
                                     </button>
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                        <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                        <a class="dropdown-item d-flex align-items-center text-dark">
+                                            <img src="${pageContext.request.contextPath}/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="flex-1 ms-2">
                                                 <span class="d-block mb-1">${sessionScope.user.fullname}</span>
                                             </div>
                                         </a>
                                         <c:if test="${sessionScope.role.contains('Admin')}">
-                                            <a class="dropdown-item text-dark" href="doctor-dashboard.html">
+                                            <a class="dropdown-item text-dark" href="admin/dashboard">
                                                 <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
                                             </a>
                                         </c:if>
@@ -169,7 +162,6 @@
                             </c:otherwise>
                         </c:choose>
                     </li>
-
                 </ul>
                 <!-- Start Dropdown -->
 
@@ -194,7 +186,10 @@
                             <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="./service-list" class="sub-menu-item">Services List</a></li>
-                                <li><a href="myreservation" class="sub-menu-item">My Reservation</a></li>
+                                    <c:if test="${sessionScope.role.contains('Customer')}">
+                                    <li><a href="./myreservation" class="sub-menu-item">My Reservation</a></li>
+                                    <li><a href="c/BookingStaff" class="sub-menu-item">Reservation</a></li>
+                                    </c:if>
                             </ul>
                         </li>
 
@@ -202,9 +197,6 @@
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
                                 <li><a href="./blog" class="sub-menu-item">Blogs</a></li>
-                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                    <li><a href="blogs.html" class="sub-menu-item">Blogs - Management</a></li>
-                                    </c:if>
 
                                 <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                     <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
@@ -215,6 +207,7 @@
                         <c:if test="${sessionScope.role.contains('Admin')}">
                             <li><a href="./admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
                             </c:if>
+
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->
@@ -319,92 +312,92 @@
     </section><!--end section-->
     <!-- Start -->
     <footer class="bg-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
-                        <a class="logo-footer">
-                        </a>
-                        <p class="mt-4 me-xl-5">
-                            We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
-                        </p>
-                    </div>
-
-                    <div class="col-xl-7 col-lg-8 col-md-12">
-                        <div class="row">
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">About Us</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li>Our Mission</li>
-                                    <li>Our Team</li>
-                                    <li>Our Services</li>
-                                    <li>Success Stories</li>
-                                    <li>Blog & Updates</li>
-                                </ul>
-                            </div>
-
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li>Quick Haircut</li>
-                                    <li>Massage</li>
-                                    <li>Babysitting</li>
-                                    <li>Special Skin Treatment</li>
-                                    <li>Physical Therapy</li>
-                                </ul>
-                            </div>
-
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Contact Us</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="text-foot ms-2">contact@childrencare.com</span>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="text-foot ms-2">+1 234 567 890</span>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="video-play-icon text-foot ms-2">Find us on the map</span>
-                                    </li>
-                                </ul>
-
-                                <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
+                    <a class="logo-footer">
+                    </a>
+                    <p class="mt-4 me-xl-5">
+                        We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
+                    </p>
                 </div>
-            </div>
 
-            <div class="container mt-5">
-                <div class="pt-4 footer-bar">
-                    <div class="row align-items-center">
-                        <div class="col-sm-6">
-                            <div class="text-sm-start text-center">
-                                <p class="text-foot mb-0">© 2025 Children Care. All Rights Reserved.</p>
-                            </div>
+                <div class="col-xl-7 col-lg-8 col-md-12">
+                    <div class="row">
+                        <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                            <h5 class="text-light title-dark footer-head">About Us</h5>
+                            <ul class="list-unstyled footer-list mt-4">
+                                <li>Our Mission</li>
+                                <li>Our Team</li>
+                                <li>Our Services</li>
+                                <li>Success Stories</li>
+                                <li>Blog & Updates</li>
+                            </ul>
                         </div>
 
-                        <div class="col-sm-6 mt-4 mt-sm-0">
-                            <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
-                                <li class="list-inline-item">Terms</li>
-                                <li class="list-inline-item">Privacy</li>
-                                <li class="list-inline-item">About</li>
-                                <li class="list-inline-item">Contact</li>
+                        <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                            <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
+                            <ul class="list-unstyled footer-list mt-4">
+                                <li>Quick Haircut</li>
+                                <li>Massage</li>
+                                <li>Babysitting</li>
+                                <li>Special Skin Treatment</li>
+                                <li>Physical Therapy</li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                            <h5 class="text-light title-dark footer-head">Contact Us</h5>
+                            <ul class="list-unstyled footer-list mt-4">
+                                <li class="d-flex align-items-center">
+                                    <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
+                                    <span class="text-foot ms-2">contact@childrencare.com</span>
+                                </li>
+
+                                <li class="d-flex align-items-center">
+                                    <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
+                                    <span class="text-foot ms-2">+1 234 567 890</span>
+                                </li>
+
+                                <li class="d-flex align-items-center">
+                                    <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
+                                    <span class="video-play-icon text-foot ms-2">Find us on the map</span>
+                                </li>
+                            </ul>
+
+                            <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
+                                <li class="list-inline-item"><span class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></span></li>
+                                <li class="list-inline-item"><span class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></span></li>
+                                <li class="list-inline-item"><span class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></span></li>
+                                <li class="list-inline-item"><span class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></span></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </footer>
+        </div>
+
+        <div class="container mt-5">
+            <div class="pt-4 footer-bar">
+                <div class="row align-items-center">
+                    <div class="col-sm-6">
+                        <div class="text-sm-start text-center">
+                            <p class="text-foot mb-0">© 2025 Children Care. All Rights Reserved.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 mt-4 mt-sm-0">
+                        <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
+                            <li class="list-inline-item">Terms</li>
+                            <li class="list-inline-item">Privacy</li>
+                            <li class="list-inline-item">About</li>
+                            <li class="list-inline-item">Contact</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     <!-- End -->
 
     <!-- Back to top -->

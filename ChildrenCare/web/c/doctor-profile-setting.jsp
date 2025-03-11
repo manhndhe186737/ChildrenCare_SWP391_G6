@@ -116,8 +116,8 @@
                         </span>
                         <img src="./assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                     </a>
-                </div>
-                <!-- End Logo container-->
+                </div>            
+                <!-- Logo End -->
 
                 <!-- Start Mobile Toggle -->
                 <div class="menu-extras">
@@ -140,34 +140,28 @@
 
                     <c:if test="${sessionScope.role.contains('Customer')}">
                         <li class="list-inline-item mb-0">
-                            <a href="c/Cart">
+                            <a href="Cart">
                                 <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
                             </a>
                         </li>
                     </c:if>
 
                     <li class="list-inline-item mb-0 ms-1">
-                        <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                            <i class="uil uil-search"></i>
-                        </a>
-                    </li>
-
-                    <li class="list-inline-item mb-0 ms-1">
                         <c:choose>
                             <c:when test="${sessionScope.user ne null}">
                                 <div class="dropdown dropdown-primary">
                                     <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                        <img src="${pageContext.request.contextPath}/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
                                     </button>
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                        <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                        <a class="dropdown-item d-flex align-items-center text-dark">
+                                            <img src="${pageContext.request.contextPath}/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="flex-1 ms-2">
                                                 <span class="d-block mb-1">${sessionScope.user.fullname}</span>
                                             </div>
                                         </a>
                                         <c:if test="${sessionScope.role.contains('Admin')}">
-                                            <a class="dropdown-item text-dark" href="doctor-dashboard.html">
+                                            <a class="dropdown-item text-dark" href="./admin/dashboard">
                                                 <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
                                             </a>
                                         </c:if>
@@ -213,7 +207,10 @@
                             <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="./service-list" class="sub-menu-item">Services List</a></li>
-                                <li><a href="myreservation" class="sub-menu-item">My Reservation</a></li>
+                                    <c:if test="${sessionScope.role.contains('Customer')}">
+                                    <li><a href="./myreservation" class="sub-menu-item">My Reservation</a></li>
+                                    <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
+                                    </c:if>
                             </ul>
                         </li>
 
@@ -221,9 +218,6 @@
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
                                 <li><a href="./blog" class="sub-menu-item">Blogs</a></li>
-                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                    <li><a href="blogs.html" class="sub-menu-item">Blogs - Management</a></li>
-                                    </c:if>
 
                                 <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                     <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
@@ -234,6 +228,7 @@
                         <c:if test="${sessionScope.role.contains('Admin')}">
                             <li><a href="./admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
                             </c:if>
+
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->
@@ -249,9 +244,21 @@
 
 
                             <div class="text-center avatar-profile position-relative pb-4 border-bottom mt-3">
-                                <img src="<c:out value="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" />"
+<!--                                <img src="<c:out value="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" />"
                                      class="rounded-circle shadow-md avatar avatar-md-md" 
-                                     alt="">
+                                     alt="">-->
+
+                                <c:choose>
+                                    <c:when test="${sessionScope.user.avatar.contains('upload')}">
+                                        <img id="" src="${pageContext.request.contextPath}/${sessionScope.user.avatar}"
+                                             class="rounded-circle shadow-md avatar avatar-md-md" alt="Avatar">
+                                    </c:when>
+
+                                    <c:otherwise>
+                                        <img id="" src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}"
+                                             class="rounded-circle shadow-md avatar avatar-md-md" alt="Avatar">
+                                    </c:otherwise>
+                                </c:choose>
                                 <h5 class="mt-3 mb-1">${sessionScope.user.fullname}</h5>
                             </div>
 
@@ -279,30 +286,23 @@
                                 <form action="updateProfile" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
                                     <div class="row align-items-center">
                                         <div class="col-lg-2 col-md-4">
-                                            <c:choose>
-                                                <c:when test="${sessionScope.user.avatar.contains('upload')}">
-                                                    <img id="avatarImage" src="${pageContext.request.contextPath}/${sessionScope.user.avatar}"
-                                                         class="avatar avatar-ex-small rounded-circle" alt="Avatar">
-                                                </c:when>
-
-                                                <c:otherwise>
-                                                    <img id="avatarImage" src="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}"
-                                                         class="avatar avatar-ex-small rounded-circle" alt="Avatar">
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <img id="avatarImage" src="${pageContext.request.contextPath}/${sessionScope.user.avatar}" class="rounded-circle shadow-md avatar avatar-md-md" alt="Avatar">
                                         </div>
 
-
                                         <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                            <h5 class="">Upload your picture</h5>
+                                            <h5>Upload your picture</h5>
                                             <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg or .png format</p>
                                         </div>
 
                                         <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
                                             <label for="avatarUpload" class="custom-file-upload">Choose File</label>
-                                            <input type="file" name="avatar" id="avatarUpload" class="btn btn-primary ms-2" onchange="previewImage()" style="display: none;">
+                                            <input type="file" name="imageFile" id="avatarUpload" class="btn btn-primary ms-2" onchange="previewImage(event)" style="display: none;">
+                                            <input type="hidden" name="oldImage" value="">
                                         </div>
                                     </div>
+
+                                    <!-- Hidden input lưu URL ảnh -->
+                                    <input type="hidden" name="avatar_url" id="avatar_url" value="${sessionScope.user.avatar}">
 
                                     <div class="row">
                                         <div class="col-md-6">
@@ -632,16 +632,23 @@
                                                     }
 
                                                     // Function to preview the uploaded image
-                                                    function previewImage() {
-                                                        const file = document.getElementById("avatarUpload").files[0];
-                                                        const reader = new FileReader();
-
-                                                        reader.onloadend = function () {
-                                                            document.getElementById("avatarImage").src = reader.result;
-                                                        };
+                                                    function previewImage(event) {
+                                                        var file = event.target.files[0];
+                                                        var output = document.getElementById("avatarImage"); // Đúng ID của ảnh xem trước
 
                                                         if (file) {
-                                                            reader.readAsDataURL(file); // Preview the uploaded image
+                                                            var reader = new FileReader();
+                                                            reader.onload = function () {
+                                                                output.src = reader.result; // Hiển thị ảnh mới khi chọn
+                                                            };
+                                                            reader.readAsDataURL(file);
+
+                                                            // Cập nhật giá trị cho input ẩn lưu URL ảnh
+                                                            document.getElementById("avatar_url").value = file.name;
+                                                        } else {
+                                                            // Nếu không chọn ảnh mới, giữ ảnh cũ
+                                                            var oldImage = document.querySelector("input[name='avatar_url']").value;
+                                                            output.src = oldImage ? "${pageContext.request.contextPath}/" + oldImage : "";
                                                         }
                                                     }
 

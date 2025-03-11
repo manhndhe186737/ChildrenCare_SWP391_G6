@@ -24,7 +24,7 @@ public class UserDAO extends DBContext {
             psUser.setString(2, user.getAddress());
             psUser.setDate(3, new java.sql.Date(user.getDob().getTime()));
             psUser.setString(4, user.getPhone());
-            psUser.setString(5, user.getAvatar());
+            psUser.setString(5, "uploads/default.jpg");
             psUser.setString(6, email);
             psUser.setString(7, password);
             psUser.setBoolean(8, true);

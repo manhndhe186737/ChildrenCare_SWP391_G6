@@ -85,7 +85,6 @@
 
                 <!-- Start Dropdown -->
                 <ul class="dropdowns list-inline mb-0">
-
                     <c:if test="${sessionScope.role.contains('Customer')}">
                         <li class="list-inline-item mb-0">
                             <a href="c/Cart">
@@ -95,27 +94,21 @@
                     </c:if>
 
                     <li class="list-inline-item mb-0 ms-1">
-                        <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                            <i class="uil uil-search"></i>
-                        </a>
-                    </li>
-
-                    <li class="list-inline-item mb-0 ms-1">
                         <c:choose>
                             <c:when test="${sessionScope.user ne null}">
                                 <div class="dropdown dropdown-primary">
                                     <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                        <img src="${pageContext.request.contextPath}/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
                                     </button>
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                        <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                            <img src="./assets/images/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                        <a class="dropdown-item d-flex align-items-center text-dark">
+                                            <img src="${pageContext.request.contextPath}/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="flex-1 ms-2">
                                                 <span class="d-block mb-1">${sessionScope.user.fullname}</span>
                                             </div>
                                         </a>
                                         <c:if test="${sessionScope.role.contains('Admin')}">
-                                            <a class="dropdown-item text-dark" href="doctor-dashboard.html">
+                                            <a class="dropdown-item text-dark" href="admin/dashboard">
                                                 <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
                                             </a>
                                         </c:if>
@@ -136,7 +129,6 @@
                             </c:otherwise>
                         </c:choose>
                     </li>
-
                 </ul>
                 <!-- Start Dropdown -->
 
@@ -161,7 +153,10 @@
                             <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="./service-list" class="sub-menu-item">Services List</a></li>
-                                <li><a href="myreservation" class="sub-menu-item">My Reservation</a></li>
+                                    <c:if test="${sessionScope.role.contains('Customer')}">
+                                    <li><a href="./myreservation" class="sub-menu-item">My Reservation</a></li>
+                                    <li><a href="c/BookingStaff" class="sub-menu-item">Reservation</a></li>
+                                    </c:if>
                             </ul>
                         </li>
 
@@ -169,9 +164,6 @@
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
                                 <li><a href="./blog" class="sub-menu-item">Blogs</a></li>
-                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
-                                    <li><a href="blogs.html" class="sub-menu-item">Blogs - Management</a></li>
-                                    </c:if>
 
                                 <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                     <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
@@ -182,6 +174,7 @@
                         <c:if test="${sessionScope.role.contains('Admin')}">
                             <li><a href="./admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
                             </c:if>
+
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->
