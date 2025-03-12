@@ -259,10 +259,10 @@
                                             <td class="text-center p-3">${requestScope.reserv.service.price}</td>
                                             <td class="text-center p-3">
                                                 <span class="badge
-                                                      ${reservation.status == 'Complete' ? 'badge-success' : 
-                                                        reservation.status == 'Cancelled' ? 'badge-warning' : 'badge-danger'}">
-                                                          ${requestScope.reserv.status}
-                                                      </span>
+                                                          ${requestScope.reserv.status == 'Completed' ? 'badge-success' : 
+                                                            requestScope.reserv.status == 'Scheduled' ? 'badge-warning' : 'badge-danger'}">
+                                                              ${requestScope.reserv.status}
+                                                          </span>
                                                 </td>
                                                 <td class="border-bottom text-center p-3"><fmt:formatDate value="${requestScope.reserv.start}" pattern="HH:mm" /></td>
                                                 <td class="border-bottom text-center p-3"><fmt:formatDate value="${requestScope.reserv.end}" pattern="HH:mm" /></td>
@@ -395,6 +395,24 @@
             <script src="${pageContext.request.contextPath}/assets/js/feather.min.js"></script>
             <!-- Main Js -->
             <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+            
+            <script>
+                                            // Lắng nghe sự kiện submit của form
+                                            document.querySelector('form').addEventListener('submit', function (event) {
+                                                // Lấy giá trị từ trường select status
+                                                let status = document.querySelector('select[name="status"]').value.trim();
+
+                                                // Danh sách các trạng thái hợp lệ
+                                                const validStatuses = ['Scheduled', 'Cancelled', 'Completed'];
+
+                                                // Kiểm tra nếu giá trị của status không hợp lệ và không phải là giá trị trống
+                                                if (status && !validStatuses.includes(status)) {
+                                                    // Ngừng việc gửi form và hiển thị thông báo lỗi
+                                                    event.preventDefault();
+                                                    alert("Vui lòng chọn trạng thái hợp lệ: Scheduled, Cancelled hoặc Completed.");
+                                                }
+                                            });
+        </script>
 
 
         </body>
