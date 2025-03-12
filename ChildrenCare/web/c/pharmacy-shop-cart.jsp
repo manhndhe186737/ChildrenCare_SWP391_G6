@@ -226,30 +226,45 @@
             <div class="container">
                 <!-- Search and Filter Row -->
                 <div class="row mb-3">
-                    <!-- Search Box -->
-                    <div class="col-md-4">
-                        <form action="myreservation" method="get">
-                            <div class="input-group">
-                                <input type="text" name="search" class="form-control" placeholder="Search Service Name" value="${param.search}">
-                                <button class="btn btn-outline-primary" type="submit">Search</button>
-                            </div>
-                        </form>
-                    </div>
+                           <!-- Search Box -->
+        <div class="col-md-4">
+            <form action="myreservation" method="get">
+                <input type="hidden" name="status" value="${param.status}">
+                <input type="hidden" name="sort" value="${param.sort}">
+                <input type="hidden" name="sortPrice" value="${param.sortPrice}">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Search Service Name"
+                           value="${param.search}">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                    
+                </div>
+            </form>
+        </div>
 
-                    <!-- Status Filter -->
-                    <div class="col-md-4">
-                        <form action="myreservation" method="get">
-                            <div class="input-group">
-                                <select class="form-control" name="status">
-                                    <option value="">All Status</option>
-                                    <option value="Scheduled" ${param.status == 'Scheduled' ? 'selected' : ''}>Scheduled</option>
-                                    <option value="Cancelled" ${param.status == 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                                    <option value="Completed" ${param.status == 'Completed' ? 'selected' : ''}>Completed</option>
-                                </select>
-                                <button class="btn btn-outline-primary" type="submit">Filter</button>
-                            </div>
-                        </form>
-                    </div>
+                 <!-- Status Filter -->
+               <!-- Status Filter and Reset -->
+                        <div class="col-md-4">
+                            <form action="myreservation" method="get">
+                                <input type="hidden" name="search" value="${param.search}">
+                                <input type="hidden" name="sort" value="${param.sort}">
+                                <input type="hidden" name="sortPrice" value="${param.sortPrice}">
+                                <div class="d-flex align-items-center">
+                                    <select class="form-control" name="status">
+                                        <option value="">All Status</option>
+                                        <option value="Scheduled" ${param.status == 'Scheduled' ? 'selected' : ''}>Scheduled</option>
+                                        <option value="Cancelled" ${param.status == 'Cancelled' ? 'selected' : ''}>Cancelled
+                                        </option>
+                                        <option value="Completed" ${param.status == 'Completed' ? 'selected' : ''}>Completed
+                                        </option>
+                                    </select>
+                                    <button class="btn btn-outline-primary " type="submit">Filter</button>
+                                     <div class="col-md-4">
+                                        <a href="myreservation" class="btn btn-outline-primary">Reset All</a>
+                                    </div>    
+                                </div>                                      
+                            </form>
+                                        
+                        </div>
                 </div>
 
                 <!-- Reservation Table -->
@@ -260,19 +275,20 @@
                                 <table class="table table-center table-padding mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="border-bottom text-center p-3" style="width: 250px;"> <!-- Cố định chiều rộng cho cột Service Name -->
-                                                <a href="myreservation?search=${param.search}&status=${param.status}&sort=${param.sort == 'asc' ? 'desc' : 'asc'}"
-                                                   class="text-decoration-none text-dark">
-                                                    Service Name
-                                                </a>
-                                            </th>
+                                      <th class="border-bottom text-center p-3" style="width: 250px;"> <!-- Cố định chiều rộng cho cột Service Name -->
+                                        <a href="myreservation?search=${param.search}&status=${param.status}&sort=${param.sort == 'asc' ? 'desc' : 'asc'}"
+                                           class="text-decoration-none text-dark">
+                                            Service Name
+                                        </a>
+                                    </th>
+
                                             <th class="border-bottom text-center p-3" style="width: 150px;">DateBook</th> <!-- Cố định chiều rộng cho cột DateBook -->
-                                            <th class="border-bottom text-center p-3" style="width: 120px;">
-                                                <a href="myreservation?search=${param.search}&status=${param.status}&sortPrice=${param.sortPrice == 'asc' ? 'desc' : 'asc'}"
-                                                   class="text-decoration-none text-dark">
-                                                    Service Price
-                                                </a>
-                                            </th>
+                                          <th class="border-bottom text-center p-3" style="width: 120px;">
+                                        <a href="myreservation?search=${param.search}&status=${param.status}&sort=${param.sort}&sortPrice=${param.sortPrice == 'asc' ? 'desc' : 'asc'}&page=${currentPage}"
+                                           class="text-decoration-none text-dark">
+                                            Price
+                                        </a>
+                                           </th>
                                             <th class="border-bottom text-center p-3" style="width: 120px;">Status</th>
                                             <th class="border-bottom text-center p-3" style="width: 120px;">Start Time</th>
                                             <th class="border-bottom text-center p-3" style="width: 120px;">End Time</th>
@@ -281,13 +297,13 @@
                                     <tbody>
                                         <c:forEach var="reservation" items="${paginatedReservations}">
                                             <tr class="table-row">
-                                                <td class="p-3 text-center"><a href="reserv-infor?rid=${reservation.id}">${reservation.service.name}</a></td>
+                                                <td class="p-3 text-center">${reservation.service.name}</td>
                                                 <td class="p-3 text-center"><fmt:formatDate value="${reservation.bookdate}" pattern="yyyy-MM-dd" /></td>
                                                 <td class="text-center p-3">${reservation.service.price}</td>
                                                 <td class="text-center p-3">
                                                     <span class="badge
-                                                          ${reservation.status == 'Complete' ? 'badge-success' : 
-                                                            reservation.status == 'Cancelled' ? 'badge-warning' : 'badge-danger'}">
+                                                          ${reservation.status == 'Completed' ? 'badge-success' : 
+                                                            reservation.status == 'Scheduled' ? 'badge-warning' : 'badge-danger'}">
                                                               ${reservation.status}
                                                           </span>
                                                     </td>
@@ -311,24 +327,25 @@
                         </div>
                     </div>
                     <!-- Pagination Controls -->
-                    <div class="pagination-container text-center">
-                        <c:if test="${currentPage > 1}">
-                            <a href="myreservation?page=${currentPage - 1}&search=${param.search}&status=${param.status}&sort=${param.sort}" class="btn btn-secondary">Previous</a>
-                        </c:if>
+                     <!-- Pagination Controls -->
+                <div class="pagination-container text-center">
+                   <c:if test="${currentPage > 1}">
+                        <a href="myreservation?page=${currentPage - 1}&search=${param.search}&status=${param.status}&sort=${param.sort}&sortPrice=${param.sortPrice}" class="btn btn-secondary">Previous</a>
+                    </c:if>
 
-                        <c:forEach var="i" begin="1" end="${totalPages}">
-                            <c:if test="${i == currentPage}">
-                                <span class="btn btn-primary">${i}</span>
-                            </c:if>
-                            <c:if test="${i != currentPage}">
-                                <a href="myreservation?page=${i}&search=${param.search}&status=${param.status}&sort=${param.sort}" class="btn btn-outline-primary">${i}</a>
-                            </c:if>
-                        </c:forEach>
-
-                        <c:if test="${currentPage < totalPages}">
-                            <a href="myreservation?page=${currentPage + 1}&search=${param.search}&status=${param.status}&sort=${param.sort}" class="btn btn-secondary">Next</a>
+                    <c:forEach var="i" begin="1" end="${totalPages}">
+                        <c:if test="${i == currentPage}">
+                            <span class="btn btn-primary">${i}</span>
                         </c:if>
-                    </div>
+                        <c:if test="${i != currentPage}">
+                            <a href="myreservation?page=${i}&search=${param.search}&status=${param.status}&sort=${param.sort}&sortPrice=${param.sortPrice}" class="btn btn-outline-primary">${i}</a>
+                        </c:if>
+                    </c:forEach>
+
+                    <c:if test="${currentPage < totalPages}">
+                        <a href="myreservation?page=${currentPage + 1}&search=${param.search}&status=${param.status}&sort=${param.sort}&sortPrice=${param.sortPrice}" class="btn btn-secondary">Next</a>
+                    </c:if>
+                </div>
 
                 </div>
             </section>
@@ -514,6 +531,9 @@
                                                 }
                                             });
         </script>
+                                            
+                                            
+                                     
 
 
     </html>
