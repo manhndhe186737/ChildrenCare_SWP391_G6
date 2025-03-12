@@ -241,12 +241,6 @@
                                                 </a>
                                             </th>
                                             <th class="border-bottom text-center p-3" style="width: 150px;">DateBook</th> <!-- Cố định chiều rộng cho cột DateBook -->
-                                            <th class="border-bottom text-center p-3" style="width: 120px;">
-                                                <a href="myreservation?search=${param.search}&status=${param.status}&sortPrice=${param.sortPrice == 'asc' ? 'desc' : 'asc'}"
-                                                   class="text-decoration-none text-dark">
-                                                    Price
-                                                </a>
-                                            </th>
                                             <th class="border-bottom text-center p-3" style="width: 120px;">Status</th>
                                             <th class="border-bottom text-center p-3" style="width: 120px;">Start Time</th>
                                             <th class="border-bottom text-center p-3" style="width: 120px;">End Time</th>
@@ -256,13 +250,12 @@
                                         <tr class="table-row">
                                             <td class="p-3 text-center">${requestScope.reserv.service.name}</td>
                                             <td class="p-3 text-center"><fmt:formatDate value="${requestScope.reserv.bookdate}" pattern="yyyy-MM-dd" /></td>
-                                            <td class="text-center p-3">${requestScope.reserv.service.price}</td>
                                             <td class="text-center p-3">
                                                 <span class="badge
-                                                          ${requestScope.reserv.status == 'Completed' ? 'badge-success' : 
-                                                            requestScope.reserv.status == 'Scheduled' ? 'badge-warning' : 'badge-danger'}">
-                                                              ${requestScope.reserv.status}
-                                                          </span>
+                                                      ${requestScope.reserv.status == 'Completed' ? 'badge-success' : 
+                                                        requestScope.reserv.status == 'Scheduled' ? 'badge-warning' : 'badge-danger'}">
+                                                          ${requestScope.reserv.status}
+                                                      </span>
                                                 </td>
                                                 <td class="border-bottom text-center p-3"><fmt:formatDate value="${requestScope.reserv.start}" pattern="HH:mm" /></td>
                                                 <td class="border-bottom text-center p-3"><fmt:formatDate value="${requestScope.reserv.end}" pattern="HH:mm" /></td>
@@ -306,6 +299,46 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="staff-info bg-light p-3 rounded shadow">
+                                <table class="table mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center"><strong>Method</strong></td>
+                                            <td class="text-center">${requestScope.reserv.payment.method}</td>
+                                            <td rowspan="3" class="align-middle text-center">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <c:choose>
+                                                        <c:when test="${requestScope.reserv.status eq 'Completed'}">
+                                                            <button class="btn btn-success mb-2 w-100">Feedback</button>
+                                                            <button class="btn btn-primary mb-2 w-100">Reschedule</button>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <button class="btn btn-danger mb-2 w-100">Cancel</button>
+                                                            <button class="btn btn-warning mb-2 w-100">Update</button>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center"><strong>Status</strong></td>
+                                            <td class="text-center">${requestScope.reserv.payment.status}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center"><strong>Amount</strong></td>
+                                            <td class="text-center">${requestScope.reserv.payment.amount}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
 
             </section>
 
@@ -395,24 +428,24 @@
             <script src="${pageContext.request.contextPath}/assets/js/feather.min.js"></script>
             <!-- Main Js -->
             <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-            
+
             <script>
-                                            // Lắng nghe sự kiện submit của form
-                                            document.querySelector('form').addEventListener('submit', function (event) {
-                                                // Lấy giá trị từ trường select status
-                                                let status = document.querySelector('select[name="status"]').value.trim();
+                // Lắng nghe sự kiện submit của form
+                document.querySelector('form').addEventListener('submit', function (event) {
+                    // Lấy giá trị từ trường select status
+                    let status = document.querySelector('select[name="status"]').value.trim();
 
-                                                // Danh sách các trạng thái hợp lệ
-                                                const validStatuses = ['Scheduled', 'Cancelled', 'Completed'];
+                    // Danh sách các trạng thái hợp lệ
+                    const validStatuses = ['Scheduled', 'Cancelled', 'Completed'];
 
-                                                // Kiểm tra nếu giá trị của status không hợp lệ và không phải là giá trị trống
-                                                if (status && !validStatuses.includes(status)) {
-                                                    // Ngừng việc gửi form và hiển thị thông báo lỗi
-                                                    event.preventDefault();
-                                                    alert("Vui lòng chọn trạng thái hợp lệ: Scheduled, Cancelled hoặc Completed.");
-                                                }
-                                            });
-        </script>
+                    // Kiểm tra nếu giá trị của status không hợp lệ và không phải là giá trị trống
+                    if (status && !validStatuses.includes(status)) {
+                        // Ngừng việc gửi form và hiển thị thông báo lỗi
+                        event.preventDefault();
+                        alert("Vui lòng chọn trạng thái hợp lệ: Scheduled, Cancelled hoặc Completed.");
+                    }
+                });
+            </script>
 
 
         </body>

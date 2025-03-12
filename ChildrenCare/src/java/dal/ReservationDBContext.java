@@ -386,11 +386,11 @@ public class ReservationDBContext extends DBContext {
                 u.setId(rs.getInt("user_id"));
                 u.setFullname(rs.getString("fullname"));
                 u.setAvatar(rs.getString("avatar"));
-                
+
                 Profile p = new Profile();
                 p.setCertification(rs.getString("certification"));
                 p.setSpecialties(rs.getString("specialties"));
-                
+
                 ArrayList<Profile> list = new ArrayList<>();
                 list.add(p);
                 u.setProfiles(list);
@@ -431,7 +431,10 @@ public class ReservationDBContext extends DBContext {
     }
 
     public Reservation getReservById(int id) {
-        String sql = "select * from Reservations where reserv_id = ?";
+        String sql = "select r.*, p.payment_id, p.amount, p.method, p.status pstatus from Reservations r \n"
+                + "join Payment p\n"
+                + "on r.reserv_id = p.reserv_id\n"
+                + " where r.reserv_id = ?";
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, id);
@@ -463,6 +466,14 @@ public class ReservationDBContext extends DBContext {
                 r.setService(s);
                 r.setStaff(staff);
                 r.setCustomer(customer);
+                
+                Payment p = new Payment();
+                p.setId(rs.getInt("payment_id"));
+                p.setAmount(rs.getFloat("amount"));
+                p.setMethod(rs.getString("method"));
+                p.setStatus(rs.getString("pstatus"));
+                
+                r.setPayment(p);
 
                 return r;
             }
@@ -471,4 +482,5 @@ public class ReservationDBContext extends DBContext {
         }
         return null;
     }
+
 }
