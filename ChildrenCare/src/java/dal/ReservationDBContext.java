@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
 import model.Payment;
+import model.Profile;
 import model.User;
 import model.Reservation;
 
@@ -49,6 +50,7 @@ public class ReservationDBContext extends DBContext {
                 s.setId(rs.getInt("service_id"));
                 s.setName(rs.getString("name"));
                 s.setPrice(rs.getFloat("price"));
+                s.setImg(rs.getString("img"));
                 s.setDescription(rs.getString("description"));
                 s.setCategoryId(rs.getInt("category_id"));
 
@@ -371,7 +373,10 @@ public class ReservationDBContext extends DBContext {
     }
 
     public User getStaffById(int id) {
-        String sql = "SELECT user_id, fullname FROM users WHERE user_id = ?";
+        String sql = "SELECT u.user_id, u.fullname, sp.certification, sp.specialties, avatar FROM users u\n"
+                + "JOIN staffprofiles sp\n"
+                + "ON u.user_id = sp.staff_id\n"
+                + " WHERE user_id = ?";
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
@@ -380,6 +385,15 @@ public class ReservationDBContext extends DBContext {
                 User u = new User();
                 u.setId(rs.getInt("user_id"));
                 u.setFullname(rs.getString("fullname"));
+                u.setAvatar(rs.getString("avatar"));
+                
+                Profile p = new Profile();
+                p.setCertification(rs.getString("certification"));
+                p.setSpecialties(rs.getString("specialties"));
+                
+                ArrayList<Profile> list = new ArrayList<>();
+                list.add(p);
+                u.setProfiles(list);
 
                 return u;
             }
@@ -414,5 +428,47 @@ public class ReservationDBContext extends DBContext {
 
         } catch (Exception e) {
         }
+    }
+
+    public Reservation getReservById(int id) {
+        String sql = "select * from Reservations where reserv_id = ?";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, id);
+
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                Reservation r = new Reservation();
+                r.setId(id);
+                r.setBookdate(rs.getDate("dateBook"));
+
+                User customer = new User();
+                customer.setId(rs.getInt("user_id"));
+
+                Service s = new Service();
+                s.setId(rs.getInt("service_id"));
+
+                User staff = new User();
+                staff.setId(rs.getInt("staff_id"));
+
+                r.setCreatedate(rs.getDate("createDate"));
+                r.setUpdatedate(rs.getDate("updateDate"));
+                r.setNote(rs.getString("note"));
+                r.setStart(rs.getTime("starttime"));
+                r.setEnd(rs.getTime("endtime"));
+                r.setCustomerName(rs.getString("customer_name"));
+                r.setCustomerAddress(rs.getString("customer_address"));
+                r.setStatus(rs.getString("status"));
+                r.setService(s);
+                r.setStaff(staff);
+                r.setCustomer(customer);
+
+                return r;
+            }
+
+        } catch (Exception e) {
+        }
+        return null;
     }
 }

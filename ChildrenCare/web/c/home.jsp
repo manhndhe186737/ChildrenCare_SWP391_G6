@@ -262,7 +262,7 @@
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
                                     <c:if test="${sessionScope.role.contains('Staffs')}">
-                                    <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
+                                    <li><a href="../c/staff-reserv" class="sub-menu-item">Reservation</a></li>
                                     <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
                                     <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
                                     </c:if>
