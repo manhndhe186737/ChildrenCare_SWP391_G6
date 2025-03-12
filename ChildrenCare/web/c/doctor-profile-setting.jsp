@@ -308,27 +308,27 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Full Name</label>
-                                                <input name="fullname" id="fullname" type="text" class="form-control" value="${sessionScope.user.fullname}" placeholder="Full Name" required>
+                                               <input name="fullname" id="fullname" type="text" class="form-control" value="${sessionScope.user.fullname}" placeholder="Full Name" required maxlength="50">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Address</label>
-                                                <input name="address" id="address" type="text" class="form-control" value="${sessionScope.user.address}" placeholder="Address">
+                                                <input name="address" id="address" type="text" class="form-control" value="${sessionScope.user.address}" placeholder="Address" required maxlength="50">
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Phone no.</label>
-                                                <input name="phone" id="phone" type="text" class="form-control" value="${sessionScope.user.phone}" placeholder="Phone no." required>
+                                                <input name="phone" id="phone" type="text" class="form-control" value="${sessionScope.user.phone}" placeholder="Phone no." required maxlength="15">
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Date of Birth</label>
-                                                <input name="dob" id="dob" type="date" class="form-control" value="${sessionScope.user.dob}" placeholder="Date of Birth" max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
+                                                <input name="dob" id="dob" type="date" class="form-control" value="${sessionScope.user.dob}" placeholder="Date of Birth" max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>" required="">
                                             </div>
                                         </div>
 
@@ -693,84 +693,88 @@
                                                     }
 
                                                     // Validate the form data
-                                                    function validateForm() {
-                                                        let fullname = document.getElementById("fullname").value.trim(); // Remove leading and trailing spaces
-                                                        let phone = document.getElementById("phone").value.trim(); // Remove leading and trailing spaces
-                                                        let address = document.getElementById("address").value.trim(); // Remove leading and trailing spaces
+                                                            function validateForm() {
+                                                                let fullname = document.getElementById("fullname").value.trim(); // Remove leading and trailing spaces
+                                                                let phone = document.getElementById("phone").value.trim(); // Remove leading and trailing spaces
+                                                                let address = document.getElementById("address").value.trim(); // Remove leading and trailing spaces
 
-                                                        // Check for dangerous characters in fullname, phone, and address
-                                                        if (containsDangerousChars(fullname)) {
-                                                            showError("Full Name contains forbidden characters.");
-                                                            return false;
-                                                        }
+                                                                // Check for dangerous characters in fullname, phone, and address
+                                                                if (containsDangerousChars(fullname)) {
+                                                                    showError("Full Name contains forbidden characters.");
+                                                                    return false;
+                                                                }
 
-                                                        if (containsDangerousChars(phone)) {
-                                                            showError("Phone number contains forbidden characters.");
-                                                            return false;
-                                                        }
+                                                                if (containsDangerousChars(phone)) {
+                                                                    showError("Phone number contains forbidden characters.");
+                                                                    return false;
+                                                                }
 
-                                                        if (containsDangerousChars(address)) {
-                                                            showError("Address contains forbidden characters.");
-                                                            return false;
-                                                        }
+                                                                if (containsDangerousChars(address)) {
+                                                                    showError("Address contains forbidden characters.");
+                                                                    return false;
+                                                                }
 
-                                                        // Validate fullname (No numbers allowed, no extra spaces between words, no leading/trailing spaces)
-                                                        const nameRegex = /^[a-zA-Z\s]+$/;
-                                                        if (!nameRegex.test(fullname)) {
-                                                            showError("Full Name can only contain letters and spaces.");
-                                                            return false;
-                                                        }
+                                                                // Validate fullname (No numbers allowed, no extra spaces between words, no leading/trailing spaces, max 50 characters)
+                                                                const nameRegex = /^[a-zA-Z\s]+$/;
+                                                                if (fullname.length > 50) {
+                                                                    showError("Full Name cannot exceed 50 characters.");
+                                                                    return false;
+                                                                }
+                                                                if (!nameRegex.test(fullname)) {
+                                                                    showError("Full Name can only contain letters and spaces.");
+                                                                    return false;
+                                                                }
 
-                                                        // Check for multiple spaces between words
-                                                        if (/ {2,}/.test(fullname)) {
-                                                            showError("Full Name cannot contain multiple consecutive spaces.");
-                                                            return false;
-                                                        }
+                                                                // Check for multiple spaces between words
+                                                                if (/ {2,}/.test(fullname)) {
+                                                                    showError("Full Name cannot contain multiple consecutive spaces.");
+                                                                    return false;
+                                                                }
 
-                                                        // Check for leading or trailing spaces in Full Name and remove them
-                                                        if (fullname !== fullname.trim()) {
-                                                            fullname = fullname.trim(); // Remove leading and trailing spaces
-                                                            document.getElementById("fullname").value = fullname; // Update the input field with trimmed value
-                                                        }
+                                                                // Check for leading or trailing spaces in Full Name and remove them
+                                                                if (fullname !== fullname.trim()) {
+                                                                    fullname = fullname.trim(); // Remove leading and trailing spaces
+                                                                    document.getElementById("fullname").value = fullname; // Update the input field with trimmed value
+                                                                }
 
-                                                        // Validate phone number (Only numbers allowed, no spaces allowed)
-                                                        const phoneRegex = /^[0-9]+$/;
-                                                        if (!phoneRegex.test(phone)) {
-                                                            showError("Phone number must contain only numbers and no spaces.");
-                                                            return false;
-                                                        }
+                                                                // Validate phone number (Only numbers allowed, no spaces allowed)
+                                                                const phoneRegex = /^[0-9]+$/;
+                                                                if (!phoneRegex.test(phone)) {
+                                                                    showError("Phone number must contain only numbers and no spaces.");
+                                                                    return false;
+                                                                }
 
-                                                        // Check for spaces in Phone Number (no spaces allowed)
-                                                        if (/\s/.test(phone)) {
-                                                            showError("Phone number cannot contain spaces.");
-                                                            return false;
-                                                        }
+                                                                // Check for spaces in Phone Number (no spaces allowed)
+                                                                if (/\s/.test(phone)) {
+                                                                    showError("Phone number cannot contain spaces.");
+                                                                    return false;
+                                                                }
 
-                                                        // Check if there's any leading/trailing space in Phone Number and remove it
-                                                        if (phone !== phone.trim()) {
-                                                            phone = phone.trim();  // Remove trailing and leading spaces
-                                                            document.getElementById("phone").value = phone; // Update the input field with trimmed value
-                                                        }
+                                                                // Check if there's any leading/trailing space in Phone Number and remove it
+                                                                if (phone !== phone.trim()) {
+                                                                    phone = phone.trim();  // Remove trailing and leading spaces
+                                                                    document.getElementById("phone").value = phone; // Update the input field with trimmed value
+                                                                }
 
-                                                        // Validate address (No extra spaces between words, no leading/trailing spaces)
-                                                        if (/ {2,}/.test(address)) {
-                                                            showError("Address cannot contain multiple consecutive spaces.");
-                                                            return false;
-                                                        }
+                                                                // Validate address (No extra spaces between words, no leading/trailing spaces)
+                                                                if (/ {2,}/.test(address)) {
+                                                                    showError("Address cannot contain multiple consecutive spaces.");
+                                                                    return false;
+                                                                }
 
-                                                        // Check for leading or trailing spaces in Address and remove them
-                                                        if (address !== address.trim()) {
-                                                            address = address.trim(); // Remove leading and trailing spaces
-                                                            document.getElementById("address").value = address; // Update the input field with trimmed value
-                                                        }
+                                                                // Check for leading or trailing spaces in Address and remove them
+                                                                if (address !== address.trim()) {
+                                                                    address = address.trim(); // Remove leading and trailing spaces
+                                                                    document.getElementById("address").value = address; // Update the input field with trimmed value
+                                                                }
 
-                                                        // If validation passes, show success message
-                                                        showSuccessMessage("Profile updated successfully!");
+                                                                // If validation passes, show success message
+                                                                showSuccessMessage("Profile updated successfully!");
 
-                                                        // Allow form submission
-                                                        return true; // Form will be submitted
-                                                    }
-
+                                                                // Allow form submission
+                                                                return true; // Form will be submitted
+                                                            }
+                                                                                                                    
                                                     // Event listener to handle real-time input checking
                                                     document.getElementById("fullname").addEventListener("input", function (e) {
                                                         let inputValue = e.target.value;
