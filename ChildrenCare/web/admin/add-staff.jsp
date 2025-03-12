@@ -5,6 +5,10 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="model.User" %>
+<%@ page import="model.Account" %>
 <!DOCTYPE html>
 
 <!DOCTYPE html>
@@ -34,7 +38,71 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <style>
+            /* Hiệu ứng mờ dần và ẩn sau 5 giây */
+            .alert {
+                opacity: 1;
+                visibility: visible;
+                transition: opacity 1s ease-out, visibility 1s ease-out;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                font-size: 16px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
 
+            .alert.hide {
+                opacity: 0;
+                visibility: hidden;
+                display: none;
+            }
+
+
+            /* Thiết kế thông báo lỗi */
+            .alert-danger {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+
+            /* Thiết kế thông báo thành công */
+            .alert-success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+
+            /* Icon cho thông báo lỗi */
+            .alert-danger::before {
+                content: "⚠️";
+                margin-right: 10px;
+                font-size: 18px;
+            }
+
+            /* Icon cho thông báo thành công */
+            .alert-success::before {
+                content: "✅";
+                margin-right: 10px;
+                font-size: 18px;
+            }
+
+            /* Nút đóng thông báo */
+            .alert .close {
+                background: transparent;
+                border: none;
+                font-size: 20px;
+                color: inherit;
+                cursor: pointer;
+            }
+
+            .alert .close:hover {
+                color: #f5c6cb;
+            }
+
+
+        </style>
     </head>
 
     <body>
@@ -54,12 +122,12 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                        <!--<a href="index.html">-->
+                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
-                    
+
                     <ul class="sidebar-menu pt-3">
                         <li class="active"><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
@@ -140,7 +208,7 @@
                                 </div>
                             </div>
                         </div>
-        
+
                         <ul class="list-unstyled mb-0">
                             <li class="list-inline-item mb-0">
                                 <div class="dropdown dropdown-primary">
@@ -152,28 +220,28 @@
                                                 <small class="text-dark mb-0">Chinese</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/european.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">European</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/indian.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">Indian</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/japanese.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
                                                 <small class="text-dark mb-0">Japanese</small>
                                             </div>
                                         </a>
-        
+
                                         <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
                                             <img src="../assets/images/language/russian.png" class="avatar avatar-client rounded-circle shadow" alt="">
                                             <div class="flex-1 text-left ms-2 overflow-hidden">
@@ -194,7 +262,7 @@
                                 <div class="dropdown dropdown-primary">
                                     <button type="button" class="btn btn-icon btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="mail" class="fea icon-sm"></i></button>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">4 <span class="visually-hidden">unread mail</span></span>
-                                    
+
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow rounded border-0 mt-3 px-2 py-2" data-simplebar style="height: 320px; width: 300px;">
                                         <a href="#" class="d-flex align-items-center justify-content-between py-2">
                                             <div class="d-inline-flex position-relative overflow-hidden">
@@ -276,197 +344,112 @@
                                 </ul>
                             </nav>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-lg-8 mt-4">
                                 <div class="card border-0 p-4 rounded shadow">
-                                    <div class="row align-items-center">
-                                        <div class="col-lg-2 col-md-4">
-                                            <img src="../assets/images/doctors/01.jpg" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
-                                        </div><!--end col-->
-            
-                                        <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                            <h5 class="">Upload your picture</h5>
-                                            <p class="text-muted mb-0">For best results, use an image at least 600px by 600px in either .jpg or .png format</p>
-                                        </div><!--end col-->
-            
-                                        <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
-                                            <a href="#" class="btn btn-primary">Upload</a>
-                                            <a href="#" class="btn btn-soft-primary ms-2">Remove</a>
-                                        </div><!--end col-->
-                                    </div><!--end row-->
-            
-                                    <form class="mt-4">
+                                    <!-- Thông báo lỗi -->
+                                    <c:if test="${not empty errorMessage}">
+                                        <div class="alert alert-danger" role="alert">
+                                            <span>${errorMessage}</span>
+                                            <button type="button" class="close">&times;</button>
+                                        </div>
+                                    </c:if>
+
+                                    <!-- Thông báo thành công -->
+                                    <c:if test="${not empty successMessage}">
+                                        <div class="alert alert-success" role="alert">
+                                            <span>${successMessage}</span>
+                                            <button type="button" class="close">&times;</button>
+                                        </div>
+                                    </c:if>
+
+
+
+                                    <form class="mt-4" method="POST" action="add-staff">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">First Name</label>
-                                                    <input name="name" id="name" type="text" class="form-control" placeholder="First Name :">
+                                                    <label class="form-label">Full Name</label>
+                                                    <input name="name" id="name" type="text" class="form-control" placeholder="Full Name:" required>
                                                 </div>
                                             </div><!--end col-->
-            
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Last Name</label>
-                                                    <input name="name" id="name2" type="text" class="form-control" placeholder="Last Name :">
-                                                </div>
-                                            </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Your Email</label>
-                                                    <input name="email" id="email" type="email" class="form-control" placeholder="Your email :">
+                                                    <input name="email" id="email" type="email" class="form-control" placeholder="Your email:" required>
                                                 </div> 
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Phone no.</label>
-                                                    <input name="number" id="number" type="text" class="form-control" placeholder="Phone no. :">
+                                                    <input name="phone" id="phone" type="text" class="form-control" placeholder="Phone no.:" required> 
                                                 </div>                                                                               
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Departments</label>
-                                                    <select class="form-control department-name select2input">
-                                                        <option value="EY">Eye Care</option>
-                                                        <option value="GY">Gynecologist</option>
-                                                        <option value="PS">Psychotherapist</option>
-                                                        <option value="OR">Orthopedic</option>
-                                                        <option value="DE">Dentist</option>
-                                                        <option value="GA">Gastrologist</option>
-                                                        <option value="UR">Urologist</option>
-                                                        <option value="NE">Neurologist</option>
-                                                    </select>
-                                                </div>
+                                                    <label class="form-label">Address</label>
+                                                    <input name="address" id="address" type="text" class="form-control" placeholder="Address:" required> 
+                                                </div>                                                                               
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Gender</label>
-                                                    <select class="form-control gender-name select2input">
+                                                    <select name="gender" class="form-control" required>
                                                         <option value="EY">Male</option>
                                                         <option value="GY">Female</option>
                                                     </select>
                                                 </div>
                                             </div><!--end col-->
-            
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Instagram</label>
-                                                    <div class="input-group flex-nowrap">
-                                                        <span class="input-group-text bg-white border border-end-0 text-dark" id="insta-id"><i data-feather="instagram" class="fea icon-sm"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="insta-id">
-                                                    </div>
+                                                    <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                                                    <input type="date" class="form-control" name="dob" required>
                                                 </div>
                                             </div><!--end col-->
-            
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Facebook</label>
-                                                    <div class="input-group flex-nowrap">
-                                                        <span class="input-group-text bg-white border border-end-0 text-dark" id="fb-id"><i data-feather="facebook" class="fea icon-sm"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="fb-id">
-                                                    </div>
-                                                </div>
-                                            </div><!--end col-->
-            
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Linkedin</label>
-                                                    <div class="input-group flex-nowrap">
-                                                        <span class="input-group-text bg-white border border-end-0 text-dark" id="linke-pro"><i data-feather="linkedin" class="fea icon-sm"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="linke-pro">
-                                                    </div>
-                                                </div>
-                                            </div><!--end col-->
-            
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Twitter</label>
-                                                    <div class="input-group flex-nowrap">
-                                                        <span class="input-group-text bg-white border border-end-0 text-dark" id="twitter-id"><i data-feather="twitter" class="fea icon-sm"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="twitter-id">
-                                                    </div>
-                                                </div>
-                                            </div><!--end col-->
-            
-                                            <div class="col-md-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Your Bio Here</label>
-                                                    <textarea name="comments" id="comments" rows="3" class="form-control" placeholder="Bio :"></textarea>
-                                                </div>
-                                            </div>
                                         </div><!--end row-->
-            
-                                        <button type="submit" class="btn btn-primary">Add Doctor</button>
+
+                                        <button type="submit" class="btn btn-primary">Add Staff</button>
                                     </form>
+
+
                                 </div>
                             </div><!--end col-->
 
                             <div class="col-lg-4 mt-4">
-                                <div class="card rounded border-0 shadow">
-                                    <div class="p-4 border-bottom">
-                                        <h5 class="mb-0">Doctors List</h5>
-                                    </div>
+                              <div class="card rounded border-0 shadow">
+    <div class="p-4 border-bottom">
+        <h5 class="mb-0">Doctors List</h5>
+    </div>
 
-                                    <ul class="list-unstyled mb-0 p-4" data-simplebar style="height: 664px;">
-                                        <li class="d-md-flex align-items-center text-center text-md-start">
-                                            <img src="../assets/images/doctors/01.jpg" class="avatar avatar-medium rounded-md shadow" alt="">
+    <ul class="list-unstyled">
+        <c:choose>
+            <c:when test="${not empty staffList}">
+                <c:forEach var="listStaff" items="${staffList}">
+                    <li class="d-md-flex align-items-center text-center text-md-start">
+                        <img src="${listStaff.avatar != null ? listStaff.avatar : '../assets/images/default-avatar.jpg'}" 
+                             class="avatar avatar-medium rounded-md shadow" alt="Staff Avatar">
 
-                                            <div class="ms-md-3 mt-4 mt-sm-0">
-                                                <a href="#" class="text-dark h6">Dr. Calvin Carlo</a>
-                                                <p class="text-muted my-1">Cardiologist</p>
-                                                <p class="text-muted mb-0">3 Years Experienced</p>
-                                            </div>
-                                        </li>
+                        <div class="ms-md-3 mt-4 mt-sm-0">
+                            <a href="#" class="text-dark h6">${listStaff.fullname}</a>
+                            <p class="text-muted my-1">Email: ${listStaff.account.email}</p>
+                            <p class="text-muted mb-0">Phone: ${listStaff.phone}</p>
+                        </div>
+                    </li>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <li class="text-center text-muted">No staff found.</li>
+            </c:otherwise>
+        </c:choose>
+    </ul>
+</div>
 
-                                        <li class="d-md-flex align-items-center text-center text-md-start mt-4">
-                                            <img src="../assets/images/doctors/02.jpg" class="avatar avatar-medium rounded-md shadow" alt="">
-
-                                            <div class="ms-md-3 mt-4 mt-sm-0">
-                                                <a href="#" class="text-dark h6">Dr. Alex Smith</a>
-                                                <p class="text-muted my-1">Dentist</p>
-                                                <p class="text-muted mb-0">1 Years Experienced</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="d-md-flex align-items-center text-center text-md-start mt-4">
-                                            <img src="../assets/images/doctors/03.jpg" class="avatar avatar-medium rounded-md shadow" alt="">
-
-                                            <div class="ms-md-3 mt-4 mt-sm-0">
-                                                <a href="#" class="text-dark h6">Dr. Cristina Luly</a>
-                                                <p class="text-muted my-1">Orthopedic</p>
-                                                <p class="text-muted mb-0">5 Years Experienced</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="d-md-flex align-items-center text-center text-md-start mt-4">
-                                            <img src="../assets/images/doctors/04.jpg" class="avatar avatar-medium rounded-md shadow" alt="">
-
-                                            <div class="ms-md-3 mt-4 mt-sm-0">
-                                                <a href="#" class="text-dark h6">Dr. Dwayen Maria</a>
-                                                <p class="text-muted my-1">Gastrologist</p>
-                                                <p class="text-muted mb-0">2 Years Experienced</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="d-md-flex align-items-center text-center text-md-start mt-4">
-                                            <img src="../assets/images/doctors/05.jpg" class="avatar avatar-medium rounded-md shadow" alt="">
-
-                                            <div class="ms-md-3 mt-4 mt-sm-0">
-                                                <a href="#" class="text-dark h6">Dr. Jenelia Focia</a>
-                                                <p class="text-muted my-1">Psychotherapist</p>
-                                                <p class="text-muted mb-0">3 Years Experienced</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="mt-4">
-                                            <a href="doctors.html" class="btn btn-primary">All Doctors</a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </div>
                         </div><!--end row-->
                     </div>
@@ -478,7 +461,7 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <div class="text-sm-start text-center">
-                                    
+
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->
@@ -638,7 +621,7 @@
         </div>
         <!-- Cancel Appointment End -->
         <!-- Modal end -->
-        
+
         <!-- javascript -->
         <script src="../assets/js/jquery.min.js"></script>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
@@ -651,7 +634,24 @@
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
-        
+        <script>
+                                        // Thêm class 'hide' sau 5 giây để ẩn thông báo lỗi hoặc thành công
+                                        setTimeout(function () {
+                                            var alert = document.querySelector('.alert');
+                                            if (alert) {
+                                                alert.classList.add('hide');
+                                            }
+                                        }, 5000);
+
+// Thêm sự kiện đóng thông báo bằng nút
+                                        document.querySelectorAll('.alert .close').forEach(function (button) {
+                                            button.addEventListener('click', function () {
+                                                var alert = button.closest('.alert');
+                                                alert.classList.add('hide');
+                                            });
+                                        });
+
+        </script>
     </body>
 
 </html>

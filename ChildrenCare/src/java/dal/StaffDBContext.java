@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,8 +48,8 @@ public class StaffDBContext extends DBContext {
                 stm.setString(index++, "%" + search + "%");
             }
 
-            stm.setInt(index++, (page - 1) * pageSize); 
-            stm.setInt(index, pageSize); 
+            stm.setInt(index++, (page - 1) * pageSize);
+            stm.setInt(index, pageSize);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -71,7 +72,7 @@ public class StaffDBContext extends DBContext {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
 
         return users;
@@ -211,7 +212,7 @@ public class StaffDBContext extends DBContext {
             e.printStackTrace();
         }
     }
-    
+
     public void deleteStaff(int id) {
         String sql = "UPDATE users SET isActive = 0 WHERE user_id = ?";
 
@@ -225,4 +226,128 @@ public class StaffDBContext extends DBContext {
             e.printStackTrace();
         }
     }
+
+//     public int registerStaff(User user, String email, String password) {
+//        String sqlUser = "INSERT INTO users (fullname, address, dob, phone, avatar, is_verified, email, password, isActive) VALUES (?, ?, ?, ?, ?, false, ?, ?, ?)";
+//        String sqlUserRole = "INSERT INTO userroles (role_id, email) VALUES (?, ?)";
+//
+//        try {
+//            // Thêm user vào bảng users
+//            PreparedStatement psUser = connection.prepareStatement(sqlUser, Statement.RETURN_GENERATED_KEYS);
+//            psUser.setString(1, user.getFullname());
+//            psUser.setString(2, user.getAddress());
+//            psUser.setDate(3, new java.sql.Date(user.getDob().getTime()));
+//            psUser.setString(4, user.getPhone());
+//            psUser.setString(5, "uploads/default.jpg");
+//            psUser.setString(6, email);
+//            psUser.setString(7, password);
+//            psUser.setBoolean(8, true);
+//            psUser.executeUpdate();
+//
+//            // Lấy user_id vừa tạo
+//            ResultSet rs = psUser.getGeneratedKeys();
+//            if (rs.next()) {
+//                int userId = rs.getInt(1);
+//
+//                // Thêm user vào bảng userroles với role_id mặc định là 4
+//                PreparedStatement psUserRole = connection.prepareStatement(sqlUserRole);
+//                psUserRole.setInt(1, 3); // Giả sử role_id mặc định là 4
+//                psUserRole.setString(2, email);
+//                psUserRole.executeUpdate();
+//
+//                System.out.println("UserID created: " + userId);
+//                return userId;
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return -1;
+//    }
+    public int registerStaff(User user, String email, String password) {
+        String sqlUser = "INSERT INTO users (fullname, address, dob, phone, avatar, is_verified, email, password, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlUserRole = "INSERT INTO userroles (role_id, email) VALUES (?, ?)";
+
+        try {
+            // Thêm user vào bảng users
+            PreparedStatement psUser = connection.prepareStatement(sqlUser, Statement.RETURN_GENERATED_KEYS);
+            psUser.setString(1, user.getFullname());
+            psUser.setString(2, user.getAddress());
+            psUser.setDate(3, new java.sql.Date(user.getDob().getTime()));
+            psUser.setString(4, user.getPhone());
+            psUser.setString(5, "uploads/default.jpg");
+            psUser.setBoolean(6, true);  // isActive = true
+            psUser.setString(7, email);
+            psUser.setString(8, password);
+            psUser.setBoolean(9, true);
+            psUser.executeUpdate();
+
+            // Lấy user_id vừa tạo
+            ResultSet rs = psUser.getGeneratedKeys();
+            if (rs.next()) {
+                int userId = rs.getInt(1);
+
+                // Thêm user vào bảng userroles với role_id mặc định là 3
+                PreparedStatement psUserRole = connection.prepareStatement(sqlUserRole);
+                psUserRole.setInt(1, 3); // Giả sử role_id mặc định là 3
+                psUserRole.setString(2, email);
+                psUserRole.executeUpdate();
+
+                System.out.println("UserID created: " + userId);
+                return userId;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public ArrayList<User> getAllStaff() {
+        ArrayList<User> staffList = new ArrayList<>();
+        String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.avatar, u.phone, u.email, u.is_verified, u.avatar "
+                + "FROM users u "
+                + "JOIN userroles ur ON ur.email = u.email "
+                + "WHERE ur.role_id = 3 AND u.isActive = 1"; // Chỉ lấy nhân viên đang hoạt động
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("user_id"));
+                user.setFullname(rs.getString("fullname"));
+                user.setGender(rs.getBoolean("gender"));
+                user.setAddress(rs.getString("address"));
+                user.setDob(rs.getDate("dob"));
+                user.setAvatar(rs.getString("avatar"));
+                user.setPhone(rs.getString("phone"));
+                user.setIsVerified(rs.getBoolean("is_verified"));
+                user.setAvatar(rs.getString("avatar"));
+
+                Account account = new Account();
+                account.setEmail(rs.getString("email"));
+                user.setAccount(account);
+
+                staffList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return staffList;
+    }
+    
+    public static void main(String[] args) {
+    StaffDBContext staffDBContext = new StaffDBContext();
+    
+    // Gọi phương thức để lấy danh sách nhân viên
+    ArrayList<User> staffList = staffDBContext.getAllStaff();
+
+    // Hiển thị danh sách nhân viên
+    for (User staff : staffList) {
+        System.out.println(staff);
+    }
+}
+
+
+   
 }
