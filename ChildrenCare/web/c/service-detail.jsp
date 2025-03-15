@@ -25,7 +25,12 @@
         <!-- Css -->
         <link href="./assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
         <style>
-
+            .section{
+                padding: 0px !important;
+            }
+            .content-section{
+                padding-top: 80px;
+            }
         </style>
     </head>
 
@@ -260,7 +265,7 @@
             </svg>
         </div>
     </div>
-
+    <div class="content-section">
     <!-- Main Content Section -->
     <section class="section">
         <div class="container">
@@ -326,7 +331,7 @@
             </div><!--end row-->
         </div><!--end container-->
     </section>
-
+</div>
     <section class="section">
         <div class="container mt-100 mt-60">
             <div class="row">
