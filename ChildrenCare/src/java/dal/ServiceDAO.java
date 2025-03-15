@@ -156,7 +156,7 @@ public class ServiceDAO extends DBContext {
 
         try {
             // Câu lệnh SQL tìm kiếm dịch vụ theo tên
-            String sql = "SELECT service_id, name, category_id FROM swp391_fix.services WHERE name LIKE ?";
+            String sql = "SELECT service_id, name, category_id, img FROM swp391_fix.services WHERE name LIKE ?";
             stm = connection.prepareStatement(sql);
             stm.setString(1, "%" + searchQuery + "%");  // Thêm dấu "%" để tìm kiếm theo phần của từ khóa
 
@@ -168,6 +168,7 @@ public class ServiceDAO extends DBContext {
                 service.setId(rs.getInt("service_id"));
                 service.setName(rs.getString("name"));
                 service.setCategoryId(rs.getInt("category_id"));
+                service.setImg(rs.getString("img"));
                 services.add(service);  // Thêm vào danh sách dịch vụ
             }
         } catch (SQLException e) {

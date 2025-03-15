@@ -225,47 +225,6 @@
         <section class="section">
             <div class="container">
                 <!-- Search and Filter Row -->
-                <div class="row mb-3">
-                    <!-- Search Box -->
-                    <div class="col-md-4">
-                        <form action="myreservation" method="get">
-                            <input type="hidden" name="status" value="${param.status}">
-                            <input type="hidden" name="sort" value="${param.sort}">
-                            <input type="hidden" name="sortPrice" value="${param.sortPrice}">
-                            <div class="input-group">
-                                <input type="text" name="search" class="form-control" placeholder="Search Service Name"
-                                       value="${param.search}">
-                                <button class="btn btn-outline-primary" type="submit">Search</button>
-
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Status Filter -->
-                    <!-- Status Filter and Reset -->
-                    <div class="col-md-4">
-                        <form action="myreservation" method="get">
-                            <input type="hidden" name="search" value="${param.search}">
-                            <input type="hidden" name="sort" value="${param.sort}">
-                            <input type="hidden" name="sortPrice" value="${param.sortPrice}">
-                            <div class="d-flex align-items-center">
-                                <select class="form-control" name="status">
-                                    <option value="">All Status</option>
-                                    <option value="Scheduled" ${param.status == 'Scheduled' ? 'selected' : ''}>Scheduled</option>
-                                    <option value="Cancelled" ${param.status == 'Cancelled' ? 'selected' : ''}>Cancelled
-                                    </option>
-                                    <option value="Completed" ${param.status == 'Completed' ? 'selected' : ''}>Completed
-                                    </option>
-                                </select>
-                                <button class="btn btn-outline-primary " type="submit">Filter</button>
-                                <div class="col-md-4">
-                                    <a href="myreservation" class="btn btn-outline-primary">Reset All</a>
-                                </div>    
-                            </div>                                      
-                        </form>
-
-                    </div>
-                </div>
 
                 <!-- Reservation Table -->
                 <div class="table-container">
@@ -281,78 +240,107 @@
                                                     Service Name
                                                 </a>
                                             </th>
-
                                             <th class="border-bottom text-center p-3" style="width: 150px;">DateBook</th> <!-- Cố định chiều rộng cho cột DateBook -->
-                                            <th class="border-bottom text-center p-3" style="width: 120px;">
-                                                <a href="myreservation?search=${param.search}&status=${param.status}&sort=${param.sort}&sortPrice=${param.sortPrice == 'asc' ? 'desc' : 'asc'}&page=${currentPage}"
-                                                   class="text-decoration-none text-dark">
-                                                    Price
-                                                </a>
-                                            </th>
                                             <th class="border-bottom text-center p-3" style="width: 120px;">Status</th>
                                             <th class="border-bottom text-center p-3" style="width: 120px;">Start Time</th>
                                             <th class="border-bottom text-center p-3" style="width: 120px;">End Time</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="reservation" items="${paginatedReservations}">
-                                            <tr class="table-row">
-                                                <td class="p-3 text-center"><a href="reserv-infor?rid=${reservation.id}">${reservation.service.name}</a></td>
-                                                <td class="p-3 text-center"><fmt:formatDate value="${reservation.bookdate}" pattern="yyyy-MM-dd" /></td>
-                                                <td class="text-center p-3">${reservation.service.price}</td>
-                                                <td class="text-center p-3">
-                                                    <span class="badge
-                                                          ${reservation.status == 'Completed' ? 'badge-success' : 
-                                                            reservation.status == 'Scheduled' ? 'badge-warning' : 'badge-danger'}">
-                                                              ${reservation.status}
-                                                          </span>
-                                                    </td>
-                                                    <td class="border-bottom text-center p-3"><fmt:formatDate value="${reservation.start}" pattern="HH:mm" /></td>
-                                                    <td class="border-bottom text-center p-3"><fmt:formatDate value="${reservation.end}" pattern="HH:mm" /></td>
-                                                </tr>
-                                            </c:forEach>
+                                        <tr class="table-row">
+                                            <td class="p-3 text-center">${requestScope.reserv.service.name}</td>
+                                            <td class="p-3 text-center"><fmt:formatDate value="${requestScope.reserv.bookdate}" pattern="yyyy-MM-dd" /></td>
+                                            <td class="text-center p-3">
+                                                <span class="badge
+                                                      ${requestScope.reserv.status == 'Completed' ? 'badge-success' : 
+                                                        requestScope.reserv.status == 'Scheduled' ? 'badge-warning' : 'badge-danger'}">
+                                                          ${requestScope.reserv.status}
+                                                      </span>
+                                                </td>
+                                                <td class="border-bottom text-center p-3"><fmt:formatDate value="${requestScope.reserv.start}" pattern="HH:mm" /></td>
+                                                <td class="border-bottom text-center p-3"><fmt:formatDate value="${requestScope.reserv.end}" pattern="HH:mm" /></td>
+                                            </tr>
 
-                                            <!-- Add empty rows if there are fewer than 5 elements -->
-                                            <c:if test="${paginatedReservations.size() < 5}">
-                                                <c:forEach var="i" begin="${paginatedReservations.size() + 1}" end="5">
-                                                    <tr class="empty-row">
-                                                        <td colspan="6"></td> <!-- Ensure empty rows span all columns -->
-                                                    </tr>
-                                                </c:forEach>
-                                            </c:if>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Pagination Controls -->
-                    <!-- Pagination Controls -->
-                    <div class="pagination-container text-center">
-                        <c:if test="${currentPage > 1}">
-                            <a href="myreservation?page=${currentPage - 1}&search=${param.search}&status=${param.status}&sort=${param.sort}&sortPrice=${param.sortPrice}" class="btn btn-secondary">Previous</a>
-                        </c:if>
 
-                        <c:forEach var="i" begin="1" end="${totalPages}">
-                            <c:if test="${i == currentPage}">
-                                <span class="btn btn-primary">${i}</span>
-                            </c:if>
-                            <c:if test="${i != currentPage}">
-                                <a href="myreservation?page=${i}&search=${param.search}&status=${param.status}&sort=${param.sort}&sortPrice=${param.sortPrice}" class="btn btn-outline-primary">${i}</a>
-                            </c:if>
-                        </c:forEach>
+                    <div class="row mt-4">
+                        <!-- Service Info - Left Side -->
+                        <div class="col-md-6">
+                            <h5>Service</h5>
+                            <div class="service-info bg-light p-3 rounded shadow d-flex" style="gap: 20px; height: 180px; max-height: 180px;">
+                                <!-- Image on the left -->
+                                <img src="${pageContext.request.contextPath}/${requestScope.reserv.service.img}" alt="" class="img-fluid rounded" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                <!-- Information on the right -->
+                                <div class="d-flex flex-column justify-content-center" style="height: 100%; text-align: left;">
+                                    <p><strong>${requestScope.reserv.service.name}</strong></p>
+                                    <p>${requestScope.reserv.service.description}</p>
+                                    <p>$${requestScope.reserv.service.price}</p>
+                                </div>
+                            </div>
+                        </div>
 
-                        <c:if test="${currentPage < totalPages}">
-                            <a href="myreservation?page=${currentPage + 1}&search=${param.search}&status=${param.status}&sort=${param.sort}&sortPrice=${param.sortPrice}" class="btn btn-secondary">Next</a>
-                        </c:if>
+                        <!-- Staff Info - Right Side -->
+                        <div class="col-md-6">
+                            <h5>Staff</h5>
+                            <div class="staff-info bg-light p-3 rounded shadow d-flex" style="gap: 20px; height: 180px; max-height: 180px;">
+                                <!-- Image on the left -->
+                                <img src="${pageContext.request.contextPath}/${requestScope.reserv.staff.avatar}" alt="${requestScope.reserv.staff.fullname}" class="img-fluid rounded" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                <!-- Information on the right -->
+                                <div class="d-flex flex-column justify-content-center" style="height: 100%; text-align: left;">
+                                    <p><strong>${requestScope.reserv.staff.fullname}</strong> </p>
+                                    <p>${requestScope.profile.certification}</p>
+                                    <p>${requestScope.profile.specialties}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                </div>
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="staff-info bg-light p-3 rounded shadow">
+                                <table class="table mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center"><strong>Method</strong></td>
+                                            <td class="text-center">${requestScope.reserv.payment.method}</td>
+                                            <td rowspan="3" class="align-middle text-center">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <c:choose>
+                                                        <c:when test="${requestScope.reserv.status eq 'Completed'}">
+                                                            <button class="btn btn-success mb-2 w-100">Feedback</button>
+                                                            <button class="btn btn-primary mb-2 w-100">Reschedule</button>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <button class="btn btn-danger mb-2 w-100">Cancel</button>
+                                                            <button class="btn btn-warning mb-2 w-100">Update</button>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center"><strong>Status</strong></td>
+                                            <td class="text-center">${requestScope.reserv.payment.status}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center"><strong>Amount</strong></td>
+                                            <td class="text-center">${requestScope.reserv.payment.amount}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
             </section>
-
-
-
-
 
             <!-- Footer with spacing -->
             <footer class="bg-footer footer-spacing">
@@ -434,75 +422,6 @@
             <!-- Back to top -->
 
 
-            <!-- Offcanvas Start -->
-            <div class="offcanvas bg-white offcanvas-top" tabindex="-1" id="offcanvasTop">
-                <div class="offcanvas-body d-flex align-items-center align-items-center">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <div class="text-center">
-                                    <h4>Search now${pageContext.request.contextPath}${pageContext.request.contextPath}.</h4>
-                                    <div class="subcribe-form mt-4">
-                                        <form>
-                                            <div class="mb-0">
-                                                <input type="text" id="help" name="name" class="border bg-white rounded-pill" required="" placeholder="Search">
-                                                <button type="submit" class="btn btn-pills btn-primary">Search</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </div><!--end container-->
-                </div>
-            </div>
-            <!-- Offcanvas End -->
-
-            <!-- Offcanvas Start -->
-            <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                <div class="offcanvas-header p-4 border-bottom">
-                    <h5 id="offcanvasRightLabel" class="mb-0">
-                        <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" height="24" class="light-version" alt="">
-                        <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="24" class="dark-version" alt="">
-                    </h5>
-                    <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
-                </div>
-                <div class="offcanvas-body p-4 px-md-5">
-                    <div class="row">
-                        <div class="col-12">
-                            <!-- Style switcher -->
-                            <div id="style-switcher">
-                                <div>
-                                    <ul class="text-center list-unstyled mb-0">
-                                        <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
-                                        <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="${pageContext.request.contextPath}/assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                        <li class="d-grid"><a href="${pageContext.request.contextPath}/admin/index.html" target="_blank" class="mt-4"><img src="${pageContext.request.contextPath}/assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- end Style switcher -->
-                        </div><!--end col-->
-                    </div><!--end row-->
-                </div>
-
-                <div class="offcanvas-footer p-4 border-top text-center">
-                    <ul class="list-unstyled social-icon mb-0">
-                        <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
-                        <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
-                        <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
-                        <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
-                        <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
-                        <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
-                        <li class="list-inline-item mb-0"><a href="${pageContext.request.contextPath}/${pageContext.request.contextPath}/${pageContext.request.contextPath}/index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
-                    </ul><!--end icon-->
-                </div>
-            </div>
-            <!-- Offcanvas End -->
-
             <!-- javascript -->
             <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
             <!-- Icons -->
@@ -510,30 +429,24 @@
             <!-- Main Js -->
             <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
+            <script>
+                // Lắng nghe sự kiện submit của form
+                document.querySelector('form').addEventListener('submit', function (event) {
+                    // Lấy giá trị từ trường select status
+                    let status = document.querySelector('select[name="status"]').value.trim();
+
+                    // Danh sách các trạng thái hợp lệ
+                    const validStatuses = ['Scheduled', 'Cancelled', 'Completed'];
+
+                    // Kiểm tra nếu giá trị của status không hợp lệ và không phải là giá trị trống
+                    if (status && !validStatuses.includes(status)) {
+                        // Ngừng việc gửi form và hiển thị thông báo lỗi
+                        event.preventDefault();
+                        alert("Vui lòng chọn trạng thái hợp lệ: Scheduled, Cancelled hoặc Completed.");
+                    }
+                });
+            </script>
+
 
         </body>
-
-
-        <script>
-                                            // Lắng nghe sự kiện submit của form
-                                            document.querySelector('form').addEventListener('submit', function (event) {
-                                                // Lấy giá trị từ trường select status
-                                                let status = document.querySelector('select[name="status"]').value.trim();
-
-                                                // Danh sách các trạng thái hợp lệ
-                                                const validStatuses = ['Scheduled', 'Cancelled', 'Completed'];
-
-                                                // Kiểm tra nếu giá trị của status không hợp lệ và không phải là giá trị trống
-                                                if (status && !validStatuses.includes(status)) {
-                                                    // Ngừng việc gửi form và hiển thị thông báo lỗi
-                                                    event.preventDefault();
-                                                    alert("Vui lòng chọn trạng thái hợp lệ: Scheduled, Cancelled hoặc Completed.");
-                                                }
-                                            });
-        </script>
-
-
-
-
-
     </html>

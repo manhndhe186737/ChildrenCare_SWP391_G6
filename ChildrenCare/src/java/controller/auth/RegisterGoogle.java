@@ -48,7 +48,7 @@ public class RegisterGoogle extends HttpServlet {
 //                String avatar = request.getParameter("avatar");
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
-                String picture = request.getParameter("picture") != null ? request.getParameter("picture"):"/assets/images/avatar.jpg" ;
+                String picture = request.getParameter("picture") != null ? request.getParameter("picture"):"uploads/avatar.jpg" ;
                 Date dob = null;
                 if (dobString != null && !dobString.isEmpty()) {
                     try {
@@ -71,7 +71,7 @@ public class RegisterGoogle extends HttpServlet {
                 user.setAddress(address);
                 user.setDob(dob);
                 user.setPhone(phone);
-                user.setAvatar(picture);
+                user.setAvatar("uploads/avatar.jpg");
                 user.setIsVerified(true);
                 UserDAO userDAO = new UserDAO();
                 int userId = userDAO.registerUser(user, email, hashedPassword);

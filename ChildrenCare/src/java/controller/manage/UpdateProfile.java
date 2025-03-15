@@ -7,11 +7,16 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.*;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
 
 @WebServlet("/updateProfile")
-@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 100)
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+    maxFileSize = 1024 * 1024 * 10, // 10MB
+    maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
 public class UpdateProfile extends HttpServlet {
 
     @Override
@@ -26,7 +31,22 @@ public class UpdateProfile extends HttpServlet {
              dob = Date.valueOf(dobStr);
         }
         // Handle file upload for avatar
-        String avatarFilePath = handleFileUpload(request);
+        String avatarUrl = "";
+        
+        String oldImage = request.getParameter("avatar_url");
+
+        
+        String imagePath = oldImage;
+            Part filePart = request.getPart("imageFile");
+            if (filePart != null && filePart.getSize() > 0) {
+                String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) uploadDir.mkdir();
+                
+                String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                imagePath = "uploads/" + fileName;
+                filePart.write(uploadPath + File.separator + fileName);
+            }
 
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -48,8 +68,8 @@ public class UpdateProfile extends HttpServlet {
         user.setDob(dob);
 
         // Update avatar if a new file is uploaded
-        if (avatarFilePath != null && !avatarFilePath.isEmpty()) {
-            user.setAvatar(avatarFilePath);
+        if (imagePath != null && !imagePath.isEmpty()) {
+            user.setAvatar(imagePath);
         }
 
         // Save the updated user data into the database
