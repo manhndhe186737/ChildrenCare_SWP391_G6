@@ -486,28 +486,71 @@
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <script>
-                                        const handleChange = () => {
-                                            const fileUploader = document.querySelector('#input-file');
-                                            const getFile = fileUploader.files
-                                            if (getFile.length !== 0) {
-                                                const uploadedFile = getFile[0];
-                                                readFile(uploadedFile);
-                                            }
+                                        // Lấy thông báo và loại thông báo từ session
+                                        var alertMessage = '<%= session.getAttribute("errorMessage") != null ? session.getAttribute("errorMessage") : "" %>';
+                                        var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "error" %>'; // Lấy alertType nếu có, mặc định là "error"
+
+                                        // Kiểm tra nếu có thông báo thì hiển thị Swal.fire
+                                        if (alertMessage.trim() !== "") {
+                                            Swal.fire({
+                                                icon: alertType, // success, error, warning
+                                                title: alertMessage,
+                                                showConfirmButton: false,
+                                                timer: 3000  // Thời gian hiển thị thông báo là 3 giây
+                                            });
+                                            // Xóa thông báo khỏi session sau khi hiển thị
+            <%
+            session.removeAttribute("errorMessage");
+            session.removeAttribute("alertType");
+            %>
                                         }
 
-                                        const readFile = (uploadedFile) => {
-                                            if (uploadedFile) {
-                                                const reader = new FileReader();
-                                                reader.onload = () => {
-                                                    const parent = document.querySelector('.preview-box');
-                                                    parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
-                                                };
+                                        var alertMessage = '<%= session.getAttribute("success") != null ? session.getAttribute("success") : "" %>';
+                                        var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "success" %>'; // Lấy alertType nếu có, mặc định là "error"
 
-                                                reader.readAsDataURL(uploadedFile);
-                                            }
-                                        };
+                                        // Kiểm tra nếu có thông báo thì hiển thị Swal.fire
+                                        if (alertMessage.trim() !== "") {
+                                            Swal.fire({
+                                                icon: alertType, // success, error, warning
+                                                title: alertMessage,
+                                                showConfirmButton: false,
+                                                timer: 3000  // Thời gian hiển thị thông báo là 3 giây
+                                            });
+                                            // Xóa thông báo khỏi session sau khi hiển thị
+            <%
+                session.removeAttribute("success");
+                session.removeAttribute("alertType");
+            %>
+                                        }
         </script>
+
+        <script>
+            const handleChange = () => {
+                const fileUploader = document.querySelector('#input-file');
+                const getFile = fileUploader.files
+                if (getFile.length !== 0) {
+                    const uploadedFile = getFile[0];
+                    readFile(uploadedFile);
+                }
+            }
+
+            const readFile = (uploadedFile) => {
+                if (uploadedFile) {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const parent = document.querySelector('.preview-box');
+                        parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
+                    };
+
+                    reader.readAsDataURL(uploadedFile);
+                }
+            };
+        </script>
+
+
 
         <script>
             function previewImage(event) {

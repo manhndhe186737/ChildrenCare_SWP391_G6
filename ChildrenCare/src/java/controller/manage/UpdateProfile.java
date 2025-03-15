@@ -59,6 +59,7 @@ public class UpdateProfile extends HttpServlet {
             response.sendRedirect("login");
             return;
         }
+        
 
         // Update user information
         user.setFullname(fullname);

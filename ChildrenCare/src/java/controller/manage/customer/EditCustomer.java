@@ -1,4 +1,3 @@
-
 package controller.manage.customer;
 
 import controller.auth.BaseRBAC;
@@ -7,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
@@ -16,9 +16,9 @@ import java.sql.Date;
 import model.User;
 
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-    maxFileSize = 1024 * 1024 * 10, // 10MB
-    maxRequestSize = 1024 * 1024 * 50 // 50MB
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 public class EditCustomer extends BaseRBAC {
 
@@ -33,14 +33,60 @@ public class EditCustomer extends BaseRBAC {
             String phone = req.getParameter("phone");
             String address = req.getParameter("address");
             String oldImage = req.getParameter("oldImage");
+            
+            HttpSession session = req.getSession();
+
+            // Validate fullname
+            if (fullname == null || fullname.trim().isEmpty()) {
+                session.setAttribute("errorMessage", "Full name cannot be empty!");
+                resp.sendRedirect("../admin/customers");
+                return;
+            }
 
             // Xử lý ngày sinh
             Date dob = null;
             if (dob_raw != null && !dob_raw.isEmpty()) {
-                dob = Date.valueOf(dob_raw);
+                try {
+                    dob = Date.valueOf(dob_raw);
+                    if (dob.after(new Date(System.currentTimeMillis()))) {
+                        session.setAttribute("errorMessage", "Date of birth cannot be in the future!");
+                        resp.sendRedirect("../admin/customers");
+                        return;
+                    }
+                } catch (IllegalArgumentException e) {
+                    session.setAttribute("errorMessage", "Invalid date of birth format!");
+                    resp.sendRedirect("../admin/customers");
+                    return;
+                }
+            } else {
+                session.setAttribute("errorMessage", "Date of birth cannot be empty!");
+                resp.sendRedirect("../admin/customers");
+                return;
             }
 
-            Boolean gender = gender_raw.equalsIgnoreCase("true");
+            // Validate gender
+            Boolean gender = null;
+            if (gender_raw != null && !gender_raw.isEmpty()) {
+                gender = gender_raw.equalsIgnoreCase("true");
+            } else {
+                session.setAttribute("errorMessage", "Invalid gender value!");
+                resp.sendRedirect("../admin/customers");
+                return;
+            }
+
+            // Validate phone number
+            if (phone == null || phone.trim().isEmpty() || !phone.matches("\\d{10}")) {
+                session.setAttribute("errorMessage", "Invalid phone number!");
+                resp.sendRedirect("../admin/customers");
+                return;
+            }
+
+            // Validate address
+            if (address == null || address.trim().isEmpty()) {
+                session.setAttribute("errorMessage", "Address cannot be empty!");
+                resp.sendRedirect("../admin/customers");
+                return;
+            }
 
             // Xử lý file ảnh
             String imagePath = oldImage;
@@ -48,8 +94,10 @@ public class EditCustomer extends BaseRBAC {
             if (filePart != null && filePart.getSize() > 0) {
                 String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
                 File uploadDir = new File(uploadPath);
-                if (!uploadDir.exists()) uploadDir.mkdir();
-                
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir();
+                }
+
                 String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                 imagePath = "uploads/" + fileName;
                 filePart.write(uploadPath + File.separator + fileName);
@@ -70,12 +118,11 @@ public class EditCustomer extends BaseRBAC {
             cdb.editCustomer(customer);
 
             // Chuyển hướng về danh sách khách hàng
+            session.setAttribute("success", "Update successfully!");
             resp.sendRedirect("../admin/customers");
 
         } catch (Exception e) {
             e.printStackTrace();
-            req.setAttribute("errorMessage", "Có lỗi xảy ra trong quá trình cập nhật!");
-            req.getRequestDispatcher("../admin/editCustomer.jsp").forward(req, resp);
         }
     }
 

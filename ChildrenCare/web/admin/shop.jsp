@@ -210,7 +210,7 @@
 
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-1">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
-                                        <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
+                                        <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Shop</li>
                                     </ul>
                                 </nav>
