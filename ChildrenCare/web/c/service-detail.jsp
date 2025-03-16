@@ -259,75 +259,6 @@
             </svg>
         </div>
     </div>
-<<<<<<< HEAD
-    <div class="content-section">
-    <!-- Main Content Section -->
-    <section class="section">
-        <div class="container">
-            <div class="row align-items-center">
-                <!-- Slider / Image Section -->
-                <div class="col-md-5">
-                    <div class="slider slider-for">
-                        <!-- Nếu service có hình ảnh thì thay đổi theo thuộc tính của service -->
-                        <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid rounded" alt="${service.name}"></div>
-                        <!-- Nếu có thêm nhiều slide, có thể thêm nhiều div ở đây -->
-                    </div>
-
-                    <div class="slider slider-nav">
-                        <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="${service.name}"></div>
-                        <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="${service.name}"></div>
-
-                        <div><img src="${pageContext.request.contextPath}/${service.img}" class="img-fluid" alt="${service.name}"></div>
-
-                    </div>
-
-                </div><!--end col-->
-
-                <!-- Service Detail Section -->
-                <div class="col-md-7 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                    <div class="section-title ms-md-4">
-                        <!-- Tên dịch vụ -->
-                        <h4 class="title">${service.name}</h4>
-                        <!-- Giá dịch vụ -->
-                        <h5 class="text-muted">$${service.price}</h5>
-                        <!-- Có thể hiển thị đánh giá nếu có dữ liệu -->
-                        <ul class="list-unstyled text-warning h5 mb-0">
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item me-2 h6 text-muted">(20 Ratting)</li>
-
-                        </ul>
-
-                        <h5 class="mt-4 py-2">Overview :</h5>
-                        <!-- Mô tả dịch vụ -->
-                        <p class="text-muted">${service.description}</p>
-
-                        <div class="mt-4 pt-2">
-                            <c:if test="${sessionScope.role.contains('Customer')}">
-                                <div class="d-flex align-items-center">
-                                    <!-- Reserve Button -->
-                                    <form id="freserv" action="c/BookingStaff" method="post">
-                                        <input type="hidden" name="service_id" value="${service.id}"/>
-                                        <input type="hidden" name="service_name" value="${service.name}"/>
-                                        <a href="#" class="btn btn-success" onclick="submitCartItem(this);">Reserve</a>
-                                    </form>
-
-                                    <!-- Feedback Button -->
-                                    <a href="feedback.jsp?service_id=${service.id}" class="btn btn-soft-primary ms-2">Feedback</a>
-                                </div>
-                            </c:if>
-                        </div>
-
-                    </div>
-                </div><!--end col-->
-            </div><!--end row-->
-        </div><!--end container-->
-    </section>
-</div>
-=======
 
     <div class="content-section">
         <!-- Main Content Section -->
@@ -397,7 +328,6 @@
         </section>
     </div>
 
->>>>>>> 6b6b036835b4c176bf5031e018e47e07070005c7
     <section class="section">
         <div class="container mt-100 mt-60">
             <div class="row">

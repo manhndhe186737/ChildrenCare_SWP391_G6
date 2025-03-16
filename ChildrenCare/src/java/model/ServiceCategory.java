@@ -14,14 +14,24 @@ public class ServiceCategory {
     private int id;
     private String categoryname;
     private ArrayList<Service> services;
-
+    private boolean status;
+    private String description;
     public ServiceCategory() {
     }
-
-    public ServiceCategory(int id, String categoryname, ArrayList<Service> services) {
+public ServiceCategory(int id, String categoryname, ArrayList<Service> services, boolean status, String description) {
         this.id = id;
         this.categoryname = categoryname;
         this.services = services;
+        this.status = status;
+        this.description = description;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public int getId() {
@@ -47,6 +57,16 @@ public class ServiceCategory {
     public void setServices(ArrayList<Service> services) {
         this.services = services;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
     
     
 }
