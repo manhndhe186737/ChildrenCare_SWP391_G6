@@ -5,6 +5,7 @@
 
 package controller.manage.reservation;
 
+import controller.auth.BaseRBAC;
 import dal.ReservationDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Account;
 import model.Reservation;
 import model.Service;
 import model.User;
@@ -22,10 +24,10 @@ import model.User;
  * @author FPTSHOP
  */
 @WebServlet(name="ReservationInfor", urlPatterns={"/reserv-infor"})
-public class ReservationInfor extends HttpServlet {
+public class ReservationInfor extends BaseRBAC {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
     throws ServletException, IOException {
         String rid_raw = request.getParameter("rid");
         int rid = -1;
@@ -58,7 +60,7 @@ public class ReservationInfor extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
     throws ServletException, IOException {
 
     }

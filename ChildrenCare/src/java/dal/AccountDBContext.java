@@ -31,7 +31,7 @@ public class AccountDBContext extends DBContext {
                     + "JOIN Roles r ON r.role_id = ur.role_id\n"
                     + "JOIN RoleFeatures rf ON rf.role_id = r.role_id\n"
                     + "JOIN Features f ON f.fid = rf.fid\n"
-                    + "WHERE u.email = ?;";
+                    + "WHERE f.active = 1 AND u.email = ?;";
 
             stm = connection.prepareStatement(sql);
             stm.setString(1, username);

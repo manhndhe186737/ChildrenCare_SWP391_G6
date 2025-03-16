@@ -429,6 +429,35 @@ public class ReservationDBContext extends DBContext {
         } catch (Exception e) {
         }
     }
+    
+    public void cancelReserv(int reserv_id) {
+        String sql = "update reservations set status = 'Cancelled' where reserv_id = ?";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, reserv_id);
+
+            stm.executeUpdate();
+
+        } catch (Exception e) {
+        }
+    }
+
+    public void updateReserv(Reservation r) {
+        String sql = "UPDATE reservations\n"
+                + "SET customer_name = ?, customer_address = ?, note = ?\n"
+                + "WHERE reserv_id = ?";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setString(1, r.getCustomerName());
+            stm.setString(2, r.getCustomerAddress());
+            stm.setString(3, r.getNote());
+            stm.setInt(4, r.getId());
+
+            stm.executeUpdate();
+
+        } catch (Exception e) {
+        }
+    }
 
     public Reservation getReservById(int id) {
         String sql = "select r.*, p.payment_id, p.amount, p.method, p.status pstatus from Reservations r \n"
@@ -466,13 +495,13 @@ public class ReservationDBContext extends DBContext {
                 r.setService(s);
                 r.setStaff(staff);
                 r.setCustomer(customer);
-                
+
                 Payment p = new Payment();
                 p.setId(rs.getInt("payment_id"));
                 p.setAmount(rs.getFloat("amount"));
                 p.setMethod(rs.getString("method"));
                 p.setStatus(rs.getString("pstatus"));
-                
+
                 r.setPayment(p);
 
                 return r;

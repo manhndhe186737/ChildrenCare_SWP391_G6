@@ -226,6 +226,15 @@
             <div class="container">
                 <!-- Search and Filter Row -->
 
+                <div class="col-lg-12">
+                    <div class="d-flex justify-content-between">
+                        <button onclick="window.location.href = 'myreservation'" class="btn btn-primary">Back</button>
+                    </div>
+                </div>
+
+
+                &nbsp;
+
                 <!-- Reservation Table -->
                 <div class="table-container">
                     <div class="row">
@@ -234,21 +243,21 @@
                                 <table class="table table-center table-padding mb-0">
                                     <thead>
                                         <tr>
+                                            <th class="border-bottom text-center p-3" style="width: 150px;"> <!-- Cố định chiều rộng cho cột Service Name -->
+                                                <a class="text-decoration-none text-dark">Customer Name</a>
+                                            </th>
                                             <th class="border-bottom text-center p-3" style="width: 250px;"> <!-- Cố định chiều rộng cho cột Service Name -->
-                                                <a href="myreservation?search=${param.search}&status=${param.status}&sort=${param.sort == 'asc' ? 'desc' : 'asc'}"
-                                                   class="text-decoration-none text-dark">
-                                                    Service Name
-                                                </a>
+                                                <a class="text-decoration-none text-dark">Customer Address</a>
                                             </th>
                                             <th class="border-bottom text-center p-3" style="width: 150px;">DateBook</th> <!-- Cố định chiều rộng cho cột DateBook -->
                                             <th class="border-bottom text-center p-3" style="width: 120px;">Status</th>
-                                            <th class="border-bottom text-center p-3" style="width: 120px;">Start Time</th>
-                                            <th class="border-bottom text-center p-3" style="width: 120px;">End Time</th>
+                                            <th class="border-bottom text-center p-3" style="width: 250px;">Note</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr class="table-row">
-                                            <td class="p-3 text-center">${requestScope.reserv.service.name}</td>
+                                            <td class="p-3 text-center">${requestScope.reserv.customerName}</td>
+                                            <td class="p-3 text-center">${requestScope.reserv.customerAddress}</td>
                                             <td class="p-3 text-center"><fmt:formatDate value="${requestScope.reserv.bookdate}" pattern="yyyy-MM-dd" /></td>
                                             <td class="text-center p-3">
                                                 <span class="badge
@@ -257,8 +266,7 @@
                                                           ${requestScope.reserv.status}
                                                       </span>
                                                 </td>
-                                                <td class="border-bottom text-center p-3"><fmt:formatDate value="${requestScope.reserv.start}" pattern="HH:mm" /></td>
-                                                <td class="border-bottom text-center p-3"><fmt:formatDate value="${requestScope.reserv.end}" pattern="HH:mm" /></td>
+                                                <td class="border-bottom text-center p-3">${requestScope.reserv.note}</td>
                                             </tr>
 
                                         </tbody>
@@ -313,14 +321,33 @@
                                                     <c:choose>
                                                         <c:when test="${requestScope.reserv.status eq 'Completed'}">
                                                             <button class="btn btn-success mb-2 w-100">Feedback</button>
-                                                            <button class="btn btn-primary mb-2 w-100">Reschedule</button>
+                                                            <form id="fbook" action="c/BookingStaff" method="post" class="w-100">
+                                                                <input type="hidden" name="service_id" value="${requestScope.reserv.service.id}"/>
+                                                                <input type="hidden" name="service_name" value="${requestScope.reserv.service.name}"/>
+                                                                <input type="submit" class="btn btn-primary mb-2 w-100" value="Reschedule"/>
+                                                            </form>
+                                                        </c:when>
+                                                        <c:when test="${requestScope.reserv.status eq 'Cancelled'}">
+                                                            <form id="fbook" action="c/BookingStaff" method="post" class="w-100">
+                                                                <input type="hidden" name="service_id" value="${requestScope.reserv.service.id}"/>
+                                                                <input type="hidden" name="service_name" value="${requestScope.reserv.service.name}"/>
+                                                                <input type="submit" class="btn btn-primary mb-2 w-100" value="Reschedule"/>
+                                                            </form>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <button class="btn btn-danger mb-2 w-100">Cancel</button>
-                                                            <button class="btn btn-warning mb-2 w-100">Update</button>
+                                                            <form id="fcancel" action="cancelReservation" method="post" class="w-100">
+                                                                <input type="hidden" name="rsv_id" value="${requestScope.reserv.id}"/>
+                                                                <input type="submit" class="btn btn-danger mb-2 w-100" value="Cancel"/>
+                                                            </form>
+                                                            <!--                                                            <button class="btn btn-danger mb-2 w-100">Cancel</button>-->
+                                                            <button class="btn btn-warning mb-2 w-100" data-bs-toggle="modal" data-bs-target="#updateModal">
+                                                                Update
+                                                            </button>
+
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </div>
+
                                             </td>
                                         </tr>
                                         <tr>
@@ -329,18 +356,58 @@
                                         </tr>
                                         <tr>
                                             <td class="text-center"><strong>Amount</strong></td>
-                                            <td class="text-center">${requestScope.reserv.payment.amount}</td>
+                                            <td class="text-center">${requestScope.reserv.payment.amount} VND</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-
-
-
-
             </section>
+
+            <!-- Modal Update -->
+            <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="updateModalLabel">Update Reservation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="updateReservation" method="POST" id="updateForm">
+                                <!-- Hidden fields for existing reservation data -->
+                                <input type="hidden" name="rid" value="${requestScope.reserv.id}" />
+
+                                <div class="mb-3">
+                                    <label class="form-label">Customer Name</label>
+                                    <input type="text" name="cus_name" class="form-control" value="${requestScope.reserv.customerName}" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Customer Address</label>
+                                    <input type="text" name="cus_address" class="form-control" value="${requestScope.reserv.customerAddress}" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Service</label>
+                                    <input type="text" readonly class="form-control" value="${requestScope.reserv.service.name}" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Comments</label>
+                                    <textarea name="comments" rows="4" class="form-control" placeholder="Additional comments">${requestScope.reserv.note}</textarea>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <!-- Footer with spacing -->
             <footer class="bg-footer footer-spacing">
@@ -429,7 +496,51 @@
             <!-- Main Js -->
             <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
             <script>
+                document.getElementById('fcancel').addEventListener('submit', function (event) {
+                    event.preventDefault();  // Ngừng việc gửi form ngay lập tức
+
+                    // Hiển thị thông báo xác nhận
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'Do you really want to cancel the reservation?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, cancel it!',
+                        cancelButtonText: 'No, keep it'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Nếu người dùng chọn "Yes", submit form
+                            event.target.submit();
+                        }
+                    });
+                });
+
+            </script>
+
+            <script>
+
+
+                var alertMessage = '<%= session.getAttribute("success") != null ? session.getAttribute("success") : "" %>';
+                var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "success" %>'; // Lấy alertType nếu có, mặc định là "error"
+
+                // Kiểm tra nếu có thông báo thì hiển thị Swal.fire
+                if (alertMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: alertType, // success, error, warning
+                        title: alertMessage,
+                        showConfirmButton: false,
+                        timer: 3000  // Thời gian hiển thị thông báo là 3 giây
+                    });
+                    // Xóa thông báo khỏi session sau khi hiển thị
+                <%
+                session.removeAttribute("success");
+                session.removeAttribute("alertType");
+                %>
+                }
+
                 // Lắng nghe sự kiện submit của form
                 document.querySelector('form').addEventListener('submit', function (event) {
                     // Lấy giá trị từ trường select status
@@ -445,6 +556,60 @@
                         alert("Vui lòng chọn trạng thái hợp lệ: Scheduled, Cancelled hoặc Completed.");
                     }
                 });
+
+                var alertMessage = '<%= session.getAttribute("errorMessage") != null ? session.getAttribute("errorMessage") : "" %>';
+                var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "error" %>'; // Lấy alertType nếu có, mặc định là "error"
+
+                // Kiểm tra nếu có thông báo thì hiển thị Swal.fire
+                if (alertMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: alertType, // success, error, warning
+                        title: alertMessage,
+                        showConfirmButton: false,
+                        timer: 3000  // Thời gian hiển thị thông báo là 3 giây
+                    });
+                    // Xóa thông báo khỏi session sau khi hiển thị
+                <%
+                session.removeAttribute("errorMessage");
+                session.removeAttribute("alertType");
+                %>
+                }
+
+                $(document).ready(function () {
+                    $("#updateForm").submit(function (e) {
+                        // Ngừng hành động mặc định của form
+                        e.preventDefault();
+
+                        // Lấy giá trị từ các trường
+                        var customerName = $("input[name='cus_name']").val().trim();
+                        var customerAddress = $("input[name='cus_address']").val().trim();
+                        var comments = $("textarea[name='comments']").val().trim();
+
+                        // Kiểm tra trường Customer Name
+                        if (customerName === "") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Customer Name is required!',
+                            });
+                            return false;
+                        }
+
+                        // Kiểm tra trường Customer Address
+                        if (customerAddress === "") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Customer Address is required!',
+                            });
+                            return false;
+                        }
+
+                        // Nếu không có lỗi, gửi form
+                        this.submit();
+                    });
+                });
+
             </script>
 
 

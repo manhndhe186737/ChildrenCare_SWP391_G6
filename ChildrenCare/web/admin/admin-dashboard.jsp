@@ -96,9 +96,10 @@
                         </li>
 
                         <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authentication</a>
+                            <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authorization</a>
                             <div class="sidebar-submenu">
                                 <ul>
+                                    <li><a href="authorization">Access Granting</a></li>
                                 </ul>
                             </div>
                         </li>
