@@ -16,14 +16,7 @@ public class Feature {
     private String fname;
     private String url;
     private ArrayList<Role> roles;
-
-    public ArrayList<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(ArrayList<Role> roles) {
-        this.roles = roles;
-    }
+    private boolean status;
 
     public int getFid() {
         return fid;
@@ -48,4 +41,23 @@ public class Feature {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public ArrayList<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(ArrayList<Role> roles) {
+        this.roles = roles;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    
+    
 }
