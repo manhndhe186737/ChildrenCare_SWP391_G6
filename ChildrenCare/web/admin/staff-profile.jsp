@@ -69,7 +69,7 @@
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li><a href="../admin/staff">Staff</a></li>
-<!--                                    <li><a href="../admin/add-staff">Add Staff</a></li>-->
+                                    <!--                                    <li><a href="../admin/add-staff">Add Staff</a></li>-->
                                 </ul>
                             </div>
                         </li>
@@ -161,7 +161,7 @@
 
                             <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                                 <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
-                                    <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
+                                    <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
                                     <li class="breadcrumb-item"><a href="doctors.html">Staff</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Profile</li>
                                 </ul>
@@ -456,6 +456,7 @@
                                                                                 <input type="hidden" name="id" value="${requestScope.staff.id}">
                                                                                 <input type="hidden" name="old_email" value="${requestScope.staff.account.email}">
                                                                                 <input name="name" id="name" type="text" class="form-control" placeholder="Full Name :" value="${requestScope.staff.fullname}">
+                                                                                <small id="nameError" class="text-danger" style="display: none;">Full Name is required.</small>
                                                                             </div>
                                                                         </div><!--end col-->
 
@@ -463,13 +464,15 @@
                                                                             <div class="mb-3">
                                                                                 <label class="form-label">Date of birth</label>
                                                                                 <input name="dob" id="dob" type="date" class="form-control" value="${requestScope.staff.dob}">
+                                                                                <small id="dobError" class="text-danger" style="display: none;">Date of Birth is required.</small>
                                                                             </div>
                                                                         </div><!--end col-->
 
                                                                         <div class="col-md-6">
                                                                             <div class="mb-3">
                                                                                 <label class="form-label">Address</label>
-                                                                                <input name="address" id="email" type="text" class="form-control" placeholder="Email :" value="${requestScope.staff.address}">
+                                                                                <input name="address" id="address" type="text" class="form-control" placeholder="Address :" value="${requestScope.staff.address}">
+                                                                                <small id="addressError" class="text-danger" style="display: none;">Address is required.</small>
                                                                             </div> 
                                                                         </div><!--end col-->
 
@@ -477,6 +480,7 @@
                                                                             <div class="mb-3">
                                                                                 <label class="form-label">Phone no.</label>
                                                                                 <input name="phone" id="phone" type="text" class="form-control" placeholder="Phone no. :" value="${requestScope.staff.phone}">
+                                                                                <small id="phoneError" class="text-danger" style="display: none;">Phone number is invalid. It should be 10 digits.</small>
                                                                             </div>                                                                               
                                                                         </div><!--end col-->
 
@@ -484,6 +488,7 @@
                                                                             <div class="mb-3">
                                                                                 <label class="form-label">Bio</label>
                                                                                 <textarea name="bio" id="bio" rows="4" class="form-control" placeholder="Bio :">${requestScope.staff.bio}</textarea>
+                                                                                <small id="bioError" class="text-danger" style="display: none;">Bio is required.</small>
                                                                             </div>
                                                                         </div>
                                                                     </div><!--end row-->
@@ -495,6 +500,7 @@
                                                                     </div><!--end row-->
                                                                 </form><!--end form-->
                                                             </div>
+
                                                         </div>
                                                     </div><!--end row-->
 
@@ -605,14 +611,112 @@
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-                                        document.getElementById("avatarInput").addEventListener("change", function (event) {
-                                            let file = event.target.files[0]; // Lấy file từ input
-                                            if (file) {
-                                                document.getElementById("previewImage").src = URL.createObjectURL(file); // Hiển thị ảnh xem trước
-                                                document.getElementById("avatar_url").value = file.name;
-                                            }
-                                        });
+                                        // Lấy thông báo và loại thông báo từ session
+                                        var alertMessage = '<%= session.getAttribute("error") != null ? session.getAttribute("error") : "" %>';
+                                        var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "error" %>'; // Lấy alertType nếu có, mặc định là "error"
+
+                                        // Kiểm tra nếu có thông báo thì hiển thị Swal.fire
+                                        if (alertMessage.trim() !== "") {
+                                            Swal.fire({
+                                                icon: alertType, // success, error, warning
+                                                title: alertMessage,
+                                                showConfirmButton: false,
+                                                timer: 3000  // Thời gian hiển thị thông báo là 3 giây
+                                            });
+                                            // Xóa thông báo khỏi session sau khi hiển thị
+            <%
+            session.removeAttribute("error");
+            session.removeAttribute("alertType");
+            %>
+                                        }
+        </script>
+
+        <script>
+            // Lấy thông báo và loại thông báo từ session
+            var alertMessage = '<%= session.getAttribute("success") != null ? session.getAttribute("success") : "" %>';
+            var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "success" %>'; // Lấy alertType nếu có, mặc định là "error"
+
+            // Kiểm tra nếu có thông báo thì hiển thị Swal.fire
+            if (alertMessage.trim() !== "") {
+                Swal.fire({
+                    icon: alertType, // success, error, warning
+                    title: alertMessage,
+                    showConfirmButton: false,
+                    timer: 3000  // Thời gian hiển thị thông báo là 3 giây
+                });
+                // Xóa thông báo khỏi session sau khi hiển thị
+            <%
+            session.removeAttribute("success");
+            session.removeAttribute("alertType");
+            %>
+            }
+
+            document.querySelector('form').addEventListener('submit', function (event) {
+                let isValid = true;
+
+                // Clear previous error messages
+                document.querySelectorAll('.text-danger').forEach(function (errorMsg) {
+                    errorMsg.style.display = 'none';
+                });
+
+                // Validate Full Name
+                const name = document.getElementById('name').value.trim();
+                if (name === "") {
+                    document.getElementById('nameError').style.display = 'block';
+                    isValid = false;
+                }
+
+                // Validate Date of Birth
+                const dob = document.getElementById('dob').value.trim();
+                if (dob === "") {
+                    document.getElementById('dobError').style.display = 'block';
+                    isValid = false;
+                } else {
+                    const dobDate = new Date(dob);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);  // Set time to midnight to avoid time comparison issues
+                    if (dobDate > today) {
+                        document.getElementById('dobError').innerHTML = "Date of Birth cannot be in the future.";
+                        document.getElementById('dobError').style.display = 'block';
+                        isValid = false;
+                    }
+                }
+
+                // Validate Address
+                const address = document.getElementById('address').value.trim();
+                if (address === "") {
+                    document.getElementById('addressError').style.display = 'block';
+                    isValid = false;
+                }
+
+                // Validate Phone Number
+                const phone = document.getElementById('phone').value.trim();
+                const phoneRegex = /^[0-9]{10}$/; // Example regex for a 10-digit phone number
+                if (!phone.match(phoneRegex)) {
+                    document.getElementById('phoneError').style.display = 'block';
+                    isValid = false;
+                }
+
+
+                // If any validation fails, prevent form submission
+                if (!isValid) {
+                    event.preventDefault();
+                }
+            });
+
+        </script>
+
+
+        <script>
+            document.getElementById("avatarInput").addEventListener("change", function (event) {
+                let file = event.target.files[0]; // Lấy file từ input
+                if (file) {
+                    document.getElementById("previewImage").src = URL.createObjectURL(file); // Hiển thị ảnh xem trước
+                    document.getElementById("avatar_url").value = file.name;
+                }
+            });
         </script>
 
         <script>
@@ -632,7 +736,6 @@
                         const parent = document.querySelector('.preview-box');
                         parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
                     };
-
                     reader.readAsDataURL(uploadedFile);
                 }
             };

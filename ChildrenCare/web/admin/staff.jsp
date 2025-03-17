@@ -38,7 +38,6 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
-
     </head>
 
     <body>
@@ -58,22 +57,22 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                        <!--<a href="index.html">-->
+                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
-                    
+
                     <ul class="sidebar-menu pt-3">
                         <li class=""><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
 
                         <li class="sidebar-dropdown">
-                            <a class="" href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
+                            <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li><a href="../admin/staff">Staff</a></li>
-<!--                                    <li class=""><a href="../admin/add-staff">Add Staff</a></li>-->
+                                    <li><a href="../admin/add-staff">Add Staff</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -98,9 +97,10 @@
                         </li>
 
                         <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authentication</a>
+                            <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authorization</a>
                             <div class="sidebar-submenu">
                                 <ul>
+                                    <li><a href="authorization">Access Granting</a></li>
                                 </ul>
                             </div>
                         </li>

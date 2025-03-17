@@ -129,7 +129,7 @@
                     </div>
 
                     <ul class="sidebar-menu pt-3">
-                        <li class="active"><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                        <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
 
                         <li class="sidebar-dropdown">
@@ -162,9 +162,10 @@
                         </li>
 
                         <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authentication</a>
+                            <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authorization</a>
                             <div class="sidebar-submenu">
                                 <ul>
+                                    <li><a href="authorization">Access Granting</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -338,7 +339,7 @@
 
                             <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                                 <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
-                                    <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
+                                    <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
                                     <li class="breadcrumb-item"><a href="doctors.html">Doctors</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Add Doctor</li>
                                 </ul>
@@ -422,33 +423,36 @@
                             </div><!--end col-->
 
                             <div class="col-lg-4 mt-4">
-                              <div class="card rounded border-0 shadow">
-    <div class="p-4 border-bottom">
-        <h5 class="mb-0">Doctors List</h5>
-    </div>
+                                <div class="card rounded border-0 shadow">
+                                    <div class="p-4 border-bottom">
+                                        <h5 class="mb-0">Doctors List</h5>
+                                    </div>
 
-    <ul class="list-unstyled">
-        <c:choose>
-            <c:when test="${not empty staffList}">
-                <c:forEach var="listStaff" items="${staffList}">
-                    <li class="d-md-flex align-items-center text-center text-md-start">
-                        <img src="${listStaff.avatar != null ? listStaff.avatar : '../assets/images/default-avatar.jpg'}" 
-                             class="avatar avatar-medium rounded-md shadow" alt="Staff Avatar">
+                                    <ul class="list-unstyled ps-3" style="max-height: 500px; overflow-y: auto;">
+                                        <c:choose>
+                                            <c:when test="${not empty staffList}">
+                                                <c:forEach var="listStaff" items="${staffList}">
+                                                    <li class="d-md-flex align-items-center text-center text-md-start mb-4">
+                                                        <img src="${pageContext.request.contextPath}/${listStaff.avatar}"
+                                                             class="avatar avatar-medium rounded-md shadow" alt="Staff Avatar">
 
-                        <div class="ms-md-3 mt-4 mt-sm-0">
-                            <a href="#" class="text-dark h6">${listStaff.fullname}</a>
-                            <p class="text-muted my-1">Email: ${listStaff.account.email}</p>
-                            <p class="text-muted mb-0">Phone: ${listStaff.phone}</p>
-                        </div>
-                    </li>
-                </c:forEach>
-            </c:when>
-            <c:otherwise>
-                <li class="text-center text-muted">No staff found.</li>
-            </c:otherwise>
-        </c:choose>
-    </ul>
-</div>
+                                                        <div class="ms-md-3 mt-4 mt-sm-0">
+                                                            <a href="#" class="text-dark h6">${listStaff.fullname}</a>
+                                                            <p class="text-muted my-1">Email: ${listStaff.account.email}</p>
+                                                            <p class="text-muted mb-0">Phone: ${listStaff.phone}</p>
+                                                        </div>
+                                                    </li>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <li class="text-center text-muted">No staff found.</li>
+                                                </c:otherwise>
+                                            </c:choose>
+                                    </ul>
+
+
+
+                                </div>
 
                             </div>
                         </div><!--end row-->

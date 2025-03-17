@@ -90,9 +90,10 @@
                         </li>
 
                         <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authentication</a>
+                            <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authorization</a>
                             <div class="sidebar-submenu">
                                 <ul>
+                                    <li><a href="authorization">Access Granting</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -125,16 +126,7 @@
                             <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
                                 <i class="uil uil-bars"></i>
                             </a>
-                            <div class="search-bar p-0 d-none d-lg-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <form role="search" method="get" action="ServiceListServlet" id="searchform" class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="search" id="s" placeholder="Search Keywords...">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+
                         </div>
 
                         <ul class="list-unstyled mb-0">
@@ -167,7 +159,9 @@
 
                             <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                                 <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
-                                    <li class="breadcrumb-item"><a>ChildrenCare</a></li>
+
+                                    <li class="breadcrumb-item"><a>Children Care</a></li>
+
                                     <li class="breadcrumb-item"><a href="ServiceListServlet">Shop</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Service Detail</li>
                                 </ul>

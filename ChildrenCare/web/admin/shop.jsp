@@ -99,7 +99,7 @@
                     </div>
                     
                     <ul class="sidebar-menu pt-3">
-                        <li class="active"><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                        <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
 
                         <li class="sidebar-dropdown">
@@ -132,9 +132,10 @@
                         </li>
 
                         <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authentication</a>
+                            <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authorization</a>
                             <div class="sidebar-submenu">
                                 <ul>
+                                    <li><a href="authorization">Access Granting</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -210,7 +211,7 @@
 
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-1">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
-                                        <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
+                                        <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Shop</li>
                                     </ul>
                                 </nav>
