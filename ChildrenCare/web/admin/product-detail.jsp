@@ -167,9 +167,9 @@
 
                             <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                                 <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
-                                    <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
+                                    <li class="breadcrumb-item"><a>ChildrenCare</a></li>
                                     <li class="breadcrumb-item"><a href="ServiceListServlet">Shop</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Product Detail</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Service Detail</li>
                                 </ul>
                             </nav>
                         </div>
@@ -201,11 +201,11 @@
                                             <!-- Nút Update -->
                                             <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-product" 
                                                data-id="${service.id}" data-name="${service.name}" data-price="${service.price}" 
-                                               data-description="${service.description}" data-img="${service.img}">Update Product</a>
+                                               data-description="${service.description}" data-img="${service.img}">Update Services</a>
                                             <!-- Nút ?? chuy?n tr?ng thái Active/Deactivate -->
                                             <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateStatusModal"
                                                data-id="${service.id}" data-currentstatus="${service.isActive}">
-                                                ${service.isActive ? "Deactivate" : "Activate"} Product
+                                                ${service.isActive ? "Deactivate" : "Activate"} Services
                                             </a>
 
                                         </div>
@@ -269,7 +269,7 @@
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header border-bottom p-3">
-                                <h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Update Services</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body p-3 pt-4">
@@ -306,7 +306,7 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label class="form-label">Label:</label>
+                                                    <label class="form-label">Category :</label>
                                                     <select name="label" class="form-control">
                                                         <option value="FE">Featured</option>
                                                         <option value="NE">New</option>
@@ -322,7 +322,7 @@
                                                 </div>
 
                                                 <div class="text-end">
-                                                    <button type="submit" class="btn btn-primary">Update Product</button>
+                                                    <button type="submit" class="btn btn-primary">Update Services</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -341,7 +341,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p>Are you sure you want to <strong id="status-action"></strong> this product?</p>
+                                <p>Are you sure you want to <strong id="status-action"></strong> this Services ?</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

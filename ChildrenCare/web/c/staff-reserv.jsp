@@ -6,10 +6,12 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="model.Appointment" %>
 <!DOCTYPE html>
 
 <!DOCTYPE html>
-    <html lang="en">
+<html lang="en">
 
     <head>
         <meta charset="utf-8" />
@@ -36,7 +38,57 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <style>
+            #pagination {
+                display: flex;
+                justify-content: center; /* Căn giữa các nút phân trang */
+                align-items: center;     /* Căn giữa theo chiều dọc */
+                margin-top: 20px;         /* Khoảng cách từ phần tử trên */
+            }
 
+            #pagination button {
+                background-color: #4CAF50; /* Màu nền nút */
+                border: none;
+                color: white;
+                padding: 5px 10px;  /* Giảm padding để nút nhỏ lại */
+                margin: 0 5px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;  /* Giảm kích thước font */
+                cursor: pointer;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+
+
+            #pagination button:hover {
+                background-color: #45a049; /* Màu nền khi hover */
+            }
+
+            #pagination span {
+                font-size: 12px; /* Giảm kích thước font của số trang */
+                margin: 0 10px;
+                color: #333;
+                font-weight: bold;
+            }
+            .table-responsive {
+                min-height: 400px; /* Đặt chiều cao tối thiểu */
+                max-height: 600px; /* Hoặc đặt chiều cao cố định */
+                overflow-y: auto; /* Nếu danh sách dài, cho phép cuộn */
+            }
+
+            .table tbody tr {
+                height: 50px; /* Điều chỉnh chiều cao cố định cho mỗi dòng */
+            }
+            .modal-content {
+                min-height: 500px;
+            }
+            .pagination-container {
+                min-height: 60px; /* Đảm bảo chiều cao không thay đổi */
+            }
+
+        </style>
     </head>
 
     <body>
@@ -50,7 +102,7 @@
             </div>
         </div>
         <!-- Loader -->
-        
+
         <!-- Navbar STart -->
         <header id="topnav" class="defaultscroll sticky">
             <div class="container">
@@ -188,7 +240,7 @@
                 <div class="row">
                     <div class="col-xl-3 col-lg-4 col-md-5 col-12">
                         <div class="rounded shadow overflow-hidden sticky-bar">
-                            
+
                             <div class="text-center avatar-profile position-relative pb-4 border-bottom mt-3">
 <!--                                <img src="<c:out value="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" />"
                                      class="rounded-circle shadow-md avatar avatar-md-md" 
@@ -206,6 +258,7 @@
                                     </c:otherwise>
                                 </c:choose>
                                 <h5 class="mt-3 mb-1">${sessionScope.user.fullname}</h5>
+
                             </div>
 
                             <ul class="list-unstyled sidebar-nav mb-0">
@@ -216,774 +269,531 @@
                     </div><!--end col-->
 
                     <div class="col-xl-9 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
-                        <div class="row">
-                            <div class="col-xl-9 col-lg-6 col-md-4">
-                                <h5 class="mb-0">Appointment</h5>
-                            </div><!--end col-->
+                        <div class="col-md-3">
+                            <h5 class="mb-0">Appointment</h5>
+                        </div>
+                        <div class="row align-items-center">
+                            <!-- Bên trái: Today + Appointment -->
 
-                            <div class="col-xl-3 col-lg-6 col-md-8 mt-4 mt-md-0">
-                                <div class="justify-content-md-end">
-                                    <form>
-                                        <div class="row justify-content-between align-items-center">
-                                            <div class="col-sm-12 col-md-5">
-                                                <div class="mb-0 position-relative">
-                                                    <select class="form-control time-during select2input">
-                                                        <option value="EY">Today</option>
-                                                        <option value="GY">Tomorrow</option>
-                                                        <option value="PS">Yesterday</option>
-                                                    </select>
-                                                </div>
-                                            </div><!--end col-->
-                                            
-                                            <div class="col-sm-12 col-md-7 mt-4 mt-sm-0">
-                                                <div class="d-grid">
-                                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#appointmentform">Appointment</a>
-                                                </div>
-                                            </div><!--end col-->
-                                        </div><!--end row-->
-                                    </form><!--end form-->
+                            <form action="staff-reserv" method="GET">
+                                <div class="col-md-6 d-flex gap-2">
+                                    <div class="col-md-6 d-flex gap-2">
+                                        <input type="date" class="form-control" name="startDate" value="${param.startDate}">
+                                        <input type="date" class="form-control" name="endDate" value="${param.endDate}">
+                                        <button type="submit" class="btn btn-primary">Filter</button>
+                                    </div>
                                 </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                        
+                                <!-- Bên phải: Search -->
+                                <div class="col-md-6 d-flex justify-content-end mt-2">
+                                    <input type="text" class="form-control w-50" name="searchKeyword" placeholder="Search appointment..." value="${param.searchKeyword}">
+                                    <button type="submit" class="btn btn-primary ms-2">Search</button>
+                                </div>
+                            </form>
+
+
+                        </div>
+
+                        <!-- Table Section -->
                         <div class="row">
                             <div class="col-12 mt-4">
                                 <div class="table-responsive bg-white shadow rounded">
-                                    <table class="table mb-0 table-center">
+                                    <table class="table mb-0 table-center" id="appointmentTable">
                                         <thead>
                                             <tr>
-                                                <th class="border-bottom p-3" style="min-width: 50px;">#</th>
-                                                <th class="border-bottom p-3" style="min-width: 180px;">Name</th>
-                                                <th class="border-bottom p-3">Age</th>
-                                                <th class="border-bottom p-3">Gender</th>
-                                                <th class="border-bottom p-3">Department</th>
-                                                <th class="border-bottom p-3" style="min-width: 150px;">Date</th>
-                                                <th class="border-bottom p-3">Time</th>
-                                                <th class="border-bottom p-3" style="min-width: 220px;">Doctor</th>
-                                                <th class="border-bottom p-3">Fees</th>
-                                                <th class="border-bottom p-3" style="min-width: 150px;"></th>
+                                                <th class="border-bottom p-3 sortable" onclick="sortTable(0)">ReservID <i class="uil uil-sort"></i></th>
+                                                <th class="border-bottom p-3 sortable" onclick="sortTable(1)">Name <i class="uil uil-sort"></i></th>
+                                                <th class="border-bottom p-3 sortable" onclick="sortTable(2)">Date Book <i class="uil uil-sort"></i></th>
+                                                <th class="border-bottom p-3 sortable" onclick="sortTable(3)">Start Time <i class="uil uil-sort"></i></th>
+                                                <th class="border-bottom p-3 sortable" onclick="sortTable(4)">End Time <i class="uil uil-sort"></i></th>
+                                                <th class="border-bottom p-3 sortable" onclick="sortTable(5)">Status <i class="uil uil-sort"></i></th>
+                                                <th class="border-bottom p-3"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th class="p-3">1</th>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/client/01.jpg" class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                            <span class="ms-2">Howard Tanner</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">25</td>
-                                                <td class="p-3">Male</td>
-                                                <td class="p-3">Cardiology</td>
-                                                <td class="p-3">20th Dec 2020</td>
-                                                <td class="p-3">11:00AM</td>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/doctors/01.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                            <span class="ms-2">Dr. Calvin Carlo</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">$50/Patient</td>
-                                                <td class="text-end p-3">
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment"><i class="uil uil-eye"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal" data-bs-target="#acceptappointment"><i class="uil uil-check-circle"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment"><i class="uil uil-times-circle"></i></a>
-                                                </td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <th class="p-3">2</th>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/client/02.jpg" class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                            <span class="ms-2">Wendy Filson</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">28</td>
-                                                <td class="p-3">Female</td>
-                                                <td class="p-3">Gynecology</td>
-                                                <td class="p-3">20th Dec 2020</td>
-                                                <td class="p-3">11:00AM</td>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/doctors/02.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                            <span class="ms-2">Dr. Cristino Murphy</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">$50/Patient</td>
-                                                <td class="text-end p-3">
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment"><i class="uil uil-eye"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal" data-bs-target="#acceptappointment"><i class="uil uil-check-circle"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment"><i class="uil uil-times-circle"></i></a>
-                                                </td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <th class="p-3">3</th>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/client/03.jpg" class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                            <span class="ms-2">Faye Bridger</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">28</td>
-                                                <td class="p-3">Female</td>
-                                                <td class="p-3">Psychotherapy</td>
-                                                <td class="p-3">20th Dec 2020</td>
-                                                <td class="p-3">11:00AM</td>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/doctors/03.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                            <span class="ms-2">Dr. Alia Reddy</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">$50/Patient</td>
-                                                <td class="text-end p-3">
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment"><i class="uil uil-eye"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal" data-bs-target="#acceptappointment"><i class="uil uil-check-circle"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment"><i class="uil uil-times-circle"></i></a>
-                                                </td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <th class="p-3">4</th>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/client/04.jpg" class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                            <span class="ms-2">Ronald Curtis</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">25</td>
-                                                <td class="p-3">Male</td>
-                                                <td class="p-3">Orthopedic</td>
-                                                <td class="p-3">20th Dec 2020</td>
-                                                <td class="p-3">11:00AM</td>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/doctors/04.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                            <span class="ms-2">Dr. Toni Kovar</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">$50/Patient</td>
-                                                <td class="text-end p-3">
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment"><i class="uil uil-eye"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal" data-bs-target="#acceptappointment"><i class="uil uil-check-circle"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment"><i class="uil uil-times-circle"></i></a>
-                                                </td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <th class="p-3">5</th>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/client/05.jpg" class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                            <span class="ms-2">Melissa Hibner</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">28</td>
-                                                <td class="p-3">Female</td>
-                                                <td class="p-3">Dental</td>
-                                                <td class="p-3">20th Dec 2020</td>
-                                                <td class="p-3">11:00AM</td>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/doctors/05.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                            <span class="ms-2">Dr. Jessica McFarlane</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">$50/Patient</td>
-                                                <td class="text-end p-3">
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment"><i class="uil uil-eye"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal" data-bs-target="#acceptappointment"><i class="uil uil-check-circle"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment"><i class="uil uil-times-circle"></i></a>
-                                                </td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <th class="p-3">6</th>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/client/06.jpg" class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                            <span class="ms-2">Randall Case</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">25</td>
-                                                <td class="p-3">Male</td>
-                                                <td class="p-3">Orthopedic</td>
-                                                <td class="p-3">20th Dec 2020</td>
-                                                <td class="p-3">11:00AM</td>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/doctors/04.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                            <span class="ms-2">Dr. Toni Kovar</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">$50/Patient</td>
-                                                <td class="text-end p-3">
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment"><i class="uil uil-eye"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal" data-bs-target="#acceptappointment"><i class="uil uil-check-circle"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment"><i class="uil uil-times-circle"></i></a>
-                                                </td>
-                                            </tr>
+                                            <c:forEach var="appointment" items="${appointments}">
+                                                <tr>
+                                                    <td class="border-bottom p-3">${appointment.reservId}</td>
+                                                    <td class="border-bottom p-3">${appointment.customerName}</td>
+                                                    <td class="border-bottom p-3">${appointment.dateBook}</td>
+                                                    <td class="border-bottom p-3">${appointment.startTime}</td>
+                                                    <td class="border-bottom p-3">${appointment.endTime}</td>
+                                                    <td class="text-center p-3">
+                                                        <span class="badge
+                                                              ${appointment.status == 'Completed' ? 'badge-success' : 
+                                                                appointment.status == 'Scheduled' ? 'badge-warning' : 'badge-danger'}">
+                                                                  ${appointment.status}
+                                                              </span>
+                                                        </td>
+                                                        <td class="text-end p-3">
+                                                            <a href="#" class="btn btn-icon btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment${appointment.reservId}">
+                                                                <i class="uil uil-eye"></i>
+                                                            </a>
+                                                            <a href="#" class="btn btn-icon btn-soft-success accept-btn" 
+                                                               data-id="${appointment.reservId}" data-bs-toggle="modal" data-bs-target="#acceptappointment">
+                                                                <i class="uil uil-check-circle"></i>
+                                                            </a>
+                                                            <a href="#" class="btn btn-icon btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment">
+                                                                <i class="uil uil-times-circle"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
 
-                                            <tr>
-                                                <th class="p-3">7</th>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/client/07.jpg" class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                            <span class="ms-2">Jerry Morena</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">25</td>
-                                                <td class="p-3">Male</td>
-                                                <td class="p-3">Dentist</td>
-                                                <td class="p-3">20th Dec 2020</td>
-                                                <td class="p-3">11:00AM</td>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/doctors/05.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                            <span class="ms-2">Dr. Jessica McFarlane</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">$50/Patient</td>
-                                                <td class="text-end p-3">
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment"><i class="uil uil-eye"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal" data-bs-target="#acceptappointment"><i class="uil uil-check-circle"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment"><i class="uil uil-times-circle"></i></a>
-                                                </td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <th class="p-3">8</th>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/client/08.jpg" class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                            <span class="ms-2">Lester McNally</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">25</td>
-                                                <td class="p-3">Male</td>
-                                                <td class="p-3">Gastrology</td>
-                                                <td class="p-3">20th Dec 2020</td>
-                                                <td class="p-3">11:00AM</td>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/doctors/06.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                            <span class="ms-2">Dr. Elsie Sherman</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">$50/Patient</td>
-                                                <td class="text-end p-3">
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment"><i class="uil uil-eye"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal" data-bs-target="#acceptappointment"><i class="uil uil-check-circle"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment"><i class="uil uil-times-circle"></i></a>
-                                                </td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <th class="p-3">9</th>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/client/09.jpg" class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                            <span class="ms-2">Christopher Burrell</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">28</td>
-                                                <td class="p-3">Female</td>
-                                                <td class="p-3">Urology</td>
-                                                <td class="p-3">20th Dec 2020</td>
-                                                <td class="p-3">11:00AM</td>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/doctors/07.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                            <span class="ms-2">Dr. Bertha Magers</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">$50/Patient</td>
-                                                <td class="text-end p-3">
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment"><i class="uil uil-eye"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal" data-bs-target="#acceptappointment"><i class="uil uil-check-circle"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment"><i class="uil uil-times-circle"></i></a>
-                                                </td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <th class="p-3">10</th>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/client/10.jpg" class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                            <span class="ms-2">Mary Skeens</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">28</td>
-                                                <td class="p-3">Female</td>
-                                                <td class="p-3">Neurology</td>
-                                                <td class="p-3">20th Dec 2020</td>
-                                                <td class="p-3">11:00AM</td>
-                                                <td class="p-3">
-                                                    <a href="#" class="text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="../assets/images/doctors/08.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                            <span class="ms-2">Dr. Louis Batey</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="p-3">$50/Patient</td>
-                                                <td class="text-end p-3">
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment"><i class="uil uil-eye"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal" data-bs-target="#acceptappointment"><i class="uil uil-check-circle"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment"><i class="uil uil-times-circle"></i></a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div><!--end row-->
-
-                        <div class="row text-center">
-                            <!-- PAGINATION START -->
-                            <div class="col-12 mt-4">
-                                <div class="d-md-flex align-items-center text-center justify-content-between">
-                                    <span class="text-muted me-3">Showing 1 - 10 out of 50</span>
-                                    <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Previous">Prev</a></li>
-                                        <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Next">Next</a></li>
-                                    </ul>
-                                </div>
-                            </div><!--end col-->
-                            <!-- PAGINATION END -->
-                        </div><!--end row-->
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </section><!--end section-->
-        <!-- End Hero -->
-
-        <!-- Modal start -->
-        <!-- Add New Appointment Start -->
-        <div class="modal fade" id="appointmentform" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header border-bottom p-3">
-                        <h5 class="modal-title" id="exampleModalLabel">Book an Appointment</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-3 pt-4">
-                        <form>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">Patient Name <span class="text-danger">*</span></label>
-                                        <input name="name" id="name" type="text" class="form-control" placeholder="Patient Name :">
+                                                <c:if test="${empty appointments}">
+                                                    <tr>
+                                                        <td colspan="8" class="text-center">No appointments available for this staff.</td>
+                                                    </tr>
+                                                </c:if>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </div><!--end col-->
-                                
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Departments</label>
-                                        <select class="form-control department-name select2input">
-                                            <option value="EY">Eye Care</option>
-                                            <option value="GY">Gynecologist</option>
-                                            <option value="PS">Psychotherapist</option>
-                                            <option value="OR">Orthopedic</option>
-                                            <option value="DE">Dentist</option>
-                                            <option value="GA">Gastrologist</option>
-                                            <option value="UR">Urologist</option>
-                                            <option value="NE">Neurologist</option>
-                                        </select>
-                                    </div>
-                                </div><!--end col-->
-                                
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Doctor</label>
-                                        <select class="form-control doctor-name select2input">
-                                            <option value="CA">Dr. Calvin Carlo</option>
-                                            <option value="CR">Dr. Cristino Murphy</option>
-                                            <option value="AL">Dr. Alia Reddy</option>
-                                            <option value="TO">Dr. Toni Kovar</option>
-                                            <option value="JE">Dr. Jessica McFarlane</option>
-                                            <option value="EL">Dr. Elsie Sherman</option>
-                                            <option value="BE">Dr. Bertha Magers</option>
-                                            <option value="LO">Dr. Louis Batey</option>
-                                        </select>
-                                    </div>
-                                </div><!--end col-->
-
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Your Email <span class="text-danger">*</span></label>
-                                        <input name="email" id="email" type="email" class="form-control" placeholder="Your email :">
-                                    </div> 
-                                </div><!--end col-->
-
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Your Phone <span class="text-danger">*</span></label>
-                                        <input name="phone" id="phone" type="tel" class="form-control" placeholder="Your Phone :">
-                                    </div> 
-                                </div><!--end col-->
-
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label"> Date : </label>
-                                        <input name="date" type="text" class="flatpickr flatpickr-input form-control" id="checkin-date">
-                                    </div>
-                                </div><!--end col-->
-
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label" for="input-time">Time : </label>
-                                        <input name="time" type="text" class="form-control timepicker" id="input-time" placeholder="03:30 PM">
-                                    </div> 
-                                </div><!--end col-->
-
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">Comments <span class="text-danger">*</span></label>
-                                        <textarea name="comments" id="comments" rows="4" class="form-control" placeholder="Your Message :"></textarea>
-                                    </div>
-                                </div><!--end col-->
-
-                                <div class="col-lg-12">
-                                    <div class="d-grid">
-                                        <button type="submit" class="btn btn-primary">Book An Appointment</button>
-                                    </div>
-                                </div><!--end col-->
-                            </div><!--end row-->
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Add New Appointment End -->
-
-        <!-- View Appintment Start -->
-        <div class="modal fade" id="viewappointment" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header border-bottom p-3">
-                        <h5 class="modal-title" id="exampleModalLabel1">Appointment Detail</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-3 pt-4">
-                        <div class="d-flex align-items-center">
-                            <img src="../assets/images/client/01.jpg" class="avatar avatar-small rounded-pill" alt="">
-                            <h5 class="mb-0 ms-3">Howard Tanner</h5>
-                        </div>
-                        <ul class="list-unstyled mb-0 d-md-flex justify-content-between mt-4">
-                            <li>
-                                <ul class="list-unstyled mb-0">
-                                    <li class="d-flex">
-                                        <h6>Age:</h6>
-                                        <p class="text-muted ms-2">25 year old</p>
-                                    </li>
-
-                                    <li class="d-flex">
-                                        <h6>Gender:</h6>
-                                        <p class="text-muted ms-2">Male</p>
-                                    </li>
-
-                                    <li class="d-flex">
-                                        <h6 class="mb-0">Department:</h6>
-                                        <p class="text-muted ms-2 mb-0">Cardiology</p>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <ul class="list-unstyled mb-0">
-                                    <li class="d-flex">
-                                        <h6>Date:</h6>
-                                        <p class="text-muted ms-2">20th Dec 2020</p>
-                                    </li>
-
-                                    <li class="d-flex">
-                                        <h6>Time:</h6>
-                                        <p class="text-muted ms-2">11:00 AM</p>
-                                    </li>
-
-                                    <li class="d-flex">
-                                        <h6 class="mb-0">Doctor:</h6>
-                                        <p class="text-muted ms-2 mb-0">Dr. Calvin Carlo</p>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- View Appintment End -->
-
-        <!-- Accept Appointment Start -->
-        <div class="modal fade" id="acceptappointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body py-5">
-                        <div class="text-center">
-                            <div class="icon d-flex align-items-center justify-content-center bg-soft-success rounded-circle mx-auto" style="height: 95px; width:95px;">
-                                <span class="mb-0"><i class="uil uil-check-circle h1"></i></span>
-                            </div>
-                            <div class="mt-4">
-                                <h4>Accept Appointment</h4>
-                                <p class="para-desc mx-auto text-muted mb-0">Great doctor if you need your family member to get immediate assistance, emergency treatment.</p>
-                                <div class="mt-4">
-                                    <a href="#" class="btn btn-soft-success">Accept</a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Accept Appointment End -->
 
-        <!-- Cancel Appointment Start -->
-        <div class="modal fade" id="cancelappointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body py-5">
-                        <div class="text-center">
-                            <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto" style="height: 95px; width:95px;">
-                                <span class="mb-0"><i class="uil uil-times-circle h1"></i></span>
-                            </div>
-                            <div class="mt-4">
-                                <h4>Cancel Appointment</h4>
-                                <p class="para-desc mx-auto text-muted mb-0">Great doctor if you need your family member to get immediate assistance, emergency treatment.</p>
-                                <div class="mt-4">
-                                    <a href="#" class="btn btn-soft-danger">Cancel</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Cancel Appointment End -->
-        <!-- Modal end -->
-
-        <!-- Footer Start -->
-        <footer class="bg-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
-                        <a class="logo-footer">
-                        </a>
-                        <p class="mt-4 me-xl-5">
-                            We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
-                        </p>
-                    </div>
-
-                    <div class="col-xl-7 col-lg-8 col-md-12">
-                        <div class="row">
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">About Us</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li>Our Mission</li>
-                                    <li>Our Team</li>
-                                    <li>Our Services</li>
-                                    <li>Success Stories</li>
-                                    <li>Blog & Updates</li>
-                                </ul>
-                            </div>
-
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li>Quick Haircut</li>
-                                    <li>Massage</li>
-                                    <li>Babysitting</li>
-                                    <li>Special Skin Treatment</li>
-                                    <li>Physical Therapy</li>
-                                </ul>
-                            </div>
-
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Contact Us</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="text-foot ms-2">contact@childrencare.com</span>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="text-foot ms-2">+1 234 567 890</span>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
-                                        <span class="video-play-icon text-foot ms-2">Find us on the map</span>
-                                    </li>
-                                </ul>
-
-                                <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></span></li>
-                                    <li class="list-inline-item"><span class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container mt-5">
-                <div class="pt-4 footer-bar">
-                    <div class="row align-items-center">
-                        <div class="col-sm-6">
-                            <div class="text-sm-start text-center">
-                                <p class="text-foot mb-0">© 2025 Children Care. All Rights Reserved.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6 mt-4 mt-sm-0">
-                            <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
-                                <li class="list-inline-item">Terms</li>
-                                <li class="list-inline-item">Privacy</li>
-                                <li class="list-inline-item">About</li>
-                                <li class="list-inline-item">Contact</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- End -->
-
-        <!-- Back to top -->
-        <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
-        <!-- Back to top -->
-
-        <!-- Offcanvas Start -->
-        <div class="offcanvas bg-white offcanvas-top" tabindex="-1" id="offcanvasTop">
-            <div class="offcanvas-body d-flex align-items-center align-items-center">
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <div class="text-center">
-                                <h4>Search now.....</h4>
-                                <div class="subcribe-form mt-4">
-                                    <form>
-                                        <div class="mb-0">
-                                            <input type="text" id="help" name="name" class="border bg-white rounded-pill" required="" placeholder="Search">
-                                            <button type="submit" class="btn btn-pills btn-primary">Search</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div><!--end col-->
                     </div><!--end row-->
                 </div><!--end container-->
-            </div>
-        </div>
-        <!-- Offcanvas End -->
+            </section><!--end section-->
+            <!-- End Hero ---->
 
-        <!-- Offcanvas Start -->
-        <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header p-4 border-bottom">
-                <h5 id="offcanvasRightLabel" class="mb-0">
-                    <img src="../assets/images/logo-dark.png" height="24" class="light-version" alt="">
-                    <img src="../assets/images/logo-light.png" height="24" class="dark-version" alt="">
-                </h5>
-                <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+
+            <!-- View Appintment Start -->
+            <c:forEach var="appointment" items="${appointments}">
+                <div class="modal fade" id="viewappointment${appointment.reservId}" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content shadow-lg rounded-4">
+                            <!-- Tiêu đề Modal -->
+                            <div class="modal-header bg-primary text-white border-0 rounded-top">
+                                <h5 class="modal-title fw-bold">Appointment Details</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <!-- Nội dung chính -->
+                            <div class="modal-body p-4">
+                                <!-- Avatar + Tên khách hàng -->
+                                <div class="d-flex align-items-center mb-4">
+                                    <img src="${pageContext.request.contextPath}/${appointment.customer.avatar}" 
+                                         class="rounded-circle border border-3 border-primary" 
+                                         alt="Avatar" 
+                                         style="width: 90px; height: 90px; object-fit: cover;">
+                                    <h5 class="mb-0 ms-3 fw-bold text-dark">${appointment.customer.fullname}</h5>
+                                </div>
+
+                                <!-- Row chứa 2 cột Customer + Appointment -->
+                                <div class="row g-3">
+                                    <div class="col-md-6 d-flex flex-column">
+                                        <div class="p-3 border rounded-3 shadow-sm bg-light h-100">
+                                            <h6 class="text-primary fw-bold mb-3"><i class="uil uil-user me-2"></i>Customer Info</h6>
+                                            <p class="mb-2"><strong class="text-secondary">DOB:</strong> ${appointment.customer.dob}</p>
+                                            <p class="mb-2"><strong class="text-secondary">Address:</strong> ${appointment.customer.address}</p>
+                                            <p class="mb-0"><strong class="text-secondary">Phone:</strong> ${appointment.customer.phone}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 d-flex flex-column">
+                                        <div class="p-3 border rounded-3 shadow-sm bg-light h-100">
+                                            <h6 class="text-primary fw-bold mb-3"><i class="uil uil-calendar-alt me-2"></i>Appointment Info</h6>
+                                            <p class="mb-2"><strong class="text-secondary">Date:</strong> ${appointment.dateBook}</p>
+                                            <p class="mb-2"><strong class="text-secondary">Time:</strong> ${appointment.startTime} - ${appointment.endTime}</p>
+                                            <p class="mb-2"><strong class="text-secondary">Payment:</strong> ${appointment.paymentStatus} </p>
+                                            <p class="mb-0"><strong class="text-secondary">Amount:</strong> ${appointment.amount} </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Service Details chiếm toàn bộ chiều rộng -->
+                                <div class="mt-3">
+                                    <div class="p-3 border rounded-3 shadow-sm bg-light">
+                                        <h6 class="text-primary fw-bold mb-3"><i class="uil uil-briefcase-alt me-2"></i>Service Details</h6>
+                                        <p class="mb-2"><strong class="text-secondary">Service Name:</strong> ${appointment.service.name}</p>
+                                        <!-- Ảnh dịch vụ lớn hơn -->
+                                        <img src="${pageContext.request.contextPath}/${appointment.service.img}" 
+                                             class="rounded-3 border shadow-sm w-100" 
+                                             alt="Service Image" 
+                                             style="height: 200px; object-fit: cover;">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Footer Modal -->
+                            <div class="modal-footer border-0">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+
+
+
+
+
+
+            <div class="pagination-container">
+                <ul class="pagination justify-content-center">
+                    <c:if test="${currentPage > 1}">
+                        <li class="page-item">
+                            <a class="page-link" href="?page=${currentPage - 1}">Previous</a>
+                        </li>
+                    </c:if>
+
+                    <c:forEach var="i" begin="1" end="${totalPages}">
+                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                            <a class="page-link" href="?page=${i}">${i}</a>
+                        </li>
+                    </c:forEach>
+
+                    <c:if test="${currentPage < totalPages}">
+                        <li class="page-item">
+                            <a class="page-link" href="?page=${currentPage + 1}">Next</a>
+                        </li>
+                    </c:if>
+                </ul>
             </div>
-            <div class="offcanvas-body p-4 px-md-5">
-                <div class="row">
-                    <div class="col-12">
-                        <!-- Style switcher -->
-                        <div id="style-switcher">
-                            <div>
-                                <ul class="text-center list-unstyled mb-0">
-                                    <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="../assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="../assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                    <li class="d-grid"><a href="../admin/index.html" target="_blank" class="mt-4"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
+
+
+
+
+
+            <!-- View Appintment End -->
+
+            <!-- Accept Appointment Start -->
+            <div class="modal fade" id="acceptappointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body py-5">
+                            <div class="text-center">
+                                <div class="icon d-flex align-items-center justify-content-center bg-soft-success rounded-circle mx-auto" 
+                                     style="height: 95px; width:95px;">
+                                    <span class="mb-0"><i class="uil uil-check-circle h1"></i></span>
+                                </div>
+                                <div class="mt-4">
+                                    <h4>Accept Appointment</h4>
+                                    <p class="para-desc mx-auto text-muted mb-0">Are you sure you want to accept this appointment?</p>
+                                    <div class="mt-4">
+                                        <form action="UpdateAppointmentServlet" method="Post">
+                                            <input type="hidden" name="rsvid"/>
+                                            <button type="submit" class="btn btn-soft-success confirm-accept">Accept</button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Accept Appointment End -->
+
+            <!-- Cancel Appointment Start -->
+            <div class="modal fade" id="cancelappointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body py-5">
+                            <div class="text-center">
+                                <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto" style="height: 95px; width:95px;">
+                                    <span class="mb-0"><i class="uil uil-times-circle h1"></i></span>
+                                </div>
+                                <div class="mt-4">
+                                    <h4>Cancel Appointment</h4>
+                                    <p class="para-desc mx-auto text-muted mb-0">Great doctor if you need your family member to get immediate assistance, emergency treatment.</p>
+                                    <div class="mt-4">
+                                        <a href="#" class="btn btn-soft-danger">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cancel Appointment End -->
+            <!-- Modal end -->
+
+            <!-- Footer Start -->
+            <footer class="bg-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
+                            <a class="logo-footer">
+                            </a>
+                            <p class="mt-4 me-xl-5">
+                                We are committed to providing the best healthcare services for children, ensuring their overall development and optimal health.
+                            </p>
+                        </div>
+
+                        <div class="col-xl-7 col-lg-8 col-md-12">
+                            <div class="row">
+                                <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                    <h5 class="text-light title-dark footer-head">About Us</h5>
+                                    <ul class="list-unstyled footer-list mt-4">
+                                        <li>Our Mission</li>
+                                        <li>Our Team</li>
+                                        <li>Our Services</li>
+                                        <li>Success Stories</li>
+                                        <li>Blog & Updates</li>
+                                    </ul>
+                                </div>
+
+                                <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                    <h5 class="text-light title-dark footer-head">Healthcare Services</h5>
+                                    <ul class="list-unstyled footer-list mt-4">
+                                        <li>Quick Haircut</li>
+                                        <li>Massage</li>
+                                        <li>Babysitting</li>
+                                        <li>Special Skin Treatment</li>
+                                        <li>Physical Therapy</li>
+                                    </ul>
+                                </div>
+
+                                <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                    <h5 class="text-light title-dark footer-head">Contact Us</h5>
+                                    <ul class="list-unstyled footer-list mt-4">
+                                        <li class="d-flex align-items-center">
+                                            <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
+                                            <span class="text-foot ms-2">contact@childrencare.com</span>
+                                        </li>
+
+                                        <li class="d-flex align-items-center">
+                                            <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
+                                            <span class="text-foot ms-2">+1 234 567 890</span>
+                                        </li>
+
+                                        <li class="d-flex align-items-center">
+                                            <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
+                                            <span class="video-play-icon text-foot ms-2">Find us on the map</span>
+                                        </li>
+                                    </ul>
+
+                                    <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
+                                        <li class="list-inline-item"><span class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></span></li>
+                                        <li class="list-inline-item"><span class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></span></li>
+                                        <li class="list-inline-item"><span class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></span></li>
+                                        <li class="list-inline-item"><span class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container mt-5">
+                    <div class="pt-4 footer-bar">
+                        <div class="row align-items-center">
+                            <div class="col-sm-6">
+                                <div class="text-sm-start text-center">
+                                    <p class="text-foot mb-0">© 2025 Children Care. All Rights Reserved.</p>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 mt-4 mt-sm-0">
+                                <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
+                                    <li class="list-inline-item">Terms</li>
+                                    <li class="list-inline-item">Privacy</li>
+                                    <li class="list-inline-item">About</li>
+                                    <li class="list-inline-item">Contact</li>
                                 </ul>
                             </div>
                         </div>
-                        <!-- end Style switcher -->
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- End -->
 
-            <div class="offcanvas-footer p-4 border-top text-center">
-                <ul class="list-unstyled social-icon mb-0">
-                    <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
-                </ul><!--end icon-->
-            </div>
-        </div>
-        <!-- Offcanvas End -->
-        
-        <!-- javascript -->
-        <script src="../assets/js/jquery.min.js"></script>
-        <script src="../assets/js/bootstrap.bundle.min.js"></script>
-        <!-- Select2 -->
-        <script src="../assets/js/select2.min.js"></script>
-        <script src="../assets/js/select2.init.js"></script>
-        <!-- Datepicker -->
-        <script src="../assets/js/flatpickr.min.js"></script>
-        <script src="../assets/js/flatpickr.init.js"></script>
-        <!-- Datepicker -->
-        <script src="../assets/js/jquery.timepicker.min.js"></script> 
-        <script src="../assets/js/timepicker.init.js"></script> 
-        <!-- Icons -->
-        <script src="../assets/js/feather.min.js"></script>
-        <!-- Main Js -->
-        <script src="../assets/js/app.js"></script>
-    </body>
+            <!-- Back to top -->
+            <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
+            <!-- Back to top -->
 
-</html>
+            <!-- Offcanvas Start -->
+            <div class="offcanvas bg-white offcanvas-top" tabindex="-1" id="offcanvasTop">
+                <div class="offcanvas-body d-flex align-items-center align-items-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="text-center">
+                                    <h4>Search now.....</h4>
+                                    <div class="subcribe-form mt-4">
+                                        <form>
+                                            <div class="mb-0">
+                                                <input type="text" id="help" name="name" class="border bg-white rounded-pill" required="" placeholder="Search">
+                                                <button type="submit" class="btn btn-pills btn-primary">Search</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div><!--end container-->
+                </div>
+            </div>
+            <!-- Offcanvas End -->
+
+            <!-- Offcanvas Start -->
+            <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                <div class="offcanvas-header p-4 border-bottom">
+                    <h5 id="offcanvasRightLabel" class="mb-0">
+                        <img src="../assets/images/logo-dark.png" height="24" class="light-version" alt="">
+                        <img src="../assets/images/logo-light.png" height="24" class="dark-version" alt="">
+                    </h5>
+                    <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+                </div>
+                <div class="offcanvas-body p-4 px-md-5">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Style switcher -->
+                            <div id="style-switcher">
+                                <div>
+                                    <ul class="text-center list-unstyled mb-0">
+                                        <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="../assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                        <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="../assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                        <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
+                                        <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
+                                        <li class="d-grid"><a href="../admin/index.html" target="_blank" class="mt-4"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- end Style switcher -->
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div>
+
+                <div class="offcanvas-footer p-4 border-top text-center">
+                    <ul class="list-unstyled social-icon mb-0">
+                        <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
+                        <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
+                        <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
+                        <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
+                        <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
+                        <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
+                        <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
+                    </ul><!--end icon-->
+                </div>
+            </div>
+            <!-- Offcanvas End -->
+
+            <!-- javascript -->
+            <script src="../assets/js/jquery.min.js"></script>
+            <script src="../assets/js/bootstrap.bundle.min.js"></script>
+            <!-- Select2 -->
+            <script src="../assets/js/select2.min.js"></script>
+            <script src="../assets/js/select2.init.js"></script>
+            <!-- Datepicker -->
+            <script src="../assets/js/flatpickr.min.js"></script>
+            <script src="../assets/js/flatpickr.init.js"></script>
+            <!-- Datepicker -->
+            <script src="../assets/js/jquery.timepicker.min.js"></script> 
+            <script src="../assets/js/timepicker.init.js"></script> 
+            <!-- Icons -->
+            <script src="../assets/js/feather.min.js"></script>
+            <!-- Main Js -->
+            <script src="../assets/js/app.js"></script>
+            <script>
+                                            let sortOrder = {}; // Lưu trạng thái sắp xếp của từng cột
+
+                                            function sortTable(colIndex) {
+                                                let table = document.getElementById("appointmentTable");
+                                                let tbody = table.getElementsByTagName("tbody")[0];
+                                                let rows = Array.from(tbody.getElementsByTagName("tr"));
+
+                                                // Kiểm tra trạng thái hiện tại
+                                                sortOrder[colIndex] = !sortOrder[colIndex];
+
+                                                rows.sort((a, b) => {
+                                                    let aText = a.getElementsByTagName("td")[colIndex].textContent.trim();
+                                                    let bText = b.getElementsByTagName("td")[colIndex].textContent.trim();
+
+                                                    // Xử lý kiểu dữ liệu (số, ngày, chuỗi)
+                                                    if (!isNaN(aText) && !isNaN(bText)) { // Nếu là số
+                                                        return sortOrder[colIndex] ? aText - bText : bText - aText;
+                                                    } else if (Date.parse(aText) && Date.parse(bText)) { // Nếu là ngày
+                                                        return sortOrder[colIndex] ? new Date(aText) - new Date(bText) : new Date(bText) - new Date(aText);
+                                                    } else { // Nếu là chuỗi
+                                                        return sortOrder[colIndex] ? aText.localeCompare(bText) : bText.localeCompare(aText);
+                                                    }
+                                                });
+
+                                                // Cập nhật lại bảng
+                                                tbody.innerHTML = "";
+                                                rows.forEach(row => tbody.appendChild(row));
+
+                                                // Cập nhật icon mũi tên
+                                                updateSortIcons(colIndex);
+                                            }
+
+                                            function updateSortIcons(colIndex) {
+                                                let headers = document.querySelectorAll(".sortable i");
+                                                headers.forEach((icon, index) => {
+                                                    if (index === colIndex) {
+                                                        icon.className = sortOrder[colIndex] ? "uil uil-arrow-up" : "uil uil-arrow-down";
+                                                    } else {
+                                                        icon.className = "uil uil-sort";
+                                                    }
+                                                });
+                                            }
+
+                                            /////
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                let selectedId = null;
+
+                                                // Khi click vào nút Accept, lưu ID của appointment
+                                                document.querySelectorAll(".accept-btn").forEach(button => {
+                                                    button.addEventListener("click", function () {
+                                                        selectedId = this.getAttribute("data-id");
+                                                        document.querySelector(".confirm-accept").setAttribute("data-id", selectedId);
+                                                    });
+                                                });
+
+                                                // Khi xác nhận Accept
+                                                document.querySelector(".confirm-accept").addEventListener("click", function () {
+                                                    let appointmentId = this.getAttribute("data-id");
+
+                                                    if (appointmentId) {
+                                                        fetch("/updateAppointment", {
+                                                            method: "POST",
+                                                            headers: {"Content-Type": "application/json"},
+                                                            body: JSON.stringify({
+                                                                reservId: appointmentId,
+                                                                status: "Accepted",
+                                                                payment: "Completed"
+                                                            })
+                                                        })
+                                                                .then(response => response.json())
+                                                                .then(data => {
+                                                                    if (data.success) {
+                                                                        // Cập nhật trực tiếp trên giao diện
+                                                                        let row = document.querySelector(`tr[data-id="${appointmentId}"]`);
+                                                                        row.querySelector(".status-cell").textContent = "Accepted";
+                                                                        row.querySelector(".payment-cell").textContent = "Completed";
+
+                                                                        // Ẩn modal
+                                                                        let modal = new bootstrap.Modal(document.getElementById("acceptappointment"));
+                                                                        modal.hide();
+                                                                    } else {
+                                                                        alert("Failed to update appointment.");
+                                                                    }
+                                                                })
+                                                                .catch(error => console.error("Error:", error));
+                                                    }
+                                                });
+                                            });
+
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                // Lấy tất cả nút Accept
+                                                let acceptButtons = document.querySelectorAll(".accept-btn");
+
+                                                acceptButtons.forEach(button => {
+                                                    button.addEventListener("click", function () {
+                                                        let reservId = this.getAttribute("data-id"); // Lấy reservId từ data-id
+
+                                                        // Gán giá trị này vào input ẩn trong form
+                                                        document.querySelector("input[name='rsvid']").value = reservId;
+                                                    });
+                                                });
+                                            });
+            </script>
+        </body>
+
+    </html>

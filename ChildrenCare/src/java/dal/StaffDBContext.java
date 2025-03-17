@@ -4,7 +4,6 @@
  */
 package dal;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,9 +13,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
 import model.Profile;
+import java.util.List;
 import model.Reservation;
-import model.Role;
 import model.User;
+import model.Appointment;
 
 /**
  *
@@ -335,19 +335,248 @@ public class StaffDBContext extends DBContext {
 
         return staffList;
     }
-    
-    public static void main(String[] args) {
-    StaffDBContext staffDBContext = new StaffDBContext();
-    
-    // Gọi phương thức để lấy danh sách nhân viên
-    ArrayList<User> staffList = staffDBContext.getAllStaff();
 
-    // Hiển thị danh sách nhân viên
-    for (User staff : staffList) {
-        System.out.println(staff);
+    public ArrayList<Appointment> getAppointmentsByStaffId(int staffId, int page, int pageSize) {
+        ArrayList<Appointment> appointmentList = new ArrayList<>();
+
+        String sql = "SELECT u.user_id AS staff_id, rsv.reserv_id, rsv.dateBook, rsv.user_id, rsv.status rStatus, s.service_id, "
+                + "rsv.starttime, rsv.endtime, rsv.customer_name, rsv.customer_address, p.payment_id, p.amount, "
+                + "p.method, p.status "
+                + "FROM users u "
+                + "JOIN userroles ur ON u.email = ur.email "
+                + "JOIN reservations rsv ON rsv.staff_id = u.user_id "
+                + "JOIN services s ON s.service_id = rsv.service_id "
+                + "JOIN payment p ON p.reserv_id = rsv.reserv_id "
+                + "WHERE ur.role_id = 3 AND u.isActive = 1 AND u.user_id = ? "
+                + "LIMIT ? OFFSET ?"; // Thêm phân trang vào SQL
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, staffId);
+            stm.setInt(2, pageSize);
+            stm.setInt(3, (page - 1) * pageSize); // Tính toán OFFSET
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Appointment appointment = new Appointment();
+                appointment.setStaffId(rs.getInt("staff_id"));
+                appointment.setReservId(rs.getInt("reserv_id"));
+                appointment.setDateBook(rs.getString("dateBook"));
+                appointment.setCustomerId(rs.getInt("user_id"));
+                appointment.setServiceId(rs.getInt("service_id"));
+                appointment.setStatus(rs.getString("rStatus"));
+                appointment.setStartTime(rs.getString("starttime"));
+                appointment.setEndTime(rs.getString("endtime"));
+                appointment.setCustomerName(rs.getString("customer_name"));
+                appointment.setCustomerAddress(rs.getString("customer_address"));
+                appointment.setPaymentId(rs.getInt("payment_id"));
+                appointment.setAmount(rs.getDouble("amount"));
+                appointment.setPaymentMethod(rs.getString("method"));
+                appointment.setPaymentStatus(rs.getString("status"));
+
+                appointmentList.add(appointment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appointmentList;
     }
-}
+
+    public User getUserById(int id) {
+        User user = null;
+        String sql = "SELECT user_id, fullname, address, dob, bio, phone, avatar, is_verified, email, password "
+                + "FROM users "
+                + "WHERE user_id = ?;";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new User();
+                    user.setId(rs.getInt("user_id"));
+                    user.setFullname(rs.getString("fullname"));
+                    user.setAddress(rs.getString("address"));
+                    user.setDob(rs.getDate("dob"));
+                    user.setPhone(rs.getString("phone"));
+                    user.setAvatar(rs.getString("avatar"));
+                    user.setIsVerified(rs.getBoolean("is_verified"));
+                    user.setBio(rs.getString("bio"));
+                    Account account = new Account();
+                    account.setEmail(rs.getString("email")); // Lấy email từ ResultSet
+                    account.setPassword(rs.getString("password"));
+                    user.setAccount(account);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public int getTotalAppointmentsByStaffId(int staffId) {
+        int totalAppointments = 0;
+        String sql = "SELECT COUNT(*) AS total FROM reservations WHERE staff_id = ?";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, staffId);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                totalAppointments = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalAppointments;
+    }
+
+    public boolean updateReservationStatus(int reservId) {
+        String updateReservationSQL = "UPDATE reservations SET status = 'Completed' WHERE reserv_id = ?";
+        String updatePaymentSQL = "UPDATE payment SET status = 'Paid' WHERE reserv_id = ?";
+
+        try {
+            connection.setAutoCommit(false); // Bắt đầu transaction
+
+            try (PreparedStatement reservationStmt = connection.prepareStatement(updateReservationSQL); PreparedStatement paymentStmt = connection.prepareStatement(updatePaymentSQL)) {
+
+                // Cập nhật status trong bảng reservations
+                reservationStmt.setInt(1, reservId);
+                int reservationUpdated = reservationStmt.executeUpdate();
+
+                // Cập nhật status trong bảng payment
+                paymentStmt.setInt(1, reservId);
+                int paymentUpdated = paymentStmt.executeUpdate();
+
+                if (reservationUpdated > 0 && paymentUpdated > 0) {
+                    connection.commit(); // Nếu cả hai thành công, commit transaction
+                    return true;
+                } else {
+                    connection.rollback(); // Nếu có lỗi, rollback lại
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            try {
+                connection.rollback(); // Rollback nếu có lỗi
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                connection.setAutoCommit(true); // Bật lại AutoCommit
+            } catch (SQLException autoCommitEx) {
+                autoCommitEx.printStackTrace();
+            }
+        }
+    }
+
+    public List<Appointment> getAppointmentsByStaffIdAndDateRange(int staffId, String startDate, String endDate, int page, int pageSize) {
+        List<Appointment> appointmentList = new ArrayList<>();
+
+        String sql = "SELECT rsv.reserv_id, rsv.dateBook, rsv.user_id, rsv.status, "
+                + "rsv.service_id, rsv.starttime, rsv.endtime, rsv.customer_name, rsv.customer_address, "
+                + "p.payment_id, p.amount, p.method, p.status "
+                + "FROM reservations rsv "
+                + "JOIN payment p ON p.reserv_id = rsv.reserv_id "
+                + "WHERE rsv.staff_id = ? AND rsv.dateBook BETWEEN ? AND ? "
+                + "LIMIT ? OFFSET ?";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, staffId);
+            stm.setString(2, startDate);
+            stm.setString(3, endDate);
+            stm.setInt(4, pageSize);
+            stm.setInt(5, (page - 1) * pageSize);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Appointment appointment = new Appointment();
+                appointment.setReservId(rs.getInt("reserv_id"));
+                appointment.setDateBook(rs.getString("dateBook"));
+                appointment.setCustomerId(rs.getInt("user_id"));
+                appointment.setServiceId(rs.getInt("service_id"));
+                appointment.setStatus(rs.getString("status"));
+                appointment.setStartTime(rs.getString("starttime"));
+                appointment.setEndTime(rs.getString("endtime"));
+                appointment.setCustomerName(rs.getString("customer_name"));
+                appointment.setCustomerAddress(rs.getString("customer_address"));
+                appointment.setPaymentId(rs.getInt("payment_id"));
+                appointment.setAmount(rs.getDouble("amount"));
+                appointment.setPaymentMethod(rs.getString("method"));
+                appointment.setPaymentStatus(rs.getString("status"));
+
+                appointmentList.add(appointment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appointmentList;
+    }
+
+    public int getTotalAppointmentsByStaffIdAndDateRange(int staffId, String startDate, String endDate) {
+        String sql = "SELECT COUNT(*) FROM reservations "
+                + "WHERE staff_id = ? AND dateBook BETWEEN ? AND ?";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, staffId);
+            stm.setString(2, startDate);
+            stm.setString(3, endDate);
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Appointment> searchAppointments(String keyword, int page, int pageSize) {
+        List<Appointment> appointmentList = new ArrayList<>();
+
+        // Câu lệnh SQL hỗ trợ tìm kiếm
+        String sql = "SELECT rsv.reserv_id, rsv.dateBook, rsv.user_id, rsv.status, "
+                + "rsv.service_id, rsv.starttime, rsv.endtime, rsv.customer_name, rsv.customer_address, "
+                + "p.payment_id, p.amount, p.method, p.status "
+                + "FROM reservations rsv "
+                + "JOIN payment p ON p.reserv_id = rsv.reserv_id "
+                + "WHERE rsv.customer_name LIKE ? OR rsv.customer_address LIKE ? OR rsv.reserv_id LIKE ? "
+                + "LIMIT ? OFFSET ?";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            String searchPattern = "%" + keyword + "%";
+            stm.setString(1, searchPattern); // Tìm theo tên khách hàng
+            stm.setString(2, searchPattern); // Tìm theo địa chỉ khách hàng
+            stm.setString(3, searchPattern); // Tìm theo mã đặt chỗ
+            stm.setInt(4, pageSize);
+            stm.setInt(5, (page - 1) * pageSize);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Appointment appointment = new Appointment();
+                appointment.setReservId(rs.getInt("reserv_id"));
+                appointment.setDateBook(rs.getString("dateBook"));
+                appointment.setCustomerId(rs.getInt("user_id"));
+                appointment.setServiceId(rs.getInt("service_id"));
+                appointment.setStatus(rs.getString("status"));
+                appointment.setStartTime(rs.getString("starttime"));
+                appointment.setEndTime(rs.getString("endtime"));
+                appointment.setCustomerName(rs.getString("customer_name"));
+                appointment.setCustomerAddress(rs.getString("customer_address"));
+                appointment.setPaymentId(rs.getInt("payment_id"));
+                appointment.setAmount(rs.getDouble("amount"));
+                appointment.setPaymentMethod(rs.getString("method"));
+                appointment.setPaymentStatus(rs.getString("status"));
+
+                appointmentList.add(appointment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appointmentList;
+    }
 
 
-   
+
+
 }

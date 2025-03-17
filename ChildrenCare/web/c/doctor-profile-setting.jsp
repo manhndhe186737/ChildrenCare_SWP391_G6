@@ -340,10 +340,25 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                     <div class="row">
                                         <div class="col-sm-12">
                                             <input type="submit" id="submitBtn" name="send" class="btn btn-success ms-2" value="Save changes" />
+
+                                            <% if (request.getAttribute("errorMessage") != null) { %>
+                                            <div class="alert alert-danger ms-2">
+                                                <i class="fas fa-exclamation-circle"></i> 
+                                                <%= request.getAttribute("errorMessage") %>
+                                            </div>
+                                            <% } %>
+
+                                            <% if (request.getAttribute("successMessage") != null) { %>
+                                            <div class="alert alert-success ms-2">
+                                                <i class="fas fa-check-circle"></i> 
+                                                <%= request.getAttribute("successMessage") %>
+                                            </div>
+                                            <% } %>
                                         </div>
+
                                     </div>
                                 </form>
                             </div>
@@ -355,7 +370,7 @@
                                 <div class="modal-dialog modal-lg modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header border-bottom p-3">
-                                            <h5 class="modal-title" id="forgotPasswordLabel">Forgot Password</h5>
+                                            <h5 class="modal-title" id="forgotPasswordLabel">Change Password</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
 
@@ -829,6 +844,14 @@
                                                             e.target.value = e.target.value.replace(/[<>\"\'&]/g, ''); // Remove forbidden characters
                                                         }
                                                     });
+                                                    document.addEventListener("DOMContentLoaded", function () {
+                                            setTimeout(() => {
+                                                document.querySelectorAll(".alert").forEach(alert => {
+                                                    alert.classList.add("fade-out");
+                                                    setTimeout(() => alert.style.display = "none", 500);
+                                                });
+                                            }, 3000);
+                                        });
                     </script>
 
 

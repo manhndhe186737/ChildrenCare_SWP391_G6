@@ -31,6 +31,7 @@ public class ReservationDBContext extends DBContext {
                 s.setId(rs.getInt("service_id"));
                 s.setName(rs.getString("name"));
                 s.setPrice(rs.getFloat("price"));
+                s.setImg(rs.getString("img"));
                 s.setDescription(rs.getString("description"));
 
                 services.add(s);
