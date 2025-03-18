@@ -13,7 +13,9 @@ public class Feedback {
     private Date date;
     private String rating;
     private String comment;
+    private String img;
     private Reservation reservation;
+    private int status;
 
     public int getId() {
         return id;
@@ -22,7 +24,13 @@ public class Feedback {
     public void setId(int id) {
         this.id = id;
     }
+    public int getStatus() {
+        return status;
+    }
 
+    public void setStatus(int status) {
+        this.status = status;
+    }
     public Date getDate() {
         return date;
     }
@@ -46,6 +54,14 @@ public class Feedback {
     public void setComment(String comment) {
         this.comment = comment;
     }
+    
+      public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public Reservation getReservation() {
         return reservation;
@@ -55,12 +71,14 @@ public class Feedback {
         this.reservation = reservation;
     }
 
-    public Feedback(int id, Date date, String rating, String comment, Reservation reservation) {
+    public Feedback(int id, Date date, String rating, String comment, String img  , Reservation reservation ,int status) {
         this.id = id;
         this.date = date;
         this.rating = rating;
         this.comment = comment;
+        this.img = img;  
         this.reservation = reservation;
+        this.status = status;
     }
 
     public Feedback() {

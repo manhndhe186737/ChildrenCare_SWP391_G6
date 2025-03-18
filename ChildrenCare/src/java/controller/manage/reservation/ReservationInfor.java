@@ -5,15 +5,19 @@
 
 package controller.manage.reservation;
 
+import dal.FeedbackDBContext;
 import controller.auth.BaseRBAC;
 import dal.ReservationDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 import model.Reservation;
 import model.Service;
@@ -48,9 +52,26 @@ public class ReservationInfor extends BaseRBAC {
         if(!staff.getProfiles().isEmpty() || staff.getProfiles() != null){
             request.setAttribute("profile", staff.getProfiles().get(0));
         }
+        
+         // Kiểm tra xem reservation có feedback hay không (SỬA LỖI Ở ĐÂY)
+        FeedbackDBContext feedbackDB = new FeedbackDBContext();
+        boolean hasFeedback = false; // Mặc định là false
+        try {
+            hasFeedback = feedbackDB.hasFeedback(rid); // Ghi log lỗi
+            // Tránh lỗi làm gián đoạn chương trình
+        } catch (SQLException ex) {
+            Logger.getLogger(ReservationInfor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // Đặt dữ liệu vào request scope
         request.setAttribute("reserv", reserv);
+        request.setAttribute("hasFeedback", hasFeedback);
+
+        // Forward đến JSP
         request.getRequestDispatcher("c/reserv-infor.jsp").forward(request, response);
-    } 
+    }
+        
+     
 
     /** 
      * Handles the HTTP <code>POST</code> method.
