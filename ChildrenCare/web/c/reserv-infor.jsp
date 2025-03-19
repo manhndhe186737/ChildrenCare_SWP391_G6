@@ -359,10 +359,10 @@
                                 <li class="has-submenu parent-menu-item">
                                     <c:if test="${sessionScope.role.contains('Staffs')}">
                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
-                                    <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                    <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
+                                    
+                                    
                                     </c:if>
-                                <li><a href="doctor-dashboard.html" class="sub-menu-item">Staff List</a></li>
+                                
                             </ul>
                         </li>
 
@@ -623,8 +623,9 @@
 
                                 <div class="d-flex justify-content-between">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="submit" class="btn btn-primary ms-2">Save Changes</button>
                                 </div>
+
                             </form>
                         </div>
                     </div>

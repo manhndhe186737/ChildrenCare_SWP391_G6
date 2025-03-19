@@ -431,6 +431,27 @@ public class ReservationDBContext extends DBContext {
         }
     }
     
+    public void acceptReserv(int reserv_id) {
+    String updateReservationSql = "update reservations set status = 'Completed' where reserv_id = ?";
+    String updatePaymentSql = "update payment set status = 'Paid' where reserv_id = ?";
+
+    try (PreparedStatement reservStmt = connection.prepareStatement(updateReservationSql);
+         PreparedStatement paymentStmt = connection.prepareStatement(updatePaymentSql)) {
+        
+        // Cập nhật trạng thái trong bảng reservations
+        reservStmt.setInt(1, reserv_id);
+        reservStmt.executeUpdate();
+
+        // Cập nhật trạng thái trong bảng payment
+        paymentStmt.setInt(1, reserv_id);
+        paymentStmt.executeUpdate();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+    
     public void cancelReserv(int reserv_id) {
         String sql = "update reservations set status = 'Cancelled' where reserv_id = ?";
 

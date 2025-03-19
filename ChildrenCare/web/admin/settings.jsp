@@ -142,7 +142,7 @@
         </style>
     </head>
     <body>
-        <!-- Loader -->
+       <!-- Loader -->
         <div id="preloader">
             <div id="status">
                 <div class="spinner">
@@ -158,7 +158,6 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
@@ -187,7 +186,6 @@
                             </div>
                         </li>
 
-
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-shopping-cart me-2 d-inline-block"></i>Services</a>
                             <div class="sidebar-submenu">
@@ -214,9 +212,7 @@
                             </div>
                         </li>
                     </ul>
-                    <!-- sidebar-menu  -->
                 </div>
-                <!-- sidebar-content  -->
                 <ul class="sidebar-footer list-unstyled mb-0">
                     <li class="list-inline-item mb-0 ms-1">
                         <a href="#" class="btn btn-icon btn-pills btn-soft-primary">
@@ -225,7 +221,6 @@
                     </li>
                 </ul>
             </nav>
-            <!-- sidebar-wrapper  -->
 
             <!-- Start Page Content -->
             <main class="page-content bg-light">
@@ -255,10 +250,11 @@
                         </div>
 
                         <ul class="list-unstyled mb-0">
-
                             <li class="list-inline-item mb-0 ms-1">
                                 <div class="dropdown dropdown-primary">
-                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="${pageContext.request.contextPath}//${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
+                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="${pageContext.request.contextPath}/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                    </button>
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
                                         <a class="dropdown-item d-flex align-items-center text-dark" href="https://shreethemes.in/doctris/layouts/admin/profile.html">
                                             <img src="${pageContext.request.contextPath}/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
@@ -274,6 +270,69 @@
                                 </div>
                             </li>
                         </ul>
+                    </div>
+                </div>
+
+        <div class="container mt-4">
+            <h2>Settings</h2>
+
+
+            <div class="d-flex justify-content-between mb-3">
+                <form action="settings" method="GET" class="d-flex">
+                    <!-- Search by Name -->
+                    <input type="text" name="name" class="form-control me-2" placeholder="Search by Name" value="${param.name}">
+
+                    <!-- Filter by Status -->
+                    <select name="status" class="form-select me-2">
+                        <option value="">All Status</option>
+                        <option value="true" ${param.status == 'true' ? 'selected' : ''}>Active</option>
+                        <option value="false" ${param.status == 'false' ? 'selected' : ''}>Inactive</option>
+                    </select>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+                <!-- Add New Category Button -->
+                <a href="#" class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                    <i class="bi bi-plus-circle"></i> Add New Category
+                </a>
+            </div>
+
+
+            <!-- Add Category Modal -->
+            <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="settings" method="POST">
+                                <input type="hidden" name="action" value="add">
+                                <div class="form-group mb-3">
+                                    <label for="categoryName">Category Name</label>
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="categoryStatus">Status</label>
+                                    <div class="toggle-wrapper">
+                                        <label class="toggle">
+                                            <input type="checkbox" name="status" class="form-check-input">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                        <span class="toggle-label">Active</span>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="categoryDescription">Description</label>
+                                    <textarea class="form-control" name="description"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Category</button>
+                            </form>
+
+
+                        </div>
                     </div>
                 </div>                    
                 <!-- Navbar End -->
