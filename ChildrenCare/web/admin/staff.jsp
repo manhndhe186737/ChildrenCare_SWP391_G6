@@ -171,7 +171,7 @@
                             </div>
 
                             <div class="col-xl-3 col-md-6 mt-4 mt-md-0 text-md-end">
-                                <a href="add-doctor.html" class="btn btn-primary">Add New Staff</a>
+                                <a href="add-staff" class="btn btn-primary">Add New Staff</a>
                             </div>
                         </div>
 

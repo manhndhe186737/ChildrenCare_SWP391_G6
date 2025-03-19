@@ -175,10 +175,10 @@
                                 <li class="has-submenu parent-menu-item">
                                     <c:if test="${sessionScope.role.contains('Staffs')}">
                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
-                                    <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                    <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
+                                    
+                                    
                                     </c:if>
-                                <li><a href="doctor-dashboard.html" class="sub-menu-item">Staff List</a></li>
+                                
                             </ul>
                         </li>
 

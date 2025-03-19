@@ -80,179 +80,181 @@
 
         </style>
 
- <style>
-    /* Ngăn cuộn trang khi popup mở */
-    body.no-scroll {
-        overflow: hidden;
-    }
+        <style>
+            /* Ngăn cuộn trang khi popup mở */
+            body.no-scroll {
+                overflow: hidden;
+            }
 
-    /* Overlay che toàn bộ màn hình */
-    .overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        z-index: 999;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
+            /* Overlay che toàn bộ màn hình */
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 999;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
 
-    /* Popup container */
-    .popup {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0.9); /* Bắt đầu với scale nhỏ hơn */
-        background: white;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
-        width: 500px; /* Tăng kích thước */
-        max-width: 90%; /* Responsive */
-        text-align: center;
-        z-index: 1000;
-        opacity: 0;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-    }
+            /* Popup container */
+            .popup {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(0.9); /* Bắt đầu với scale nhỏ hơn */
+                background: white;
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+                width: 500px; /* Tăng kích thước */
+                max-width: 90%; /* Responsive */
+                text-align: center;
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+            }
 
-    .popup.show,
-    .overlay.show {
-        display: block;
-        opacity: 1;
-    }
+            .popup.show,
+            .overlay.show {
+                display: block;
+                opacity: 1;
+            }
 
-    .popup.show {
-        transform: translate(-50%, -50%) scale(1); /* Phóng to khi hiển thị */
-    }
+            .popup.show {
+                transform: translate(-50%, -50%) scale(1); /* Phóng to khi hiển thị */
+            }
 
-    .close {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        font-size: 28px;
-        cursor: pointer;
-        color: #555;
-        transition: color 0.2s ease;
-    }
+            .close {
+                position: absolute;
+                top: 15px;
+                right: 20px;
+                font-size: 28px;
+                cursor: pointer;
+                color: #555;
+                transition: color 0.2s ease;
+            }
 
-    .close:hover {
-        color: #ff4d4d; /* Hiệu ứng hover cho nút đóng */
-    }
+            .close:hover {
+                color: #ff4d4d; /* Hiệu ứng hover cho nút đóng */
+            }
 
-    /* Star Rating */
-    .star-rating {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: center;
-        gap: 8px;
-        margin-bottom: 20px;
-    }
+            /* Star Rating */
+            .star-rating {
+                display: flex;
+                flex-direction: row-reverse;
+                justify-content: center;
+                gap: 8px;
+                margin-bottom: 20px;
+            }
 
-    .star-rating input {
-        display: none;
-    }
+            .star-rating input {
+                display: none;
+            }
 
-    .star-rating label {
-        font-size: 35px;
-        color: #ddd;
-        cursor: pointer;
-        transition: color 0.3s ease, transform 0.2s ease;
-    }
+            .star-rating label {
+                font-size: 35px;
+                color: #ddd;
+                cursor: pointer;
+                transition: color 0.3s ease, transform 0.2s ease;
+            }
 
-    .star-rating input:checked ~ label,
-    .star-rating label:hover,
-    .star-rating label:hover ~ label {
-        color: #f5c518; /* Màu vàng đậm */
-        transform: scale(1.2); /* Hiệu ứng phóng to khi hover */
-    }
+            .star-rating input:checked ~ label,
+            .star-rating label:hover,
+            .star-rating label:hover ~ label {
+                color: #f5c518; /* Màu vàng đậm */
+                transform: scale(1.2); /* Hiệu ứng phóng to khi hover */
+            }
 
-    /* Textarea */
-    textarea {
-        width: 100%;
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        margin-bottom: 20px;
-        resize: none;
-        font-size: 16px;
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-        transition: border-color 0.3s ease;
-    }
+            /* Textarea */
+            textarea {
+                width: 100%;
+                padding: 12px;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                margin-bottom: 20px;
+                resize: none;
+                font-size: 16px;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+                transition: border-color 0.3s ease;
+            }
 
-    textarea:focus {
-        border-color: #007bff;
-        outline: none;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-    }
+            textarea:focus {
+                border-color: #007bff;
+                outline: none;
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+            }
 
-    /* File Input (nếu có) */
-    input[type="file"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-size: 14px;
-        background-color: #f9f9f9;
-        cursor: pointer;
-    }
+            /* File Input (nếu có) */
+            input[type="file"] {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                font-size: 14px;
+                background-color: #f9f9f9;
+                cursor: pointer;
+            }
 
-    /* Preview Image (nếu có) */
-    .preview-container img {
-        display: none;
-        max-width: 100%;
-        max-height: 200px;
-        border-radius: 10px;
-        border: 1px solid #ddd;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        object-fit: cover;
-        margin-top: 10px;
-    }
+            /* Preview Image (nếu có) */
+            .preview-container img {
+                display: none;
+                max-width: 100%;
+                max-height: 200px;
+                border-radius: 10px;
+                border: 1px solid #ddd;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                object-fit: cover;
+                margin-top: 10px;
+            }
 
-    /* Button */
-    .btn-primary {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 12px 30px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: 500;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        width: 100%;
-    }
+            /* Button */
+            .btn-primary {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 500;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+                width: 100%;
+            }
 
-    .btn-primary:hover {
-        background-color: #0056b3;
-        transform: translateY(-2px); /* Hiệu ứng nâng nút khi hover */
-    }
+            .btn-primary:hover {
+                background-color: #0056b3;
+                transform: translateY(-2px); /* Hiệu ứng nâng nút khi hover */
+            }
 
-    .btn-primary:active {
-        transform: translateY(0);
-    }
+            .btn-primary:active {
+                transform: translateY(0);
+            }
 
-    .btn-primary.loading::after {
-        content: "";
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        border: 2px solid #fff;
-        border-top: 2px solid transparent;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin-left: 10px;
-        vertical-align: middle;
-    }
+            .btn-primary.loading::after {
+                content: "";
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                border: 2px solid #fff;
+                border-top: 2px solid transparent;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin-left: 10px;
+                vertical-align: middle;
+            }
 
-    @keyframes spin {
-        to { transform: rotate(360deg); }
-    }
-</style>
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
     </head>
 
     <body>
@@ -357,10 +359,10 @@
                                 <li class="has-submenu parent-menu-item">
                                     <c:if test="${sessionScope.role.contains('Staffs')}">
                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
-                                    <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                    <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
+                                    
+                                    
                                     </c:if>
-                                <li><a href="doctor-dashboard.html" class="sub-menu-item">Staff List</a></li>
+                                
                             </ul>
                         </li>
 
@@ -402,10 +404,9 @@
 
                 <div class="col-lg-12">
                     <div class="d-flex justify-content-between">
-                        <button onclick="window.location.href = 'myreservation'" class="btn btn-primary">Back</button>
+                        <button onclick="window.location.href = 'myreservation'" class="btn btn-primary" style="width: auto; height: 40px; padding: 5px 10px;">Back</button>
                     </div>
                 </div>
-
 
                 &nbsp;
 
@@ -493,17 +494,17 @@
                                             <td rowspan="3" class="align-middle text-center">
                                                 <div class="d-flex flex-column align-items-center">
                                                     <c:choose>
-                                                       <c:when test="${requestScope.reserv.status eq 'Completed'}">
-                                                    <c:choose>
-                                                        <c:when test="${requestScope.hasFeedback}">
-                                                            <button class="btn btn-info mb-2 w-100 feedbackBtn" data-reserv-id="${requestScope.reserv.id}">Update Feedback</button>
+                                                        <c:when test="${requestScope.reserv.status eq 'Completed'}">
+                                                            <c:choose>
+                                                                <c:when test="${requestScope.hasFeedback}">
+                                                                    <button class="btn btn-info mb-2 w-100 feedbackBtn" data-reserv-id="${requestScope.reserv.id}">Update Feedback</button>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <button class="btn btn-success mb-2 w-100 feedbackBtn" data-reserv-id="${requestScope.reserv.id}">Feedback</button>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                            <button class="btn btn-primary mb-2 w-100">Reschedule</button>
                                                         </c:when>
-                                                        <c:otherwise>
-                                                            <button class="btn btn-success mb-2 w-100 feedbackBtn" data-reserv-id="${requestScope.reserv.id}">Feedback</button>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    <button class="btn btn-primary mb-2 w-100">Reschedule</button>
-                                                </c:when>
                                                         <c:when test="${requestScope.reserv.status eq 'Cancelled'}">
                                                             <form id="fbook" action="c/BookingStaff" method="post" class="w-100">
                                                                 <input type="hidden" name="service_id" value="${requestScope.reserv.service.id}"/>
@@ -542,51 +543,51 @@
                     </div>
             </section>
 
-  
-    <!-- Overlay -->
-    <div class="overlay" id="overlay"></div>
 
-<!-- Popup -->
-<div class="popup" id="feedbackPopup">
-    <div class="popup-content">
-        <span id="closePopup" class="close">×</span>
-        <h2>Feedback</h2>
-        <form id="feedbackForm" enctype="multipart/form-data">
-            <div class="star-rating">
-                <input type="radio" id="star5" name="rating" value="5">
-                <label for="star5">★</label>
-                <input type="radio" id="star4" name="rating" value="4">
-                <label for="star4">★</label>
-                <input type="radio" id="star3" name="rating" value="3">
-                <label for="star3">★</label>
-                <input type="radio" id="star2" name="rating" value="2">
-                <label for="star2">★</label>
-                <input type="radio" id="star1" name="rating" value="1">
-                <label for="star1">★</label>
-            </div>
-            <textarea id="feedbackText" name="comment" placeholder="Nhập phản hồi của bạn..." rows="5"></textarea>
+            <!-- Overlay -->
+            <div class="overlay" id="overlay"></div>
 
-            <!-- Input chọn ảnh -->
-            <label for="feedbackImage" class="file-label">Choose image</label>
-            <input type="file" id="feedbackImage" name="imageFile" accept="image/*">
-            
-            <!-- Xem trước ảnh -->
-            <div class="preview-container">
-                <img id="previewImage" src="" alt="Ảnh xem trước" style="display:none;">
-            </div>
+            <!-- Popup -->
+            <div class="popup" id="feedbackPopup">
+                <div class="popup-content">
+                    <span id="closePopup" class="close">×</span>
+                    <h2>Feedback</h2>
+                    <form id="feedbackForm" enctype="multipart/form-data">
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5">
+                            <label for="star5">★</label>
+                            <input type="radio" id="star4" name="rating" value="4">
+                            <label for="star4">★</label>
+                            <input type="radio" id="star3" name="rating" value="3">
+                            <label for="star3">★</label>
+                            <input type="radio" id="star2" name="rating" value="2">
+                            <label for="star2">★</label>
+                            <input type="radio" id="star1" name="rating" value="1">
+                            <label for="star1">★</label>
+                        </div>
+                        <textarea id="feedbackText" name="comment" placeholder="Nhập phản hồi của bạn..." rows="5"></textarea>
 
-            <input type="hidden" id="reservId" name="reserv_id">
-            <button type="submit" class="btn btn-primary">Send</button>
-        </form>
-    </div>
-</div>                                      
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
+                        <!-- Input chọn ảnh -->
+                        <label for="feedbackImage" class="file-label">Choose image</label>
+                        <input type="file" id="feedbackImage" name="imageFile" accept="image/*">
+
+                        <!-- Xem trước ảnh -->
+                        <div class="preview-container">
+                            <img id="previewImage" src="" alt="Ảnh xem trước" style="display:none;">
+                        </div>
+
+                        <input type="hidden" id="reservId" name="reserv_id">
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                </div>
+            </div>                                      
+
+
+
+
+
+
+
             <!-- Modal Update -->
             <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -622,8 +623,9 @@
 
                                 <div class="d-flex justify-content-between">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="submit" class="btn btn-primary ms-2">Save Changes</button>
                                 </div>
+
                             </form>
                         </div>
                     </div>
@@ -833,183 +835,185 @@
                 });
 
             </script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const feedbackPopup = document.getElementById("feedbackPopup");
-    const overlay = document.getElementById("overlay");
-    const feedbackForm = document.getElementById("feedbackForm");
-    const closePopupBtn = document.getElementById("closePopup");
-    const feedbackText = document.getElementById("feedbackText");
-    const feedbackImage = document.getElementById("feedbackImage");
-    const previewImage = document.getElementById("previewImage");
-    const submitBtn = feedbackForm.querySelector(".btn-primary");
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const feedbackPopup = document.getElementById("feedbackPopup");
+                    const overlay = document.getElementById("overlay");
+                    const feedbackForm = document.getElementById("feedbackForm");
+                    const closePopupBtn = document.getElementById("closePopup");
+                    const feedbackText = document.getElementById("feedbackText");
+                    const feedbackImage = document.getElementById("feedbackImage");
+                    const previewImage = document.getElementById("previewImage");
+                    const submitBtn = feedbackForm.querySelector(".btn-primary");
 
-    // Hàm cập nhật màu sao dựa trên ratingValue
-    function updateStarColors(ratingValue) {
-        document.querySelectorAll('.star-rating label').forEach((label, index) => {
-            const input = document.getElementById(label.getAttribute("for"));
-            label.style.color = input && parseInt(input.value) <= parseInt(ratingValue) ? "#f5c518" : "#ddd";
-        });
-    }
-
-    // Xem trước ảnh với kiểm tra kích thước file
-    feedbackImage.addEventListener("change", function (event) {
-        const file = event.target.files[0];
-        if (file) {
-            if (file.size > 5 * 1024 * 1024) {
-                alert("Ảnh quá lớn! Vui lòng chọn ảnh dưới 5MB.");
-                feedbackImage.value = "";
-                previewImage.style.display = "none";
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                previewImage.src = e.target.result;
-                previewImage.style.display = "block";
-            };
-            reader.readAsDataURL(file);
-        } else {
-            previewImage.style.display = "none";
-        }
-    });
-
-    // Hàm mở popup
-    function openPopup(reservId, isUpdate) {
-        if (!reservId) {
-            console.error("Không tìm thấy ID đặt chỗ.");
-            alert("ID đặt chỗ không hợp lệ!");
-            return;
-        }
-
-        console.log("Mở popup với reserv_id:", reservId, "isUpdate:", isUpdate);
-
-        document.getElementById("reservId").value = reservId;
-        feedbackPopup.style.display = "block";
-        overlay.style.display = "block";
-
-        setTimeout(() => {
-            feedbackPopup.classList.add("show");
-            overlay.classList.add("show");
-            document.body.classList.add("no-scroll");
-        }, 10);
-
-        if (isUpdate) {
-            console.log("Đang lấy dữ liệu feedback từ server...");
-            fetch("${pageContext.request.contextPath}/feedback?reserv_id=" + reservId)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Lỗi HTTP! Trạng thái: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Dữ liệu từ server:", data);
-                    if (data.success && data.data) {
-                        const feedbackData = data.data;
-                        feedbackText.value = feedbackData.comment || "";
-                        const ratingValue = String(feedbackData.rating || 1);
-                        document.querySelectorAll('input[name="rating"]').forEach(input => {
-                            input.checked = input.value === ratingValue;
+                    // Hàm cập nhật màu sao dựa trên ratingValue
+                    function updateStarColors(ratingValue) {
+                        document.querySelectorAll('.star-rating label').forEach((label, index) => {
+                            const input = document.getElementById(label.getAttribute("for"));
+                            label.style.color = input && parseInt(input.value) <= parseInt(ratingValue) ? "#f5c518" : "#ddd";
                         });
-                        updateStarColors(ratingValue);
+                    }
 
-                        if (feedbackData.img) {
-                            previewImage.src = "${pageContext.request.contextPath}/" + feedbackData.img;
-                            previewImage.style.display = "block";
+                    // Xem trước ảnh với kiểm tra kích thước file
+                    feedbackImage.addEventListener("change", function (event) {
+                        const file = event.target.files[0];
+                        if (file) {
+                            if (file.size > 5 * 1024 * 1024) {
+                                alert("Ảnh quá lớn! Vui lòng chọn ảnh dưới 5MB.");
+                                feedbackImage.value = "";
+                                previewImage.style.display = "none";
+                                return;
+                            }
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                previewImage.src = e.target.result;
+                                previewImage.style.display = "block";
+                            };
+                            reader.readAsDataURL(file);
                         } else {
                             previewImage.style.display = "none";
                         }
-                    } else {
-                        console.error("Lỗi từ server:", data.message || "Không lấy được dữ liệu feedback");
-                        feedbackForm.reset();
-                        previewImage.style.display = "none";
-                        alert("Không thể tải dữ liệu feedback: " + (data.message || "Lỗi không xác định"));
+                    });
+
+                    // Hàm mở popup
+                    function openPopup(reservId, isUpdate) {
+                        if (!reservId) {
+                            console.error("Không tìm thấy ID đặt chỗ.");
+                            alert("ID đặt chỗ không hợp lệ!");
+                            return;
+                        }
+
+                        console.log("Mở popup với reserv_id:", reservId, "isUpdate:", isUpdate);
+
+                        document.getElementById("reservId").value = reservId;
+                        feedbackPopup.style.display = "block";
+                        overlay.style.display = "block";
+
+                        setTimeout(() => {
+                            feedbackPopup.classList.add("show");
+                            overlay.classList.add("show");
+                            document.body.classList.add("no-scroll");
+                        }, 10);
+
+                        if (isUpdate) {
+                            console.log("Đang lấy dữ liệu feedback từ server...");
+                            fetch("${pageContext.request.contextPath}/feedback?reserv_id=" + reservId)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error(`Lỗi HTTP! Trạng thái: ${response.status}`);
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        console.log("Dữ liệu từ server:", data);
+                                        if (data.success && data.data) {
+                                            const feedbackData = data.data;
+                                            feedbackText.value = feedbackData.comment || "";
+                                            const ratingValue = String(feedbackData.rating || 1);
+                                            document.querySelectorAll('input[name="rating"]').forEach(input => {
+                                                input.checked = input.value === ratingValue;
+                                            });
+                                            updateStarColors(ratingValue);
+
+                                            if (feedbackData.img) {
+                                                previewImage.src = "${pageContext.request.contextPath}/" + feedbackData.img;
+                                                previewImage.style.display = "block";
+                                            } else {
+                                                previewImage.style.display = "none";
+                                            }
+                                        } else {
+                                            console.error("Lỗi từ server:", data.message || "Không lấy được dữ liệu feedback");
+                                            feedbackForm.reset();
+                                            previewImage.style.display = "none";
+                                            alert("Không thể tải dữ liệu feedback: " + (data.message || "Lỗi không xác định"));
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error("Lỗi khi lấy feedback:", error);
+                                        feedbackForm.reset();
+                                        previewImage.style.display = "none";
+                                        alert("Lỗi khi tải dữ liệu feedback: " + error.message);
+                                    });
+                        } else {
+                            feedbackForm.reset();
+                            previewImage.style.display = "none";
+                            updateStarColors(0); // Reset sao về màu xám khi tạo mới
+                        }
                     }
-                })
-                .catch(error => {
-                    console.error("Lỗi khi lấy feedback:", error);
-                    feedbackForm.reset();
-                    previewImage.style.display = "none";
-                    alert("Lỗi khi tải dữ liệu feedback: " + error.message);
+
+                    // Hàm đóng popup
+                    function closePopup() {
+                        feedbackPopup.classList.remove("show");
+                        overlay.classList.remove("show");
+                        document.body.classList.remove("no-scroll");
+
+                        setTimeout(() => {
+                            feedbackPopup.style.display = "none";
+                            overlay.style.display = "none";
+                            feedbackForm.reset();
+                        }, 300);
+                    }
+
+                    // Thêm sự kiện change để cập nhật màu sao khi người dùng chọn
+                    document.querySelectorAll('input[name="rating"]').forEach(input => {
+                        input.addEventListener('change', function () {
+                            updateStarColors(this.value);
+                        });
+                    });
+
+                    document.querySelectorAll(".feedbackBtn").forEach(button => {
+                        button.addEventListener("click", function () {
+                            openPopup(this.getAttribute("data-reserv-id"), this.textContent.trim() === "Update Feedback");
+                        });
+                    });
+
+                    if (closePopupBtn)
+                        closePopupBtn.addEventListener("click", closePopup);
+                    overlay.addEventListener("click", closePopup);
+
+                    // Gửi feedback kèm ảnh với xác nhận và loading
+                    feedbackForm.addEventListener("submit", function (event) {
+                        event.preventDefault();
+
+                        if (!confirm("Bạn có chắc chắn muốn gửi phản hồi này?")) {
+                            return;
+                        }
+
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = "Đang gửi...";
+
+                        let formData = new FormData(feedbackForm);
+                        const reservId = document.getElementById("reservId").value;
+
+                        fetch("${pageContext.request.contextPath}/feedback", {
+                            method: "POST",
+                            body: formData
+                        })
+                                .then(response => {
+                                    if (!response.ok)
+                                        throw new Error("Lỗi HTTP: " + response.status);
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data.success) {
+                                        alert(data.message);
+                                        closePopup();
+                                        window.location.href = "${pageContext.request.contextPath}/reserv-infor?rid=" + reservId;
+                                    } else {
+                                        alert("Gửi phản hồi thất bại: " + (data.message || "Lỗi không xác định"));
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("Lỗi khi gửi feedback:", error);
+                                    alert("Gửi phản hồi thất bại: " + error.message);
+                                })
+                                .finally(() => {
+                                    submitBtn.disabled = false;
+                                    submitBtn.textContent = "Gửi";
+                                });
+                    });
                 });
-        } else {
-            feedbackForm.reset();
-            previewImage.style.display = "none";
-            updateStarColors(0); // Reset sao về màu xám khi tạo mới
-        }
-    }
-
-    // Hàm đóng popup
-    function closePopup() {
-        feedbackPopup.classList.remove("show");
-        overlay.classList.remove("show");
-        document.body.classList.remove("no-scroll");
-
-        setTimeout(() => {
-            feedbackPopup.style.display = "none";
-            overlay.style.display = "none";
-            feedbackForm.reset();
-        }, 300);
-    }
-
-    // Thêm sự kiện change để cập nhật màu sao khi người dùng chọn
-    document.querySelectorAll('input[name="rating"]').forEach(input => {
-        input.addEventListener('change', function () {
-            updateStarColors(this.value);
-        });
-    });
-
-    document.querySelectorAll(".feedbackBtn").forEach(button => {
-        button.addEventListener("click", function () {
-            openPopup(this.getAttribute("data-reserv-id"), this.textContent.trim() === "Update Feedback");
-        });
-    });
-
-    if (closePopupBtn) closePopupBtn.addEventListener("click", closePopup);
-    overlay.addEventListener("click", closePopup);
-
-    // Gửi feedback kèm ảnh với xác nhận và loading
-    feedbackForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        if (!confirm("Bạn có chắc chắn muốn gửi phản hồi này?")) {
-            return;
-        }
-
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Đang gửi...";
-
-        let formData = new FormData(feedbackForm);
-        const reservId = document.getElementById("reservId").value;
-
-        fetch("${pageContext.request.contextPath}/feedback", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) throw new Error("Lỗi HTTP: " + response.status);
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                closePopup();
-                window.location.href = "${pageContext.request.contextPath}/reserv-infor?rid=" + reservId;
-            } else {
-                alert("Gửi phản hồi thất bại: " + (data.message || "Lỗi không xác định"));
-            }
-        })
-        .catch(error => {
-            console.error("Lỗi khi gửi feedback:", error);
-            alert("Gửi phản hồi thất bại: " + error.message);
-        })
-        .finally(() => {
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Gửi";
-        });
-    });
-});
-</script>
+            </script>
 
         </body>
     </html>

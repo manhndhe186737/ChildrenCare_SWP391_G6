@@ -87,12 +87,12 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                        <!--<a href="index.html">-->
+                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
-                    
+
                     <ul class="sidebar-menu pt-3">
                         <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
@@ -230,7 +230,7 @@
                                                 <th style="text-align: left; width: 35%;">Feature</th>
                                                 <th style="text-align: left; width: 35%;">Url</th>
                                                 <th style="text-align: left; width: 10%;">Status</th>
-                                                <th style="text-align: left; width: 10%;">Action</th>
+                                                <!--                                                <th style="text-align: left; width: 10%;">Action</th>-->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -252,7 +252,11 @@
                                                     ${f.status == 'active' ? 'Inactive' : 'Active'}
                                                 </button>
                                             </td>
-                                            <td style="text-align: left; border-left: none; border-right: none;"></td>
+                                            <!--                                            <td style="text-align: left; border-left: none; border-right: none;">
+                                                                                            <input type="hidden" name="roleId" value="${r.rid}"/>
+                                                                                            <input type="hidden" name="featureId" value="${f.fid}"/>
+                                                                                            <button type="button" style="border-radius: 5px" class="btn-primary custom-btn-size" data-bs-toggle="modal" data-bs-target="#updateFeatureModal" onclick="setUpdateData('${r.rid}', '${f.fid}', '${f.fname}', '${f.url}')">Update</button> 
+                                                                                        </td>-->
                                             </tr>
                                         </c:forEach>
                                         </tbody>
@@ -300,6 +304,42 @@
                     </div>
                 </div>
                 <!-- page-wrapper -->
+
+                <!-- Modal update -->
+                <div class="modal fade" id="updateFeatureModal" tabindex="-1" aria-labelledby="updateFeatureModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateFeatureModalLabel">Update Feature</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="updateFeatureForm" action="UpdateFeature" method="post">
+                                    <div class="mb-3">
+                                        <label for="roleId" class="form-label">Role Id</label>
+                                        <input type="text" class="form-control" id="roleUpdateId" name="rid" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="fid" class="form-label">Feature Id</label>
+                                        <input type="text" class="form-control" id="fid" name="fid" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="featureName" class="form-label">Feature Name</label>
+                                        <input type="text" class="form-control" id="featureUpdateName" name="fname" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="featureUrl" class="form-label">Feature Url</label>
+                                        <input type="text" class="form-control" id="featureUpdateUrl" name="furl" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="submit" class="btn btn-primary" value="Update"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- Offcanvas Start -->
                 <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
@@ -437,6 +477,18 @@
                         }
                     });
 
+                    function setUpdateData(roleId, featureId, featureName, url) {
+                        // Hiển thị alert với thông tin roleId và featureId
+                        alert("Role ID: " + roleId + "\nFeature ID: " + featureId);
+
+                        // Cập nhật các trường dữ liệu trong form modal
+                        document.getElementById("roleUpdateId").value = roleId;
+                        document.getElementById("fid").value = featureId;
+                        document.getElementById("featureUpdateName").value = featureName; // Đây cần phải là tên của tính năng, không phải featureId
+                        document.getElementById("featureUpdateUrl").value = url;  // Tương tự, bạn cần lấy URL tính năng thực tế
+                    }
+
+
                 </script>
 
                 <script>
@@ -492,6 +544,7 @@
                             }
                         });
                     }
+
 
                 </script>
 

@@ -155,14 +155,14 @@
                 <div class="container-fluid">
                     <div class="layout-specing">
                         <div class="d-md-flex justify-content-between">
-                            <h5 class="mb-0">Plastic Medicine Box</h5>
+                            <h5 class="mb-0">Services</h5>
 
                             <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                                 <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
 
                                     <li class="breadcrumb-item"><a>Children Care</a></li>
 
-                                    <li class="breadcrumb-item"><a href="ServiceListServlet">Shop</a></li>
+                                    <li class="breadcrumb-item"><a href="ServiceListServlet">Services</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Service Detail</li>
                                 </ul>
                             </nav>
@@ -430,7 +430,6 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <div class="text-sm-start text-center">
-                                    <p class="mb-0 text-muted"><script>document.write(new Date().getFullYear())</script> ©  <i class="mdi mdi-heart text-danger"></i> by <a href="./././index.html" target="_blank" class="text-reset">Shreethemes</a>.</p>
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->

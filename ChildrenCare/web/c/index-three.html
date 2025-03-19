@@ -131,9 +131,9 @@
                                         <li><a href="doctor-dashboard.html" class="sub-menu-item">Dashboard</a></li>
                                         <li><a href="doctor-appointment.html" class="sub-menu-item">Appointment</a></li>
                                         <li><a href="patient-list.html" class="sub-menu-item">Patients</a></li>
-                                        <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
+                                        
                                         <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
-                                        <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
+                                        
                                         <li><a href="doctor-messages.html" class="sub-menu-item">Messages</a></li>
                                         <li><a href="doctor-profile.html" class="sub-menu-item">Profile</a></li>
                                         <li><a href="doctor-profile-setting.html" class="sub-menu-item">Profile Settings</a></li>

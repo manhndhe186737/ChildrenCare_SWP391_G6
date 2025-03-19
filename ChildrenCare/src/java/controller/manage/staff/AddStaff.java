@@ -91,7 +91,7 @@ public class AddStaff extends BaseRBAC {
 
         // Tạo đối tượng StaffDBContext và thêm Staff vào cơ sở dữ liệu
         StaffDBContext staffDAO = new StaffDBContext();
-        int userId = staffDAO.registerStaff(user, email, hashedPassword); // Truyền mật khẩu đã mã hóa
+        int userId = staffDAO.registerStaffWithProfile(user, email, hashedPassword); // Truyền mật khẩu đã mã hóa
           ArrayList<User> staffList = staffDAO.getAllStaff();
     req.setAttribute("staffList", staffList);
 

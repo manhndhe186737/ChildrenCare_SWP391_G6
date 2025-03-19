@@ -207,12 +207,12 @@
                     <div class="layout-specing">
                         <div class="d-md-flex justify-content-between">
                             <div>
-                                <h5 class="mb-0">Shop</h5>
+                                <h5 class="mb-0">Services</h5>
 
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-1">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Shop</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Services</li>
                                     </ul>
                                 </nav>
                             </div>

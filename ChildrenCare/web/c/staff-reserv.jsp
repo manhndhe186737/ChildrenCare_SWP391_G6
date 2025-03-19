@@ -195,10 +195,10 @@
                                 <li class="has-submenu parent-menu-item">
                                     <c:if test="${sessionScope.role.contains('Staffs')}">
                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
-                                    <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                    <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
-                                    </c:if>
-                                <li><a href="doctor-dashboard.html" class="sub-menu-item">Staff List</a></li>
+
+
+                                </c:if>
+
                             </ul>
                         </li>
 
@@ -270,27 +270,31 @@
 
                     <div class="col-xl-9 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
                         <div class="col-md-3">
-                            <h5 class="mb-0">Appointment</h5>
+                            <h5 class="mb-0">Reservation</h5>
                         </div>
                         <div class="row align-items-center">
                             <!-- Bên trái: Today + Appointment -->
+                            <form action="staff-reserv" method="POST" class="w-100">
+                                <div class="row w-100">
+                                    <!-- Date Pickers -->
+                                    <!-- Date Pickers -->
+                                    <div class="col-md-3 d-flex gap-2">
+                                        <input type="date" class="form-control" name="startDate" value="${startDate != null ? startDate : ''}">
+                                        <input type="date" class="form-control" name="endDate" value="${endDate != null ? endDate : ''}">
+                                    </div>
 
-                            <form action="staff-reserv" method="GET">
-                                <div class="col-md-6 d-flex gap-2">
-                                    <div class="col-md-6 d-flex gap-2">
-                                        <input type="date" class="form-control" name="startDate" value="${param.startDate}">
-                                        <input type="date" class="form-control" name="endDate" value="${param.endDate}">
-                                        <button type="submit" class="btn btn-primary">Filter</button>
+                                    <!-- Tạo khoảng cách giữa date picker và search box -->
+                                    <div class="col-md-1"></div> <!-- Cột trống tạo khoảng cách -->
+                                    <!-- Search Box -->
+                                    <div class="col-md-5 d-flex justify-content-center">
+                                        <input type="text" class="form-control" name="searchKeyword" placeholder="" value="${param.searchKeyword}">
+                                    </div>
+                                    <!-- Filter and Search Button -->
+                                    <div class="col-md-3 d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary w-100">Filter</button>
                                     </div>
                                 </div>
-                                <!-- Bên phải: Search -->
-                                <div class="col-md-6 d-flex justify-content-end mt-2">
-                                    <input type="text" class="form-control w-50" name="searchKeyword" placeholder="Search appointment..." value="${param.searchKeyword}">
-                                    <button type="submit" class="btn btn-primary ms-2">Search</button>
-                                </div>
                             </form>
-
-
                         </div>
 
                         <!-- Table Section -->
@@ -325,16 +329,21 @@
                                                               </span>
                                                         </td>
                                                         <td class="text-end p-3">
-                                                            <a href="#" class="btn btn-icon btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment${appointment.reservId}">
-                                                                <i class="uil uil-eye"></i>
-                                                            </a>
-                                                            <a href="#" class="btn btn-icon btn-soft-success accept-btn" 
-                                                               data-id="${appointment.reservId}" data-bs-toggle="modal" data-bs-target="#acceptappointment">
-                                                                <i class="uil uil-check-circle"></i>
-                                                            </a>
-                                                            <a href="#" class="btn btn-icon btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment">
-                                                                <i class="uil uil-times-circle"></i>
-                                                            </a>
+                                                            <c:if test="${appointment.status == 'Scheduled'}">
+                                                                <div class="d-inline-block">
+                                                                    <form id="confirmForm" method="POST" action="AcceptReserv">
+                                                                        <input type="hidden" name="reservId" value="${appointment.reservId}">
+                                                                        <button type="button" class="btn btn-icon btn-soft-success accept-btn" id="confirmBtn">
+                                                                            <i class="uil uil-check-circle"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </c:if>
+                                                            <div class="d-inline-block">
+                                                                <a href="#" class="btn btn-icon btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment${appointment.reservId}">
+                                                                    <i class="uil uil-eye"></i>
+                                                                </a>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -350,6 +359,39 @@
                                 </div>
                             </div>
                         </div>
+                                    
+                        <!-- Pagination -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <nav aria-label="Page navigation">
+                                    <form method="POST" action="staff-reserv">
+                                        <ul class="pagination justify-content-center">
+                                            <!-- Prev Button -->
+                                            <li class="page-item <c:if test="${currentPage == 1}">disabled</c:if>">
+                                                <button class="page-link" type="submit" name="page" value="${currentPage - 1}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </button>
+                                            </li>
+
+                                            <!-- Page Number Buttons -->
+                                            <c:forEach var="i" begin="1" end="${totalPages}">
+                                                <li class="page-item <c:if test="${i == currentPage}">active</c:if>">
+                                                    <button class="page-link" type="submit" name="page" value="${i}">${i}</button>
+                                                </li>
+                                            </c:forEach>
+
+                                            <!-- Next Button -->
+                                            <li class="page-item <c:if test="${currentPage == totalPages}">disabled</c:if>">
+                                                <button class="page-link" type="submit" name="page" value="${currentPage + 1}" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                </nav>
+                            </div>
+                        </div>
+
 
                     </div><!--end row-->
                 </div><!--end container-->
@@ -425,39 +467,6 @@
                     </div>
                 </div>
             </c:forEach>
-
-
-
-
-
-
-            <div class="pagination-container">
-                <ul class="pagination justify-content-center">
-                    <c:if test="${currentPage > 1}">
-                        <li class="page-item">
-                            <a class="page-link" href="?page=${currentPage - 1}">Previous</a>
-                        </li>
-                    </c:if>
-
-                    <c:forEach var="i" begin="1" end="${totalPages}">
-                        <li class="page-item ${i == currentPage ? 'active' : ''}">
-                            <a class="page-link" href="?page=${i}">${i}</a>
-                        </li>
-                    </c:forEach>
-
-                    <c:if test="${currentPage < totalPages}">
-                        <li class="page-item">
-                            <a class="page-link" href="?page=${currentPage + 1}">Next</a>
-                        </li>
-                    </c:if>
-                </ul>
-            </div>
-
-
-
-
-
-            <!-- View Appintment End -->
 
             <!-- Accept Appointment Start -->
             <div class="modal fade" id="acceptappointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -690,109 +699,150 @@
             <script src="../assets/js/feather.min.js"></script>
             <!-- Main Js -->
             <script src="../assets/js/app.js"></script>
+            <!-- Thêm SweetAlert2 CDN -->
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
             <script>
-                                            let sortOrder = {}; // Lưu trạng thái sắp xếp của từng cột
+                                            // Lấy thông báo và loại thông báo từ session
+                                            var alertMessage = '<%= session.getAttribute("success") != null ? session.getAttribute("success") : "" %>';
+                                            var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "success" %>'; // Lấy alertType nếu có, mặc định là "error"
 
-                                            function sortTable(colIndex) {
-                                                let table = document.getElementById("appointmentTable");
-                                                let tbody = table.getElementsByTagName("tbody")[0];
-                                                let rows = Array.from(tbody.getElementsByTagName("tr"));
-
-                                                // Kiểm tra trạng thái hiện tại
-                                                sortOrder[colIndex] = !sortOrder[colIndex];
-
-                                                rows.sort((a, b) => {
-                                                    let aText = a.getElementsByTagName("td")[colIndex].textContent.trim();
-                                                    let bText = b.getElementsByTagName("td")[colIndex].textContent.trim();
-
-                                                    // Xử lý kiểu dữ liệu (số, ngày, chuỗi)
-                                                    if (!isNaN(aText) && !isNaN(bText)) { // Nếu là số
-                                                        return sortOrder[colIndex] ? aText - bText : bText - aText;
-                                                    } else if (Date.parse(aText) && Date.parse(bText)) { // Nếu là ngày
-                                                        return sortOrder[colIndex] ? new Date(aText) - new Date(bText) : new Date(bText) - new Date(aText);
-                                                    } else { // Nếu là chuỗi
-                                                        return sortOrder[colIndex] ? aText.localeCompare(bText) : bText.localeCompare(aText);
-                                                    }
+                                            // Kiểm tra nếu có thông báo thì hiển thị Swal.fire
+                                            if (alertMessage.trim() !== "") {
+                                                Swal.fire({
+                                                    icon: alertType, // success, error, warning
+                                                    title: alertMessage,
+                                                    showConfirmButton: false,
+                                                    timer: 3000  // Thời gian hiển thị thông báo là 3 giây
                                                 });
-
-                                                // Cập nhật lại bảng
-                                                tbody.innerHTML = "";
-                                                rows.forEach(row => tbody.appendChild(row));
-
-                                                // Cập nhật icon mũi tên
-                                                updateSortIcons(colIndex);
+                                                // Xóa thông báo khỏi session sau khi hiển thị
+                <%
+                session.removeAttribute("success");
+                session.removeAttribute("alertType");
+                %>
                                             }
+            </script>
 
-                                            function updateSortIcons(colIndex) {
-                                                let headers = document.querySelectorAll(".sortable i");
-                                                headers.forEach((icon, index) => {
-                                                    if (index === colIndex) {
-                                                        icon.className = sortOrder[colIndex] ? "uil uil-arrow-up" : "uil uil-arrow-down";
-                                                    } else {
-                                                        icon.className = "uil uil-sort";
-                                                    }
-                                                });
-                                            }
+            <script>
+                document.getElementById('confirmBtn').addEventListener('click', function () {
+                    // Hiển thị SweetAlert xác nhận
+                    Swal.fire({
+                        title: 'Confirm complete this reservation?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Nếu người dùng chọn "Yes", submit form
+                            document.getElementById('confirmForm').submit();
+                        }
+                    });
+                });
+            </script>
+            <script>
+                let sortOrder = {}; // Lưu trạng thái sắp xếp của từng cột
 
-                                            /////
-                                            document.addEventListener("DOMContentLoaded", function () {
-                                                let selectedId = null;
+                function sortTable(colIndex) {
+                    let table = document.getElementById("appointmentTable");
+                    let tbody = table.getElementsByTagName("tbody")[0];
+                    let rows = Array.from(tbody.getElementsByTagName("tr"));
 
-                                                // Khi click vào nút Accept, lưu ID của appointment
-                                                document.querySelectorAll(".accept-btn").forEach(button => {
-                                                    button.addEventListener("click", function () {
-                                                        selectedId = this.getAttribute("data-id");
-                                                        document.querySelector(".confirm-accept").setAttribute("data-id", selectedId);
-                                                    });
-                                                });
+                    // Kiểm tra trạng thái hiện tại
+                    sortOrder[colIndex] = !sortOrder[colIndex];
 
-                                                // Khi xác nhận Accept
-                                                document.querySelector(".confirm-accept").addEventListener("click", function () {
-                                                    let appointmentId = this.getAttribute("data-id");
+                    rows.sort((a, b) => {
+                        let aText = a.getElementsByTagName("td")[colIndex].textContent.trim();
+                        let bText = b.getElementsByTagName("td")[colIndex].textContent.trim();
 
-                                                    if (appointmentId) {
-                                                        fetch("/updateAppointment", {
-                                                            method: "POST",
-                                                            headers: {"Content-Type": "application/json"},
-                                                            body: JSON.stringify({
-                                                                reservId: appointmentId,
-                                                                status: "Accepted",
-                                                                payment: "Completed"
-                                                            })
-                                                        })
-                                                                .then(response => response.json())
-                                                                .then(data => {
-                                                                    if (data.success) {
-                                                                        // Cập nhật trực tiếp trên giao diện
-                                                                        let row = document.querySelector(`tr[data-id="${appointmentId}"]`);
-                                                                        row.querySelector(".status-cell").textContent = "Accepted";
-                                                                        row.querySelector(".payment-cell").textContent = "Completed";
+                        // Xử lý kiểu dữ liệu (số, ngày, chuỗi)
+                        if (!isNaN(aText) && !isNaN(bText)) { // Nếu là số
+                            return sortOrder[colIndex] ? aText - bText : bText - aText;
+                        } else if (Date.parse(aText) && Date.parse(bText)) { // Nếu là ngày
+                            return sortOrder[colIndex] ? new Date(aText) - new Date(bText) : new Date(bText) - new Date(aText);
+                        } else { // Nếu là chuỗi
+                            return sortOrder[colIndex] ? aText.localeCompare(bText) : bText.localeCompare(aText);
+                        }
+                    });
 
-                                                                        // Ẩn modal
-                                                                        let modal = new bootstrap.Modal(document.getElementById("acceptappointment"));
-                                                                        modal.hide();
-                                                                    } else {
-                                                                        alert("Failed to update appointment.");
-                                                                    }
-                                                                })
-                                                                .catch(error => console.error("Error:", error));
-                                                    }
-                                                });
-                                            });
+                    // Cập nhật lại bảng
+                    tbody.innerHTML = "";
+                    rows.forEach(row => tbody.appendChild(row));
 
-                                            document.addEventListener("DOMContentLoaded", function () {
-                                                // Lấy tất cả nút Accept
-                                                let acceptButtons = document.querySelectorAll(".accept-btn");
+                    // Cập nhật icon mũi tên
+                    updateSortIcons(colIndex);
+                }
 
-                                                acceptButtons.forEach(button => {
-                                                    button.addEventListener("click", function () {
-                                                        let reservId = this.getAttribute("data-id"); // Lấy reservId từ data-id
+                function updateSortIcons(colIndex) {
+                    let headers = document.querySelectorAll(".sortable i");
+                    headers.forEach((icon, index) => {
+                        if (index === colIndex) {
+                            icon.className = sortOrder[colIndex] ? "uil uil-arrow-up" : "uil uil-arrow-down";
+                        } else {
+                            icon.className = "uil uil-sort";
+                        }
+                    });
+                }
 
-                                                        // Gán giá trị này vào input ẩn trong form
-                                                        document.querySelector("input[name='rsvid']").value = reservId;
-                                                    });
-                                                });
-                                            });
+                /////
+                document.addEventListener("DOMContentLoaded", function () {
+                    let selectedId = null;
+
+                    // Khi click vào nút Accept, lưu ID của appointment
+                    document.querySelectorAll(".accept-btn").forEach(button => {
+                        button.addEventListener("click", function () {
+                            selectedId = this.getAttribute("data-id");
+                            document.querySelector(".confirm-accept").setAttribute("data-id", selectedId);
+                        });
+                    });
+
+                    // Khi xác nhận Accept
+                    document.querySelector(".confirm-accept").addEventListener("click", function () {
+                        let appointmentId = this.getAttribute("data-id");
+
+                        if (appointmentId) {
+                            fetch("/updateAppointment", {
+                                method: "POST",
+                                headers: {"Content-Type": "application/json"},
+                                body: JSON.stringify({
+                                    reservId: appointmentId,
+                                    status: "Accepted",
+                                    payment: "Completed"
+                                })
+                            })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            // Cập nhật trực tiếp trên giao diện
+                                            let row = document.querySelector(`tr[data-id="${appointmentId}"]`);
+                                            row.querySelector(".status-cell").textContent = "Accepted";
+                                            row.querySelector(".payment-cell").textContent = "Completed";
+
+                                            // Ẩn modal
+                                            let modal = new bootstrap.Modal(document.getElementById("acceptappointment"));
+                                            modal.hide();
+                                        } else {
+                                            alert("Failed to update appointment.");
+                                        }
+                                    })
+                                    .catch(error => console.error("Error:", error));
+                        }
+                    });
+                });
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Lấy tất cả nút Accept
+                    let acceptButtons = document.querySelectorAll(".accept-btn");
+
+                    acceptButtons.forEach(button => {
+                        button.addEventListener("click", function () {
+                            let reservId = this.getAttribute("data-id"); // Lấy reservId từ data-id
+
+                            // Gán giá trị này vào input ẩn trong form
+                            document.querySelector("input[name='rsvid']").value = reservId;
+                        });
+                    });
+                });
             </script>
         </body>
 

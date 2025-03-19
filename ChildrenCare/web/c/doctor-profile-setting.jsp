@@ -196,10 +196,10 @@
                                 <li class="has-submenu parent-menu-item">
                                     <c:if test="${sessionScope.role.contains('Staffs')}">
                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
-                                    <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                    <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
+                                    
+                                    
                                     </c:if>
-                                <li><a href="doctor-dashboard.html" class="sub-menu-item">Staff List</a></li>
+                                
                             </ul>
                         </li>
 
@@ -400,23 +400,6 @@
                                 </div>  
                             </div>
                         </div>
-
-                        <div class="rounded shadow mt-4">
-
-
-                            <div class="rounded shadow mt-4">
-                                <div class="p-4 border-bottom">
-                                    <h5 class="mb-0 text-danger">Delete Account :</h5>
-                                </div>
-
-                                <div class="p-4">
-                                    <h6 class="mb-0 fw-normal">Do you want to delete the account? Please press below "Delete" button</h6>
-                                    <div class="mt-4">
-                                        <button class="btn btn-danger">Delete Account</button>
-                                    </div><!--end col-->
-                                </div>
-                            </div>
-                        </div><!--end col-->
                     </div><!--end row-->
                     </section><!--end section-->
                     <!-- End -->
