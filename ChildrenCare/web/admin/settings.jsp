@@ -165,7 +165,7 @@
 
                     <ul class="sidebar-menu pt-3">
                         <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                        <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
+                        
 
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
@@ -237,16 +237,6 @@
                             <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
                                 <i class="uil uil-bars"></i>
                             </a>
-                            <div class="search-bar p-0 d-none d-lg-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <form role="search" action="../admin/customers" method="get" id="searchform" class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords...">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
                         </div>
 
                         <ul class="list-unstyled mb-0">

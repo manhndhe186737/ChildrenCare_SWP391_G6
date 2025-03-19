@@ -1,5 +1,6 @@
 package controller.manage.feedback;
 
+import controller.auth.BaseRBAC;
 import dal.FeedbackDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,11 +14,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Account;
 import model.Feedback;
 import model.Service;
 
 @WebServlet(name = "feedbackList", urlPatterns = {"/feedbacklist"})
-public class FeedbackList extends HttpServlet {
+public class FeedbackList extends BaseRBAC {
     private static final int PAGE_SIZE = 6;
     final FeedbackDBContext db;
 
@@ -26,7 +28,7 @@ public class FeedbackList extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account acocunt)
             throws ServletException, IOException {
         // Xử lý tham số page
         int page = 1;
@@ -89,7 +91,7 @@ public class FeedbackList extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account acocunt)
             throws ServletException, IOException {
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");

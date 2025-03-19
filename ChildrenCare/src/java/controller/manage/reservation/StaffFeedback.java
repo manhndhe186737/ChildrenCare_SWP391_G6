@@ -1,5 +1,6 @@
 package controller.manage.reservation;
 
+import controller.auth.BaseRBAC;
 import dal.FeedbackDBContext;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -9,11 +10,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Account;
 import model.Feedback;
 import model.User;
 
 @WebServlet(name = "StaffFeedback", urlPatterns = {"/c/staff-feedback"})
-public class StaffFeedback extends HttpServlet {
+public class StaffFeedback extends BaseRBAC {
 
     private FeedbackDBContext feedbackDB;
 
@@ -23,7 +25,7 @@ public class StaffFeedback extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account acocunt)
             throws ServletException, IOException {
         try {
             // Lấy staffId từ session (giả định user đang đăng nhập là staff)
@@ -79,7 +81,7 @@ public class StaffFeedback extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account acocunt)
             throws ServletException, IOException {
         doGet(request, response);
     }

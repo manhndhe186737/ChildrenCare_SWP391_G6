@@ -443,6 +443,7 @@
                                                 <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                                     <li><a href="./post-list" class="sub-menu-item">Posts - Management</a></li>
                                                     <li><a href="./slider" class="sub-menu-item">Sliders - Management</a></li>
+                                                    <li><a href="./feedbacklist" class="sub-menu-item">Feedback - Management</a></li>
                                                     </c:if>
                                             </ul>
                                         </li>

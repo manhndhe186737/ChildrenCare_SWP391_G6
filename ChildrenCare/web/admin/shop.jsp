@@ -100,7 +100,7 @@
                     
                     <ul class="sidebar-menu pt-3">
                         <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                        <li><a href="appointment.html"><i class="uil uil-stethoscope me-2 d-inline-block"></i>Appointment</a></li>
+                        
 
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
@@ -136,6 +136,15 @@
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li><a href="authorization">Access Granting</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        
+                        <li class="sidebar-dropdown">
+                            <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Setting</a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li><a href="settings">Category</a></li>
                                 </ul>
                             </div>
                         </li>

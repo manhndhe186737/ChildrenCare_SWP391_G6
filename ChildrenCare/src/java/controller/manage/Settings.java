@@ -1,5 +1,6 @@
 package controller.manage;
 
+import controller.auth.BaseRBAC;
 import dal.ServiceCategoryDBContext;
 import model.ServiceCategory;
 import jakarta.servlet.ServletException;
@@ -7,14 +8,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import model.Account;
 
 @WebServlet("/admin/settings")
-public class Settings extends HttpServlet {
+public class Settings extends BaseRBAC {
 
     private ServiceCategoryDBContext categoryDB = new ServiceCategoryDBContext();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account acocunt)
+            throws ServletException, IOException {
         int page = 1;
         String pageParam = request.getParameter("page");
         if (pageParam != null && !pageParam.isEmpty()) {
@@ -39,49 +42,50 @@ public class Settings extends HttpServlet {
         request.setAttribute("categories", categories);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("currentPage", page);
-        request.setAttribute("nameFilter", nameFilter);  
-        request.setAttribute("statusFilter", statusFilter);  
+        request.setAttribute("nameFilter", nameFilter);
+        request.setAttribute("statusFilter", statusFilter);
 
         request.getRequestDispatcher("settings.jsp").forward(request, response);
     }
 
-   @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String action = request.getParameter("action");
+    @Override
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account acocunt)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
 
-    try {
-        if ("update".equals(action)) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            String name = request.getParameter("name");
-            String description = request.getParameter("description");
-            boolean status = request.getParameter("status") != null;  // Cập nhật status từ checkbox
+        try {
+            if ("update".equals(action)) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                String name = request.getParameter("name");
+                String description = request.getParameter("description");
+                boolean status = request.getParameter("status") != null;  // Cập nhật status từ checkbox
 
-            ServiceCategory category = new ServiceCategory(id, name, null, status, description);
-            categoryDB.updateCategory(category);
+                ServiceCategory category = new ServiceCategory(id, name, null, status, description);
+                categoryDB.updateCategory(category);
 
-            request.getSession().setAttribute("message", "Category updated successfully!");
-            response.sendRedirect(request.getContextPath() + "settings?id=" + id);
-        } else if ("add".equals(action)) {
-            String name = request.getParameter("name");
-            String description = request.getParameter("description");
-            boolean status = request.getParameter("status") != null;  // Cập nhật status từ checkbox
+                request.getSession().setAttribute("message", "Category updated successfully!");
+                response.sendRedirect(request.getContextPath() + "settings?id=" + id);
+            } else if ("add".equals(action)) {
+                String name = request.getParameter("name");
+                String description = request.getParameter("description");
+                boolean status = request.getParameter("status") != null;  // Cập nhật status từ checkbox
 
-            ServiceCategory category = new ServiceCategory(0, name, null, status, description);
-            categoryDB.addCategory(category);
+                ServiceCategory category = new ServiceCategory(0, name, null, status, description);
+                categoryDB.addCategory(category);
 
-            request.getSession().setAttribute("message", "Category added successfully!");
-            response.sendRedirect(request.getContextPath() + "settings");
-        } else if ("updateStatus".equals(action)) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            boolean status = Boolean.parseBoolean(request.getParameter("status"));
+                request.getSession().setAttribute("message", "Category added successfully!");
+                response.sendRedirect(request.getContextPath() + "settings");
+            } else if ("updateStatus".equals(action)) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                boolean status = Boolean.parseBoolean(request.getParameter("status"));
 
-            categoryDB.updateCategoryStatus(id, status);
-            response.getWriter().write("Status updated successfully.");
+                categoryDB.updateCategoryStatus(id, status);
+                response.getWriter().write("Status updated successfully.");
+            }
+        } catch (Exception e) {
+            request.setAttribute("error", "An error occurred: " + e.getMessage());
+            doGet(request, response);
         }
-    } catch (Exception e) {
-        request.setAttribute("error", "An error occurred: " + e.getMessage());
-        doGet(request, response);
     }
-}
 
 }
