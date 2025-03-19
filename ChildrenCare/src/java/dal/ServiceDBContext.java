@@ -59,7 +59,7 @@ public class ServiceDBContext extends DBContext {
 public ArrayList<Service> getServicesByCategoryId(int categoryId) {
     ArrayList<Service> services = new ArrayList<>();
     try {
-        String sql = "SELECT service_id, name, description, price, img "
+        String sql = "SELECT service_id, s.name, s.description, s.price, s.img "
                    + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
                    + "WHERE s.isActive = 1 AND c.status = 1 AND s.category_id = ?";
         PreparedStatement stm = connection.prepareStatement(sql);
