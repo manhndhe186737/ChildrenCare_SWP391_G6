@@ -58,6 +58,13 @@ public class StaffReservation extends BaseRBAC {
         // Lấy danh sách cuộc hẹn từ DAO
         List<Appointment> appointments = staffDB.getAppointmentsByFilter(staffId, startDate, endDate, searchKeyword, page, pageSize);
         int totalAppointments = staffDB.getTotalAppointmentsByFilter(staffId, startDate, endDate, searchKeyword);
+        
+        for (Appointment apm : appointments) {
+            Service s = rdb.getServicesById(apm.getServiceId());
+            apm.setService(s);
+            User customer = staffDB.getUserById(apm.getCustomerId());
+            apm.setCustomer(customer);
+        }
 
         // Tính toán tổng số trang
         int totalPages = (int) Math.ceil((double) totalAppointments / pageSize);
