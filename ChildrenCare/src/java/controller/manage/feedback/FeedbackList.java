@@ -2,104 +2,134 @@ package controller.manage.feedback;
 
 import dal.FeedbackDBContext;
 import java.io.IOException;
-import java.util.Collections;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Feedback;
+import model.Service;
 
-@WebServlet(name = "FeedbackList", urlPatterns = {"/feedbacklist"})
+@WebServlet(name = "feedbackList", urlPatterns = {"/feedbacklist"})
 public class FeedbackList extends HttpServlet {
+    private static final int PAGE_SIZE = 6;
+    final FeedbackDBContext db;
 
-    private static final int PAGE_SIZE = 6; // 6 items per page
-    private final FeedbackDBContext db; // Instance variable (avoid static singleton for now)
-
-    // Initialize DBContext in constructor (better resource management)
     public FeedbackList() {
-        this.db = new FeedbackDBContext(); // Consider dependency injection or connection pooling in production
+        this.db = new FeedbackDBContext();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Pagination parameters
+        // Xử lý tham số page
         int page = 1;
-        try {
-            String pageParam = request.getParameter("page");
-            if (pageParam != null && !pageParam.isEmpty()) {
+        String pageParam = request.getParameter("page");
+        if (pageParam != null && !pageParam.isEmpty()) {
+            try {
                 page = Integer.parseInt(pageParam);
-                if (page <= 0) {
-                    page = 1; // Fallback to page 1 if invalid
+                if (page < 1) {
+                    page = 1;
                 }
+            } catch (NumberFormatException e) {
+                page = 1;
+                request.setAttribute("error", "Invalid page number, defaulting to page 1.");
             }
-        } catch (NumberFormatException e) {
-            page = 1; // Fallback to page 1 if invalid
         }
 
-        // Filter parameters
+        // Tính offset
+        int offset = (page - 1) * PAGE_SIZE;
+
+        // Lấy các tham số lọc (nếu có)
         String rating = request.getParameter("rating");
+        String serviceName = request.getParameter("serviceName");
+        String staffName = request.getParameter("staffName");
         String search = request.getParameter("search");
 
-        // Validate rating (should be 1-5 or empty)
-        if (rating != null && !rating.isEmpty() && !rating.matches("[1-5]")) {
-            request.setAttribute("error", "Rating must be a number between 1 and 5.");
-            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-            return;
-        }
-
-        // Calculate offset for SQL query
-        int offset = (page - 1) * PAGE_SIZE;
-        if (offset < 0) {
-            offset = 0; // Ensure offset is non-negative
-        }
-
+        // Lấy dữ liệu từ cơ sở dữ liệu
+        List<Feedback> feedbackList;
+        int totalFeedbacks;
+          List<Service> serviceList;
         try {
-            // Fetch total number of feedbacks for pagination (considering filters)
-            int totalFeedbacks = db.getTotalFeedbacks(rating, search);
-            int totalPages = (int) Math.ceil((double) totalFeedbacks / PAGE_SIZE);
-            if (totalPages < 1) {
-                totalPages = 1; // Ensure at least one page if totalFeedbacks is 0
-            }
-
-            // Fetch feedbacks for the current page (considering filters)
-            List<Feedback> feedbackList = db.getFeedbacksByPage(offset, PAGE_SIZE, rating, search);
-
-            // Debug: Log the size of feedbackList
-            System.out.println("FeedbackList size: " + (feedbackList != null ? feedbackList.size() : 0));
-
-            // Ensure feedbackList is not null before passing to JSP
-            if (feedbackList == null) {
-                feedbackList = Collections.emptyList(); // Use empty list to avoid NullPointerException
-            }
-
-            // Set attributes for JSP
-            request.setAttribute("feedbackList", feedbackList);
-            request.setAttribute("currentPage", page);
-            request.setAttribute("totalPages", totalPages);
-            request.setAttribute("rating", rating != null ? rating : ""); // Retain filter values in JSP
-            request.setAttribute("search", search != null ? search : "");
-
-            // Forward to the correct JSP path (adjust based on your project structure)
-            request.getRequestDispatcher("admin/feedback-list.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace(); // Replace with proper logging in production (e.g., SLF4J)
-            request.setAttribute("error", "Error loading feedback list: " + e.getMessage());
-            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
+            serviceList = db.getAllServices();
+        } catch (SQLException ex) {
+            Logger.getLogger(FeedbackList.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            feedbackList = db.getFeedbacksByPage(offset, PAGE_SIZE, rating, serviceName, staffName, search);
+            totalFeedbacks = db.getTotalFeedbacks(rating, serviceName, staffName, search);
+            serviceList = db.getAllServices(); // Lấy danh sách dịch vụ cho dropdown
+        } catch (Exception e) {
+            feedbackList = new ArrayList<>();
+            totalFeedbacks = 0;
+            serviceList = new ArrayList<>();
+            request.setAttribute("error", "Error retrieving feedback: " + e.getMessage());
+        }
+
+        // Tính tổng số trang
+        int totalPages = (int) Math.ceil((double) totalFeedbacks / PAGE_SIZE);
+
+        // Đặt các thuộc tính để hiển thị trên JSP
+        request.setAttribute("feedbackList", feedbackList);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("rating", rating);
+        request.setAttribute("serviceName", serviceName);
+        request.setAttribute("search", search);
+        request.setAttribute("serviceList", serviceList);
+
+        // Chuyển hướng đến JSP
+        request.getRequestDispatcher("/admin/feedback-list.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Redirect POST to GET to keep logic simple (consider handling POST separately if needed)
-        doGet(request, response);
-    }
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
 
-    @Override
-    public String getServletInfo() {
-        return "Servlet for listing feedback operations with pagination and filtering.";
+        PrintWriter out = response.getWriter();
+        try {
+            String action = request.getParameter("action");
+            int feedbackId = Integer.parseInt(request.getParameter("feedback_id"));
+            String reply = request.getParameter("reply");
+
+            if (action == null || feedbackId <= 0 || reply == null) {
+                throw new IllegalArgumentException("Invalid parameters.");
+            }
+
+            if (action.equals("reply")) {
+                // Thêm mới reply
+                Feedback feedback = db.getFeedbackById(feedbackId);
+                if (feedback == null) {
+                    throw new IllegalArgumentException("Feedback not found.");
+                }
+                feedback.setReply(reply);
+                db.updateFeedbackReply(feedbackId, reply);
+                out.write("success=true&message=Reply added successfully.");
+            } else if (action.equals("updateReply")) {
+                // Cập nhật reply
+                Feedback feedback = db.getFeedbackById(feedbackId);
+                if (feedback == null) {
+                    throw new IllegalArgumentException("Feedback not found.");
+                }
+                feedback.setReply(reply);
+                db.updateFeedbackReply(feedbackId, reply);
+                out.write("success=true&message=Reply updated successfully.");
+            } else {
+                throw new IllegalArgumentException("Invalid action.");
+            }
+        } catch (Exception e) {
+            out.write("success=false&message=" + e.getMessage());
+        } finally {
+            out.flush();
+            out.close();
+        }
     }
 }

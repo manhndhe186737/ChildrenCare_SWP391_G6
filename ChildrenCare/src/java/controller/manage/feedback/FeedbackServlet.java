@@ -46,7 +46,6 @@ public class FeedbackServlet extends HttpServlet {
                 int reservId = Integer.parseInt(reservIdParam);
                 Feedback feedback = feedbackDB.getFeedbackByReservId(reservId);
                 if (feedback != null) {
-                    // Chuẩn hóa dữ liệu trả về với success và data
                     Map<String, Object> feedbackData = new HashMap<>();
                     feedbackData.put("id", feedback.getId());
                     feedbackData.put("date", feedback.getDate().toString());
@@ -54,7 +53,8 @@ public class FeedbackServlet extends HttpServlet {
                     feedbackData.put("comment", feedback.getComment());
                     feedbackData.put("img", feedback.getImg());
                     feedbackData.put("reservId", feedback.getReservation().getId());
-                    feedbackData.put("status", feedback.getStatus()); // Added status field
+                    feedbackData.put("status", feedback.getStatus());
+                    feedbackData.put("reply", feedback.getReply() != null ? feedback.getReply() : "");
 
                     responseMap.put("success", true);
                     responseMap.put("data", feedbackData);
@@ -77,7 +77,6 @@ public class FeedbackServlet extends HttpServlet {
             // Lấy tất cả feedback
             try {
                 List<Feedback> feedbackList = feedbackDB.getAllFeedbacks();
-                // GSON sẽ tự động bao gồm status trong JSON vì nó là một field của Feedback
                 responseMap.put("success", true);
                 responseMap.put("data", feedbackList);
             } catch (Exception e) {
@@ -106,7 +105,8 @@ public class FeedbackServlet extends HttpServlet {
             String rating = request.getParameter("rating");
             String comment = request.getParameter("comment");
             String reservIdParam = request.getParameter("reserv_id");
-            String statusParam = request.getParameter("status"); // Added status parameter
+            String statusParam = request.getParameter("status");
+            String reply = request.getParameter("reply"); // Thêm reply
 
             if (reservIdParam == null || reservIdParam.isEmpty()) {
                 responseMap.put("success", false);
@@ -157,7 +157,7 @@ public class FeedbackServlet extends HttpServlet {
                         throw new IllegalArgumentException("Status must be 0 (Hidden) or 1 (Visible).");
                     }
                 } else {
-                    status = 1; // Default to Visible if not provided
+                    status = 1; // Default to Visible
                 }
             } catch (NumberFormatException e) {
                 responseMap.put("success", false);
@@ -187,18 +187,25 @@ public class FeedbackServlet extends HttpServlet {
                 String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                 imagePath = "uploads/" + fileName;
                 filePart.write(uploadPath + File.separator + fileName);
-            } else {
-                // Nếu không có ảnh mới, giữ nguyên ảnh cũ (nếu có)
-                if (existingFeedback != null) {
-                    imagePath = existingFeedback.getImg();
-                }
+            } else if (existingFeedback != null) {
+                imagePath = existingFeedback.getImg();
             }
 
             Date date = new Date(System.currentTimeMillis());
             Reservation reservation = new Reservation();
             reservation.setId(reservId);
 
-            Feedback feedback = new Feedback(0, date, String.valueOf(ratingValue), comment, imagePath, reservation, status); // Added status
+            // Tạo Feedback với tất cả các trường
+            Feedback feedback = new Feedback(
+                existingFeedback != null ? existingFeedback.getId() : 0, // Nếu tồn tại thì giữ ID
+                date,
+                String.valueOf(ratingValue),
+                comment,
+                imagePath,
+                reservation,
+                status,
+                reply != null ? reply : (existingFeedback != null ? existingFeedback.getReply() : null)
+            );
 
             // Kiểm tra nếu đã có feedback
             boolean exists = feedbackDB.hasFeedback(reservId);

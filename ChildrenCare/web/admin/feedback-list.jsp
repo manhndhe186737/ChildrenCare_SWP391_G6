@@ -1,5 +1,5 @@
 <%-- 
-    Document   : feedback-management
+    Document   : feedback-list
     Created on : Mar 17, 2025, 10:12:01 AM
     Author     : dell
 --%>
@@ -18,7 +18,7 @@
     <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
     <meta name="author" content="Shreethemes" />
     <meta name="email" content="support@shreethemes.in" />
-    <meta name="website" content="../../../index.html" />
+    <meta name="website" content="${pageContext.request.contextPath}/index.html" />
     <meta name="Version" content="v1.2.0" />
     <!-- Favicon -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/favicon.ico.png">
@@ -33,6 +33,7 @@
     <!-- Main CSS -->
     <link href="${pageContext.request.contextPath}/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
     <style>
+        /* Feedback Container */
         .feedback-container {
             margin-left: auto;
             margin-right: auto;
@@ -45,15 +46,11 @@
         }
 
         @media (max-width: 1200px) {
-            .feedback-container {
-                padding: 15px;
-            }
+            .feedback-container { padding: 15px; }
         }
 
         @media (max-width: 768px) {
-            .feedback-container {
-                padding: 10px;
-            }
+            .feedback-container { padding: 10px; }
         }
 
         .feedback-title {
@@ -63,11 +60,13 @@
             margin-bottom: 20px;
         }
 
+        /* Filter Form */
         .feedback-filter-form {
             display: flex;
             align-items: center;
             gap: 10px;
             margin-bottom: 15px;
+            flex-wrap: wrap;
         }
 
         .feedback-filter-form label {
@@ -83,22 +82,22 @@
             font-size: 14px;
         }
 
-        .feedback-filter-form input[type="submit"] {
+        .feedback-filter-form input[type="submit"],
+        .feedback-filter-form input[type="button"] {
             background: #007bff;
             color: #fff;
             border: none;
             cursor: pointer;
             transition: background 0.3s;
+            padding: 8px 15px;
         }
 
-        .feedback-filter-form input[type="submit"]:hover {
+        .feedback-filter-form input[type="submit"]:hover,
+        .feedback-filter-form input[type="button"]:hover {
             background: #0056b3;
         }
 
-        .table-container {
-            /* Không giới hạn chiều cao, tự động mở rộng */
-        }
-
+        /* Table */
         .feedback-table {
             width: 100%;
             border-collapse: collapse;
@@ -140,61 +139,64 @@
             font-size: 14px;
         }
 
+        /* Action Buttons */
         .action-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            flex-direction: row;
             align-items: center;
+            gap: 10px; /* Khoảng cách đều giữa các nút */
             width: 100%;
+            flex-wrap: nowrap; /* Đảm bảo các nút không xuống dòng */
         }
 
         .action-buttons a {
-            padding: 10px 25px;
+            flex: 1; /* Chia đều chiều rộng cho các nút */
+            padding: 10px 0; /* Điều chỉnh padding để nút không quá cao */
             border-radius: 8px;
             text-decoration: none;
-            font-size: 16px;
-            display: inline-block;
+            font-size: 14px; /* Giảm kích thước chữ để nút gọn hơn */
+            text-align: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             white-space: nowrap;
         }
 
-        .action-buttons .view-btn {
-            background: #28a745;
+        .action-buttons .reply-btn,
+        .action-buttons .update-btn {
+            background: #ffc107; /* Màu vàng cho nút Reply và Update */
             color: #fff;
         }
 
-        .action-buttons .delete-btn {
-            background: #dc3545;
+        .action-buttons .hide-btn {
+            background: #dc3545; /* Màu đỏ cho nút Hide */
             color: #fff;
         }
 
-        .action-buttons .hide-btn,
         .action-buttons .show-btn {
-            background: #ffc107;
+            background: #28a745; /* Màu xanh cho nút Show */
             color: #fff;
         }
 
-        .action-buttons .view-btn:hover {
-            background: #218838;
+        .action-buttons .reply-btn:hover,
+        .action-buttons .update-btn:hover {
+            background: #e0a800; /* Màu vàng đậm hơn khi hover */
             transform: scale(1.05);
             filter: brightness(0.9);
         }
 
-        .action-buttons .delete-btn:hover {
-            background: #c82333;
+        .action-buttons .hide-btn:hover {
+            background: #c82333; /* Màu đỏ đậm hơn khi hover */
             transform: scale(1.05);
             filter: brightness(0.9);
         }
 
-        .action-buttons .hide-btn:hover,
         .action-buttons .show-btn:hover {
-            background: #ff9800;
+            background: #218838; /* Màu xanh đậm hơn khi hover */
             transform: scale(1.05);
             filter: brightness(0.9);
         }
 
+        /* Pagination */
         .pagination-container {
             margin-top: 30px;
             text-align: center;
@@ -215,6 +217,7 @@
             color: #fff;
         }
 
+        /* Layout */
         .container-fluid {
             width: 100%;
             padding: 0 20px;
@@ -247,15 +250,119 @@
             margin-top: auto;
         }
 
-        /* Optional: Add color to status for better readability */
         .status-visible {
-            color: #28a745; /* Green for Visible */
+            color: #28a745;
             font-weight: bold;
         }
 
         .status-hidden {
-            color: #dc3545; /* Red for Hidden */
+            color: #dc3545;
             font-weight: bold;
+        }
+
+        /* Popup Styles */
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+            width: 500px;
+            max-width: 90%;
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .popup.show,
+        .overlay.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .popup.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #555;
+            transition: color 0.2s ease;
+        }
+
+        .close:hover {
+            color: #ff4d4d;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            resize: none;
+            font-size: 16px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
         }
     </style>
 </head>
@@ -284,7 +391,6 @@
             </ul>
         </nav>
 
-        <!-- Start Page Content -->
         <main class="page-content bg-light">
             <div class="top-header">
                 <div class="header-bar d-flex justify-content-between border-bottom">
@@ -393,9 +499,20 @@
                                     <option value="4" ${rating == '4' ? 'selected' : ''}>4 Stars</option>
                                     <option value="5" ${rating == '5' ? 'selected' : ''}>5 Stars</option>
                                 </select>
+
+                                <label>Service:</label>
+                                <select name="serviceName">
+                                    <option value="" ${serviceName == null || serviceName == '' ? 'selected' : ''}>All</option>
+                                    <c:forEach var="service" items="${serviceList}">
+                                        <option value="${service.name}" ${serviceName == service.name ? 'selected' : ''}>${service.name}</option>
+                                    </c:forEach>
+                                </select>
+
                                 <label>Search:</label>
-                                <input type="text" name="search" placeholder="Enter comment" value="${search != null ? search : ''}">
+                                <input type="text" name="search" placeholder="Comment or Service Name" value="${search != null ? search : ''}">
+
                                 <input type="submit" value="Filter">
+                                <input type="button" value="Reset" onclick="window.location.href='${pageContext.request.contextPath}/feedbacklist';">
                             </form>
                         </div>
 
@@ -406,12 +523,12 @@
                             <table class="feedback-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 120px;">ID</th>
+                                        <th style="width: 200px;">Service Name</th>
                                         <th style="width: 180px;">Date</th>
                                         <th style="width: 120px;">Rating</th>
                                         <th style="width: 300px;">Comment</th>
                                         <th style="width: 180px;">Image</th>
-                                        <th style="width: 100px;">Reservation ID</th>
+                                        <th style="width: 200px;">Customer Name</th>
                                         <th style="width: 120px;">Status</th>
                                         <th style="width: 300px;">Actions</th>
                                     </tr>
@@ -419,7 +536,7 @@
                                 <tbody>
                                     <c:forEach var="feedback" items="${feedbackList}">
                                         <tr>
-                                            <td class="text-center">${feedback.id}</td>
+                                            <td class="text-center">${feedback.reservation.service.name}</td>
                                             <td class="text-center">${feedback.date}</td>
                                             <td class="text-center rating-stars">
                                                 <c:forEach var="i" begin="1" end="5">
@@ -444,7 +561,7 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                             </td>
-                                            <td class="text-center">${feedback.reservation.id}</td>
+                                            <td class="text-center">${feedback.reservation.customer.fullname}</td>
                                             <td class="text-center">
                                                 <c:choose>
                                                     <c:when test="${feedback.status == 1}">
@@ -456,9 +573,14 @@
                                                 </c:choose>
                                             </td>
                                             <td class="text-center action-buttons">
-                                               <a href="${pageContext.request.contextPath}/admin/feedback-detail.jsp?id=${feedback.id}" class="view-btn">View</a>
-
-                                                <a href="#" class="delete-btn" onclick="confirmDelete(${feedback.id}); return false;">Delete</a>
+                                                <c:choose>
+                                                    <c:when test="${not empty feedback.reply}">
+                                                        <a href="#" class="update-btn" data-feedback-id="${feedback.id}" data-reply="${fn:escapeXml(feedback.reply)}">Update</a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <a href="#" class="reply-btn" data-feedback-id="${feedback.id}" data-reply="">Reply</a>
+                                                    </c:otherwise>
+                                                </c:choose>
                                                 <c:choose>
                                                     <c:when test="${feedback.status == 1}">
                                                         <a href="#" class="hide-btn" onclick="toggleStatus(${feedback.id}, ${feedback.status}); return false;">Hide</a>
@@ -487,7 +609,7 @@
                         <div class="pagination-container">
                             <c:if test="${totalPages > 1}">
                                 <c:if test="${currentPage > 1}">
-                                    <a href="${pageContext.request.contextPath}/feedbacklist?page=${currentPage - 1}&rating=${rating}&search=${search}" class="btn btn-secondary">Previous</a>
+                                    <a href="${pageContext.request.contextPath}/feedbacklist?page=${currentPage - 1}&rating=${rating}&serviceName=${serviceName}&search=${search}" class="btn btn-secondary">Previous</a>
                                 </c:if>
 
                                 <c:forEach var="i" begin="1" end="${totalPages}">
@@ -495,20 +617,34 @@
                                         <span class="btn btn-primary">${i}</span>
                                     </c:if>
                                     <c:if test="${i != currentPage}">
-                                        <a href="${pageContext.request.contextPath}/feedbacklist?page=${i}&rating=${rating}&search=${search}" class="btn btn-outline-primary">${i}</a>
+                                        <a href="${pageContext.request.contextPath}/feedbacklist?page=${i}&rating=${rating}&serviceName=${serviceName}&search=${search}" class="btn btn-outline-primary">${i}</a>
                                     </c:if>
                                 </c:forEach>
 
                                 <c:if test="${currentPage < totalPages}">
-                                    <a href="${pageContext.request.contextPath}/feedbacklist?page=${currentPage + 1}&rating=${rating}&search=${search}" class="btn btn-secondary">Next</a>
+                                    <a href="${pageContext.request.contextPath}/feedbacklist?page=${currentPage + 1}&rating=${rating}&serviceName=${serviceName}&search=${search}" class="btn btn-secondary">Next</a>
                                 </c:if>
                             </c:if>
+                        </div>
+
+                        <!-- Reply Popup -->
+                        <div class="overlay" id="replyOverlay"></div>
+                        <div class="popup" id="replyPopup">
+                            <div class="popup-content">
+                                <span id="closeReplyPopup" class="close">×</span>
+                                <h2 id="popupTitle">Reply to Feedback</h2>
+                                <form id="replyForm">
+                                    <textarea id="replyText" name="reply" placeholder="Nhập phản hồi của bạn..." rows="5"></textarea>
+                                    <input type="hidden" id="feedbackId" name="feedback_id">
+                                    <input type="hidden" id="actionType" name="action">
+                                    <button type="submit" class="btn btn-primary" id="submitReplyBtn">Send Reply</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Footer Start -->
             <footer class="bg-footer">
                 <div class="container">
                     <div class="row">
@@ -590,65 +726,164 @@
                     </div>
                 </div>
             </footer>
-            <!-- Footer End -->
 
-            <!-- Back to top -->
             <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
         </main>
     </div>
 
-    <!-- Javascript -->
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/tiny-slider-init.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/feather.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
     <script>
-        function confirmDelete(feedbackId) {
-            console.log("Attempting to delete feedback with ID: " + feedbackId); // Debugging
-            if (confirm("Are you sure you want to delete this feedback?")) {
-                try {
-                    window.location.href = "${pageContext.request.contextPath}/deletefeedback?id=" + feedbackId;
-                } catch (error) {
-                    console.error("Error redirecting to delete endpoint: ", error);
-                    alert("An error occurred while trying to delete the feedback. Please try again.");
-                }
+        // Toggle Status
+        function toggleStatus(feedbackId, currentStatus) {
+            const action = currentStatus === 1 ? "hide" : "show";
+            if (confirm("Are you sure you want to " + action + " this feedback?")) {
+                fetch('${pageContext.request.contextPath}/feedback-detail', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'feedback_id=' + feedbackId + '&action=updateStatus&status=' + (currentStatus === 1 ? 0 : 1)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert("Feedback " + (currentStatus === 1 ? "hidden" : "shown") + " successfully!");
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error("Error toggling status: ", error);
+                    alert("An error occurred while trying to " + action + " the feedback.");
+                });
             }
         }
 
-        function toggleStatus(feedbackId, currentStatus) {
-            console.log("Attempting to toggle status for feedback ID: " + feedbackId + " with current status: " + currentStatus);
-            const action = currentStatus === 1 ? "hide" : "show";
-            if (confirm("Are you sure you want to " + action + " this feedback?")) {
-                try {
-                    // Send an AJAX request to update the status
-                    fetch('${pageContext.request.contextPath}/feedback', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'id=' + feedbackId + '&status=' + (currentStatus === 1 ? 0 : 1)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert("Feedback " + (currentStatus === 1 ? "hidden" : "shown") + " successfully!");
-                            // Reload the page to reflect the updated status
-                            location.reload();
-                        } else {
-                            alert("Failed to " + action + " feedback: " + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error toggling status: ", error);
-                        alert("An error occurred while trying to " + action + " the feedback. Please try again.");
-                    });
-                } catch (error) {
-                    console.error("Error in toggleStatus: ", error);
-                    alert("An error occurred while trying to " + action + " the feedback. Please try again.");
+        // Reply Popup Handling
+        document.addEventListener("DOMContentLoaded", function () {
+            const replyPopup = document.getElementById("replyPopup");
+            const replyOverlay = document.getElementById("replyOverlay");
+            const replyForm = document.getElementById("replyForm");
+            const closeReplyPopupBtn = document.getElementById("closeReplyPopup");
+            const replyText = document.getElementById("replyText");
+            const submitReplyBtn = document.getElementById("submitReplyBtn");
+            const popupTitle = document.getElementById("popupTitle");
+            const actionTypeInput = document.getElementById("actionType");
+
+            // Open Popup
+            function openReplyPopup(feedbackId, existingReply) {
+                if (!feedbackId) {
+                    console.error("Không tìm thấy ID feedback.");
+                    alert("ID feedback không hợp lệ!");
+                    return;
                 }
+
+                document.getElementById("feedbackId").value = feedbackId;
+
+                // Kiểm tra nếu đã có reply
+                if (existingReply) {
+                    popupTitle.textContent = "Update Feedback Reply";
+                    replyText.value = existingReply;
+                    actionTypeInput.value = "updateReply";
+                    submitReplyBtn.textContent = "Update";
+                } else {
+                    popupTitle.textContent = "Reply to Feedback";
+                    replyText.value = "";
+                    actionTypeInput.value = "reply";
+                    submitReplyBtn.textContent = "Send Reply";
+                }
+
+                replyPopup.style.display = "block";
+                replyOverlay.style.display = "block";
+
+                setTimeout(() => {
+                    replyPopup.classList.add("show");
+                    replyOverlay.classList.add("show");
+                    document.body.classList.add("no-scroll");
+                }, 10);
             }
-        }
+
+            // Close Popup
+            function closeReplyPopup() {
+                replyPopup.classList.remove("show");
+                replyOverlay.classList.remove("show");
+                document.body.classList.remove("no-scroll");
+
+                setTimeout(() => {
+                    replyPopup.style.display = "none";
+                    replyOverlay.style.display = "none";
+                    replyForm.reset();
+                }, 300);
+            }
+
+            // Attach event to Reply and Update buttons
+            document.querySelectorAll(".reply-btn, .update-btn").forEach(button => {
+                button.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const feedbackId = this.getAttribute("data-feedback-id");
+                    const existingReply = this.getAttribute("data-reply");
+                    openReplyPopup(feedbackId, existingReply);
+                });
+            });
+
+            // Close Popup Events
+            if (closeReplyPopupBtn) closeReplyPopupBtn.addEventListener("click", closeReplyPopup);
+            replyOverlay.addEventListener("click", closeReplyPopup);
+
+            // Submit Reply Form
+            replyForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const action = actionTypeInput.value;
+                const actionText = action === "reply" ? "gửi phản hồi" : "cập nhật phản hồi";
+                if (!confirm("Bạn có chắc chắn muốn " + actionText + " này?")) return;
+
+                submitReplyBtn.disabled = true;
+                submitReplyBtn.textContent = action === "reply" ? "Đang gửi..." : "Đang cập nhật...";
+
+                const feedbackId = document.getElementById("feedbackId").value;
+                const replyContent = replyText.value.trim();
+
+                if (!replyContent) {
+                    alert("Vui lòng nhập nội dung phản hồi!");
+                    submitReplyBtn.disabled = false;
+                    submitReplyBtn.textContent = action === "reply" ? "Send Reply" : "Update";
+                    return;
+                }
+
+                fetch("${pageContext.request.contextPath}/feedbacklist", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: "feedback_id=" + feedbackId + "&action=" + action + "&reply=" + encodeURIComponent(replyContent)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    // Phân tích chuỗi phản hồi
+                    const params = new URLSearchParams(data);
+                    const success = params.get("success") === "true";
+                    const message = params.get("message");
+
+                    if (success) {
+                        alert("Phản hồi đã được " + (action === "reply" ? "gửi" : "cập nhật") + " thành công!");
+                        closeReplyPopup();
+                        location.reload();
+                    } else {
+                        alert((action === "reply" ? "Gửi" : "Cập nhật") + " phản hồi thất bại: " + (message || "Lỗi không xác định"));
+                    }
+                })
+                .catch(error => {
+                    console.error("Lỗi khi " + actionText + ":", error);
+                    alert((action === "reply" ? "Gửi" : "Cập nhật") + " phản hồi thất bại: " + error.message);
+                })
+                .finally(() => {
+                    submitReplyBtn.disabled = false;
+                    submitReplyBtn.textContent = action === "reply" ? "Send Reply" : "Update";
+                });
+            });
+        });
     </script>
 </body>
 

@@ -1,13 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
+
 import java.sql.Date;
-/**
- *
- * @author FPTSHOP
- */
+
 public class Feedback {
     private int id;
     private Date date;
@@ -16,6 +10,21 @@ public class Feedback {
     private String img;
     private Reservation reservation;
     private int status;
+    private String reply;
+
+    public Feedback() {
+    }
+
+    public Feedback(int id, Date date, String rating, String comment, String img, Reservation reservation, int status, String reply) {
+        this.id = id;
+        this.date = date;
+        this.rating = rating;
+        this.comment = comment;
+        this.img = img;
+        this.reservation = reservation;
+        this.status = status;
+        this.reply = reply;
+    }
 
     public int getId() {
         return id;
@@ -24,13 +33,7 @@ public class Feedback {
     public void setId(int id) {
         this.id = id;
     }
-    public int getStatus() {
-        return status;
-    }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
     public Date getDate() {
         return date;
     }
@@ -54,8 +57,8 @@ public class Feedback {
     public void setComment(String comment) {
         this.comment = comment;
     }
-    
-      public String getImg() {
+
+    public String getImg() {
         return img;
     }
 
@@ -71,16 +74,19 @@ public class Feedback {
         this.reservation = reservation;
     }
 
-    public Feedback(int id, Date date, String rating, String comment, String img  , Reservation reservation ,int status) {
-        this.id = id;
-        this.date = date;
-        this.rating = rating;
-        this.comment = comment;
-        this.img = img;  
-        this.reservation = reservation;
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Feedback() {
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
     }
 }
