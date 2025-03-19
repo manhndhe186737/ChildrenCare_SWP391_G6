@@ -29,11 +29,15 @@ public class ServiceList extends HttpServlet {
 
         String searchQuery = request.getParameter("search") != null ? request.getParameter("search").trim() : "";
         String[] selectedCategories = request.getParameterValues("category");
-        String[] selectedPriceRanges = request.getParameterValues("priceRange");
+        String minPrice = request.getParameter("minPrice");
+        String maxPrice = request.getParameter("maxPrice");
+
+        double min = minPrice != null && !minPrice.isEmpty() ? Double.parseDouble(minPrice) : 0;
+        double max = maxPrice != null && !maxPrice.isEmpty() ? Double.parseDouble(maxPrice) : Double.MAX_VALUE;
 
         ServiceDBContext serviceDB = new ServiceDBContext();
-        ArrayList<Service> services = serviceDB.getFilteredServices(page, PAGE_SIZE, searchQuery, selectedCategories, selectedPriceRanges);
-        int totalServices = serviceDB.getTotalFilteredServices(searchQuery, selectedCategories, selectedPriceRanges);
+        ArrayList<Service> services = serviceDB.getFilteredServices(page, PAGE_SIZE, searchQuery, selectedCategories, min, max);
+        int totalServices = serviceDB.getTotalFilteredServices(searchQuery, selectedCategories, min, max);
         int totalPages = (int) Math.ceil((double) totalServices / PAGE_SIZE);
 
         ServiceCategoryDBContext categoryDB = new ServiceCategoryDBContext();
@@ -45,7 +49,8 @@ public class ServiceList extends HttpServlet {
         request.setAttribute("categories", categories);
         request.setAttribute("searchQuery", searchQuery);
         request.setAttribute("selectedCategories", selectedCategories);
-        request.setAttribute("selectedPriceRanges", selectedPriceRanges);
+        request.setAttribute("minPrice", minPrice);
+        request.setAttribute("maxPrice", maxPrice);
 
         request.getRequestDispatcher("c/services.jsp").forward(request, response);
     }

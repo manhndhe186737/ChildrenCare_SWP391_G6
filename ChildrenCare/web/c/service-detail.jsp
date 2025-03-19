@@ -328,6 +328,42 @@
             </div><!--end container-->
         </section>
     </div>
+<!-- Feedbacks for this service -->
+<section class="section mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h5 class="mb-0">Customer Feedbacks:</h5>
+            </div><!--end col-->
+        </div><!--end row-->
+
+        <div class="row">
+            <div class="col-lg-12 mt-4 pt-2">
+                <!-- Loop through feedbacks -->
+                <c:forEach var="feedback" items="${feedbacks}">
+                    <div class="card border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="h6">${feedback.reservation.customer.fullname}</h5>
+                            <ul class="list-unstyled text-warning">
+                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                            </ul>
+                            <p>${feedback.comment}</p>
+                        </div>
+                    </div>
+                </c:forEach>
+
+                <!-- No feedback available -->
+                <c:if test="${empty feedbacks}">
+                    <p class="text-muted">No feedbacks yet. Be the first to leave a comment!(Must book this service to feedback)</p>
+                </c:if>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section>
 
     <section class="section">
         <div class="container mt-100 mt-60">

@@ -80,7 +80,7 @@ public ArrayList<Service> getServicesByCategoryId(int categoryId) {
     return services;
 }
 
-public ArrayList<Service> getFilteredServices(int page, int pageSize, String searchQuery, String[] selectedCategories, String[] selectedPriceRanges) {
+public ArrayList<Service> getFilteredServices(int page, int pageSize, String searchQuery, String[] selectedCategories, double minPrice, double maxPrice) {
     ArrayList<Service> services = new ArrayList<>();
     try {
         String sql = "SELECT s.service_id, s.name, s.description, s.price, c.category_id, s.img, c.name AS categoryname "
@@ -91,16 +91,8 @@ public ArrayList<Service> getFilteredServices(int page, int pageSize, String sea
             sql += "AND c.category_id IN (" + String.join(",", Collections.nCopies(selectedCategories.length, "?")) + ") ";
         }
 
-        if (selectedPriceRanges != null && selectedPriceRanges.length > 0) {
-            sql += "AND (";
-            for (int i = 0; i < selectedPriceRanges.length; i++) {
-                sql += "s.price BETWEEN ? AND ? ";
-                if (i < selectedPriceRanges.length - 1) {
-                    sql += "OR ";
-                }
-            }
-            sql += ") ";
-        }
+        // Thêm phần lọc theo giá
+        sql += "AND s.price BETWEEN ? AND ? ";
 
         sql += "LIMIT ? OFFSET ?";
 
@@ -114,13 +106,9 @@ public ArrayList<Service> getFilteredServices(int page, int pageSize, String sea
             }
         }
 
-        if (selectedPriceRanges != null) {
-            for (String priceRange : selectedPriceRanges) {
-                String[] range = priceRange.split("-");
-                stm.setDouble(index++, Double.parseDouble(range[0]));
-                stm.setDouble(index++, Double.parseDouble(range[1]));
-            }
-        }
+        // Thiết lập giá lọc
+        stm.setDouble(index++, minPrice);
+        stm.setDouble(index++, maxPrice);
 
         stm.setInt(index++, pageSize);
         stm.setInt(index, (page - 1) * pageSize);
@@ -146,7 +134,7 @@ public ArrayList<Service> getFilteredServices(int page, int pageSize, String sea
     return services;
 }
 
-public int getTotalFilteredServices(String searchQuery, String[] selectedCategories, String[] selectedPriceRanges) {
+public int getTotalFilteredServices(String searchQuery, String[] selectedCategories, double minPrice, double maxPrice) {
     try {
         String sql = "SELECT COUNT(*) AS total "
                    + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
@@ -156,16 +144,8 @@ public int getTotalFilteredServices(String searchQuery, String[] selectedCategor
             sql += "AND c.category_id IN (" + String.join(",", Collections.nCopies(selectedCategories.length, "?")) + ") ";
         }
 
-        if (selectedPriceRanges != null && selectedPriceRanges.length > 0) {
-            sql += "AND (";
-            for (int i = 0; i < selectedPriceRanges.length; i++) {
-                sql += "s.price BETWEEN ? AND ? ";
-                if (i < selectedPriceRanges.length - 1) {
-                    sql += "OR ";
-                }
-            }
-            sql += ") ";
-        }
+        // Thêm phần lọc theo giá
+        sql += "AND s.price BETWEEN ? AND ? ";
 
         PreparedStatement stm = connection.prepareStatement(sql);
         stm.setString(1, "%" + searchQuery + "%");
@@ -177,13 +157,9 @@ public int getTotalFilteredServices(String searchQuery, String[] selectedCategor
             }
         }
 
-        if (selectedPriceRanges != null) {
-            for (String priceRange : selectedPriceRanges) {
-                String[] range = priceRange.split("-");
-                stm.setDouble(index++, Double.parseDouble(range[0]));
-                stm.setDouble(index++, Double.parseDouble(range[1]));
-            }
-        }
+        // Thiết lập giá lọc
+        stm.setDouble(index++, minPrice);
+        stm.setDouble(index++, maxPrice);
 
         ResultSet rs = stm.executeQuery();
         if (rs.next()) {
@@ -254,24 +230,7 @@ public int getTotalFilteredServices(String searchQuery, String[] selectedCategor
         }
         return service;
     }
-    public static void main(String[] args) {
-    ServiceDBContext serviceDBContext = new ServiceDBContext();
-
-    // Test với các tham số (page: 1, pageSize: 6, searchQuery: null, selectedCategories: null, selectedPriceRanges: null)
-    ArrayList<Service> services = serviceDBContext.getFilteredServices(1, 6, "", null, null);
-
-    // In ra danh sách dịch vụ
-    if (services.isEmpty()) {
-        System.out.println("Không có dịch vụ nào.");
-    } else {
-        for (Service service : services) {
-            System.out.println("Service ID: " + service.getId() +
-                               ", Name: " + service.getName() +
-                               ", Description: " + service.getDescription() +
-                               ", Price: " + service.getPrice() +
-                               ", Category: " + service.getCategory().getCategoryname());
-        }
-    }
+   
 }
 
-}
+
