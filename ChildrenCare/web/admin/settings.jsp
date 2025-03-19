@@ -273,69 +273,7 @@
                     </div>
                 </div>
 
-        <div class="container mt-4">
-            <h2>Settings</h2>
-
-
-            <div class="d-flex justify-content-between mb-3">
-                <form action="settings" method="GET" class="d-flex">
-                    <!-- Search by Name -->
-                    <input type="text" name="name" class="form-control me-2" placeholder="Search by Name" value="${param.name}">
-
-                    <!-- Filter by Status -->
-                    <select name="status" class="form-select me-2">
-                        <option value="">All Status</option>
-                        <option value="true" ${param.status == 'true' ? 'selected' : ''}>Active</option>
-                        <option value="false" ${param.status == 'false' ? 'selected' : ''}>Inactive</option>
-                    </select>
-
-                    <!-- Submit Button -->
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </form>
-                <!-- Add New Category Button -->
-                <a href="#" class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                    <i class="bi bi-plus-circle"></i> Add New Category
-                </a>
-            </div>
-
-
-            <!-- Add Category Modal -->
-            <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary text-white">
-                            <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="settings" method="POST">
-                                <input type="hidden" name="action" value="add">
-                                <div class="form-group mb-3">
-                                    <label for="categoryName">Category Name</label>
-                                    <input type="text" class="form-control" name="name" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="categoryStatus">Status</label>
-                                    <div class="toggle-wrapper">
-                                        <label class="toggle">
-                                            <input type="checkbox" name="status" class="form-check-input">
-                                            <span class="toggle-slider"></span>
-                                        </label>
-                                        <span class="toggle-label">Active</span>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="categoryDescription">Description</label>
-                                    <textarea class="form-control" name="description"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Add Category</button>
-                            </form>
-
-
-                        </div>
-                    </div>
-                </div>                    
-                <!-- Navbar End -->
+       
                  <div class="container-fluid">
                     <div class="layout-specing">
                     <h2>Settings</h2>
