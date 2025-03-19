@@ -623,8 +623,9 @@
 
                                 <div class="d-flex justify-content-between">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="submit" class="btn btn-primary ms-2">Save Changes</button>
                                 </div>
+
                             </form>
                         </div>
                     </div>
