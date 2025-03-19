@@ -8,7 +8,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet("/settings")
+@WebServlet("/admin/settings")
 public class Settings extends HttpServlet {
 
     private ServiceCategoryDBContext categoryDB = new ServiceCategoryDBContext();
@@ -32,9 +32,9 @@ public class Settings extends HttpServlet {
             statusFilter = Boolean.parseBoolean(statusParam);
         }
 
-        ArrayList<ServiceCategory> categories = categoryDB.getCategoriesWithFilterAndPagination(nameFilter, statusFilter, page, 8);
+        ArrayList<ServiceCategory> categories = categoryDB.getCategoriesWithFilterAndPagination(nameFilter, statusFilter, page, 10);
         int totalCategories = categoryDB.getTotalCategories(nameFilter, statusFilter);
-        int totalPages = (int) Math.ceil(totalCategories / 8.0);
+        int totalPages = (int) Math.ceil(totalCategories / 10.0);
 
         request.setAttribute("categories", categories);
         request.setAttribute("totalPages", totalPages);
@@ -42,7 +42,7 @@ public class Settings extends HttpServlet {
         request.setAttribute("nameFilter", nameFilter);  
         request.setAttribute("statusFilter", statusFilter);  
 
-        request.getRequestDispatcher("/admin/settings.jsp").forward(request, response);
+        request.getRequestDispatcher("settings.jsp").forward(request, response);
     }
 
    @Override
@@ -60,7 +60,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             categoryDB.updateCategory(category);
 
             request.getSession().setAttribute("message", "Category updated successfully!");
-            response.sendRedirect(request.getContextPath() + "/settings?id=" + id);
+            response.sendRedirect(request.getContextPath() + "settings?id=" + id);
         } else if ("add".equals(action)) {
             String name = request.getParameter("name");
             String description = request.getParameter("description");
@@ -70,7 +70,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             categoryDB.addCategory(category);
 
             request.getSession().setAttribute("message", "Category added successfully!");
-            response.sendRedirect(request.getContextPath() + "/settings");
+            response.sendRedirect(request.getContextPath() + "settings");
         } else if ("updateStatus".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             boolean status = Boolean.parseBoolean(request.getParameter("status"));

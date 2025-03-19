@@ -10,7 +10,9 @@ public class ServiceCategoryDBContext extends DBContext {
     public ArrayList<ServiceCategory> getAllCategoriesWithServices() {
         ArrayList<ServiceCategory> categories = new ArrayList<>();
         try {
-            String sql = "SELECT category_id, name, status, description FROM servicecategories";
+            String sql = "SELECT category_id, name, status, description FROM servicecategories "
+           + "WHERE status = 1";
+
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             ServiceDBContext serviceDB = new ServiceDBContext();
