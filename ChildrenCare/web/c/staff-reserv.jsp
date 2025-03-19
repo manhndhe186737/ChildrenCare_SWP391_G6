@@ -195,10 +195,10 @@
                                 <li class="has-submenu parent-menu-item">
                                     <c:if test="${sessionScope.role.contains('Staffs')}">
                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
-                                    
-                                    
-                                    </c:if>
-                                
+
+
+                                </c:if>
+
                             </ul>
                         </li>
 
@@ -325,17 +325,23 @@
                                                               </span>
                                                         </td>
                                                         <td class="text-end p-3">
-                                                            <a href="#" class="btn btn-icon btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment${appointment.reservId}">
-                                                                <i class="uil uil-eye"></i>
-                                                            </a>
-                                                            <a href="#" class="btn btn-icon btn-soft-success accept-btn" 
-                                                               data-id="${appointment.reservId}" data-bs-toggle="modal" data-bs-target="#acceptappointment">
-                                                                <i class="uil uil-check-circle"></i>
-                                                            </a>
-                                                            <a href="#" class="btn btn-icon btn-soft-danger" data-bs-toggle="modal" data-bs-target="#cancelappointment">
-                                                                <i class="uil uil-times-circle"></i>
-                                                            </a>
+                                                            <c:if test="${appointment.status == 'Scheduled'}">
+                                                                <div class="d-inline-block">
+                                                                    <form id="confirmForm" method="POST" action="AcceptReserv">
+                                                                        <input type="hidden" name="reservId" value="${appointment.reservId}">
+                                                                        <button type="button" class="btn btn-icon btn-soft-success accept-btn" id="confirmBtn">
+                                                                            <i class="uil uil-check-circle"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </c:if>
+                                                            <div class="d-inline-block">
+                                                                <a href="#" class="btn btn-icon btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewappointment${appointment.reservId}">
+                                                                    <i class="uil uil-eye"></i>
+                                                                </a>
+                                                            </div>
                                                         </td>
+
                                                     </tr>
                                                 </c:forEach>
 
@@ -690,109 +696,150 @@
             <script src="../assets/js/feather.min.js"></script>
             <!-- Main Js -->
             <script src="../assets/js/app.js"></script>
+            <!-- Thêm SweetAlert2 CDN -->
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            
+        <script>
+                                        // Lấy thông báo và loại thông báo từ session
+                                        var alertMessage = '<%= session.getAttribute("success") != null ? session.getAttribute("success") : "" %>';
+                                        var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "success" %>'; // Lấy alertType nếu có, mặc định là "error"
+
+                                        // Kiểm tra nếu có thông báo thì hiển thị Swal.fire
+                                        if (alertMessage.trim() !== "") {
+                                            Swal.fire({
+                                                icon: alertType, // success, error, warning
+                                                title: alertMessage,
+                                                showConfirmButton: false,
+                                                timer: 3000  // Thời gian hiển thị thông báo là 3 giây
+                                            });
+                                            // Xóa thông báo khỏi session sau khi hiển thị
+            <%
+            session.removeAttribute("success");
+            session.removeAttribute("alertType");
+            %>
+                                        }
+        </script>
+
             <script>
-                                            let sortOrder = {}; // Lưu trạng thái sắp xếp của từng cột
-
-                                            function sortTable(colIndex) {
-                                                let table = document.getElementById("appointmentTable");
-                                                let tbody = table.getElementsByTagName("tbody")[0];
-                                                let rows = Array.from(tbody.getElementsByTagName("tr"));
-
-                                                // Kiểm tra trạng thái hiện tại
-                                                sortOrder[colIndex] = !sortOrder[colIndex];
-
-                                                rows.sort((a, b) => {
-                                                    let aText = a.getElementsByTagName("td")[colIndex].textContent.trim();
-                                                    let bText = b.getElementsByTagName("td")[colIndex].textContent.trim();
-
-                                                    // Xử lý kiểu dữ liệu (số, ngày, chuỗi)
-                                                    if (!isNaN(aText) && !isNaN(bText)) { // Nếu là số
-                                                        return sortOrder[colIndex] ? aText - bText : bText - aText;
-                                                    } else if (Date.parse(aText) && Date.parse(bText)) { // Nếu là ngày
-                                                        return sortOrder[colIndex] ? new Date(aText) - new Date(bText) : new Date(bText) - new Date(aText);
-                                                    } else { // Nếu là chuỗi
-                                                        return sortOrder[colIndex] ? aText.localeCompare(bText) : bText.localeCompare(aText);
-                                                    }
-                                                });
-
-                                                // Cập nhật lại bảng
-                                                tbody.innerHTML = "";
-                                                rows.forEach(row => tbody.appendChild(row));
-
-                                                // Cập nhật icon mũi tên
-                                                updateSortIcons(colIndex);
-                                            }
-
-                                            function updateSortIcons(colIndex) {
-                                                let headers = document.querySelectorAll(".sortable i");
-                                                headers.forEach((icon, index) => {
-                                                    if (index === colIndex) {
-                                                        icon.className = sortOrder[colIndex] ? "uil uil-arrow-up" : "uil uil-arrow-down";
-                                                    } else {
-                                                        icon.className = "uil uil-sort";
-                                                    }
-                                                });
-                                            }
-
-                                            /////
-                                            document.addEventListener("DOMContentLoaded", function () {
-                                                let selectedId = null;
-
-                                                // Khi click vào nút Accept, lưu ID của appointment
-                                                document.querySelectorAll(".accept-btn").forEach(button => {
-                                                    button.addEventListener("click", function () {
-                                                        selectedId = this.getAttribute("data-id");
-                                                        document.querySelector(".confirm-accept").setAttribute("data-id", selectedId);
-                                                    });
-                                                });
-
-                                                // Khi xác nhận Accept
-                                                document.querySelector(".confirm-accept").addEventListener("click", function () {
-                                                    let appointmentId = this.getAttribute("data-id");
-
-                                                    if (appointmentId) {
-                                                        fetch("/updateAppointment", {
-                                                            method: "POST",
-                                                            headers: {"Content-Type": "application/json"},
-                                                            body: JSON.stringify({
-                                                                reservId: appointmentId,
-                                                                status: "Accepted",
-                                                                payment: "Completed"
-                                                            })
-                                                        })
-                                                                .then(response => response.json())
-                                                                .then(data => {
-                                                                    if (data.success) {
-                                                                        // Cập nhật trực tiếp trên giao diện
-                                                                        let row = document.querySelector(`tr[data-id="${appointmentId}"]`);
-                                                                        row.querySelector(".status-cell").textContent = "Accepted";
-                                                                        row.querySelector(".payment-cell").textContent = "Completed";
-
-                                                                        // Ẩn modal
-                                                                        let modal = new bootstrap.Modal(document.getElementById("acceptappointment"));
-                                                                        modal.hide();
-                                                                    } else {
-                                                                        alert("Failed to update appointment.");
-                                                                    }
-                                                                })
-                                                                .catch(error => console.error("Error:", error));
+                                            document.getElementById('confirmBtn').addEventListener('click', function () {
+                                                // Hiển thị SweetAlert xác nhận
+                                                Swal.fire({
+                                                    title: 'Confirm complete this reservation?',
+                                                    icon: 'warning',
+                                                    showCancelButton: true,
+                                                    confirmButtonText: 'Yes',
+                                                    cancelButtonText: 'No'
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        // Nếu người dùng chọn "Yes", submit form
+                                                        document.getElementById('confirmForm').submit();
                                                     }
                                                 });
                                             });
+            </script>
+            <script>
+                let sortOrder = {}; // Lưu trạng thái sắp xếp của từng cột
 
-                                            document.addEventListener("DOMContentLoaded", function () {
-                                                // Lấy tất cả nút Accept
-                                                let acceptButtons = document.querySelectorAll(".accept-btn");
+                function sortTable(colIndex) {
+                    let table = document.getElementById("appointmentTable");
+                    let tbody = table.getElementsByTagName("tbody")[0];
+                    let rows = Array.from(tbody.getElementsByTagName("tr"));
 
-                                                acceptButtons.forEach(button => {
-                                                    button.addEventListener("click", function () {
-                                                        let reservId = this.getAttribute("data-id"); // Lấy reservId từ data-id
+                    // Kiểm tra trạng thái hiện tại
+                    sortOrder[colIndex] = !sortOrder[colIndex];
 
-                                                        // Gán giá trị này vào input ẩn trong form
-                                                        document.querySelector("input[name='rsvid']").value = reservId;
-                                                    });
-                                                });
-                                            });
+                    rows.sort((a, b) => {
+                        let aText = a.getElementsByTagName("td")[colIndex].textContent.trim();
+                        let bText = b.getElementsByTagName("td")[colIndex].textContent.trim();
+
+                        // Xử lý kiểu dữ liệu (số, ngày, chuỗi)
+                        if (!isNaN(aText) && !isNaN(bText)) { // Nếu là số
+                            return sortOrder[colIndex] ? aText - bText : bText - aText;
+                        } else if (Date.parse(aText) && Date.parse(bText)) { // Nếu là ngày
+                            return sortOrder[colIndex] ? new Date(aText) - new Date(bText) : new Date(bText) - new Date(aText);
+                        } else { // Nếu là chuỗi
+                            return sortOrder[colIndex] ? aText.localeCompare(bText) : bText.localeCompare(aText);
+                        }
+                    });
+
+                    // Cập nhật lại bảng
+                    tbody.innerHTML = "";
+                    rows.forEach(row => tbody.appendChild(row));
+
+                    // Cập nhật icon mũi tên
+                    updateSortIcons(colIndex);
+                }
+
+                function updateSortIcons(colIndex) {
+                    let headers = document.querySelectorAll(".sortable i");
+                    headers.forEach((icon, index) => {
+                        if (index === colIndex) {
+                            icon.className = sortOrder[colIndex] ? "uil uil-arrow-up" : "uil uil-arrow-down";
+                        } else {
+                            icon.className = "uil uil-sort";
+                        }
+                    });
+                }
+
+                /////
+                document.addEventListener("DOMContentLoaded", function () {
+                    let selectedId = null;
+
+                    // Khi click vào nút Accept, lưu ID của appointment
+                    document.querySelectorAll(".accept-btn").forEach(button => {
+                        button.addEventListener("click", function () {
+                            selectedId = this.getAttribute("data-id");
+                            document.querySelector(".confirm-accept").setAttribute("data-id", selectedId);
+                        });
+                    });
+
+                    // Khi xác nhận Accept
+                    document.querySelector(".confirm-accept").addEventListener("click", function () {
+                        let appointmentId = this.getAttribute("data-id");
+
+                        if (appointmentId) {
+                            fetch("/updateAppointment", {
+                                method: "POST",
+                                headers: {"Content-Type": "application/json"},
+                                body: JSON.stringify({
+                                    reservId: appointmentId,
+                                    status: "Accepted",
+                                    payment: "Completed"
+                                })
+                            })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            // Cập nhật trực tiếp trên giao diện
+                                            let row = document.querySelector(`tr[data-id="${appointmentId}"]`);
+                                            row.querySelector(".status-cell").textContent = "Accepted";
+                                            row.querySelector(".payment-cell").textContent = "Completed";
+
+                                            // Ẩn modal
+                                            let modal = new bootstrap.Modal(document.getElementById("acceptappointment"));
+                                            modal.hide();
+                                        } else {
+                                            alert("Failed to update appointment.");
+                                        }
+                                    })
+                                    .catch(error => console.error("Error:", error));
+                        }
+                    });
+                });
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Lấy tất cả nút Accept
+                    let acceptButtons = document.querySelectorAll(".accept-btn");
+
+                    acceptButtons.forEach(button => {
+                        button.addEventListener("click", function () {
+                            let reservId = this.getAttribute("data-id"); // Lấy reservId từ data-id
+
+                            // Gán giá trị này vào input ẩn trong form
+                            document.querySelector("input[name='rsvid']").value = reservId;
+                        });
+                    });
+                });
             </script>
         </body>
 

@@ -300,6 +300,50 @@ public class StaffDBContext extends DBContext {
         }
         return -1;
     }
+    
+    public int registerStaffWithProfile(User user, String email, String password) {
+    String sqlUser = "INSERT INTO users (fullname, address, dob, phone, avatar, is_verified, email, password, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    String sqlUserRole = "INSERT INTO userroles (role_id, email) VALUES (?, ?)";
+    String sqlStaffProfile = "INSERT INTO staffprofiles (staff_id) VALUES (?)"; // Lệnh INSERT vào bảng staffprofiles
+
+    try {
+        // Thêm user vào bảng users
+        PreparedStatement psUser = connection.prepareStatement(sqlUser, Statement.RETURN_GENERATED_KEYS);
+        psUser.setString(1, user.getFullname());
+        psUser.setString(2, user.getAddress());
+        psUser.setDate(3, new java.sql.Date(user.getDob().getTime()));
+        psUser.setString(4, user.getPhone());
+        psUser.setString(5, "uploads/default.jpg");
+        psUser.setBoolean(6, true);  // isActive = true
+        psUser.setString(7, email);
+        psUser.setString(8, password);
+        psUser.setBoolean(9, true);
+        psUser.executeUpdate();
+
+        // Lấy user_id vừa tạo
+        ResultSet rs = psUser.getGeneratedKeys();
+        if (rs.next()) {
+            int userId = rs.getInt(1);
+
+            // Thêm user vào bảng userroles với role_id mặc định là 3
+            PreparedStatement psUserRole = connection.prepareStatement(sqlUserRole);
+            psUserRole.setInt(1, 3); // Giả sử role_id mặc định là 3
+            psUserRole.setString(2, email);
+            psUserRole.executeUpdate();
+
+            // Thêm thông tin vào bảng staffprofiles
+            PreparedStatement psStaffProfile = connection.prepareStatement(sqlStaffProfile);
+            psStaffProfile.setInt(1, userId); // Sử dụng user_id để insert vào staffprofiles
+            psStaffProfile.executeUpdate();
+
+            System.out.println("UserID created: " + userId);
+            return userId;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return -1;
+}
 
     public ArrayList<User> getAllStaff() {
         ArrayList<User> staffList = new ArrayList<>();

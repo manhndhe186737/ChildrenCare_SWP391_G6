@@ -4,6 +4,7 @@
  */
 package controller.manage.reservation;
 
+import controller.auth.BaseRBAC;
 import dal.ReservationDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,10 +26,10 @@ import jakarta.servlet.http.HttpSession;
 import model.Account;
 
 @WebServlet(name = "StaffReservation", urlPatterns = {"/c/staff-reserv"})
-public class StaffReservation extends HttpServlet {
+public class StaffReservation extends BaseRBAC {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account acocunt)
             throws ServletException, IOException {
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
@@ -86,7 +87,7 @@ public class StaffReservation extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedPost(HttpServletRequest req, HttpServletResponse resp, Account account)
             throws ServletException, IOException {
 
     }
@@ -100,5 +101,6 @@ public class StaffReservation extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 
 }
