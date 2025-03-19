@@ -300,50 +300,50 @@ public class StaffDBContext extends DBContext {
         }
         return -1;
     }
-    
+
     public int registerStaffWithProfile(User user, String email, String password) {
-    String sqlUser = "INSERT INTO users (fullname, address, dob, phone, avatar, is_verified, email, password, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    String sqlUserRole = "INSERT INTO userroles (role_id, email) VALUES (?, ?)";
-    String sqlStaffProfile = "INSERT INTO staffprofiles (staff_id) VALUES (?)"; // Lệnh INSERT vào bảng staffprofiles
+        String sqlUser = "INSERT INTO users (fullname, address, dob, phone, avatar, is_verified, email, password, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlUserRole = "INSERT INTO userroles (role_id, email) VALUES (?, ?)";
+        String sqlStaffProfile = "INSERT INTO staffprofiles (staff_id) VALUES (?)"; // Lệnh INSERT vào bảng staffprofiles
 
-    try {
-        // Thêm user vào bảng users
-        PreparedStatement psUser = connection.prepareStatement(sqlUser, Statement.RETURN_GENERATED_KEYS);
-        psUser.setString(1, user.getFullname());
-        psUser.setString(2, user.getAddress());
-        psUser.setDate(3, new java.sql.Date(user.getDob().getTime()));
-        psUser.setString(4, user.getPhone());
-        psUser.setString(5, "uploads/default.jpg");
-        psUser.setBoolean(6, true);  // isActive = true
-        psUser.setString(7, email);
-        psUser.setString(8, password);
-        psUser.setBoolean(9, true);
-        psUser.executeUpdate();
+        try {
+            // Thêm user vào bảng users
+            PreparedStatement psUser = connection.prepareStatement(sqlUser, Statement.RETURN_GENERATED_KEYS);
+            psUser.setString(1, user.getFullname());
+            psUser.setString(2, user.getAddress());
+            psUser.setDate(3, new java.sql.Date(user.getDob().getTime()));
+            psUser.setString(4, user.getPhone());
+            psUser.setString(5, "uploads/default.jpg");
+            psUser.setBoolean(6, true);  // isActive = true
+            psUser.setString(7, email);
+            psUser.setString(8, password);
+            psUser.setBoolean(9, true);
+            psUser.executeUpdate();
 
-        // Lấy user_id vừa tạo
-        ResultSet rs = psUser.getGeneratedKeys();
-        if (rs.next()) {
-            int userId = rs.getInt(1);
+            // Lấy user_id vừa tạo
+            ResultSet rs = psUser.getGeneratedKeys();
+            if (rs.next()) {
+                int userId = rs.getInt(1);
 
-            // Thêm user vào bảng userroles với role_id mặc định là 3
-            PreparedStatement psUserRole = connection.prepareStatement(sqlUserRole);
-            psUserRole.setInt(1, 3); // Giả sử role_id mặc định là 3
-            psUserRole.setString(2, email);
-            psUserRole.executeUpdate();
+                // Thêm user vào bảng userroles với role_id mặc định là 3
+                PreparedStatement psUserRole = connection.prepareStatement(sqlUserRole);
+                psUserRole.setInt(1, 3); // Giả sử role_id mặc định là 3
+                psUserRole.setString(2, email);
+                psUserRole.executeUpdate();
 
-            // Thêm thông tin vào bảng staffprofiles
-            PreparedStatement psStaffProfile = connection.prepareStatement(sqlStaffProfile);
-            psStaffProfile.setInt(1, userId); // Sử dụng user_id để insert vào staffprofiles
-            psStaffProfile.executeUpdate();
+                // Thêm thông tin vào bảng staffprofiles
+                PreparedStatement psStaffProfile = connection.prepareStatement(sqlStaffProfile);
+                psStaffProfile.setInt(1, userId); // Sử dụng user_id để insert vào staffprofiles
+                psStaffProfile.executeUpdate();
 
-            System.out.println("UserID created: " + userId);
-            return userId;
+                System.out.println("UserID created: " + userId);
+                return userId;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return -1;
     }
-    return -1;
-}
 
     public ArrayList<User> getAllStaff() {
         ArrayList<User> staffList = new ArrayList<>();
@@ -620,7 +620,112 @@ public class StaffDBContext extends DBContext {
         return appointmentList;
     }
 
+    public List<Appointment> getAppointmentsByFilter(int staffId, String startDate, String endDate, String searchKeyword, int page, int pageSize) {
+        List<Appointment> appointmentList = new ArrayList<>();
 
+        // Xây dựng câu lệnh SQL với các điều kiện lọc
+        StringBuilder sql = new StringBuilder("SELECT rsv.reserv_id, rsv.dateBook, rsv.user_id, rsv.status, "
+                + "rsv.service_id, rsv.starttime, rsv.endtime, rsv.customer_name, rsv.customer_address, "
+                + "p.payment_id, p.amount, p.method, p.status "
+                + "FROM reservations rsv "
+                + "JOIN payment p ON p.reserv_id = rsv.reserv_id "
+                + "WHERE rsv.staff_id = ? ");
 
+        // Nếu startDate và endDate có giá trị thì thêm vào điều kiện SQL
+        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
+            sql.append("AND rsv.dateBook BETWEEN ? AND ? ");
+        }
+
+        // Nếu searchKeyword có giá trị thì thêm vào điều kiện tìm kiếm
+        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+            sql.append("AND (rsv.customer_name LIKE ? OR rsv.customer_address LIKE ?) ");
+        }
+
+        sql.append("LIMIT ? OFFSET ?");
+
+        try (PreparedStatement stm = connection.prepareStatement(sql.toString())) {
+            stm.setInt(1, staffId);
+
+            // Thiết lập tham số cho startDate và endDate nếu có
+            int paramIndex = 2;
+            if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
+                stm.setString(paramIndex++, startDate);
+                stm.setString(paramIndex++, endDate);
+            }
+
+            // Thiết lập tham số cho searchKeyword nếu có
+            if (searchKeyword != null && !searchKeyword.isEmpty()) {
+                stm.setString(paramIndex++, "%" + searchKeyword + "%");
+                stm.setString(paramIndex++, "%" + searchKeyword + "%");
+            }
+
+            // Thiết lập tham số cho phân trang
+            stm.setInt(paramIndex++, pageSize);
+            stm.setInt(paramIndex++, (page - 1) * pageSize);
+
+            // Thực thi truy vấn và lấy kết quả
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Appointment appointment = new Appointment();
+                appointment.setReservId(rs.getInt("reserv_id"));
+                appointment.setDateBook(rs.getString("dateBook"));
+                appointment.setCustomerId(rs.getInt("user_id"));
+                appointment.setServiceId(rs.getInt("service_id"));
+                appointment.setStatus(rs.getString("status"));
+                appointment.setStartTime(rs.getString("starttime"));
+                appointment.setEndTime(rs.getString("endtime"));
+                appointment.setCustomerName(rs.getString("customer_name"));
+                appointment.setCustomerAddress(rs.getString("customer_address"));
+                appointment.setPaymentId(rs.getInt("payment_id"));
+                appointment.setAmount(rs.getDouble("amount"));
+                appointment.setPaymentMethod(rs.getString("method"));
+                appointment.setPaymentStatus(rs.getString("status"));
+
+                appointmentList.add(appointment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appointmentList;
+    }
+
+    public int getTotalAppointmentsByFilter(int staffId, String startDate, String endDate, String searchKeyword) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM reservations WHERE staff_id = ? ");
+
+        // Nếu startDate và endDate có giá trị thì thêm vào điều kiện SQL
+        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
+            sql.append("AND dateBook BETWEEN ? AND ? ");
+        }
+
+        // Nếu searchKeyword có giá trị thì thêm vào điều kiện tìm kiếm
+        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+            sql.append("AND (customer_name LIKE ? OR customer_address LIKE ?) ");
+        }
+
+        try (PreparedStatement stm = connection.prepareStatement(sql.toString())) {
+            stm.setInt(1, staffId);
+
+            // Thiết lập tham số cho startDate và endDate nếu có
+            int paramIndex = 2;
+            if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
+                stm.setString(paramIndex++, startDate);
+                stm.setString(paramIndex++, endDate);
+            }
+
+            // Thiết lập tham số cho searchKeyword nếu có
+            if (searchKeyword != null && !searchKeyword.isEmpty()) {
+                stm.setString(paramIndex++, "%" + searchKeyword + "%");
+                stm.setString(paramIndex++, "%" + searchKeyword + "%");
+            }
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
 }

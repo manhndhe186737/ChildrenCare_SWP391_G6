@@ -29,12 +29,12 @@ import model.Account;
 public class StaffReservation extends BaseRBAC {
 
     @Override
-    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account acocunt)
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
+
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String searchKeyword = request.getParameter("searchKeyword");
-
 
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("account") == null) {
@@ -42,8 +42,8 @@ public class StaffReservation extends BaseRBAC {
             return;
         }
 
-        User account = (User) session.getAttribute("user");
-        int staffId = account.getId();
+        User acc = (User) session.getAttribute("user");
+        int staffId = acc.getId();
 
         StaffDBContext staffDB = new StaffDBContext();
         ReservationDBContext rdb = new ReservationDBContext();
@@ -55,41 +55,37 @@ public class StaffReservation extends BaseRBAC {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-        // **Sử dụng phương thức lấy dữ liệu có lọc theo ngày**
-        List<Appointment> appointments;
-        int totalAppointments;
+        // Lấy danh sách cuộc hẹn từ DAO
+        List<Appointment> appointments = staffDB.getAppointmentsByFilter(staffId, startDate, endDate, searchKeyword, page, pageSize);
+        int totalAppointments = staffDB.getTotalAppointmentsByFilter(staffId, startDate, endDate, searchKeyword);
 
-        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
-            appointments = staffDB.getAppointmentsByStaffIdAndDateRange(staffId, startDate, endDate, page, pageSize);
-            totalAppointments = staffDB.getTotalAppointmentsByStaffIdAndDateRange(staffId, startDate, endDate);
-        } else {
-            appointments = staffDB.getAppointmentsByStaffId(staffId, page, pageSize);
-            totalAppointments = staffDB.getTotalAppointmentsByStaffId(staffId);
-        }
-
-        for (Appointment appointment : appointments) {
-            Service s = rdb.getServicesById(appointment.getServiceId());
-            User u = staffDB.getUserById(appointment.getCustomerId());
-
-            appointment.setService(s);
-            appointment.setCustomer(u);
-        }
-
+        // Tính toán tổng số trang
         int totalPages = (int) Math.ceil((double) totalAppointments / pageSize);
 
+        // Chuyển các thông tin cần thiết vào request để hiển thị trong JSP
         request.setAttribute("appointments", appointments);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("startDate", startDate);
         request.setAttribute("endDate", endDate);
+        request.setAttribute("searchKeyword", searchKeyword);
 
+        // Forward request đến JSP để hiển thị
         request.getRequestDispatcher("../c/staff-reserv.jsp").forward(request, response);
     }
 
     @Override
-    protected void doAuthorizedPost(HttpServletRequest req, HttpServletResponse resp, Account account)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
+        // Chuyển hướng người dùng về trang login nếu không có session
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("account") == null) {
+            response.sendRedirect("home.jsp");
+            return;
+        }
 
+        // Redirect to POST handler (doAuthorizedPost) for pagination
+        doAuthorizedPost(request, response, account);
     }
 
     /**
@@ -101,6 +97,5 @@ public class StaffReservation extends BaseRBAC {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }
