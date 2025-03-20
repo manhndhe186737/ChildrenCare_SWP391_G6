@@ -4,6 +4,7 @@
  */
 package controller.manage.service;
 
+import dal.ServiceDAO;
 import dal.ServiceDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,6 +25,7 @@ public class ServiceDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         // Lấy service_id từ request
         String serviceIdParam = request.getParameter("id");
         int serviceId = serviceIdParam != null ? Integer.parseInt(serviceIdParam) : 0;
@@ -31,6 +33,10 @@ public class ServiceDetail extends HttpServlet {
         // Lấy thông tin chi tiết của dịch vụ từ database
         ServiceDBContext serviceDB = new ServiceDBContext();
         Service service = serviceDB.getServiceById(serviceId);
+        if(!service.isActive){
+            response.sendRedirect("service-list");
+            return;
+        }
         // Kiểm tra nếu dịch vụ không tồn tại
         if (service == null) {
             response.sendRedirect("service-list");
@@ -44,8 +50,12 @@ public class ServiceDetail extends HttpServlet {
         java.util.ArrayList<Service> relatedServices = serviceDB.getServicesByCategoryId(categoryId);
         // Loại bỏ dịch vụ hiện tại nếu có trong danh sách
         relatedServices.removeIf(s -> s.getId() == service.getId());
+        
+        ServiceDAO sd = new ServiceDAO();
+        
 
         // Gửi dữ liệu đến JSP
+        request.setAttribute("feedback", sd.getServiceFeedback(serviceId));
         request.setAttribute("service", service);
         request.setAttribute("relatedServices", relatedServices);
         request.getRequestDispatcher("c/service-detail.jsp").forward(request, response);

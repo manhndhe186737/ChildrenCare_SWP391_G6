@@ -59,7 +59,7 @@ public class ServiceDBContext extends DBContext {
 public ArrayList<Service> getServicesByCategoryId(int categoryId) {
     ArrayList<Service> services = new ArrayList<>();
     try {
-        String sql = "SELECT service_id, name, description, price, img "
+        String sql = "select service_id, s.name, s.description, s.price, s.img "
                    + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
                    + "WHERE s.isActive = 1 AND c.status = 1 AND s.category_id = ?";
         PreparedStatement stm = connection.prepareStatement(sql);
@@ -228,7 +228,7 @@ public int getTotalFilteredServices(String searchQuery, String[] selectedCategor
     public Service getServiceById(int serviceId) {
         Service service = null;
         try {
-            String sql = "SELECT s.service_id, s.name, s.description, s.price,s.img, c.category_id, c.name AS categoryname "
+            String sql = "SELECT s.service_id, s.name, s.description, s.price,s.img, s.isActive, c.category_id, c.name AS categoryname "
                     + "FROM services s "
                     + "INNER JOIN servicecategories c ON s.category_id = c.category_id "
                     + "WHERE s.service_id = ?";
@@ -247,6 +247,7 @@ public int getTotalFilteredServices(String searchQuery, String[] selectedCategor
                 service.setDescription(rs.getString("description"));
                 service.setPrice(rs.getFloat("price"));
                 service.setImg(rs.getString("img"));
+                service.setIsActive(rs.getBoolean("isActive"));
                 service.setCategory(category);
             }
         } catch (SQLException e) {

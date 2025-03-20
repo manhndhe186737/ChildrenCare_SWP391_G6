@@ -31,6 +31,61 @@
             .content-section{
                 padding-top: 80px;
             }
+
+            /* Avatar container - make image round */
+            .avatar-container {
+                width: 40px;
+                height: 40px;
+                overflow: hidden;
+                border-radius: 50%;
+            }
+
+            .avatar-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            /* Image container for comment image */
+            /* Comment Date Styling */
+            .comment p.text-muted {
+                font-size: 12px; /* Giảm kích thước chữ của ngày */
+                color: #6c757d;  /* Tùy chọn thay đổi màu sắc để làm cho ngày nhạt hơn */
+            }
+
+            /* Các phần khác vẫn giữ nguyên */
+            .comment-img-container {
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+
+            .comment-img {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+
+            .d-flex {
+                display: flex;
+                align-items: center;
+            }
+
+            .ms-3 {
+                margin-left: 1rem;
+            }
+
+            .comment {
+                margin-bottom: 20px;
+            }
+
+            .reply-container {
+                background-color: #f1f1f1;
+                margin-left: 20px;
+                border-radius: 5px;
+                padding: 10px;
+            }
+
         </style>
     </head>
 
@@ -137,10 +192,10 @@
                                 <li class="has-submenu parent-menu-item">
                                     <c:if test="${sessionScope.role.contains('Staffs')}">
                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
-                                    
-                                    
-                                    </c:if>
-                                
+
+
+                                </c:if>
+
                             </ul>
                         </li>
 
@@ -377,7 +432,55 @@
         </div><!--end container-->
     </section>
 
+    <section class="comments-section mt-5">
+        <div class="container">
+            <h5 class="mb-3">Customer Comments</h5>
 
+            <!-- List of Comments -->
+            <div class="comments-list">
+                <c:forEach var="f" items="${requestScope.feedback}">
+                    <div class="comment">
+                        <div class="d-flex align-items-center mb-3">
+                            <!-- Avatar -->
+                            <div class="avatar-container">
+                                <img src="${pageContext.request.contextPath}/${f.avatar}" class="avatar-img" alt="${f.fullname}">
+                            </div>
+                            <!-- Full Name -->
+                            <h6 class="fw-bold ms-3">${f.fullname}</h6>
+                        </div>
+                        <!-- Rating Stars -->
+                        <div class="rating">
+                            <c:forEach var="i" begin="1" end="${f.rating}">
+                                <i class="fas fa-star text-warning fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
+                            </c:forEach>
+                            <c:forEach var="i" begin="${f.rating + 1}" end="5">
+                                <i class="fas fa-star text-muted fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
+                            </c:forEach>
+                        </div>
+                        <p class="text-muted">${f.date}</p>
+                        <!-- Comment Text -->
+                        <h6 class="text-muted">${f.comment}</h6>
+                        <!-- Comment Image -->
+                        <c:if test="${f.commentImg != null}">
+                            <div class="comment-img-container">
+                                <img src="${pageContext.request.contextPath}/${f.commentImg}" class="comment-img" alt="${f.fullname}">
+                            </div>
+                        </c:if>
+                        <c:if test="${f.reply ne null}">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h6 class="fw-bold ms-3">Manager Feedback</h6>
+                                    <h6 class="text-muted reply-container p-3" style="background-color: #f1f1f1; margin-left: 20px; border-radius: 5px;">
+                                        ${f.reply}
+                                    </h6>
+                                </div>
+                            </div>
+                        </c:if>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer Start -->
     <footer class="bg-footer">
@@ -554,6 +657,9 @@
     <script src="./assets/js/feather.min.js"></script>
     <!-- Main Js -->
     <script src="./assets/js/app.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 
     <script>
                                     function submitCartItem(button) {

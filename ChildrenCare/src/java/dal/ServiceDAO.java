@@ -10,7 +10,10 @@ import java.util.logging.Logger;
 import java.util.List;
 import model.Service;
 import dal.DBContext;
+import model.Feedback;
+import model.Reservation;
 import model.ServiceCategory;
+import model.ServiceFeedback;
 
 public class ServiceDAO extends DBContext {
 
@@ -236,5 +239,38 @@ public class ServiceDAO extends DBContext {
         return services;
     }
 
-
+    public ArrayList<ServiceFeedback> getServiceFeedback(int sid) {
+        ArrayList<ServiceFeedback> feeds = new ArrayList<>();
+        String sql = "select f.*, u.user_id, u.fullname, u.avatar from services s\n"
+                + "join reservations r\n"
+                + "on s.service_id = r.service_id\n"
+                + "join users u\n"
+                + "on u.user_id = r.user_id\n"
+                + "join feedbacks f\n"
+                + "on f.reserv_id = r.reserv_id\n"
+                + "where s.service_id = ? AND f.status = 1";
+        
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, sid);
+            ResultSet rs = stm.executeQuery();
+            
+            while (rs.next()) {                
+                ServiceFeedback sf = new ServiceFeedback();
+                sf.setFeedId(rs.getInt("feedback_id"));
+                sf.setDate(rs.getDate("date"));
+                sf.setRating(rs.getInt("rating"));
+                sf.setComment(rs.getString("comment"));
+                sf.setCommentImg(rs.getString("img"));
+                sf.setStatus(rs.getBoolean("status"));
+                sf.setReply(rs.getString("reply"));
+                sf.setUser_id(rs.getInt("user_id"));
+                sf.setFullname(rs.getString("fullname"));
+                sf.setAvatar(rs.getString("avatar"));
+                
+                feeds.add(sf);
+            }
+        } catch (Exception e) {
+        }
+        return feeds;
+    }
 }
