@@ -348,12 +348,15 @@
                             <h5 class="text-muted">$${service.price}</h5>
                             <!-- Có thể hiển thị đánh giá nếu có dữ liệu -->
                             <ul class="list-unstyled text-warning h5 mb-0">
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item me-2 h6 text-muted">(20 Ratting)</li>
+                                   <div class="rating">
+                            <c:forEach var="i" begin="1" end="${avgRating}">
+                                <i class="fas fa-star text-warning fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
+                            </c:forEach>
+                            <c:forEach var="i" begin="${avgRating + 1}" end="5">
+                                <i class="fas fa-star text-muted fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
+                            </c:forEach>
+                        </div>
+                                <li class="list-inline-item me-2 h6 text-muted">(${totalFeedbacks} Ratting)</li>
 
                             </ul>
 
@@ -383,42 +386,7 @@
             </div><!--end container-->
         </section>
     </div>
-<!-- Feedbacks for this service -->
-<section class="section mt-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h5 class="mb-0">Customer Feedbacks:</h5>
-            </div><!--end col-->
-        </div><!--end row-->
 
-        <div class="row">
-            <div class="col-lg-12 mt-4 pt-2">
-                <!-- Loop through feedbacks -->
-                <c:forEach var="feedback" items="${feedbacks}">
-                    <div class="card border-0 mb-3">
-                        <div class="card-body">
-                            <h5 class="h6">${feedback.reservation.customer.fullname}</h5>
-                            <ul class="list-unstyled text-warning">
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            </ul>
-                            <p>${feedback.comment}</p>
-                        </div>
-                    </div>
-                </c:forEach>
-
-                <!-- No feedback available -->
-                <c:if test="${empty feedbacks}">
-                    <p class="text-muted">No feedbacks yet. Be the first to leave a comment!(Must book this service to feedback)</p>
-                </c:if>
-            </div><!--end col-->
-        </div><!--end row-->
-    </div><!--end container-->
-</section>
 
     <section class="section">
         <div class="container mt-100 mt-60">
@@ -440,11 +408,7 @@
                                     <div class="shop-image position-relative overflow-hidden">
                                         <!-- Hiển thị hình ảnh dịch vụ liên quan -->
                                         <img src="${pageContext.request.contextPath}/${rel.img}" class="img-fluid rounded" alt="${rel.name}">
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>
+                                        
                                     </div>
                                     <div class="card-body content pt-4 p-2">
                                         <a href="service-detail?id=${rel.id}" class="text-dark product-name h6">${rel.name}</a>
