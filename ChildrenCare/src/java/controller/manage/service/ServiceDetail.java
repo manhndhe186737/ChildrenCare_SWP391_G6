@@ -13,7 +13,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Feedback;
 import model.Service;
+import model.ServiceFeedback;
 
 /**
  *
@@ -25,7 +28,7 @@ public class ServiceDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         // Lấy service_id từ request
         String serviceIdParam = request.getParameter("id");
         int serviceId = serviceIdParam != null ? Integer.parseInt(serviceIdParam) : 0;
@@ -33,7 +36,7 @@ public class ServiceDetail extends HttpServlet {
         // Lấy thông tin chi tiết của dịch vụ từ database
         ServiceDBContext serviceDB = new ServiceDBContext();
         Service service = serviceDB.getServiceById(serviceId);
-        if(!service.isActive){
+        if (!service.isActive) {
             response.sendRedirect("service-list");
             return;
         }
@@ -50,14 +53,27 @@ public class ServiceDetail extends HttpServlet {
         java.util.ArrayList<Service> relatedServices = serviceDB.getServicesByCategoryId(categoryId);
         // Loại bỏ dịch vụ hiện tại nếu có trong danh sách
         relatedServices.removeIf(s -> s.getId() == service.getId());
-        
+
         ServiceDAO sd = new ServiceDAO();
-        
+        List<ServiceFeedback> feedbacks = sd.getServiceFeedback(serviceId);
+        double avgRating = 0.0;
+        int totalFeedbacks = feedbacks.size();
+
+        if (totalFeedbacks > 0) {
+            double totalRating = 0;
+            for (ServiceFeedback feedback : feedbacks) {
+                totalRating += feedback.getRating();
+            }
+            avgRating = totalRating / totalFeedbacks; // Tính trung bình
+        }
 
         // Gửi dữ liệu đến JSP
-        request.setAttribute("feedback", sd.getServiceFeedback(serviceId));
+        request.setAttribute("feedback", feedbacks);
         request.setAttribute("service", service);
         request.setAttribute("relatedServices", relatedServices);
+        request.setAttribute("avgRating", avgRating);  
+        request.setAttribute("totalFeedbacks", totalFeedbacks);  
+
         request.getRequestDispatcher("c/service-detail.jsp").forward(request, response);
     }
 

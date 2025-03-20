@@ -348,12 +348,15 @@
                             <h5 class="text-muted">$${service.price}</h5>
                             <!-- Có thể hiển thị đánh giá nếu có dữ liệu -->
                             <ul class="list-unstyled text-warning h5 mb-0">
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                <li class="list-inline-item me-2 h6 text-muted">(20 Ratting)</li>
+                                   <div class="rating">
+                            <c:forEach var="i" begin="1" end="${avgRating}">
+                                <i class="fas fa-star text-warning fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
+                            </c:forEach>
+                            <c:forEach var="i" begin="${avgRating + 1}" end="5">
+                                <i class="fas fa-star text-muted fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
+                            </c:forEach>
+                        </div>
+                                <li class="list-inline-item me-2 h6 text-muted">(${totalFeedbacks} Ratting)</li>
 
                             </ul>
 
@@ -404,11 +407,7 @@
                                     <div class="shop-image position-relative overflow-hidden">
                                         <!-- Hiển thị hình ảnh dịch vụ liên quan -->
                                         <img src="${pageContext.request.contextPath}/${rel.img}" class="img-fluid rounded" alt="${rel.name}">
-                                        <ul class="list-unstyled shop-icons">
-                                            <li><a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i data-feather="heart" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
-                                            <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
-                                        </ul>
+                                        
                                     </div>
                                     <div class="card-body content pt-4 p-2">
                                         <a href="service-detail?id=${rel.id}" class="text-dark product-name h6">${rel.name}</a>
