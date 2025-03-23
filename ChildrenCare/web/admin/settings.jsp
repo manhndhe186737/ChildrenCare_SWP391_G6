@@ -15,33 +15,33 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
         <style>
-           
+
 
             .sidebar-wrapper {
                 position: fixed;
                 top: 0;
                 left: 0;
                 height: 100%;
-                width: 250px; 
+                width: 250px;
                 z-index: 999;
             }
 
             .page-content {
-                margin-top: 70px; 
+                margin-top: 70px;
                 min-height: calc(100vh - 80px);
                 padding: 20px;
-                background-color: #f8f9fa; 
+                background-color: #f8f9fa;
             }
 
             /* Container chính */
             .container.mt-4 {
-                margin-top: 20px; 
+                margin-top: 20px;
                 padding-bottom: 20px;
-                min-height: auto; 
+                min-height: auto;
             }
 
             footer.bg-footer {
-                position: relative; 
+                position: relative;
                 width: 100%;
                 padding: 10px 0;
                 background-color: #343a40;
@@ -139,10 +139,374 @@
             .page-wrapper .page-content .layout-specing{
                 padding-top:0px !important;
             }
+            /* Enhanced Settings Page Styling */
+
+            /* Main Content Container */
+            .container-fluid .layout-specing {
+                padding: 25px 30px;
+                background-color: #f8f9fc;
+                border-radius: 15px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.03);
+            }
+
+            /* Page Title */
+            .layout-specing h2 {
+                color: #3c4858;
+                font-weight: 700;
+                margin-bottom: 25px;
+                font-size: 24px;
+                position: relative;
+                padding-bottom: 10px;
+            }
+
+            .layout-specing h2:after {
+                content: '';
+                position: absolute;
+                width: 50px;
+                height: 3px;
+                background: #754FFE;
+                bottom: 0;
+                left: 0;
+                border-radius: 3px;
+            }
+
+            /* Search and Filter Bar */
+            .d-flex.justify-content-between.mb-3 {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+                margin-bottom: 25px !important;
+            }
+
+            .d-flex.justify-content-between.mb-3 form.d-flex {
+                flex: 1;
+                gap: 10px;
+            }
+
+            .d-flex.justify-content-between.mb-3 input.form-control,
+            .d-flex.justify-content-between.mb-3 select.form-select {
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                padding: 10px 15px;
+                transition: all 0.3s ease;
+                box-shadow: none;
+            }
+
+            .d-flex.justify-content-between.mb-3 input.form-control:focus,
+            .d-flex.justify-content-between.mb-3 select.form-select:focus {
+                border-color: #754FFE;
+                box-shadow: 0 0 0 3px rgba(117, 79, 254, 0.15);
+            }
+
+            .d-flex.justify-content-between.mb-3 .btn-primary {
+                background-color: #754FFE;
+                border-color: #754FFE;
+                border-radius: 8px;
+                font-weight: 600;
+                padding: 10px 20px;
+                transition: all 0.3s ease;
+            }
+
+            .d-flex.justify-content-between.mb-3 .btn-primary:hover {
+                background-color: #6039e5;
+                box-shadow: 0 4px 12px rgba(117, 79, 254, 0.2);
+                transform: translateY(-2px);
+            }
+
+            /* Add New Category Button */
+            .d-flex.justify-content-between.mb-3 .btn-primary.ms-3 {
+                background-color: #754FFE;
+                border-color: #754FFE;
+                padding: 10px 20px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: 600;
+                box-shadow: 0 2px 8px rgba(117, 79, 254, 0.2);
+            }
+
+            .d-flex.justify-content-between.mb-3 .btn-primary.ms-3:hover {
+                background-color: #6039e5;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(117, 79, 254, 0.3);
+            }
+
+            .d-flex.justify-content-between.mb-3 .btn-primary.ms-3:before {
+                content: "+";
+                font-size: 18px;
+                margin-right: 8px;
+                line-height: 1;
+            }
+
+            /* Categories Table */
+            .table {
+                background: white;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+                margin-bottom: 25px;
+                border: none;
+            }
+
+            .table thead.thead-dark {
+                background-color: #f8f9fa;
+            }
+
+            .table thead th {
+                font-weight: 600;
+                color: #495057;
+                text-transform: uppercase;
+                font-size: 12px;
+                letter-spacing: 0.5px;
+                padding: 15px 20px;
+                border-bottom: 2px solid #f0f0f0;
+                background-color: #f8f9fa;
+            }
+
+            .table tbody tr {
+                transition: all 0.2s ease;
+            }
+
+            .table tbody tr:hover {
+                background-color: #f8f9ff;
+            }
+
+            .table tbody td {
+                padding: 15px 20px;
+                vertical-align: middle;
+                color: #495057;
+                font-size: 14px;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            /* Status Toggle Switch */
+            .toggle {
+                position: relative;
+                display: inline-block;
+                width: 52px;
+                height: 26px;
+                margin: 0;
+            }
+
+            .toggle input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .toggle-slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #e9ecef;
+                transition: 0.4s;
+                border-radius: 34px;
+            }
+
+            .toggle-slider:before {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                left: 3px;
+                bottom: 3px;
+                background-color: white;
+                transition: 0.4s;
+                border-radius: 50%;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            input:checked + .toggle-slider {
+                background-color: #10b981;
+            }
+
+            input:checked + .toggle-slider:before {
+                transform: translateX(26px);
+            }
+
+            .toggle-slider:after {
+                content: "OFF";
+                position: absolute;
+                right: 6px;
+                bottom: 3px;
+                color: #495057;
+                font-size: 10px;
+                font-weight: 600;
+                opacity: 1;
+                transition: 0.4s;
+            }
+
+            input:checked + .toggle-slider:after {
+                content: "ON";
+                right: auto;
+                left: 6px;
+                color: white;
+                opacity: 1;
+            }
+
+            /* Action Buttons */
+            .btn-warning.btn-sm {
+                background-color: #f59e0b;
+                border-color: #f59e0b;
+                color: white;
+                border-radius: 6px;
+                padding: 6px 12px;
+                font-size: 13px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+            .btn-warning.btn-sm:hover {
+                background-color: #d97706;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+            }
+
+            .btn-warning.btn-sm i {
+                margin-right: 4px;
+            }
+
+            /* Pagination */
+            .pagination {
+                justify-content: center;
+                margin-top: 30px;
+                margin-bottom: 20px;
+            }
+
+            .pagination .page-item .page-link {
+                color: #495057;
+                background-color: white;
+                border: 1px solid #e9ecef;
+                padding: 8px 16px;
+                font-size: 14px;
+                margin: 0 3px;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+
+            .pagination .page-item .page-link:hover {
+                background-color: #f8f9fa;
+                border-color: #e9ecef;
+                color: #754FFE;
+            }
+
+            .pagination .page-item.active .page-link {
+                background-color: #754FFE;
+                border-color: #754FFE;
+                color: white;
+                box-shadow: 0 2px 5px rgba(117, 79, 254, 0.3);
+            }
+
+            /* Modal Styling */
+            .modal-content {
+                border-radius: 15px;
+                overflow: hidden;
+                border: none;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .modal-header {
+                background: linear-gradient(to right, #754FFE, #8E67FE);
+                color: white;
+                padding: 15px 20px;
+                border-bottom: none;
+            }
+
+            .modal-header h5 {
+                font-weight: 600;
+                font-size: 18px;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            .modal-body .form-group label {
+                font-weight: 600;
+                color: #495057;
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+            .modal-body .form-control,
+            .modal-body .form-select {
+                padding: 10px 15px;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+
+            .modal-body .form-control:focus,
+            .modal-body .form-select:focus {
+                border-color: #754FFE;
+                box-shadow: 0 0 0 3px rgba(117, 79, 254, 0.15);
+            }
+
+            .modal-body textarea.form-control {
+                min-height: 100px;
+            }
+
+            .modal-body .btn-primary {
+                background-color: #754FFE;
+                border-color: #754FFE;
+                font-weight: 600;
+                padding: 10px 20px;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+
+            .modal-body .btn-primary:hover {
+                background-color: #6039e5;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 10px rgba(117, 79, 254, 0.2);
+            }
+
+            /* Close button in modal */
+            .modal .btn-close,
+            .modal .close {
+                color: white;
+                opacity: 1;
+                text-shadow: none;
+            }
+
+            /* Add icon for Edit button */
+            .btn-warning.btn-sm:before {
+                content: "✏️";
+                margin-right: 5px;
+            }
+
+            /* Responsive adjustments */
+            @media (max-width: 768px) {
+                .d-flex.justify-content-between.mb-3 {
+                    flex-direction: column;
+                    gap: 15px;
+                }
+
+                .d-flex.justify-content-between.mb-3 form.d-flex {
+                    flex-direction: column;
+                    width: 100%;
+                }
+
+                .d-flex.justify-content-between.mb-3 .btn-primary.ms-3 {
+                    margin-left: 0 !important;
+                    width: 100%;
+                    justify-content: center;
+                }
+
+                .table {
+                    display: block;
+                    overflow-x: auto;
+                    white-space: nowrap;
+                }
+            }
         </style>
     </head>
     <body>
-       <!-- Loader -->
+        <!-- Loader -->
         <div id="preloader">
             <div id="status">
                 <div class="spinner">
@@ -165,7 +529,7 @@
 
                     <ul class="sidebar-menu pt-3">
                         <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                        
+
 
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
@@ -263,205 +627,204 @@
                     </div>
                 </div>
 
-       
-                 <div class="container-fluid">
+
+                <div class="container-fluid">
                     <div class="layout-specing">
-                    <h2>Settings</h2>
+                        <h2>Settings</h2>
 
 
-                    <div class="d-flex justify-content-between mb-3">
-                        <form action="settings" method="GET" class="d-flex">
-                            <!-- Search by Name -->
-                            <input type="text" name="name" class="form-control me-2" placeholder="Search by Name" value="${param.name}">
+                        <div class="d-flex justify-content-between mb-3">
+                            <form action="settings" method="GET" class="d-flex">
+                                <!-- Search by Name -->
+                                <input type="text" name="name" class="form-control me-2" placeholder="Search by Name" value="${param.name}">
 
-                            <!-- Filter by Status -->
-                            <select name="status" class="form-select me-2">
-                                <option value="">All Status</option>
-                                <option value="true" ${param.status == 'true' ? 'selected' : ''}>Active</option>
-                                <option value="false" ${param.status == 'false' ? 'selected' : ''}>Inactive</option>
-                            </select>
+                                <!-- Filter by Status -->
+                                <select name="status" class="form-select me-2">
+                                    <option value="">All Status</option>
+                                    <option value="true" ${param.status == 'true' ? 'selected' : ''}>Active</option>
+                                    <option value="false" ${param.status == 'false' ? 'selected' : ''}>Inactive</option>
+                                </select>
 
-                            <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </form>
-                        <!-- Add New Category Button -->
-                        <a href="#" class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                            <i class="bi bi-plus-circle"></i> Add New Category
-                        </a>
-                    </div>
+                                <!-- Submit Button -->
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </form>
+                            <!-- Add New Category Button -->
+                            <a href="#" class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                                <i class="bi bi-plus-circle"></i> Add New Category
+                            </a>
+                        </div>
 
 
-                    <!-- Add Category Modal -->
-                    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header bg-primary text-white">
-                                    <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="settings" method="POST">
-                                        <input type="hidden" name="action" value="add">
-                                        <div class="form-group mb-3">
-                                            <label for="categoryName">Category Name</label>
-                                            <input type="text" class="form-control" name="name" required>
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label for="categoryStatus">Status</label>
-                                            <div class="toggle-wrapper">
-                                                <label class="toggle">
-                                                    <input type="checkbox" name="status" class="form-check-input">
-                                                    <span class="toggle-slider"></span>
-                                                </label>
-                                                <span class="toggle-label">Active</span>
+                        <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="settings" method="POST" id="addCategoryForm">
+                                            <input type="hidden" name="action" value="add">
+                                            <div class="form-group mb-3">
+                                                <label for="categoryName">Category Name</label>
+                                                <input type="text" class="form-control" id="categoryName" name="name" required>
                                             </div>
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label for="categoryDescription">Description</label>
-                                            <textarea class="form-control" name="description"></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Add Category</button>
-                                    </form>
-
-
+                                            <div class="form-group mb-3">
+                                                <label for="categoryStatus">Status</label>
+                                                <div class="toggle-wrapper">
+                                                    <label class="toggle">
+                                                        <input type="checkbox" id="categoryStatus" name="status" checked class="form-check-input">
+                                                        <span class="toggle-slider"></span>
+                                                    </label>
+                                                    <span class="toggle-label">Active</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="categoryDescription">Description</label>
+                                                <textarea class="form-control" id="categoryDescription" name="description" rows="3"></textarea>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Add Category</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Edit Category Modal -->
-                    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="settings" method="POST">
-                                        <input type="hidden" name="action" value="update">
-                                        <input type="hidden" name="id" value="${categoryToEdit != null ? categoryToEdit.id : ''}">
-                                        <div class="form-group mb-3">
-                                            <label for="categoryName">Category Name</label>
-                                            <input type="text" class="form-control" name="name" value="${categoryToEdit != null ? categoryToEdit.categoryname : ''}" required>
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label for="categoryStatus">Status</label>
-                                            <div class="toggle-wrapper">
-                                                <label class="toggle">
-                                                    <input type="checkbox" name="status" ${categoryToEdit != null && categoryToEdit.status ? 'checked' : ''} class="form-check-input">
-                                                    <span class="toggle-slider"></span>
-                                                </label>
-                                                <span class="toggle-label">Active</span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label for="categoryDescription">Description</label>
-                                            <textarea class="form-control" name="description">${categoryToEdit != null ? categoryToEdit.description : ''}</textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Table for Categories -->
-                    <table class="table table-striped table-hover">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Status</th>
-                                <th>Description</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="category" items="${categories}">
-                                <tr>
-                                    <td>${category.id}</td>
-                                    <td>${category.categoryname}</td>
-                                    <td>
-                                        <label class="toggle">
-                                            <input type="checkbox" class="toggle-checkbox" data-id="${category.id}" ${category.status ? 'checked' : ''}>
-                                            <span class="toggle-slider"></span>
-                                        </label>
-                                    </td>
-                                    <td>${category.description}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryModal" 
-                                                data-id="${category.id}" data-name="${category.categoryname}" data-status="${category.status}" 
-                                                data-description="${category.description}">
-                                            <i class="bi bi-pencil-square"></i> Edit
+                        <!-- Edit Category Modal -->
+                        <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
                                         </button>
-
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                    <!-- Pagination -->
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <c:forEach var="i" begin="1" end="${totalPages}">
-                                <li class="page-item ${currentPage == i ? 'active' : ''}">
-                                    <a class="page-link" href="settings?page=${i}">${i}</a>
-                                </li>
-                            </c:forEach>
-                        </ul>
-                    </nav>
-                    </div>
-                 </div>
-                                        
-        <!-- page-wrapper -->
-
-        <!-- Offcanvas Start -->
-        <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header p-4 border-bottom">
-                <h5 id="offcanvasRightLabel" class="mb-0">
-                    <img src="../assets/images/logo-dark.png" height="24" class="light-version" alt="">
-                    <img src="../assets/images/logo-light.png" height="24" class="dark-version" alt="">
-                </h5>
-                <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
-            </div>
-            <div class="offcanvas-body p-4 px-md-5">
-                <div class="row">
-                    <div class="col-12">
-                        <!-- Style switcher -->
-                        <div id="style-switcher">
-                            <div>
-                                <ul class="text-center list-unstyled mb-0">
-                                    <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="../assets/images/layouts/light-dash-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="../assets/images/layouts/dark-dash-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
-                                    <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                    <li class="d-grid"><a href="../c/index.html" target="_blank" class="mt-4"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Landing Demos</span></a></li>
-                                </ul>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="settings" method="POST">
+                                            <input type="hidden" name="action" value="update">
+                                            <input type="hidden" name="id" value="${categoryToEdit != null ? categoryToEdit.id : ''}">
+                                            <div class="form-group mb-3">
+                                                <label for="categoryName">Category Name</label>
+                                                <input type="text" class="form-control" name="name" value="${categoryToEdit != null ? categoryToEdit.categoryname : ''}" required>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="categoryStatus">Status</label>
+                                                <div class="toggle-wrapper">
+                                                    <label class="toggle">
+                                                        <input type="checkbox" name="status" ${categoryToEdit != null && categoryToEdit.status ? 'checked' : ''} class="form-check-input">
+                                                        <span class="toggle-slider"></span>
+                                                    </label>
+                                                    <span class="toggle-label">Active</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="categoryDescription">Description</label>
+                                                <textarea class="form-control" name="description">${categoryToEdit != null ? categoryToEdit.description : ''}</textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- end Style switcher -->
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div>
 
-            <div class="offcanvas-footer p-4 border-top text-center">
-                <ul class="list-unstyled social-icon mb-0">
-                    <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
-                    <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
-                </ul><!--end icon-->
-            </div>
-        </div>
-        <!-- Offcanvas End -->
+                        <!-- Table for Categories -->
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="category" items="${categories}">
+                                    <tr>
+                                        <td>${category.id}</td>
+                                        <td>${category.categoryname}</td>
+                                        <td>
+                                            <label class="toggle">
+                                                <input type="checkbox" class="toggle-checkbox" data-id="${category.id}" ${category.status ? 'checked' : ''}>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </td>
+                                        <td>${category.description}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryModal" 
+                                                    data-id="${category.id}" data-name="${category.categoryname}" data-status="${category.status}" 
+                                                    data-description="${category.description}">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <c:forEach var="i" begin="1" end="${totalPages}">
+                                    <li class="page-item ${currentPage == i ? 'active' : ''}">
+                                        <a class="page-link" href="settings?page=${i}">${i}</a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- page-wrapper -->
+
+                <!-- Offcanvas Start -->
+                <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                    <div class="offcanvas-header p-4 border-bottom">
+                        <h5 id="offcanvasRightLabel" class="mb-0">
+                            <img src="../assets/images/logo-dark.png" height="24" class="light-version" alt="">
+                            <img src="../assets/images/logo-light.png" height="24" class="dark-version" alt="">
+                        </h5>
+                        <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+                    </div>
+                    <div class="offcanvas-body p-4 px-md-5">
+                        <div class="row">
+                            <div class="col-12">
+                                <!-- Style switcher -->
+                                <div id="style-switcher">
+                                    <div>
+                                        <ul class="text-center list-unstyled mb-0">
+                                            <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="../assets/images/layouts/light-dash-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                            <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                            <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="../assets/images/layouts/dark-dash-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                                            <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                                            <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/dark-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
+                                            <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
+                                            <li class="d-grid"><a href="../c/index.html" target="_blank" class="mt-4"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Landing Demos</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- end Style switcher -->
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div>
+
+                    <div class="offcanvas-footer p-4 border-top text-center">
+                        <ul class="list-unstyled social-icon mb-0">
+                            <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
+                            <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
+                            <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
+                            <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
+                            <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
+                            <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
+                            <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
+                        </ul><!--end icon-->
+                    </div>
+                </div>
+                <!-- Offcanvas End -->
                 <!-- Scripts -->
                 <script src="../assets/js/bootstrap.bundle.min.js"></script>
                 <script src="../assets/js/jquery.min.js"></script>
@@ -519,6 +882,32 @@
                         });
                     });
 
+                    $(document).ready(function () {
+                        // Form validation for adding new category
+                        $('#addCategoryForm').on('submit', function (event) {
+                            var categoryName = $('#categoryName').val().trim();
+
+                            if (categoryName === '') {
+                                event.preventDefault();
+                                alert('Category name cannot be empty');
+                                $('#categoryName').addClass('is-invalid').focus();
+                                return false;
+                            }
+                        });
+
+                        // Clear form when modal is shown
+                        $('#addCategoryModal').on('show.bs.modal', function () {
+                            $('#addCategoryForm')[0].reset();
+                            $('#categoryName').removeClass('is-invalid');
+                        });
+
+                        // Auto-dismiss success messages
+                        if ($('.alert-success').length > 0) {
+                            setTimeout(function () {
+                                $('.alert-success').fadeOut('slow');
+                            }, 3000);
+                        }
+                    });
                 </script>
 
                 </body>

@@ -16,6 +16,10 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.sql.Date;
+
 import model.Account;
 import model.Role;
 
@@ -30,9 +34,12 @@ public class AdminDashboard extends HttpServlet {
         try {
             String startDateStr = request.getParameter("startDate");
             String endDateStr = request.getParameter("endDate");
-            java.sql.Date startDate = startDateStr != null ? java.sql.Date.valueOf(startDateStr) : java.sql.Date.valueOf("2025-03-13"); // 7 days ago
-            java.sql.Date endDate = endDateStr != null ? java.sql.Date.valueOf(endDateStr) : java.sql.Date.valueOf("2025-03-19"); // Today
+            LocalDate today = LocalDate.now(); 
 
+            LocalDate sevenDaysAgo = today.minus(7, ChronoUnit.DAYS);
+
+            java.sql.Date startDate = startDateStr != null ? java.sql.Date.valueOf(startDateStr) : java.sql.Date.valueOf(sevenDaysAgo);
+            java.sql.Date endDate = endDateStr != null ? java.sql.Date.valueOf(endDateStr) : java.sql.Date.valueOf(today);
             int successReservations = adminDAO.getReservationCountByStatus("Completed", startDate, endDate);
             int cancelledReservations = adminDAO.getReservationCountByStatus("Cancelled", startDate, endDate);
             int submittedReservations = adminDAO.getReservationCountByStatus("Scheduled", startDate, endDate);
@@ -55,13 +62,11 @@ public class AdminDashboard extends HttpServlet {
             request.setAttribute("startDate", startDate);
             request.setAttribute("endDate", endDate);
 
-                    request.getRequestDispatcher("../admin/admin-dashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("../admin/admin-dashboard.jsp").forward(request, response);
 
         } catch (SQLException e) {
             throw new ServletException("Database error", e);
         }
     }
-
-    
 
 }

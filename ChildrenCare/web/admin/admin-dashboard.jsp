@@ -63,7 +63,7 @@
                 min-width: 200px;
             }
 
-           
+
             .layout-specing {
                 padding: 20px;
             }
@@ -80,49 +80,213 @@
                 min-height: 350px;
             }
             /* 🌟 Căn chỉnh form Filter */
-.form-inline {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    padding: 15px 0;
-    background: #f8f9fa;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
+            .form-inline {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+                padding: 15px 0;
+                background: #f8f9fa;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            }
 
-.form-inline .form-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+            .form-inline .form-group {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
 
-.form-inline label {
-    font-weight: 500;
-    color: #495057;
-}
+            .form-inline label {
+                font-weight: 500;
+                color: #495057;
+            }
 
-.form-inline input {
-    width: 160px;
-    padding: 6px 10px;
-    border-radius: 5px;
-    border: 1px solid #ced4da;
-}
+            .form-inline input {
+                width: 160px;
+                padding: 6px 10px;
+                border-radius: 5px;
+                border: 1px solid #ced4da;
+            }
 
-.form-inline .btn-primary {
-    padding: 8px 15px;
-    font-weight: 600;
-    transition: all 0.3s ease-in-out;
-}
+            .form-inline .btn-primary {
+                padding: 8px 15px;
+                font-weight: 600;
+                transition: all 0.3s ease-in-out;
+            }
 
-.form-inline .btn-primary:hover {
-    background-color: #007bff;
-    color: #fff;
-    transform: scale(1.05);
-}
+            .form-inline .btn-primary:hover {
+                background-color: #007bff;
+                color: #fff;
+                transform: scale(1.05);
+            }
+            .card.border-0.shadow.rounded {
+                border-radius: 15px !important;
+                overflow: hidden;
+                transition: all 0.3s ease-in-out;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05) !important;
+                margin-bottom: 25px;
+                border: none !important;
+            }
 
+            .card.border-0.shadow.rounded:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+            }
+
+            /* Card header styling */
+            .card .p-4.border-bottom {
+                background: linear-gradient(to right, #f8f9ff, #ffffff);
+                border-bottom: 1px solid #f0f0f0 !important;
+                position: relative;
+            }
+
+            .card .p-4.border-bottom h6 {
+                font-size: 17px;
+                font-weight: 700;
+                color: #343a40;
+                margin-bottom: 0;
+                position: relative;
+                padding-left: 10px;
+            }
+
+            .card .p-4.border-bottom h6::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 4px;
+                background-color: #754FFE;
+                border-radius: 10px;
+            }
+
+            /* Table container */
+            .card .p-4:not(.border-bottom) {
+                padding: 0 !important;
+            }
+
+            /* Table styling */
+            .table {
+                width: 100%;
+                margin-bottom: 0;
+                border-collapse: separate;
+                border-spacing: 0;
+            }
+
+            .table thead th {
+                background-color: #f8f9fa;
+                font-weight: 600;
+                font-size: 14px;
+                color: #495057;
+                padding: 16px 20px;
+                border-top: none;
+                border-bottom: 2px solid #e9ecef !important;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                font-size: 12px;
+            }
+
+            .table tbody td {
+                padding: 16px 20px;
+                vertical-align: middle;
+                font-size: 14px;
+                color: #495057;
+                border-color: #f0f0f0;
+                font-weight: 500;
+            }
+
+            /* Zebra-stripe effect */
+            .table-striped tbody tr:nth-of-type(odd) {
+                background-color: rgba(247, 250, 255, 0.5);
+            }
+
+            .table tbody tr:hover {
+                background-color: rgba(117, 79, 254, 0.05);
+            }
+
+            /* Last column alignment for revenue */
+            .revenue-table th:last-child,
+            .revenue-table td:last-child {
+                text-align: right;
+            }
+
+            /* Revenue value styling */
+            .revenue-value {
+                font-weight: 700;
+                color: #28a745;
+                font-size: 15px;
+            }
+
+            /* Service name styling */
+            .service-name {
+                display: flex;
+                align-items: center;
+                font-weight: 500;
+                color: #343a40;
+            }
+
+            .service-name i {
+                margin-right: 10px;
+                color: #754FFE;
+                font-size: 18px;
+            }
+
+            /* Star rating styling */
+            .star-rating {
+                display: flex;
+                align-items: center;
+            }
+
+            .star-rating .stars {
+                display: inline-flex;
+                margin-right: 8px;
+            }
+
+            .star-rating .stars i {
+                color: #ffc107;
+                font-size: 14px;
+                margin-right: 2px;
+            }
+
+            .star-rating .rating-value {
+                font-weight: 600;
+                background-color: #f8f9fa;
+                padding: 3px 10px;
+                border-radius: 20px;
+                font-size: 13px;
+            }
+
+            /* Rating colors based on value */
+            .rating-excellent {
+                color: #28a745;
+            }
+
+            .rating-good {
+                color: #17a2b8;
+            }
+
+            .rating-average {
+                color: #fd7e14;
+            }
+
+            .rating-poor {
+                color: #dc3545;
+            }
+
+            /* Responsive adjustments */
+            @media (max-width: 767px) {
+                .table thead th,
+                .table tbody td {
+                    padding: 12px 15px;
+                }
+
+                .card .p-4.border-bottom h6 {
+                    font-size: 15px;
+                }
+            }
 
         </style>
     </head>
@@ -151,7 +315,7 @@
 
                     <ul class="sidebar-menu pt-3">
                         <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                        
+
 
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
@@ -355,7 +519,7 @@
                             </div>
                         </div><!--end row-->
 
-                        <!-- Bảng doanh thu và phản hồi -->
+                        <!-- Enhanced Revenue and Feedback Tables -->
                         <div class="row mt-4">
                             <div class="col-xl-6 col-lg-6">
                                 <div class="card border-0 shadow rounded">
@@ -363,7 +527,7 @@
                                         <h6 class="mb-0">Revenue by Service Categories</h6>
                                     </div>
                                     <div class="p-4">
-                                        <table class="table table-striped">
+                                        <table class="table table-striped revenue-table">
                                             <thead>
                                                 <tr>
                                                     <th>Service</th>
@@ -373,8 +537,15 @@
                                             <tbody>
                                                 <c:forEach var="entry" items="${revenueByService}">
                                                     <tr>
-                                                        <td>${entry.key}</td>
-                                                        <td>${entry.value}</td>
+                                                        <td>
+                                                            <div class="service-name">
+                                                                <i class="uil uil-medical-square"></i>
+                                                                ${entry.key}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <span class="revenue-value">$${entry.value}</span>
+                                                        </td>
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>
@@ -399,8 +570,25 @@
                                             <tbody>
                                                 <c:forEach var="entry" items="${avgStarByService}">
                                                     <tr>
-                                                        <td>${entry.key}</td>
-                                                        <td>${entry.value}</td>
+                                                        <td>
+                                                            <div class="service-name">
+                                                                <i class="uil uil-medical-square"></i>
+                                                                ${entry.key}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="star-rating">
+                                                                <div class="stars">
+                                                                    <c:forEach begin="1" end="5" var="i">
+                                                                        <i class="uil uil-star ${i <= entry.value ? 'filled' : ''}"></i>
+                                                                    </c:forEach>
+                                                                </div>
+                                                                <span class="rating-value
+                                                                      ${entry.value >= 4.5 ? 'rating-excellent' : entry.value >= 3.5 ? 'rating-good' : entry.value >= 2.5 ? 'rating-average' : 'rating-poor'}">
+                                                                    ${entry.value}
+                                                                </span>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>
@@ -409,7 +597,6 @@
                                 </div>
                             </div>
                         </div><!--end row-->
-
                         <!-- Biểu đồ xu hướng đặt lịch -->
                         <div class="row mt-4">
                             <div class="col-xl-12">
@@ -504,28 +691,191 @@
                                         ];
 
                                         var options = {
-                                            chart: {type: 'line', height: 350},
+                                            chart: {
+                                                type: 'area',
+                                                height: 350,
+                                                fontFamily: 'Nunito, sans-serif',
+                                                toolbar: {
+                                                    show: true,
+                                                    tools: {
+                                                        download: true,
+                                                        selection: true,
+                                                        zoom: true,
+                                                        zoomin: true,
+                                                        zoomout: true,
+                                                        pan: true,
+                                                        reset: true
+                                                    },
+                                                    autoSelected: 'zoom'
+                                                },
+                                                zoom: {
+                                                    enabled: true
+                                                },
+                                                animations: {
+                                                    enabled: true,
+                                                    easing: 'easeinout',
+                                                    speed: 800,
+                                                    animateGradually: {
+                                                        enabled: true,
+                                                        delay: 150
+                                                    },
+                                                    dynamicAnimation: {
+                                                        enabled: true,
+                                                        speed: 350
+                                                    }
+                                                }
+                                            },
                                             series: [
                                                 {
-                                                    name: 'Completed',
+                                                    name: 'Completed Reservations',
                                                     data: trendData.map(item => item.completed)
                                                 },
                                                 {
-                                                    name: 'Total',
+                                                    name: 'Total Reservations',
                                                     data: trendData.map(item => item.total)
                                                 }
                                             ],
                                             xaxis: {
-                                                categories: trendData.map(item => item.date)
+                                                categories: trendData.map(item => item.date),
+                                                labels: {
+                                                    style: {
+                                                        fontSize: '12px',
+                                                        fontWeight: 500,
+                                                    },
+                                                    rotate: -45,
+                                                    rotateAlways: false
+                                                },
+                                                title: {
+                                                    text: 'Date',
+                                                    style: {
+                                                        fontSize: '13px',
+                                                        fontWeight: 600
+                                                    }
+                                                }
                                             },
-                                            stroke: {curve: 'smooth'},
-                                            colors: ['#34c38f', '#556ee6'],
-                                            dataLabels: {enabled: false},
-                                            title: {text: 'Reservation Trend', align: 'left'}
+                                            yaxis: {
+                                                title: {
+                                                    text: 'Number of Reservations',
+                                                    style: {
+                                                        fontSize: '13px',
+                                                        fontWeight: 600
+                                                    }
+                                                },
+                                                labels: {
+                                                    formatter: function (val) {
+                                                        return val.toFixed(0);
+                                                    }
+                                                }
+                                            },
+                                            stroke: {
+                                                curve: 'smooth',
+                                                width: 3
+                                            },
+                                            fill: {
+                                                type: 'gradient',
+                                                gradient: {
+                                                    shadeIntensity: 1,
+                                                    opacityFrom: 0.7,
+                                                    opacityTo: 0.3,
+                                                    stops: [0, 90, 100]
+                                                }
+                                            },
+                                            colors: ['#754FFE', '#2CD9C5'],
+                                            dataLabels: {
+                                                enabled: false
+                                            },
+                                            grid: {
+                                                borderColor: '#f1f1f1',
+                                                row: {
+                                                    colors: ['transparent', 'transparent'],
+                                                    opacity: 0.5
+                                                }
+                                            },
+                                            markers: {
+                                                size: 4,
+                                                colors: ["#754FFE", "#2CD9C5"],
+                                                strokeColors: "#fff",
+                                                strokeWidth: 2,
+                                                hover: {
+                                                    size: 7,
+                                                }
+                                            },
+                                            tooltip: {
+                                                theme: 'light',
+                                                y: {
+                                                    formatter: function (val) {
+                                                        return val + " reservations";
+                                                    }
+                                                },
+                                                x: {
+                                                    show: true
+                                                },
+                                                marker: {
+                                                    show: true,
+                                                }
+                                            },
+                                            legend: {
+                                                position: 'top',
+                                                horizontalAlign: 'right',
+                                                floating: true,
+                                                offsetY: -25,
+                                                offsetX: -5
+                                            }
                                         };
+
                                         var chart = new ApexCharts(document.querySelector("#reservationTrendChart"), options);
                                         chart.render();
-        </script>
 
+// Add responsive behavior
+                                        window.addEventListener('resize', function () {
+                                            chart.updateOptions({
+                                                xaxis: {
+                                                    labels: {
+                                                        rotate: window.innerWidth < 768 ? -90 : -45,
+                                                    }
+                                                },
+                                                legend: {
+                                                    position: window.innerWidth < 768 ? 'bottom' : 'top',
+                                                    offsetY: window.innerWidth < 768 ? 0 : -25,
+                                                }
+                                            });
+                                        });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Find all star rating containers
+                const starRatings = document.querySelectorAll('.star-rating');
+
+                starRatings.forEach(container => {
+                    const ratingValue = parseFloat(container.querySelector('.rating-value').textContent.trim());
+                    const starsContainer = container.querySelector('.stars');
+
+                    // Clear existing stars
+                    starsContainer.innerHTML = '';
+
+                    // Add filled and empty stars based on rating value
+                    for (let i = 1; i <= 5; i++) {
+                        const star = document.createElement('i');
+                        star.classList.add('uil');
+
+                        if (i <= Math.floor(ratingValue)) {
+                            // Full star
+                            star.classList.add('uil-star');
+                            star.style.color = '#ffc107';
+                        } else if (i === Math.ceil(ratingValue) && ratingValue % 1 !== 0) {
+                            // Half star
+                            star.classList.add('uil-star-half-alt');
+                            star.style.color = '#ffc107';
+                        } else {
+                            // Empty star
+                            star.classList.add('uil-star');
+                            star.style.color = '#e2e5e9';
+                        }
+
+                        starsContainer.appendChild(star);
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
