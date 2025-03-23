@@ -975,7 +975,7 @@
                     feedbackForm.addEventListener("submit", function (event) {
                         event.preventDefault();
 
-                        if (!confirm("Bạn có chắc chắn muốn gửi phản hồi này?")) {
+                        if (!confirm("Are you sure to send this feedback?")) {
                             return;
                         }
 

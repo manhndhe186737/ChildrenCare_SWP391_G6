@@ -348,14 +348,14 @@
                             <h5 class="text-muted">$${service.price}</h5>
                             <!-- Có thể hiển thị đánh giá nếu có dữ liệu -->
                             <ul class="list-unstyled text-warning h5 mb-0">
-                                   <div class="rating">
-                            <c:forEach var="i" begin="1" end="${avgRating}">
-                                <i class="fas fa-star text-warning fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
-                            </c:forEach>
-                            <c:forEach var="i" begin="${avgRating + 1}" end="5">
-                                <i class="fas fa-star text-muted fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
-                            </c:forEach>
-                        </div>
+                                <div class="rating">
+                                    <c:forEach var="i" begin="1" end="${avgRating}">
+                                        <i class="fas fa-star text-warning fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
+                                    </c:forEach>
+                                    <c:forEach var="i" begin="${avgRating + 1}" end="5">
+                                        <i class="fas fa-star text-muted fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
+                                    </c:forEach>
+                                </div>
                                 <li class="list-inline-item me-2 h6 text-muted">(${totalFeedbacks} Ratting)</li>
 
                             </ul>
@@ -404,7 +404,7 @@
                                     <div class="shop-image position-relative overflow-hidden">
                                         <!-- Hiển thị hình ảnh dịch vụ liên quan -->
                                         <img src="${pageContext.request.contextPath}/${rel.img}" class="img-fluid rounded" alt="${rel.name}">
-                                        
+
                                     </div>
                                     <div class="card-body content pt-4 p-2">
                                         <a href="service-detail?id=${rel.id}" class="text-dark product-name h6">${rel.name}</a>
@@ -434,6 +434,10 @@
 
             <!-- List of Comments -->
             <div class="comments-list">
+                <c:if test="${empty requestScope.feedback}">
+                    <p>No feedback available.</p> <!-- Hiển thị thông báo khi không có feedback -->
+                </c:if>
+
                 <c:forEach var="f" items="${requestScope.feedback}">
                     <div class="comment">
                         <div class="d-flex align-items-center mb-3">
@@ -462,7 +466,7 @@
                                 <img src="${pageContext.request.contextPath}/${f.commentImg}" class="comment-img" alt="${f.fullname}">
                             </div>
                         </c:if>
-                        <c:if test="${f.reply ne null}">
+                        <c:if test="${not empty f.reply}">
                             <div class="row">
                                 <div class="col-6">
                                     <h6 class="fw-bold ms-3">Manager Feedback</h6>
@@ -472,11 +476,13 @@
                                 </div>
                             </div>
                         </c:if>
+
                     </div>
                 </c:forEach>
             </div>
         </div>
     </section>
+
 
     <!-- Footer Start -->
     <footer class="bg-footer">
