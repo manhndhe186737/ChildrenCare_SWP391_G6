@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import model.Account;
 import model.Role;
 
 /**
@@ -23,9 +24,9 @@ import model.Role;
  * @author FPTSHOP
  */
 @WebServlet(name="Authorization", urlPatterns={"/admin/authorization"})
-public class Authorization extends HttpServlet {
+public class Authorization extends BaseRBAC {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account acocunt)
     throws ServletException, IOException {
         RoleDBContext rdb = new RoleDBContext();
         ArrayList<Role> roles = rdb.getRoles();
@@ -42,7 +43,7 @@ public class Authorization extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account acocunt)
     throws ServletException, IOException {
         String rid_raw = request.getParameter("roleId");
         String fid_raw = request.getParameter("featureId");

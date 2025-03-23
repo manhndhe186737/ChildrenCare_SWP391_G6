@@ -200,7 +200,7 @@
                                 <thead>
                                     <tr>
                                         <th class="border-bottom p-3" style="min-width:50px "></th>
-                                        <th class="border-bottom p-3" style="min-width: 100px;">Product</th>
+                                        <th class="border-bottom p-3" style="min-width: 100px;">Service</th>
                                         <th class="border-bottom text-center p-3" style="min-width: 500px;">Description</th>
                                         <th class="border-bottom text-center p-3" style="min-width: 50px;">Price</th>
                                         <th class="border-bottom text-center p-3" style="min-width: 50px;"></th>
