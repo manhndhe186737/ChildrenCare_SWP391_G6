@@ -65,7 +65,7 @@
 
                     <ul class="sidebar-menu pt-3">
                         <li class=""><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                        
+
 
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
@@ -104,7 +104,7 @@
                                 </ul>
                             </div>
                         </li>
-                        
+
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Setting</a>
                             <div class="sidebar-submenu">
@@ -209,6 +209,20 @@
                                     <div class="card team border-0 rounded shadow overflow-hidden">
                                         <div class="team-img position-relative">
                                             <img src="${pageContext.request.contextPath}/${s.avatar}" class="img-fluid" alt="">
+                                            <c:choose>
+                                                <c:when test="${s.isVerified}">
+                                                    <!-- Icon hiển thị khi đã active -->
+                                                    <span class="position-absolute top-0 end-0 m-2 badge bg-success rounded-circle p-2" title="Verified">
+                                                        <i class="uil uil-check"></i>
+                                                    </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <!-- Icon hiển thị khi chưa active -->
+                                                    <span class="position-absolute top-0 end-0 m-2 badge bg-danger rounded-circle p-2" title="Not Verified">
+                                                        <i class="uil uil-times"></i>
+                                                    </span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
                                         <div class="card-body content text-center">
                                             <a href="staff-profile?staff_id=${s.id}" class="title text-dark h5 d-block mb-0">${s.fullname}</a>

@@ -27,10 +27,10 @@ public class StaffDBContext extends DBContext {
     public ArrayList<User> getUsers(String role, String search, String sort, int page, int pageSize) {
         ArrayList<User> users = new ArrayList<>();
 
-        String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.avatar, u.phone, u.email, u.password, r.role_name FROM users u\n"
+        String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.avatar, u.phone, u.email, u.password, u.is_verified, r.role_name FROM users u\n"
                 + "JOIN userroles ur ON ur.email = u.email\n"
                 + "JOIN roles r ON r.role_id = ur.role_id\n"
-                + "WHERE r.role_name = ? AND isActive = 1 ";
+                + "WHERE r.role_name = ? ";
 
         if (search != null && !search.isEmpty()) {
             sql += "AND u.fullname LIKE ? ";
@@ -61,6 +61,7 @@ public class StaffDBContext extends DBContext {
                     u.setAvatar(rs.getString("avatar"));
                     u.setPhone(rs.getString("phone"));
                     u.setGender(rs.getBoolean("gender"));
+                    u.setIsVerified(rs.getBoolean("is_verified"));
 
                     Account a = new Account();
                     a.setEmail(rs.getString("email"));
@@ -119,9 +120,9 @@ public class StaffDBContext extends DBContext {
     public User getProfileStaff(int id) {
         User staff = new User();
         ArrayList<Profile> profiles = new ArrayList<>();
-        String sql = "SELECT u.user_id, u.fullname, u.address, u.dob, u.phone, u.avatar, u.gender, sp.staff_profile_id, sp.experience, sp.certification, sp.specialties, sp.exp_start, sp.exp_end, u.email, u.bio FROM users u \n"
+        String sql = "SELECT u.user_id, u.fullname, u.address, u.dob, u.phone, u.is_verified, u.avatar, u.gender, sp.staff_profile_id, sp.experience, sp.certification, sp.specialties, sp.exp_start, sp.exp_end, u.email, u.bio FROM users u \n"
                 + "JOIN staffprofiles sp ON u.user_id = sp.staff_id \n"
-                + "WHERE u.user_id = ? AND isActive = 1";
+                + "WHERE u.user_id = ?";
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, id);
@@ -140,6 +141,7 @@ public class StaffDBContext extends DBContext {
                     staff.setAvatar(rs.getString("avatar"));
                     staff.setGender(rs.getBoolean("gender"));
                     staff.setBio(rs.getString("bio"));
+                    staff.setIsVerified(rs.getBoolean("is_verified"));
                     Account a = new Account();
                     a.setEmail(rs.getString("email"));
 
@@ -214,7 +216,21 @@ public class StaffDBContext extends DBContext {
     }
 
     public void deleteStaff(int id) {
-        String sql = "UPDATE users SET isActive = 0 WHERE user_id = ?";
+        String sql = "UPDATE users SET isActive = 0, is_verified = 0 WHERE user_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void activeStaff(int id) {
+        String sql = "UPDATE users SET isActive = 1, is_verified = 1 WHERE user_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 

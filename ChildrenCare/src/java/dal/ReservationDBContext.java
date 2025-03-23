@@ -284,7 +284,7 @@ public class ReservationDBContext extends DBContext {
                 + "FROM users usr\n"
                 + "JOIN userroles ur ON ur.email = usr.email\n"
                 + "JOIN roles r ON r.role_id = ur.role_id\n"
-                + "WHERE r.role_name = 'Staffs' \n"
+                + "WHERE r.role_name = 'Staffs' AND usr.is_verified = 1 \n"
                 + "AND usr.user_id NOT IN (\n"
                 + "    SELECT staff_id\n"
                 + "    FROM users u\n"

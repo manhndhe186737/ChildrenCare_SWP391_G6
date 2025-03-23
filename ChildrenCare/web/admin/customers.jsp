@@ -61,7 +61,7 @@
 
                     <ul class="sidebar-menu pt-3">
                         <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                        
+
 
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
@@ -100,7 +100,7 @@
                                 </ul>
                             </div>
                         </li>
-                        
+
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Setting</a>
                             <div class="sidebar-submenu">
@@ -240,10 +240,23 @@
                                                             <i class="uil uil-pen"></i>
                                                         </a>
 
-                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-danger"
-                                                           onclick="confirmDelete(${c.id}); return false;">
-                                                            <i class="uil uil-trash"></i>
-                                                        </a>
+                                                        <c:choose>
+                                                            <c:when test="${c.isVerified}">
+                                                                <!-- Nút Deactive nếu đã được xác minh -->
+                                                                <a href="#" class="btn btn-icon btn-pills btn-soft-danger"
+                                                                   onclick="confirmDelete(${c.id}); return false;">
+                                                                    <i class="uil uil-user-times"></i>
+                                                                </a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <!-- Nút Active nếu chưa được xác minh -->
+                                                                <a href="#" class="btn btn-icon btn-pills btn-soft-success"
+                                                                   onclick="confirmActive(${c.id}); return false;">
+                                                                    <i class="uil uil-user-check"></i>
+                                                                </a>
+                                                            </c:otherwise>
+                                                        </c:choose>
+
 
                                                     </td>
                                                 </tr>
@@ -624,8 +637,14 @@
 //            }
 
             function confirmDelete(userId) {
-                if (confirm("Are you sure you want to delete this customer?")) {
-                    window.location.href = "../admin/removeCustomer?user_id=" + userId;
+                if (confirm("Are you sure you want to deactive this customer?")) {
+                    window.location.href = "../admin/removeCustomer?action=deactive&user_id=" + userId;
+                }
+            }
+            
+            function confirmActive(userId) {
+                if (confirm("Are you sure you want to active this customer?")) {
+                    window.location.href = "../admin/removeCustomer?action=active&user_id=" + userId;
                 }
             }
 
