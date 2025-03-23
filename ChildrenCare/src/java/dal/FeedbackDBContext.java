@@ -233,7 +233,7 @@ public class FeedbackDBContext extends DBContext {
         if (feedbackId <= 0) {
             return null;
         }
-        String query = "SELECT f.feedback_id, f.date AS feedback_date, f.rating, f.comment, f.img, f.status, f.reply, " +
+        String query = "SELECT f.feedback_id, f.date AS feedback_date, u.avatar, f.rating, f.comment, f.img, f.status, f.reply, " +
                        "r.reserv_id, r.user_id AS customer_id, r.customer_name, r.customer_address, " +
                        "r.service_id, s.name AS service_name, r.staff_id, u.fullname AS staff_name " +
                        "FROM feedbacks f " +
