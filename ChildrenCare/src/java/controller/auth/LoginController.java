@@ -66,7 +66,7 @@ public class LoginController extends HttpServlet {
                 session.setAttribute("account", acc);
                 session.setAttribute("role", roles);
                 session.setAttribute("isLoggedIn", true);
-                session.setAttribute("alertMessage", "Đăng nhập thành công!");
+                session.setAttribute("alertMessage", "Login successfully!");
                 session.setAttribute("alertType", "success");  //danger,error , ...
                 response.sendRedirect("c/home");
             } else {
@@ -77,7 +77,7 @@ public class LoginController extends HttpServlet {
                 request.getRequestDispatcher("/account/RegisterGoogle.jsp").forward(request, response);
             }
         } catch (ServletException | IOException e) {
-            request.setAttribute("error", "Lỗi khi xử lý đăng nhập bằng Google.");
+            request.setAttribute("error", "An error occur when login with Google");
             request.getRequestDispatcher("account/login.jsp").forward(request, response);
         }
     }
@@ -128,7 +128,7 @@ public class LoginController extends HttpServlet {
             request.getSession().setAttribute("account", account);
             response.getWriter().print(account.getEmail());
         } else {
-            response.getWriter().println("Login thất bại! Vui lòng kiểm tra email và mật khẩu.");
+            response.getWriter().println("Login fail! Please check your email or password");
         }
     }
 
