@@ -16,11 +16,12 @@ public class FeedbackDBContext extends DBContext {
         List<Feedback> feedbackList = new ArrayList<>();
         String query = "SELECT f.feedback_id, f.date AS feedback_date, f.rating, f.comment, f.img, f.status, f.reply, " +
                        "r.reserv_id, r.user_id AS customer_id, r.customer_name, r.customer_address, " +
-                       "r.service_id, s.name AS service_name, r.staff_id, u.fullname AS staff_name " +
+                       "r.service_id, s.name AS service_name, r.staff_id, u.fullname AS staff_name, ctm.avatar AS customer_avatar " +
                        "FROM feedbacks f " +
                        "JOIN reservations r ON f.reserv_id = r.reserv_id " +
                        "JOIN services s ON r.service_id = s.service_id " +
                        "JOIN users u ON r.staff_id = u.user_id " +
+                       "JOIN users ctm ON r.user_id = ctm.user_id " +
                        "ORDER BY f.date DESC";
 
         try (PreparedStatement stmt = connection.prepareStatement(query);
@@ -63,13 +64,14 @@ public class FeedbackDBContext extends DBContext {
         if (reservId <= 0) {
             return null;
         }
-        String query = "SELECT f.feedback_id, f.date AS feedback_date, u.avatar, f.rating, f.comment, f.img, f.status, f.reply, " +
+        String query = "SELECT f.feedback_id, f.date AS feedback_date, f.rating, f.comment, f.img, f.status, f.reply, " +
                        "r.reserv_id, r.user_id AS customer_id, r.customer_name, r.customer_address, " +
-                       "r.service_id, s.name AS service_name, r.staff_id, u.fullname AS staff_name " +
+                       "r.service_id, s.name AS service_name, r.staff_id, u.fullname AS staff_name, ctm.avatar AS customer_avatar " +
                        "FROM feedbacks f " +
                        "JOIN reservations r ON f.reserv_id = r.reserv_id " +
                        "JOIN services s ON r.service_id = s.service_id " +
                        "JOIN users u ON r.staff_id = u.user_id " +
+                       "JOIN users ctm ON r.user_id = ctm.user_id " +
                        "WHERE f.reserv_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -164,12 +166,12 @@ public class FeedbackDBContext extends DBContext {
         }
     }
 
-   // Get feedbacks for a specific page with filtering
+    // Get feedbacks for a specific page with filtering
     public List<Feedback> getFeedbacksByPage(int offset, int pageSize, String rating, String serviceName, String staffName, String search) throws SQLException {
         checkConnection();
         List<Feedback> feedbackList = new ArrayList<>();
         StringBuilder query = new StringBuilder(
-            "SELECT f.feedback_id, f.date AS feedback_date, ctm.avatar, f.rating, f.comment, f.img, f.status, f.reply, " +
+            "SELECT f.feedback_id, f.date AS feedback_date, ctm.avatar AS customer_avatar, f.rating, f.comment, f.img, f.status, f.reply, " +
             "r.reserv_id, r.user_id AS customer_id, r.customer_name, r.customer_address, " +
             "r.service_id, s.name AS service_name, r.staff_id, u.fullname AS staff_name " +
             "FROM feedbacks f " +
@@ -195,7 +197,8 @@ public class FeedbackDBContext extends DBContext {
             parameters.add(staffName);
         }
         if (search != null && !search.isEmpty()) {
-            conditions.add("(f.comment LIKE ? OR s.name LIKE ?)");
+            conditions.add("(f.comment LIKE ? OR s.name LIKE ? OR r.customer_name LIKE ?)");
+            parameters.add("%" + search + "%");
             parameters.add("%" + search + "%");
             parameters.add("%" + search + "%");
         }
@@ -226,20 +229,21 @@ public class FeedbackDBContext extends DBContext {
         }
         return feedbackList;
     }
-  
+
     // Get feedback by Feedback ID
     public Feedback getFeedbackById(int feedbackId) throws SQLException {
         checkConnection();
         if (feedbackId <= 0) {
             return null;
         }
-        String query = "SELECT f.feedback_id, f.date AS feedback_date, u.avatar, f.rating, f.comment, f.img, f.status, f.reply, " +
+        String query = "SELECT f.feedback_id, f.date AS feedback_date, ctm.avatar AS customer_avatar, f.rating, f.comment, f.img, f.status, f.reply, " +
                        "r.reserv_id, r.user_id AS customer_id, r.customer_name, r.customer_address, " +
                        "r.service_id, s.name AS service_name, r.staff_id, u.fullname AS staff_name " +
                        "FROM feedbacks f " +
                        "JOIN reservations r ON f.reserv_id = r.reserv_id " +
                        "JOIN services s ON r.service_id = s.service_id " +
                        "JOIN users u ON r.staff_id = u.user_id " +
+                       "JOIN users ctm ON r.user_id = ctm.user_id " +
                        "WHERE f.feedback_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -256,20 +260,21 @@ public class FeedbackDBContext extends DBContext {
         return null;
     }
 
-    // Get feedbacks by staff ID
+    // Get feedbacks by staff ID (simple version)
     public List<Feedback> getFeedbacksByStaffId(int staffId) throws SQLException {
         checkConnection();
         if (staffId <= 0) {
             return new ArrayList<>();
         }
         List<Feedback> feedbackList = new ArrayList<>();
-        String query = "SELECT f.feedback_id, f.date AS feedback_date, f.rating, f.comment, f.img, f.status, f.reply, " +
+        String query = "SELECT f.feedback_id, f.date AS feedback_date, ctm.avatar AS customer_avatar, f.rating, f.comment, f.img, f.status, f.reply, " +
                        "r.reserv_id, r.user_id AS customer_id, r.customer_name, r.customer_address, " +
                        "r.service_id, s.name AS service_name, r.staff_id, u.fullname AS staff_name " +
                        "FROM feedbacks f " +
                        "JOIN reservations r ON f.reserv_id = r.reserv_id " +
                        "JOIN services s ON r.service_id = s.service_id " +
                        "JOIN users u ON r.staff_id = u.user_id " +
+                       "JOIN users ctm ON r.user_id = ctm.user_id " +
                        "WHERE r.staff_id = ? " +
                        "ORDER BY f.date DESC";
 
@@ -288,13 +293,144 @@ public class FeedbackDBContext extends DBContext {
         return feedbackList;
     }
 
+ public List<Feedback> getFeedbacksByStaffId(int staffId, String sortService, String sortDate, 
+                                           String sortCustomer, String filterRating, String search, 
+                                           int offset, int pageSize) throws SQLException {
+    checkConnection();
+    if (staffId <= 0) {
+        return new ArrayList<>();
+    }
+    List<Feedback> feedbackList = new ArrayList<>();
+    StringBuilder query = new StringBuilder(
+        "SELECT f.feedback_id, f.date AS feedback_date, ctm.avatar AS customer_avatar, f.rating, f.comment, f.img, f.status, f.reply, " +
+        "r.reserv_id, r.user_id AS customer_id, r.customer_name, r.customer_address, " +
+        "r.service_id, s.name AS service_name, r.staff_id, u.fullname AS staff_name " +
+        "FROM feedbacks f " +
+        "JOIN reservations r ON f.reserv_id = r.reserv_id " +
+        "JOIN services s ON r.service_id = s.service_id " +
+        "JOIN users u ON r.staff_id = u.user_id " +
+        "JOIN users ctm ON r.user_id = ctm.user_id " +
+        "WHERE r.staff_id = ?"
+    );
+
+    List<Object> parameters = new ArrayList<>();
+    parameters.add(staffId);
+
+    if (filterRating != null && !filterRating.isEmpty() && filterRating.matches("[1-5]")) {
+        query.append(" AND f.rating = ?");
+        parameters.add(filterRating);
+    }
+
+    if (search != null && !search.isEmpty()) {
+        query.append(" AND (f.comment LIKE ? OR s.name LIKE ? OR r.customer_name LIKE ?)");
+        parameters.add("%" + search + "%");
+        parameters.add("%" + search + "%");
+        parameters.add("%" + search + "%");
+    }
+
+    boolean hasSort = false;
+    if (sortService != null && !sortService.isEmpty()) {
+        query.append(" ORDER BY s.name ").append(sortService.equalsIgnoreCase("asc") ? "ASC" : "DESC");
+        hasSort = true;
+    }
+    if (sortDate != null && !sortDate.isEmpty() && !hasSort) {
+        query.append(" ORDER BY f.date ").append(sortDate.equalsIgnoreCase("asc") ? "ASC" : "DESC");
+        hasSort = true;
+    }
+    if (sortCustomer != null && !sortCustomer.isEmpty() && !hasSort) {
+        query.append(" ORDER BY r.customer_name ").append(sortCustomer.equalsIgnoreCase("asc") ? "ASC" : "DESC");
+        hasSort = true;
+    }
+    if (!hasSort) {
+        query.append(" ORDER BY f.date DESC");
+    }
+
+    // Apply pagination
+    query.append(" LIMIT ? OFFSET ?");
+    parameters.add(pageSize);
+    parameters.add(offset);
+
+    try (PreparedStatement stmt = connection.prepareStatement(query.toString())) {
+        int paramIndex = 1;
+        for (Object param : parameters) {
+            stmt.setObject(paramIndex++, param);
+        }
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Feedback feedback = buildFeedbackFromResultSet(rs);
+                feedbackList.add(feedback);
+            }
+        }
+    } catch (SQLException e) {
+        System.err.println("Error fetching feedbacks for staff_id = " + staffId + ": " + e.getMessage());
+        throw new SQLException("Failed to fetch feedbacks for staff_id = " + staffId + ": " + e.getMessage(), e);
+    }
+    return feedbackList;
+}
+
+    // Get total number of feedbacks by staff ID with filtering and searching
+    public int getTotalFeedbacksByStaffId(int staffId, String filterRating, String search) throws SQLException {
+        checkConnection();
+        if (staffId <= 0) {
+            return 0;
+        }
+        StringBuilder query = new StringBuilder(
+            "SELECT COUNT(*) " +
+            "FROM feedbacks f " +
+            "JOIN reservations r ON f.reserv_id = r.reserv_id " +
+            "JOIN services s ON r.service_id = s.service_id " +
+            "JOIN users u ON r.staff_id = u.user_id " +
+            "JOIN users ctm ON r.user_id = ctm.user_id " +
+            "WHERE r.staff_id = ?"
+        );
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(staffId);
+
+        // Add rating filter condition
+        if (filterRating != null && !filterRating.isEmpty() && filterRating.matches("[1-5]")) {
+            query.append(" AND f.rating = ?");
+            parameters.add(filterRating);
+        }
+
+        // Add search condition
+        if (search != null && !search.isEmpty()) {
+            query.append(" AND (f.comment LIKE ? OR s.name LIKE ? OR r.customer_name LIKE ?)");
+            parameters.add("%" + search + "%");
+            parameters.add("%" + search + "%");
+            parameters.add("%" + search + "%");
+        }
+
+        try (PreparedStatement stmt = connection.prepareStatement(query.toString())) {
+            int paramIndex = 1;
+            for (Object param : parameters) {
+                stmt.setObject(paramIndex++, param);
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching total feedbacks for staff_id = " + staffId + ": " + e.getMessage());
+            throw new SQLException("Failed to fetch total feedbacks for staff_id = " + staffId + ": " + e.getMessage(), e);
+        }
+        return 0;
+    }
+
     // Get total number of feedbacks with filtering
     public int getTotalFeedbacks(String rating, String serviceName, String staffName, String search) throws SQLException {
         checkConnection();
-        StringBuilder query = new StringBuilder("SELECT COUNT(*) FROM feedbacks f ");
-        query.append("JOIN reservations r ON f.reserv_id = r.reserv_id ");
-        query.append("JOIN services s ON r.service_id = s.service_id ");
-        query.append("JOIN users u ON r.staff_id = u.user_id ");
+        StringBuilder query = new StringBuilder(
+            "SELECT COUNT(*) " +
+            "FROM feedbacks f " +
+            "JOIN reservations r ON f.reserv_id = r.reserv_id " +
+            "JOIN services s ON r.service_id = s.service_id " +
+            "JOIN users u ON r.staff_id = u.user_id " +
+            "JOIN users ctm ON r.user_id = ctm.user_id "
+        );
 
         List<String> conditions = new ArrayList<>();
         List<Object> parameters = new ArrayList<>();
@@ -312,7 +448,8 @@ public class FeedbackDBContext extends DBContext {
             parameters.add(staffName);
         }
         if (search != null && !search.isEmpty()) {
-            conditions.add("(f.comment LIKE ? OR s.name LIKE ?)");
+            conditions.add("(f.comment LIKE ? OR s.name LIKE ? OR r.customer_name LIKE ?)");
+            parameters.add("%" + search + "%");
             parameters.add("%" + search + "%");
             parameters.add("%" + search + "%");
         }
@@ -443,7 +580,7 @@ public class FeedbackDBContext extends DBContext {
             customer.setId(rs.getInt("customer_id"));
             customer.setFullname(rs.getString("customer_name") != null ? rs.getString("customer_name") : "Unknown");
             customer.setAddress(rs.getString("customer_address") != null ? rs.getString("customer_address") : "");
-            customer.setAvatar(rs.getString("avatar"));
+            customer.setAvatar(rs.getString("customer_avatar"));
 
             User staff = new User();
             staff.setId(rs.getInt("staff_id"));
@@ -485,6 +622,7 @@ public class FeedbackDBContext extends DBContext {
         System.out.println("Rating: " + feedback.getRating());
         System.out.println("Comment: " + feedback.getComment());
         System.out.println("Image Path: " + (feedback.getImg() != null ? feedback.getImg() : "No image"));
+        System.out.println("Customer Avatar: " + (feedback.getReservation().getCustomer().getAvatar() != null ? feedback.getReservation().getCustomer().getAvatar() : "No avatar"));
         System.out.println("Service Name: " + (feedback.getReservation().getService() != null ? feedback.getReservation().getService().getName() : "N/A"));
         System.out.println("Staff Name: " + (feedback.getReservation().getStaff() != null ? feedback.getReservation().getStaff().getFullname() : "N/A"));
         System.out.println("Status: " + feedback.getStatus());
@@ -495,8 +633,8 @@ public class FeedbackDBContext extends DBContext {
     // Main method for testing
     public static void main(String[] args) {
         FeedbackDBContext db = new FeedbackDBContext();
-        int testStaffId = 10; // Thay bằng staff_id thực tế
-        int testReservId = 34; // Thay bằng reserv_id thực tế
+        int testStaffId = 10; // Replace with actual staff_id
+        int testReservId = 34; // Replace with actual reserv_id
 
         try {
             // Test getAllFeedbacks
@@ -513,6 +651,23 @@ public class FeedbackDBContext extends DBContext {
                 printFeedbackDetails(feedback);
             }
 
+            // Test getFeedbacksByStaffId with sort, filter, and search
+            System.out.println("\n=== Test Feedbacks by Staff ID with Sort, Filter, Search ===");
+            List<Feedback> staffFeedbacks = db.getFeedbacksByStaffId(testStaffId, "asc", null, null, "3", "good", 0, 5);
+            for (Feedback feedback : staffFeedbacks) {
+                printFeedbackDetails(feedback);
+            }
+
+            // Test getTotalFeedbacksByStaffId
+            System.out.println("\n=== Test Total Feedbacks by Staff ID ===");
+            int totalStaffFeedbacks = db.getTotalFeedbacksByStaffId(testStaffId, "3", "good");
+            System.out.println("Total Feedbacks for Staff ID " + testStaffId + ": " + totalStaffFeedbacks);
+
+            // Test getTotalFeedbacks
+            System.out.println("\n=== Test Total Feedbacks ===");
+            int totalFeedbacks = db.getTotalFeedbacks("3", "Massage", "John Doe", "good");
+            System.out.println("Total Feedbacks: " + totalFeedbacks);
+
             // Test getAllServices
             System.out.println("\n=== Test Get All Services ===");
             List<Service> services = db.getAllServices();
@@ -526,6 +681,14 @@ public class FeedbackDBContext extends DBContext {
             for (User s : staff) {
                 System.out.println("Staff Name: " + s.getFullname());
             }
+
+            // Test updateFeedbackStatus
+            System.out.println("\n=== Test Update Feedback Status ===");
+            db.updateFeedbackStatus(1, 2); // Update status of feedback with ID 1 to 2
+
+            // Test updateFeedbackReply
+            System.out.println("\n=== Test Update Feedback Reply ===");
+            db.updateFeedbackReply(1, "Thank you for your feedback!"); // Add reply to feedback with ID 1
         } catch (SQLException e) {
             System.err.println("Error in main method: " + e.getMessage());
             e.printStackTrace();

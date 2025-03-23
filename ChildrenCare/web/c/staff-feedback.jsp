@@ -76,6 +76,7 @@
         <!-- Navbar Start -->
         <header id="topnav" class="defaultscroll sticky">
             <div class="container">
+                <!-- Logo container-->
                 <div>
                     <a class="logo" href="../c/home">
                         <span class="logo-light-mode">
@@ -85,85 +86,114 @@
                         <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                     </a>
                 </div>
+                <!-- End Logo container-->
+
+                <!-- Start Mobile Toggle -->
                 <div class="menu-extras">
                     <div class="menu-item">
+                        <!-- Mobile menu toggle-->
                         <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
-                            <div class="lines"><span></span><span></span><span></span></div>
+                            <div class="lines">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
                         </a>
+                        <!-- End mobile menu toggle-->
                     </div>
                 </div>
+                <!-- End Mobile Toggle -->
+
+                <!-- Start Dropdown -->
                 <ul class="dropdowns list-inline mb-0">
                     <c:if test="${sessionScope.role.contains('Customer')}">
                         <li class="list-inline-item mb-0">
-                            <a href="Cart"><div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div></a>
+                            <a href="Cart">
+                                <div class="btn btn-icon btn-pills btn-primary"><i data-feather="heart" class="fea icon-sm"></i></div>
+                            </a>
                         </li>
                     </c:if>
+
                     <li class="list-inline-item mb-0 ms-1">
                         <c:choose>
                             <c:when test="${sessionScope.user ne null}">
                                 <div class="dropdown dropdown-primary">
-                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown">
+                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <img src="${pageContext.request.contextPath}/${sessionScope.user.avatar}" class="avatar avatar-ex-small rounded-circle" alt="">
                                     </button>
                                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
                                         <a class="dropdown-item d-flex align-items-center text-dark">
                                             <img src="${pageContext.request.contextPath}/${sessionScope.user.avatar}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                            <div class="flex-1 ms-2"><span class="d-block mb-1">${sessionScope.user.fullname}</span></div>
+                                            <div class="flex-1 ms-2">
+                                                <span class="d-block mb-1">${sessionScope.user.fullname}</span>
+                                            </div>
                                         </a>
                                         <c:if test="${sessionScope.role.contains('Admin')}">
-                                            <a class="dropdown-item text-dark" href="../admin/dashboard"><i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard</a>
+                                            <a class="dropdown-item text-dark" href="../admin/dashboard">
+                                                <i class="uil uil-dashboard align-middle h6 me-1"></i> Dashboard
+                                            </a>
                                         </c:if>
-                                        <a class="dropdown-item text-dark" href="../profile"><i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings</a>
+                                        <a class="dropdown-item text-dark" href="../profile">
+                                            <i class="uil uil-setting align-middle h6 me-1"></i> Profile Settings
+                                        </a>
                                         <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="../logout"><i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout</a>
+                                        <a class="dropdown-item text-dark" href="../logout">
+                                            <i class="uil uil-sign-out-alt align-middle h6 me-1"></i> Logout
+                                        </a>
                                     </div>
                                 </div>
                             </c:when>
                             <c:otherwise>
-                                <a href="../login" class="btn btn-soft-primary btn-sm"><i class="uil uil-user-circle align-middle h5 me-1"></i> Login</a>
+                                <a href="../login" class="btn btn-soft-primary btn-sm">
+                                    <i class="uil uil-user-circle align-middle h5 me-1"></i> Login
+                                </a>
                             </c:otherwise>
                         </c:choose>
                     </li>
                 </ul>
+                <!-- End Dropdown -->
+
                 <div id="navigation">
+                    <!-- Navigation Menu-->   
                     <ul class="navigation-menu nav-left nav-dark">
                         <li class="has-submenu parent-parent-menu-item">
                             <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <c:if test="${sessionScope.role.contains('Staffs')}">
                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
-                                    <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                    <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
-                                    </c:if>
-                                <li><a href="doctor-dashboard.html" class="sub-menu-item">Staff List</a></li>
+                                </c:if>
                             </ul>
                         </li>
+
                         <li class="has-submenu parent-menu-item">
                             <a href="javascript:void(0)">Services</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="../service-list" class="sub-menu-item">Services List</a></li>
-                                    <c:if test="${sessionScope.role.contains('Customer')}">
+                                <c:if test="${sessionScope.role.contains('Customer')}">
                                     <li><a href="../myreservation" class="sub-menu-item">My Reservation</a></li>
                                     <li><a href="BookingStaff" class="sub-menu-item">Reservation</a></li>
-                                    </c:if>
+                                </c:if>
                             </ul>
                         </li>
-                        <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)">Pages</a><span class="menu-arrow"></span>
+
+                        <li class="has-submenu parent-parent-menu-item">
+                            <a href="javascript:void(0)">Pages</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="../blog" class="sub-menu-item">Blogs</a></li>
-                                    <c:if test="${sessionScope.role.contains('Marketing Staff')}">
+                                <c:if test="${sessionScope.role.contains('Marketing Staff')}">
                                     <li><a href="../post-list" class="sub-menu-item">Posts - Management</a></li>
                                     <li><a href="../slider" class="sub-menu-item">Sliders - Management</a></li>
-                                    </c:if>
+                                </c:if>
                             </ul>
                         </li>
                         <c:if test="${sessionScope.role.contains('Admin')}">
                             <li><a href="../admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
-                            </c:if>
-                    </ul>
-                </div>
-            </div>
-        </header>
+                        </c:if>
+                    </ul><!--end navigation menu-->
+                </div><!--end navigation-->
+            </div><!--end container-->
+        </header><!--end header-->
+        <!-- Navbar End -->
 
         <!-- Start Hero -->
         <section class="bg-dashboard">
@@ -199,6 +229,47 @@
                         <div class="row">
                             <div class="col-12 mt-4">
                                 <div class="table-responsive bg-white shadow rounded">
+                                    <!-- Form lọc và tìm kiếm -->
+                                    <form method="get" action="${pageContext.request.contextPath}/c/staff-feedback" class="p-3 border-bottom">
+                                        <div class="row g-3 align-items-center">
+                                            <!-- Lọc theo Rating -->
+                                            <div class="col-md-2">
+                                                <label for="filterRating" class="form-label">Rating</label>
+                                                <select name="filterRating" id="filterRating" class="form-select">
+                                                    <option value="">All</option>
+                                                    <option value="1" ${param.filterRating == '1' ? 'selected' : ''}>1 Star</option>
+                                                    <option value="2" ${param.filterRating == '2' ? 'selected' : ''}>2 Stars</option>
+                                                    <option value="3" ${param.filterRating == '3' ? 'selected' : ''}>3 Stars</option>
+                                                    <option value="4" ${param.filterRating == '4' ? 'selected' : ''}>4 Stars</option>
+                                                    <option value="5" ${param.filterRating == '5' ? 'selected' : ''}>5 Stars</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Tìm kiếm -->
+                                            <div class="col-md-3">
+                                                <label for="search" class="form-label">Search</label>
+                                                <input type="text" name="search" id="search" class="form-control" placeholder="Comment, Service, Customer" value="${param.search}">
+                                            </div>
+
+                                            <!-- Nút áp dụng -->
+                                            <div class="col-md-1 d-flex align-items-end">
+                                                <button type="submit" class="btn btn-primary w-100">Apply</button>
+                                            </div>
+
+                                            <!-- Nút Reset -->
+                                            <div class="col-md-1 d-flex align-items-end">
+                                                <a href="${pageContext.request.contextPath}/c/staff-feedback" class="btn btn-secondary w-100">Reset</a>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="page" value="1">
+                                    </form>
+
+                                    <!-- Thông báo lỗi nếu có -->
+                                    <c:if test="${not empty error}">
+                                        <div class="alert alert-danger mt-3">${error}</div>
+                                    </c:if>
+
+                                    <!-- Bảng dữ liệu -->
                                     <table class="table mb-0 table-center">
                                         <thead>
                                             <tr>
@@ -211,49 +282,72 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach var="feedback" items="${feedbackList}" varStatus="loop">
-                                                <tr>
-                                                    <td class="p-3">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="${pageContext.request.contextPath}/${feedback.reservation.customer.avatar}" 
-                                                                 class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                            <span class="ms-2">${feedback.reservation.customer.fullname}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="p-3">${feedback.reservation.service.name}</td>
-                                                    <td class="p-3">
-                                                        <div class="star-rating">
-                                                            <c:forEach begin="1" end="5" var="i">
-                                                                <i class="fas fa-star${i <= feedback.rating ? '' : '-o'}"></i>
-                                                            </c:forEach>
-                                                        </div>
-                                                    </td>
-                                                    <td class="p-3">${feedback.comment}</td>
-                                                    <td class="p-3">${feedback.date}</td>
-                                                    <td class="text-end p-3">
-                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewFeedback${feedback.id}">
-                                                            <i class="uil uil-eye"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                            <c:if test="${feedbackList.size() < 5}">
-                                                <c:forEach begin="${feedbackList.size()}" end="4">
+                                            <c:choose>
+                                                <c:when test="${empty feedbackList}">
                                                     <tr>
-                                                        <td class="p-3"></td>
-                                                        <td class="p-3"></td>
-                                                        <td class="p-3"></td>
-                                                        <td class="p-3"></td>
-                                                        <td class="p-3"></td>
-                                                        <td class="p-3"></td>
+                                                        <td colspan="6" class="text-center p-3">
+                                                            <c:choose>
+                                                                <c:when test="${not empty param.search}">
+                                                                    No feedback found matching "${param.search}".
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    No feedback available.
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </td>
                                                     </tr>
-                                                </c:forEach>
-                                            </c:if>
-                                            <c:if test="${empty feedbackList}">
-                                                <tr>
-                                                    <td colspan="6" class="text-center p-3">No feedback available.</td>
-                                                </tr>
-                                            </c:if>
+                                                    <c:forEach begin="1" end="4">
+                                                        <tr>
+                                                            <td class="p-3"></td>
+                                                            <td class="p-3"></td>
+                                                            <td class="p-3"></td>
+                                                            <td class="p-3"></td>
+                                                            <td class="p-3"></td>
+                                                            <td class="p-3"></td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:forEach var="feedback" items="${feedbackList}" varStatus="loop">
+                                                        <tr>
+                                                            <td class="p-3">
+                                                                <div class="d-flex align-items-center">
+                                                                    <img src="${pageContext.request.contextPath}/${feedback.reservation.customer.avatar}" 
+                                                                         class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                                    <span class="ms-2">${feedback.reservation.customer.fullname}</span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="p-3">${feedback.reservation.service.name}</td>
+                                                            <td class="p-3">
+                                                                <div class="star-rating">
+                                                                    <c:forEach begin="1" end="5" var="i">
+                                                                        <i class="fas fa-star${i <= feedback.rating ? '' : '-o'}"></i>
+                                                                    </c:forEach>
+                                                                </div>
+                                                            </td>
+                                                            <td class="p-3">${feedback.comment}</td>
+                                                            <td class="p-3">${feedback.date}</td>
+                                                            <td class="text-end p-3">
+                                                                <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewFeedback${feedback.id}">
+                                                                    <i class="uil uil-eye"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    <c:if test="${feedbackList.size() < 5}">
+                                                        <c:forEach begin="${feedbackList.size()}" end="4">
+                                                            <tr>
+                                                                <td class="p-3"></td>
+                                                                <td class="p-3"></td>
+                                                                <td class="p-3"></td>
+                                                                <td class="p-3"></td>
+                                                                <td class="p-3"></td>
+                                                                <td class="p-3"></td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </tbody>
                                     </table>
                                 </div>
@@ -270,16 +364,24 @@
                                         out of ${totalFeedbacks}
                                     </span>
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
+                                        <!-- Previous Button -->
                                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                                            <a class="page-link" href="${pageContext.request.contextPath}/c/staff-feedback?page=${currentPage - 1}" aria-label="Previous">Prev</a>
+                                            <a class="page-link" 
+                                               href="${pageContext.request.contextPath}/c/staff-feedback?page=${currentPage - 1}&filterRating=${param.filterRating}&search=${param.search}" 
+                                               aria-label="Previous">Prev</a>
                                         </li>
+                                        <!-- Page Numbers -->
                                         <c:forEach begin="1" end="${totalPages}" var="i">
                                             <li class="page-item ${currentPage == i ? 'active' : ''}">
-                                                <a class="page-link" href="${pageContext.request.contextPath}/c/staff-feedback?page=${i}">${i}</a>
+                                                <a class="page-link" 
+                                                   href="${pageContext.request.contextPath}/c/staff-feedback?page=${i}&filterRating=${param.filterRating}&search=${param.search}">${i}</a>
                                             </li>
                                         </c:forEach>
+                                        <!-- Next Button -->
                                         <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                                            <a class="page-link" href="${pageContext.request.contextPath}/c/staff-feedback?page=${currentPage + 1}" aria-label="Next">Next</a>
+                                            <a class="page-link" 
+                                               href="${pageContext.request.contextPath}/c/staff-feedback?page=${currentPage + 1}&filterRating=${param.filterRating}&search=${param.search}" 
+                                               aria-label="Next">Next</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -293,45 +395,44 @@
         <!-- Modal for Viewing Feedback -->
         <c:forEach var="feedback" items="${feedbackList}">
             <div class="modal fade" id="viewFeedback${feedback.id}" tabindex="-1" aria-labelledby="viewFeedbackLabel${feedback.id}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-bottom p-3">
-                <h5 class="modal-title" id="viewFeedbackLabel${feedback.id}">Feedback Detail</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-3 pt-4" style="max-height: 70vh; overflow-y: auto;">
-                <div class="d-flex align-items-center">
-                    <img src="${pageContext.request.contextPath}/${feedback.reservation.customer.avatar}" 
-                         class="avatar avatar-small rounded-pill" alt="">
-                    <h5 class="mb-0 ms-3">${feedback.reservation.customer.fullname}</h5>
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-bottom p-3">
+                            <h5 class="modal-title" id="viewFeedbackLabel${feedback.id}">Feedback Detail</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body p-3 pt-4" style="max-height: 70vh; overflow-y: auto;">
+                            <div class="d-flex align-items-center">
+                                <img src="${pageContext.request.contextPath}/${feedback.reservation.customer.avatar}" 
+                                     class="avatar avatar-small rounded-pill" alt="">
+                                <h5 class="mb-0 ms-3">${feedback.reservation.customer.fullname}</h5>
+                            </div>
+                            <ul class="list-unstyled mb-0 mt-4">
+                                <li class="mb-3 d-flex">
+                                    <h6 class="mb-0" style="width: 100px;">Service:</h6>
+                                    <p class="text-muted ms-2">${feedback.reservation.service.name}</p>
+                                </li>
+                                <li class="mb-3 d-flex">
+                                    <h6 class="mb-0" style="width: 100px;">Rating:</h6>
+                                    <p class="text-muted ms-2">
+                                        <c:forEach begin="1" end="5" var="i">
+                                            <i class="fas fa-star${i <= feedback.rating ? '' : '-o'}"></i>
+                                        </c:forEach>
+                                    </p>
+                                </li>
+                                <li class="mb-3 d-flex">
+                                    <h6 class="mb-0" style="width: 100px;">Date:</h6>
+                                    <p class="text-muted ms-2">${feedback.date}</p>
+                                </li>
+                                <li class="mb-3 d-flex">
+                                    <h6 class="mb-0" style="width: 100px;">Comment:</h6>
+                                    <p class="text-muted ms-2" style="word-wrap: break-word; overflow-wrap: break-word;">${feedback.comment}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <ul class="list-unstyled mb-0 mt-4">
-                    <li class="mb-3 d-flex">
-                        <h6 class="mb-0" style="width: 100px;">Service:</h6>
-                        <p class="text-muted ms-2">${feedback.reservation.service.name}</p>
-                    </li>
-                    <li class="mb-3 d-flex">
-                        <h6 class="mb-0" style="width: 100px;">Rating:</h6>
-                        <p class="text-muted ms-2">
-                            <c:forEach begin="1" end="5" var="i">
-                                <i class="fas fa-star${i <= feedback.rating ? '' : '-o'}"></i>
-                            </c:forEach>
-                        </p>
-                    </li>
-                    <li class="mb-3 d-flex">
-                        <h6 class="mb-0" style="width: 100px;">Date:</h6>
-                        <p class="text-muted ms-2">${feedback.date}</p>
-                    </li>
-                    <li class="mb-3 d-flex">
-                        <h6 class="mb-0" style="width: 100px;">Comment:</h6>
-                        <p class="text-muted ms-2" style="word-wrap: break-word; overflow-wrap: break-word;">${feedback.comment}</p>
-                    </li>
-                </ul>
             </div>
-        </div>
-    </div>
-</div>
-
         </c:forEach>
 
         <!-- Footer Start -->
