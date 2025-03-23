@@ -32,7 +32,8 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
-
+        <title>VNPay Payment Result</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
 
     </head>
 
@@ -195,53 +196,38 @@
             <div class="container mt-5">
                 <div class="card">
                     <div class="card-header text-center">
-                        <h3>Payment Result - Cash on Delivery</h3>
+                        <h3>Payment Result</h3>
                     </div>
                     <div class="card-body">
-                        <!-- Check if payment is successful or not -->
                         <c:choose>
-                            <c:when test="${reservation != null}">
+                            <c:when test="${param.vnp_ResponseCode == '00'}">
                                 <div class="alert alert-success text-center" role="alert">
-                                    <strong>Payment successful!</strong> Your reservation has been confirmed.
+                                    <strong>Payment successful!</strong>
                                 </div>
                             </c:when>
                             <c:otherwise>
                                 <div class="alert alert-danger text-center" role="alert">
-                                    <strong>Payment failed!</strong> Please try again.
+                                    <strong>Payment failed!</strong>
                                 </div>
                             </c:otherwise>
                         </c:choose>
 
-                        <!-- Reservation Details -->
-                        <h5>Reservation Details:</h5>
+                        <h5>Transaction Details:</h5>
                         <ul class="list-group">
-                            <li class="list-group-item"><strong>Customer Name:</strong> ${reservation.customerName}</li>
-                            <li class="list-group-item"><strong>Service Name:</strong> ${reservation.service.name}</li>
-                            <li class="list-group-item"><strong>Service Date:</strong> ${reservation.bookdate}</li>
-                            <li class="list-group-item"><strong>Start Time:</strong> ${reservation.start}</li>
-                            <li class="list-group-item"><strong>End Time:</strong> ${reservation.end}</li>
-                            <li class="list-group-item"><strong>Note:</strong> ${reservation.note}</li>
-                            <li class="list-group-item"><strong>Staff Assigned:</strong> ${reservation.staff.fullname}</li>
+                            <li class="list-group-item"><strong>Transaction ID:</strong> ${param.vnp_TxnRef}</li>
+                            <li class="list-group-item"><strong>Order Info:</strong> ${param.vnp_OrderInfo}</li>
+                            <li class="list-group-item"><strong>Amount:</strong> <fmt:formatNumber value="${param.vnp_Amount / 100}" type="currency" currencyCode="VND"/></li>
+                            <li class="list-group-item"><strong>Payment Date:</strong> ${param.vnp_PayDate}</li>
+                            <li class="list-group-item"><strong>Bank Code:</strong> ${param.vnp_BankCode}</li>
+                            <li class="list-group-item"><strong>Response Code:</strong> ${param.vnp_ResponseCode}</li>
+                            <li class="list-group-item"><strong>Transaction Status:</strong> <c:choose>
+                                    <c:when test="${param.vnp_ResponseCode == '00'}">Success</c:when>
+                                    <c:otherwise>Failed</c:otherwise>
+                                </c:choose></li>
                         </ul>
 
-                        <!-- Customer Information -->
-                        <h5 class="mt-3">Customer Information:</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item"><strong>Customer Address:</strong> ${reservation.customerAddress}</li>
-                            <li class="list-group-item"><strong>Phone:</strong> ${sessionScope.user.phone}</li>
-                            <li class="list-group-item"><strong>Email:</strong> ${sessionScope.account.email}</li>
-                        </ul>
-
-                        <!-- Payment Information -->
-                        <h5 class="mt-3">Payment Information:</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item"><strong>Total Amount (VND):</strong> ${amount}</li>
-                            <li class="list-group-item"><strong>Amount (USD):</strong> ${reservation.service.price}</li>
-                        </ul>
-
-                        <!-- Back to Home Button -->
-                        <div class="text-center mt-4">
-                            <a href="home" class="btn btn-primary">Return to Home</a>
+                        <div class="text-center mt-3">
+                            <a href="c/home" class="btn btn-primary">Return to Home</a>
                         </div>
                     </div>
                 </div>
@@ -350,7 +336,7 @@
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <!-- Icons -->
         <script src="../assets/js/feather.min.js"></script>
-        
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>

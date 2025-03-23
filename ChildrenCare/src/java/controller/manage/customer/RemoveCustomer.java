@@ -22,14 +22,21 @@ public class RemoveCustomer extends BaseRBAC{
     protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, Account acocunt) throws ServletException, IOException {
         String id_raw = req.getParameter("user_id");
         
+        String action = req.getParameter("action");
+        
         CustomerDBContext cdb = new CustomerDBContext();
         
         int id = 0;
         if(id_raw != null && id_raw.length() != 0){
             id = Integer.parseInt(id_raw);
         }
+        resp.getWriter().print(action);
         
-        cdb.removeCustomer(id);
+        if(action.equals("deactive")){
+            cdb.removeCustomer(id);
+        }else{
+            cdb.activeCustomer(id);
+        }
         
         resp.sendRedirect("../admin/customers");
     }

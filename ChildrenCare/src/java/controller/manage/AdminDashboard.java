@@ -27,9 +27,9 @@ import model.Role;
  *
  * @author FPTSHOP
  */
-public class AdminDashboard extends HttpServlet {
+public class AdminDashboard extends BaseRBAC {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account acocunt) throws ServletException, IOException {
         AdminDashBoardDBContext adminDAO = new AdminDashBoardDBContext();
         try {
             String startDateStr = request.getParameter("startDate");
@@ -69,4 +69,10 @@ public class AdminDashboard extends HttpServlet {
         }
     }
 
+
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account acocunt) throws ServletException, IOException {
+    }
+
+
 }
+

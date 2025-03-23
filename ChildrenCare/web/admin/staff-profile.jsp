@@ -62,7 +62,7 @@
 
                     <ul class="sidebar-menu pt-3">
                         <li class=""><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                        
+
 
                         <li class="sidebar-dropdown active">
                             <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
@@ -101,7 +101,7 @@
                                 </ul>
                             </div>
                         </li>
-                        
+
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Setting</a>
                             <div class="sidebar-submenu">
@@ -522,18 +522,34 @@
 
                                                             <div class="p-4">
                                                                 <div class="p-4 border-bottom">
-                                                                    <h5 class="mb-0 text-danger">Delete Staff :</h5>
+                                                                    <c:choose>
+                                                                        <c:when test="${requestScope.staff.isVerified eq true}">
+                                                                            <h5 class="mb-0 text-danger">Deactive Staff :</h5>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <h5 class="mb-0 text-success">Active Staff :</h5>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
                                                                 </div>
 
                                                                 <div class="p-4">
-                                                                    <h6 class="mb-0 fw-normal">Do you want to delete this staff? Please press below "Delete" button</h6>
-                                                                    <div class="mt-4">
-                                                                        <button class="btn btn-danger">
-                                                                            <a href="../admin/delete-staff?id=${requestScope.staff.id}" style="text-decoration: none; color: inherit;">Delete Staff</a>
-                                                                        </button>
-                                                                    </div><!--end col-->
+                                                                    <c:choose>
+                                                                        <c:when test="${requestScope.staff.isVerified eq true}">
+                                                                            <h6 class="mb-0 fw-normal">Do you want to Deactive this staff? Please press below "Deactive" button</h6>
+                                                                            <div class="mt-4">
+                                                                                <a href="../admin/delete-staff?action=deactive&id=${requestScope.staff.id}" class="btn btn-danger text-white text-decoration-none">Deactive Staff</a>
+                                                                            </div>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <h6 class="mb-0 fw-normal">Do you want to Active this staff? Please press below "Active" button</h6>
+                                                                            <div class="mt-4">
+                                                                                <a href="../admin/delete-staff?action=active&id=${requestScope.staff.id}" class="btn btn-success text-white text-decoration-none">Active Staff</a>
+                                                                            </div>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
                                                                 </div>
                                                             </div>
+
                                                         </div>
                                                     </div><!--end col-->
                                                 </div><!--end teb pane-->

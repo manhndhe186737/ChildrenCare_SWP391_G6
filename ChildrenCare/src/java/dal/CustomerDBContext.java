@@ -55,7 +55,7 @@ public class CustomerDBContext extends DBContext {
                     u.setAvatar(rs.getString("avatar"));
                     u.setPhone(rs.getString("phone"));
                     u.setGender(rs.getBoolean("gender"));
-                    u.setBio(rs.getString("bio"));    
+                    u.setBio(rs.getString("bio"));
                     Account a = new Account();
                     a.setEmail(rs.getString("email"));
                     a.setPassword(rs.getString("password"));
@@ -87,10 +87,10 @@ public class CustomerDBContext extends DBContext {
 
         int offset = (page - 1) * pageSize; // Tính vị trí bắt đầu của dữ liệu
 
-        String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.avatar, u.phone, u.email, u.password, r.role_name FROM users u\n"
+        String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.avatar, u.phone, u.email, u.password, r.role_name, u.isActive, u.is_verified FROM users u\n"
                 + "JOIN userroles ur ON ur.email = u.email\n"
                 + "JOIN roles r ON r.role_id = ur.role_id\n"
-                + "WHERE u.isActive = true AND r.role_name = ? AND (u.fullname LIKE ? OR u.phone LIKE ? OR u.email LIKE ?)\n"
+                + "WHERE r.role_name = ? AND (u.fullname LIKE ? OR u.phone LIKE ? OR u.email LIKE ?)\n"
                 + orderByClause + " LIMIT ? OFFSET ?"; // Thêm LIMIT và OFFSET
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
@@ -111,6 +111,7 @@ public class CustomerDBContext extends DBContext {
                     u.setAvatar(rs.getString("avatar"));
                     u.setPhone(rs.getString("phone"));
                     u.setGender(rs.getBoolean("gender"));
+                    u.setIsVerified(rs.getBoolean("is_verified"));
 
                     Account a = new Account();
                     a.setEmail(rs.getString("email"));
@@ -207,8 +208,23 @@ public class CustomerDBContext extends DBContext {
 
     public void removeCustomer(int id) {
         String sql = "UPDATE users\n"
-                + "SET isActive = false\n"
+                + "SET isActive = false, is_verified = false\n"
                 + "WHERE user_id = ?;";
+        ;
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, id);
+
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void activeCustomer(int id) {
+        String sql = "UPDATE users\n"
+                + "SET isActive = true, is_verified = true\n"
+                + "WHERE user_id = ?;";
+        ;
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, id);
 

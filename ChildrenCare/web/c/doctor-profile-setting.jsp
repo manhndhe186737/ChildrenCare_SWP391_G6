@@ -245,7 +245,7 @@
 
 
                             <div class="text-center avatar-profile position-relative pb-4 border-bottom mt-3">
-<!--                                <img src="<c:out value="${pageContext.request.contextPath}/assets/images/${sessionScope.user.avatar}" />"
+<!--                                <img src="<c:out value="${pageContext.request.contextPath}/${sessionScope.user.avatar}" />"
                                      class="rounded-circle shadow-md avatar avatar-md-md" 
                                      alt="">-->
 

@@ -169,13 +169,14 @@ public class FeedbackDBContext extends DBContext {
         checkConnection();
         List<Feedback> feedbackList = new ArrayList<>();
         StringBuilder query = new StringBuilder(
-            "SELECT f.feedback_id, f.date AS feedback_date, f.rating, f.comment, f.img, f.status, f.reply, " +
+            "SELECT f.feedback_id, f.date AS feedback_date, ctm.avatar, f.rating, f.comment, f.img, f.status, f.reply, " +
             "r.reserv_id, r.user_id AS customer_id, r.customer_name, r.customer_address, " +
             "r.service_id, s.name AS service_name, r.staff_id, u.fullname AS staff_name " +
             "FROM feedbacks f " +
             "JOIN reservations r ON f.reserv_id = r.reserv_id " +
             "JOIN services s ON r.service_id = s.service_id " +
-            "JOIN users u ON r.staff_id = u.user_id "
+            "JOIN users u ON r.staff_id = u.user_id " +
+            "JOIN users ctm ON r.user_id = ctm.user_id "
         );
 
         List<String> conditions = new ArrayList<>();
@@ -442,6 +443,7 @@ public class FeedbackDBContext extends DBContext {
             customer.setId(rs.getInt("customer_id"));
             customer.setFullname(rs.getString("customer_name") != null ? rs.getString("customer_name") : "Unknown");
             customer.setAddress(rs.getString("customer_address") != null ? rs.getString("customer_address") : "");
+            customer.setAvatar(rs.getString("avatar"));
 
             User staff = new User();
             staff.setId(rs.getInt("staff_id"));

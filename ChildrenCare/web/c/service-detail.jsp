@@ -373,9 +373,6 @@
                                             <input type="hidden" name="service_name" value="${service.name}"/>
                                             <a href="#" class="btn btn-success" onclick="submitCartItem(this);">Reserve</a>
                                         </form>
-
-                                        <!-- Feedback Button -->
-                                        <a href="feedback.jsp?service_id=${service.id}" class="btn btn-soft-primary ms-2">Feedback</a>
                                     </div>
                                 </c:if>
                             </div>
@@ -386,7 +383,6 @@
             </div><!--end container-->
         </section>
     </div>
-
 
     <section class="section">
         <div class="container mt-100 mt-60">
@@ -434,7 +430,7 @@
 
     <section class="comments-section mt-5">
         <div class="container">
-            <h5 class="mb-3">Customer Comments</h5>
+            <h5 class="mb-3">Customer Feedback</h5>
 
             <!-- List of Comments -->
             <div class="comments-list">
