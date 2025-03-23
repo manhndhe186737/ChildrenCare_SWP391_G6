@@ -1,5 +1,6 @@
 package controller.manage.reservation;
 
+import controller.auth.BaseRBAC;
 import dal.FeedbackDBContext;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -11,9 +12,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Feedback;
 import model.User;
+import model.Account;
 
 @WebServlet(name = "StaffFeedback", urlPatterns = {"/c/staff-feedback"})
-public class StaffFeedback extends HttpServlet {
+public class StaffFeedback extends BaseRBAC {
 
     private FeedbackDBContext feedbackDB;
 
@@ -23,61 +25,70 @@ public class StaffFeedback extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         try {
             // Validate staff login and role
             User user = (User) request.getSession().getAttribute("user");
             Object roleObj = request.getSession().getAttribute("role");
+
             if (user == null || roleObj == null || !roleObj.toString().contains("Staffs")) {
                 response.sendRedirect(request.getContextPath() + "/login");
                 return;
             }
+
             int staffId = user.getId();
 
             if (staffId <= 0) {
-                request.setAttribute("error", "Invalid staff ID. Please log in with a valid staff account.");
+                request.setAttribute("error", "Invalid staff ID.  Please log in with a valid staff account.");
                 request.getRequestDispatcher("../c/staff-feedback.jsp").forward(request, response);
                 return;
             }
 
-            // Get pagination parameters
+            // Pagination parameters
             int page = 1;
-            int pageSize = 5; // Matches JSP table size
-            String pageStr = request.getParameter("page");
-            if (pageStr != null && !pageStr.isEmpty()) {
-                try {
+            int pageSize = 5;
+            try {
+                String pageStr = request.getParameter("page");
+                if (pageStr != null && !pageStr.isEmpty()) {
                     page = Integer.parseInt(pageStr);
                     if (page < 1) page = 1;
-                } catch (NumberFormatException e) {
-                    page = 1; // Default to page 1 on invalid input
                 }
+            } catch (NumberFormatException e) {
+                // Log the error (optional, but recommended for debugging)
+                System.err.println("Invalid page number: " + request.getParameter("page"));
+                // Keep the default page = 1
             }
             int offset = (page - 1) * pageSize;
 
-            // Get sorting, filtering, and search parameters
-            String sortService = request.getParameter("sortService"); // "asc" or "desc"
-            String sortDate = request.getParameter("sortDate");       // "asc" or "desc"
-            String sortCustomer = request.getParameter("sortCustomer"); // "asc" or "desc"
-            String filterRating = request.getParameter("filterRating"); // "1" to "5" or empty
-            String search = request.getParameter("search");           // Search string or empty
+            // Sorting, filtering, and search parameters
+            String sortService = request.getParameter("sortService");
+            String sortDate = request.getParameter("sortDate");
+            String sortCustomer = request.getParameter("sortCustomer");
+            String filterRating = request.getParameter("filterRating");
+            String search = request.getParameter("search");
 
             // Fetch total feedbacks with filters
             int totalFeedbacks = feedbackDB.getTotalFeedbacksByStaffId(staffId, filterRating, search);
             int totalPages = (int) Math.ceil((double) totalFeedbacks / pageSize);
 
-            // Fetch feedback list with sorting, filtering, searching, and pagination
+            // Handle edge case where requested page is beyond the total pages
+            if (page > totalPages && totalPages > 0) {
+                page = totalPages;  // Go to the last page if the requested page is too high
+                offset = (page - 1) * pageSize; // Recalculate offset
+            }
+
+            // Fetch feedback list
             List<Feedback> feedbackList = feedbackDB.getFeedbacksByStaffId(
-                staffId, sortService, sortDate, sortCustomer, filterRating, search, offset, pageSize
+                    staffId, sortService, sortDate, sortCustomer, filterRating, search, offset, pageSize
             );
 
-            // Set request attributes for JSP
+            // Set request attributes
             request.setAttribute("feedbackList", feedbackList);
             request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
             request.setAttribute("totalFeedbacks", totalFeedbacks);
             request.setAttribute("pageSize", pageSize);
-            // Preserve parameters for JSP to use in links
             request.setAttribute("sortService", sortService);
             request.setAttribute("sortDate", sortDate);
             request.setAttribute("sortCustomer", sortCustomer);
@@ -88,20 +99,28 @@ public class StaffFeedback extends HttpServlet {
             request.getRequestDispatcher("../c/staff-feedback.jsp").forward(request, response);
 
         } catch (SQLException e) {
+            // Log the error
+            System.err.println("SQL Exception: " + e.getMessage());
+            e.printStackTrace();  //Print the stack trace for debugging.
             request.setAttribute("error", "Database error: " + e.getMessage());
             request.getRequestDispatcher("../c/staff-feedback.jsp").forward(request, response);
         } catch (Exception e) {
+            // Log the error
+            System.err.println("Exception: " + e.getMessage());
+            e.printStackTrace(); //Print the stack trace for debugging.
             request.setAttribute("error", "Unexpected error: " + e.getMessage());
             request.getRequestDispatcher("../c/staff-feedback.jsp").forward(request, response);
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+
+   @Override
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account acocunt)
             throws ServletException, IOException {
         // Handle POST requests the same as GET (e.g., form submission for filters)
-        doGet(request, response);
+        doAuthorizedGet(request, response, acocunt);
     }
+
 
     @Override
     public String getServletInfo() {
