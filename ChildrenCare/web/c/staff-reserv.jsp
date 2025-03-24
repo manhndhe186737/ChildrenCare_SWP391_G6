@@ -227,7 +227,6 @@
                         <c:if test="${sessionScope.role.contains('Admin')}">
                             <li><a href="../admin/dashboard" class="sub-menu-item" target="_blank">Admin</a></li>
                             </c:if>
-
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->
