@@ -49,7 +49,7 @@ public class StaffReservation extends BaseRBAC {
         ReservationDBContext rdb = new ReservationDBContext();
 
         int page = 1;
-        int pageSize = 2;
+        int pageSize = 5;
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));

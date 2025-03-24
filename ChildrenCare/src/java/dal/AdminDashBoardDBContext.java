@@ -19,7 +19,9 @@ public class AdminDashBoardDBContext extends DBContext {
             ps.setDate(2, startDate);
             ps.setDate(3, endDate);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return rs.getInt(1);
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
                 return 0;
             }
         }
@@ -27,13 +29,15 @@ public class AdminDashBoardDBContext extends DBContext {
 
     // Tính tổng doanh thu
     public double getTotalRevenue(java.sql.Date startDate, java.sql.Date endDate) throws SQLException {
-        String query = "SELECT SUM(s.price) FROM reservations r JOIN services s ON r.service_id = s.service_id " +
-                      "WHERE r.createDate BETWEEN ? AND ?";
+        String query = "SELECT SUM(s.price) FROM reservations r JOIN services s ON r.service_id = s.service_id "
+                + "WHERE r.createDate BETWEEN ? AND ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setDate(1, startDate);
             ps.setDate(2, endDate);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return rs.getDouble(1);
+                if (rs.next()) {
+                    return rs.getDouble(1);
+                }
                 return 0.0;
             }
         }
@@ -41,10 +45,10 @@ public class AdminDashBoardDBContext extends DBContext {
 
     // Doanh thu theo danh mục dịch vụ
     public Map<String, Double> getRevenueByServiceCategory(java.sql.Date startDate, java.sql.Date endDate) throws SQLException {
-        String query = "SELECT sc.name, SUM(s.price) FROM reservations r " +
-                      "JOIN services s ON r.service_id = s.service_id " +
-                      "JOIN servicecategories sc ON s.category_id = sc.category_id " +
-                      "WHERE r.createDate BETWEEN ? AND ? GROUP BY sc.name";
+        String query = "SELECT sc.name, SUM(s.price) FROM reservations r "
+                + "JOIN services s ON r.service_id = s.service_id "
+                + "JOIN servicecategories sc ON s.category_id = sc.category_id "
+                + "WHERE r.createDate BETWEEN ? AND ? GROUP BY sc.name";
         Map<String, Double> revenueByService = new HashMap<>();
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setDate(1, startDate);
@@ -58,7 +62,6 @@ public class AdminDashBoardDBContext extends DBContext {
         return revenueByService;
     }
 
-
     // Số khách hàng đặt lịch mới
     public int getNewlyReservedCustomers(java.sql.Date startDate, java.sql.Date endDate) throws SQLException {
         String query = "SELECT COUNT( r.user_id) FROM reservations r WHERE r.createDate BETWEEN ? AND ?";
@@ -66,7 +69,9 @@ public class AdminDashBoardDBContext extends DBContext {
             ps.setDate(1, startDate);
             ps.setDate(2, endDate);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return rs.getInt(1);
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
                 return 0;
             }
         }
@@ -79,7 +84,9 @@ public class AdminDashBoardDBContext extends DBContext {
             ps.setDate(1, startDate);
             ps.setDate(2, endDate);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return rs.getDouble(1);
+                if (rs.next()) {
+                    return rs.getDouble(1);
+                }
                 return 0.0;
             }
         }
@@ -87,17 +94,21 @@ public class AdminDashBoardDBContext extends DBContext {
 
     // Điểm trung bình phản hồi theo dịch vụ
     public Map<String, Double> getAverageStarByService(java.sql.Date startDate, java.sql.Date endDate) throws SQLException {
-        String query = "SELECT s.name, AVG(f.rating) FROM feedbacks f " +
-                      "JOIN reservations r ON f.reserv_id = r.reserv_id " +
-                      "JOIN services s ON r.service_id = s.service_id " +
-                      "WHERE f.date BETWEEN ? AND ? GROUP BY s.name";
+        String query = "SELECT s.name, AVG(f.rating) FROM feedbacks f "
+                + "JOIN reservations r ON f.reserv_id = r.reserv_id "
+                + "JOIN services s ON r.service_id = s.service_id "
+                + "WHERE f.date BETWEEN ? AND ? GROUP BY s.name";
         Map<String, Double> avgStarByService = new HashMap<>();
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setDate(1, startDate);
             ps.setDate(2, endDate);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    avgStarByService.put(rs.getString(1), rs.getDouble(2));
+                    // Get the rating value from the result set
+                    double rating = rs.getDouble(2);
+                    // Format the rating value to 2 decimal places
+                    double formattedRating = Double.parseDouble(String.format("%.1f", rating));
+                    avgStarByService.put(rs.getString(1), formattedRating);
                 }
             }
         }
@@ -106,10 +117,10 @@ public class AdminDashBoardDBContext extends DBContext {
 
     // Xu hướng đặt lịch
     public List<Map<String, Object>> getReservationTrend(java.sql.Date startDate, java.sql.Date endDate) throws SQLException {
-        String query = "SELECT DATE(createDate) as date, " +
-                      "SUM(CASE WHEN status = 'Completed' THEN 1 ELSE 0 END) as completed, " +
-                      "COUNT(*) as total " +
-                      "FROM reservations WHERE createDate BETWEEN ? AND ? GROUP BY DATE(createDate)";
+        String query = "SELECT DATE(createDate) as date, "
+                + "SUM(CASE WHEN status = 'Completed' THEN 1 ELSE 0 END) as completed, "
+                + "COUNT(*) as total "
+                + "FROM reservations WHERE createDate BETWEEN ? AND ? GROUP BY DATE(createDate)";
         List<Map<String, Object>> trend = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setDate(1, startDate);
