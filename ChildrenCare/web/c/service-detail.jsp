@@ -432,57 +432,61 @@
         <div class="container">
             <h5 class="mb-3">Customer Feedback</h5>
 
-            <!-- List of Comments -->
-            <div class="comments-list">
-                <c:if test="${empty requestScope.feedback}">
-                    <p>No feedback available.</p> <!-- Hiển thị thông báo khi không có feedback -->
-                </c:if>
+            <!-- Container with gray border and white background -->
+            <div class="border p-4 rounded-3" style="background-color: #fff; border: 1px solid #ddd;">
+                <!-- List of Comments -->
+                <div class="comments-list">
+                    <c:if test="${empty requestScope.feedback}">
+                        <p>No feedback available.</p> <!-- Hiển thị thông báo khi không có feedback -->
+                    </c:if>
 
-                <c:forEach var="f" items="${requestScope.feedback}">
-                    <div class="comment">
-                        <div class="d-flex align-items-center mb-3">
-                            <!-- Avatar -->
-                            <div class="avatar-container">
-                                <img src="${pageContext.request.contextPath}/${f.avatar}" class="avatar-img" alt="${f.fullname}">
-                            </div>
-                            <!-- Full Name -->
-                            <h6 class="fw-bold ms-3">${f.fullname}</h6>
-                        </div>
-                        <!-- Rating Stars -->
-                        <div class="rating">
-                            <c:forEach var="i" begin="1" end="${f.rating}">
-                                <i class="fas fa-star text-warning fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
-                            </c:forEach>
-                            <c:forEach var="i" begin="${f.rating + 1}" end="5">
-                                <i class="fas fa-star text-muted fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
-                            </c:forEach>
-                        </div>
-                        <p class="text-muted">${f.date}</p>
-                        <!-- Comment Text -->
-                        <h6 class="text-muted">${f.comment}</h6>
-                        <!-- Comment Image -->
-                        <c:if test="${f.commentImg != null}">
-                            <div class="comment-img-container">
-                                <img src="${pageContext.request.contextPath}/${f.commentImg}" class="comment-img" alt="${f.fullname}">
-                            </div>
-                        </c:if>
-                        <c:if test="${not empty f.reply}">
-                            <div class="row">
-                                <div class="col-6">
-                                    <h6 class="fw-bold ms-3">Manager Feedback</h6>
-                                    <h6 class="text-muted reply-container p-3" style="background-color: #f1f1f1; margin-left: 20px; border-radius: 5px;">
-                                        ${f.reply}
-                                    </h6>
+                    <c:forEach var="f" items="${requestScope.feedback}">
+                        <div class="comment mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <!-- Avatar -->
+                                <div class="avatar-container">
+                                    <img src="${pageContext.request.contextPath}/${f.avatar}" class="avatar-img" alt="${f.fullname}">
                                 </div>
+                                <!-- Full Name -->
+                                <h6 class="fw-bold ms-3">${f.fullname}</h6>
                             </div>
-                        </c:if>
-
-                    </div>
-                </c:forEach>
+                            <!-- Rating Stars -->
+                            <div class="rating">
+                                <c:forEach var="i" begin="1" end="${f.rating}">
+                                    <i class="fas fa-star text-warning fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
+                                </c:forEach>
+                                <c:forEach var="i" begin="${f.rating + 1}" end="5">
+                                    <i class="fas fa-star text-muted fa-sm"></i> <!-- Thêm lớp fa-sm để làm nhỏ icon -->
+                                </c:forEach>
+                            </div>
+                            <p class="text-muted">${f.date}</p>
+                            <!-- Comment Text -->
+                            <h6 class="text-muted">${f.comment}</h6>
+                            <!-- Comment Image -->
+                            <c:if test="${f.commentImg != null}">
+                                <div class="comment-img-container">
+                                    <img src="${pageContext.request.contextPath}/${f.commentImg}" class="comment-img" alt="${f.fullname}">
+                                </div>
+                            </c:if>
+                            <c:if test="${not empty f.reply}">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h6 class="fw-bold ms-3">Manager Feedback</h6>
+                                        <h6 class="text-muted reply-container p-3" style="background-color: #f1f1f1; margin-left: 20px; border-radius: 5px;">
+                                            ${f.reply}
+                                        </h6>
+                                    </div>
+                                </div>
+                            </c:if>
+                        </div>
+                    </c:forEach>
+                </div>
             </div>
         </div>
     </section>
 
+
+    &nbsp;
 
     <!-- Footer Start -->
     <footer class="bg-footer">
@@ -667,6 +671,157 @@
                                     function submitCartItem(button) {
                                         button.closest('form').submit(); // Lấy form gần nhất chứa nút này và submit
                                     }
+
+                                    // Configuration
+                                    const ITEMS_PER_PAGE = 3; // Number of feedback items to show per page
+
+// Variables to track state
+                                    let currentPage = 1;
+                                    let feedbackItems = [];
+
+// Function to initialize pagination
+                                    function initPagination() {
+                                        // Get all feedback items
+                                        feedbackItems = document.querySelectorAll('.comment');
+
+                                        // If no feedback items, no need to set up pagination
+                                        if (feedbackItems.length === 0)
+                                            return;
+
+                                        // Calculate total pages
+                                        const totalPages = Math.ceil(feedbackItems.length / ITEMS_PER_PAGE);
+
+                                        // Create pagination controls
+                                        createPaginationControls(totalPages);
+
+                                        // Show first page
+                                        showPage(currentPage);
+                                    }
+
+// Function to create pagination controls
+                                    function createPaginationControls(totalPages) {
+                                        // Create container for pagination controls
+                                        const paginationContainer = document.createElement('div');
+                                        paginationContainer.className = 'pagination-container d-flex justify-content-center mt-4';
+
+                                        // Create pagination list
+                                        const paginationList = document.createElement('ul');
+                                        paginationList.className = 'pagination';
+
+                                        // Previous button
+                                        const previousItem = document.createElement('li');
+                                        previousItem.className = 'page-item';
+                                        const previousLink = document.createElement('a');
+                                        previousLink.className = 'page-link';
+                                        previousLink.href = '#';
+                                        previousLink.textContent = 'Prev';
+                                        previousLink.addEventListener('click', function (e) {
+                                            e.preventDefault();
+                                            if (currentPage > 1) {
+                                                showPage(currentPage - 1);
+                                            }
+                                        });
+                                        previousItem.appendChild(previousLink);
+                                        paginationList.appendChild(previousItem);
+
+                                        // Page numbers
+                                        for (let i = 1; i <= totalPages; i++) {
+                                            const pageItem = document.createElement('li');
+                                            pageItem.className = 'page-item';
+
+                                            const pageLink = document.createElement('a');
+                                            pageLink.className = 'page-link';
+                                            pageLink.href = '#';
+                                            pageLink.textContent = i;
+                                            pageLink.addEventListener('click', function (e) {
+                                                e.preventDefault();
+                                                showPage(i);
+                                            });
+
+                                            pageItem.appendChild(pageLink);
+                                            paginationList.appendChild(pageItem);
+                                        }
+
+                                        // Next button
+                                        const nextItem = document.createElement('li');
+                                        nextItem.className = 'page-item';
+                                        const nextLink = document.createElement('a');
+                                        nextLink.className = 'page-link';
+                                        nextLink.href = '#';
+                                        nextLink.textContent = 'Next';
+                                        nextLink.addEventListener('click', function (e) {
+                                            e.preventDefault();
+                                            if (currentPage < totalPages) {
+                                                showPage(currentPage + 1);
+                                            }
+                                        });
+                                        nextItem.appendChild(nextLink);
+                                        paginationList.appendChild(nextItem);
+
+                                        // Add pagination list to container
+                                        paginationContainer.appendChild(paginationList);
+
+                                        // Add pagination controls OUTSIDE the comments section
+                                        const commentsSection = document.querySelector('.comments-section');
+                                        commentsSection.parentNode.insertBefore(paginationContainer, commentsSection.nextSibling);
+                                    }
+
+// Function to show a specific page
+                                    function showPage(pageNumber) {
+                                        // Update current page
+                                        currentPage = pageNumber;
+
+                                        // Calculate start and end index
+                                        const startIndex = (pageNumber - 1) * ITEMS_PER_PAGE;
+                                        const endIndex = startIndex + ITEMS_PER_PAGE;
+
+                                        // Hide all feedback items
+                                        feedbackItems.forEach(item => {
+                                            item.style.display = 'none';
+                                        });
+
+                                        // Show items for current page
+                                        for (let i = startIndex; i < endIndex && i < feedbackItems.length; i++) {
+                                            feedbackItems[i].style.display = 'block';
+                                        }
+
+                                        // Update active page in pagination
+                                        updateActivePage();
+                                    }
+
+// Function to update the active page in pagination
+                                    function updateActivePage() {
+                                        const pageLinks = document.querySelectorAll('.pagination .page-item');
+
+                                        pageLinks.forEach((pageItem, index) => {
+                                            // Skip the first (Previous) and last (Next) items
+                                            if (index === 0 || index === pageLinks.length - 1)
+                                                return;
+
+                                            if (index === currentPage) {
+                                                pageItem.classList.add('active');
+                                            } else {
+                                                pageItem.classList.remove('active');
+                                            }
+                                        });
+
+                                        // Enable/disable Previous button
+                                        if (currentPage === 1) {
+                                            pageLinks[0].classList.add('disabled');
+                                        } else {
+                                            pageLinks[0].classList.remove('disabled');
+                                        }
+
+                                        // Enable/disable Next button
+                                        if (currentPage === pageLinks.length - 2) { // -2 because of Previous and Next buttons
+                                            pageLinks[pageLinks.length - 1].classList.add('disabled');
+                                        } else {
+                                            pageLinks[pageLinks.length - 1].classList.remove('disabled');
+                                        }
+                                    }
+
+// Initialize pagination when DOM is fully loaded
+                                    document.addEventListener('DOMContentLoaded', initPagination);
     </script>
 </body>
 
