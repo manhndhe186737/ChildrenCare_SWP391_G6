@@ -436,7 +436,7 @@
                                             <h6 class="text-primary fw-bold mb-3"><i class="uil uil-calendar-alt me-2"></i>Appointment Info</h6>
                                             <p class="mb-2"><strong class="text-secondary">Date:</strong> ${appointment.dateBook}</p>
                                             <p class="mb-2"><strong class="text-secondary">Time:</strong> ${appointment.startTime} - ${appointment.endTime}</p>
-                                            <p class="mb-2"><strong class="text-secondary">Payment:</strong> ${appointment.status} </p>
+                                            <p class="mb-2"><strong class="text-secondary">Payment:</strong> ${appointment.paymentStatus} </p>
                                             <p class="mb-0"><strong class="text-secondary">Amount:</strong> ${appointment.amount} </p>
                                         </div>
                                     </div>

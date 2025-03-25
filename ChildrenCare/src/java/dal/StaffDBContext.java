@@ -642,7 +642,7 @@ public class StaffDBContext extends DBContext {
         // Xây dựng câu lệnh SQL với các điều kiện lọc
         StringBuilder sql = new StringBuilder("SELECT rsv.reserv_id, rsv.dateBook, rsv.user_id, rsv.status, "
                 + "rsv.service_id, rsv.starttime, rsv.endtime, rsv.customer_name, rsv.customer_address, "
-                + "p.payment_id, p.amount, p.method, p.status "
+                + "p.payment_id, p.amount, p.method, p.status PaymentStatus "
                 + "FROM reservations rsv "
                 + "JOIN payment p ON p.reserv_id = rsv.reserv_id "
                 + "WHERE rsv.staff_id = ? ");
@@ -695,7 +695,7 @@ public class StaffDBContext extends DBContext {
                 appointment.setPaymentId(rs.getInt("payment_id"));
                 appointment.setAmount(rs.getDouble("amount"));
                 appointment.setPaymentMethod(rs.getString("method"));
-                appointment.setPaymentStatus(rs.getString("status"));
+                appointment.setPaymentStatus(rs.getString("PaymentStatus"));
 
                 appointmentList.add(appointment);
             }
