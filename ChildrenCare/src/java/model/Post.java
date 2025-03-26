@@ -1,5 +1,4 @@
 package model;
-
 import java.sql.Date;
 
 public class Post {
@@ -10,9 +9,12 @@ public class Post {
     private Date createdate;
     private String status;
     private String img;
-    private String category;
     private String author; 
     private String authorAvatar;
+    
+    private int categoryId;
+    private PostCategory postCategory;
+    private String categoryName;
 
     public Post(int id, String title, String content, Date updatedate, Date createdate, String status, String img, String category, String author) {
         this.id = id;
@@ -22,91 +24,145 @@ public class Post {
         this.createdate = createdate;
         this.status = status;
         this.img = img;
-        this.category = category;
+        this.categoryName = category;
+        this.author = author;
+    }
+    
+    // New constructor with categoryId
+    public Post(int id, String title, String content, Date updatedate, Date createdate, String status, String img, int categoryId, String author) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.updatedate = updatedate;
+        this.createdate = createdate;
+        this.status = status;
+        this.img = img;
+        this.categoryId = categoryId;
         this.author = author;
     }
 
     public Post() {
     }
-
-    // Getters and setters cho các thuộc tính cũ...
+    
+    // Existing getters and setters
     public int getId() {
         return id;
     }
-
+    
     public void setId(int id) {
         this.id = id;
     }
-
+    
     public String getTitle() {
         return title;
     }
-
+    
     public void setTitle(String title) {
         this.title = title;
     }
-
+    
     public String getContent() {
         return content;
     }
-
+    
     public void setContent(String content) {
         this.content = content;
     }
-
+    
     public Date getUpdatedate() {
         return updatedate;
     }
-
+    
     public void setUpdatedate(Date updatedate) {
         this.updatedate = updatedate;
     }
-
+    
     public Date getCreatedate() {
         return createdate;
     }
-
+    
     public void setCreatedate(Date createdate) {
         this.createdate = createdate;
     }
-
+    
     public String getStatus() {
         return status;
     }
-
+    
     public void setStatus(String status) {
         this.status = status;
     }
-
+    
     public String getImg() {
         return img;
     }
-
+    
     public void setImg(String img) {
         this.img = img;
     }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
+    
     public String getAuthor() {
         return author;
     }
-
+    
     public void setAuthor(String author) {
         this.author = author;
     }
-
+    
     public String getAuthorAvatar() {
         return authorAvatar;
     }
-
+    
     public void setAuthorAvatar(String authorAvatar) {
         this.authorAvatar = authorAvatar;
+    }
+    
+    public int getCategoryId() {
+        return categoryId;
+    }
+    
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+    
+    public PostCategory getPostCategory() {
+        return postCategory;
+    }
+    
+    public void setPostCategory(PostCategory postCategory) {
+        this.postCategory = postCategory;
+        if (postCategory != null) {
+            this.categoryId = postCategory.getId();
+            this.categoryName = postCategory.getName();
+        }
+    }
+    
+    public String getCategoryName() {
+        return categoryName;
+    }
+    
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+    
+ 
+    public boolean isStatusActive() {
+        return "1".equals(status) || "true".equals(status.toLowerCase());
+    }
+    
+    public void setStatusBoolean(boolean active) {
+        this.status = active ? "1" : "0";
+    }
+    
+    public int getAuthorId() {
+        try {
+            return Integer.parseInt(author);
+        } catch (NumberFormatException e) {
+            return 0; 
+        }
+    }
+    
+    public void setAuthorId(int authorId) {
+        this.author = String.valueOf(authorId);
     }
 }

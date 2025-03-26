@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller.manage.post;
 
 import controller.auth.BaseRBAC;
@@ -15,11 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Account;
 import model.Post;
+import model.PostCategory;
+import java.util.ArrayList;
 
-/**
- *
- * @author DELL
- */
 public class PostList extends BaseRBAC {
 
     /**
@@ -48,15 +42,6 @@ public class PostList extends BaseRBAC {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     private static final int PAGE_SIZE = 5;
 
     protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
@@ -64,12 +49,12 @@ public class PostList extends BaseRBAC {
         PostDBContext postDAO = new PostDBContext();
 
         // Lấy danh sách category & author từ database
-        List<String> categories = postDAO.getAllCategories();
+        ArrayList<PostCategory> categories = postDAO.getAllCategories(true); // Lấy tất cả các danh mục (bao gồm cả inactive)
         List<String[]> authors = postDAO.getAllAuthors();
 
         // Nhận các tham số lọc từ request
         int page = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
-        String category = request.getParameter("category");
+        String categoryId = request.getParameter("categoryId");
         String author = request.getParameter("author");
         String status = request.getParameter("status");
         String search = request.getParameter("search");
@@ -77,8 +62,8 @@ public class PostList extends BaseRBAC {
         String order = request.getParameter("order") == null ? "ASC" : request.getParameter("order");
 
         // Kiểm tra cột sắp xếp hợp lệ
-        if (sortBy == null || (!sortBy.equals("title") && !sortBy.equals("category") && !sortBy.equals("author_name") && !sortBy.equals("status"))) {
-            sortBy = "updatedate"; // Mặc định sắp xếp theo ngày cập nhật
+        if (sortBy == null || (!sortBy.equals("p.title") && !sortBy.equals("category_name") && !sortBy.equals("author_name") && !sortBy.equals("p.status"))) {
+            sortBy = "p.updatedate"; // Mặc định sắp xếp theo ngày cập nhật
         }
 
         // Kiểm tra thứ tự sắp xếp hợp lệ
@@ -86,10 +71,10 @@ public class PostList extends BaseRBAC {
             order = "ASC"; // Mặc định tăng dần
         }
 
-        // Lấy danh sách bài viết theo bộ lọc và sắp xếp
-        List<Post> posts = postDAO.getPaginatedPosts(page, 5, category, author, status, search, sortBy, order);
-        int totalPosts = postDAO.getTotalPosts(category, author, status, search);
-        int totalPages = (int) Math.ceil((double) totalPosts / 5);
+        // Lấy danh sách bài viết theo bộ lọc và sắp xếp - Admin xem được tất cả
+        List<Post> posts = postDAO.getPaginatedPosts(page, PAGE_SIZE, categoryId, author, status, search, sortBy, order, true); 
+        int totalPosts = postDAO.getTotalPosts(categoryId, author, status, search, true);
+        int totalPages = (int) Math.ceil((double) totalPosts / PAGE_SIZE);
 
         // Đưa dữ liệu vào request
         request.setAttribute("posts", posts);
@@ -103,14 +88,6 @@ public class PostList extends BaseRBAC {
         request.getRequestDispatcher("admin/postList.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
@@ -128,15 +105,8 @@ public class PostList extends BaseRBAC {
         response.sendRedirect("post-list");
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
-
+    }
 }

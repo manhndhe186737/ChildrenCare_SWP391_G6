@@ -122,15 +122,15 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                        <!--<a href="index.html">-->
+                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
-                    
+
                     <ul class="sidebar-menu pt-3">
                         <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                        
+
 
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
@@ -173,8 +173,8 @@
                             <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Setting</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="settings">Category</a></li>
-                                </ul>
+                                    <li><a href="settings-servicecategory">Service Category</a></li>
+                                    <li><a href="settings-postcategory">Post Category</a></li>                                </ul>
                             </div>
                         </li>
                     </ul>
@@ -208,7 +208,7 @@
                             </a>
 
                         </div>
-        
+
                         <ul class="list-unstyled mb-0">
 
                             <li class="list-inline-item mb-0 ms-1">

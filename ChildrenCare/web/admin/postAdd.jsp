@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List, model.Post, model.PostCategory, java.util.ArrayList" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -235,10 +237,10 @@
             .page-wrapper {
                 display: flex;
                 flex-direction: column;
-                min-height: 100vh; 
+                min-height: 100vh;
             }
 
-            
+
 
             .bg-footer {
                 margin-top: auto;
@@ -367,10 +369,10 @@
                                                 <li class="has-submenu parent-menu-item">
                                                     <c:if test="${sessionScope.role.contains('Staffs')}">
                                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
-                                                    
-                                                    
-                                                    </c:if>
-                                                
+
+
+                                                </c:if>
+
                                             </ul>
                                         </li>
 
@@ -416,15 +418,20 @@
                         <input type="text" name="title" required>
 
                         <label>Content:</label>
-                        <textarea id="content-editor" name="content" ></textarea>
-
+                        <textarea id="content-editor" name="content"></textarea>
 
                         <label>Category:</label>
-                        <select name="category">
-                            <% List<String> categories = (List<String>) request.getAttribute("categories");
-           for (String category : categories) { %>
-                            <option value="<%= category %>"><%= category %></option>
-                            <% } %>
+                        <select name="categoryId">
+                            <% ArrayList<PostCategory> categories = (ArrayList<PostCategory>) request.getAttribute("categories");
+                               for (PostCategory category : categories) { 
+                                   // Chỉ hiển thị các danh mục đang active
+                                   if (category.isStatus()) {
+                            %>
+                            <option value="<%= category.getId() %>"><%= category.getName() %></option>
+                            <% 
+                                   }
+                               } 
+                            %>
                         </select>
 
                         <label>Status:</label>
@@ -432,6 +439,7 @@
                             <option value="1">Active</option>
                             <option value="0">Hidden</option>
                         </select>
+
                         <label>Upload Image:</label>
                         <div class="image-container">
                             <div class="current-image-container" id="currentImageContainer">
@@ -443,7 +451,6 @@
                         </div>
                         <label for="imageFile" class="btn-upload">📸 Upload</label>
                         <input type="file" name="imageFile" accept="image/*" id="imageFile" onchange="previewImage(event)">
-
 
                         <label>Author:</label>
                         <select name="author">
@@ -470,6 +477,8 @@
                             Please select an author.
                             <% } else if ("invalid_author".equals(error)) { %>
                             Invalid author selection.
+                            <% } else if ("invalid_category".equals(error)) { %>
+                            Invalid category selection.
                             <% } %>
                         </p>
                         <% } %>
@@ -477,9 +486,9 @@
                         <button type="submit">Add Post</button>
                     </form>
 
-
                     <a href="post-list" class="back-btn">Back to Post List</a>
                 </div>
+
 
                 <!-- Start -->
                 <footer class="bg-footer">
@@ -654,67 +663,67 @@
                 <!-- Main Js -->
                 <script src="./assets/js/app.js"></script>
 
-        <script>
-                                        const handleChange = () => {
-                                            const fileUploader = document.querySelector('#input-file');
-                                            const getFile = fileUploader.files
-                                            if (getFile.length !== 0) {
-                                                const uploadedFile = getFile[0];
-                                                readFile(uploadedFile);
-                                            }
-                                        }
+                <script>
+                                                const handleChange = () => {
+                                                    const fileUploader = document.querySelector('#input-file');
+                                                    const getFile = fileUploader.files
+                                                    if (getFile.length !== 0) {
+                                                        const uploadedFile = getFile[0];
+                                                        readFile(uploadedFile);
+                                                    }
+                                                }
 
-                                        const readFile = (uploadedFile) => {
-                                            if (uploadedFile) {
-                                                const reader = new FileReader();
-                                                reader.onload = () => {
-                                                    const parent = document.querySelector('.preview-box');
-                                                    parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
+                                                const readFile = (uploadedFile) => {
+                                                    if (uploadedFile) {
+                                                        const reader = new FileReader();
+                                                        reader.onload = () => {
+                                                            const parent = document.querySelector('.preview-box');
+                                                            parent.innerHTML = `<img class="preview-content" src=${reader.result} />`;
+                                                        };
+
+                                                        reader.readAsDataURL(uploadedFile);
+                                                    }
                                                 };
+                </script>
+                <script>
+                    function previewImage(event) {
+                        const input = event.target;
+                        const reader = new FileReader();
+                        const previewContainer = document.getElementById("preview-container");
+                        const previewImage = document.getElementById("preview-image");
+                        const currentImageContainer = document.getElementById("currentImageContainer");
 
-                                                reader.readAsDataURL(uploadedFile);
-                                            }
-                                        };
-        </script>
-        <script>
-            function previewImage(event) {
-                const input = event.target;
-                const reader = new FileReader();
-                const previewContainer = document.getElementById("preview-container");
-                const previewImage = document.getElementById("preview-image");
-                const currentImageContainer = document.getElementById("currentImageContainer");
+                        reader.onload = function () {
+                            previewImage.src = reader.result;
+                            previewContainer.style.display = "flex";
+                            currentImageContainer.style.display = "none";
+                        };
 
-                reader.onload = function () {
-                    previewImage.src = reader.result;
-                    previewContainer.style.display = "flex";
-                    currentImageContainer.style.display = "none";
-                };
-
-                if (input.files && input.files[0]) {
-                    reader.readAsDataURL(input.files[0]);
-                } else {
-                    previewContainer.style.display = "none";
-                    currentImageContainer.style.display = "flex";
-                }
-            }
-        </script>
-        <script>
-            tinymce.init({
-                selector: 'textarea#content-editor',
-                height: 300,
-                menubar: false,
-                plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste help',
-                toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-                content_css: 'https://www.tiny.cloud/css/codepen.min.css',
-                setup: function (editor) {
-                    editor.on('change', function () {
-                        editor.save(); // Cập nhật nội dung vào textarea thật
+                        if (input.files && input.files[0]) {
+                            reader.readAsDataURL(input.files[0]);
+                        } else {
+                            previewContainer.style.display = "none";
+                            currentImageContainer.style.display = "flex";
+                        }
+                    }
+                </script>
+                <script>
+                    tinymce.init({
+                        selector: 'textarea#content-editor',
+                        height: 300,
+                        menubar: false,
+                        plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste help',
+                        toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+                        content_css: 'https://www.tiny.cloud/css/codepen.min.css',
+                        setup: function (editor) {
+                            editor.on('change', function () {
+                                editor.save(); // Cập nhật nội dung vào textarea thật
+                            });
+                        }
                     });
-                }
-            });
 
-        </script>
+                </script>
 
-    </body>
+                </body>
 
-</html>
+                </html>

@@ -1,15 +1,17 @@
 package controller.manage.blog;
 
-import dal.PostDBContext; // Dùng PostDBContext thay vì BlogDBContext
-import model.Post; // Dùng Post thay vì Blog
+import dal.PostDBContext;
+import model.Post;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.PostCategory;
 
 public class BlogServlet extends HttpServlet {
 
@@ -23,9 +25,8 @@ public class BlogServlet extends HttpServlet {
         PostDBContext postDB = new PostDBContext();
         String postIdParam = request.getParameter("id");
         String searchQuery = request.getParameter("search");
-        String category = request.getParameter("category");
+        String categoryIdParam = request.getParameter("categoryId"); // Đổi từ category thành categoryId
         String author = request.getParameter("author");
-        String status = request.getParameter("status");
         String sortBy = request.getParameter("sortBy");
         String order = request.getParameter("order") == null ? "ASC" : request.getParameter("order");
         String pageParam = request.getParameter("page");
@@ -46,9 +47,12 @@ public class BlogServlet extends HttpServlet {
             try {
                 int postId = Integer.parseInt(postIdParam);
                 LOGGER.info("Fetching post with ID: " + postId);
-                Post post = postDB.getPostById(postId);
+                
+                // Sử dụng phương thức getPublicPostById để đảm bảo chỉ trả về bài viết thuộc category active
+                Post post = postDB.getPublicPostById(postId);
+                
                 if (post == null) {
-                    request.setAttribute("errorMessage", "Không tìm thấy bài viết.");
+                    request.setAttribute("errorMessage", "Không tìm thấy bài viết hoặc bài viết không khả dụng.");
                     request.getRequestDispatcher("blogs.jsp").forward(request, response);
                     return;
                 }
@@ -64,15 +68,20 @@ public class BlogServlet extends HttpServlet {
         }
 
         // Lấy danh sách danh mục và tác giả từ cơ sở dữ liệu
-        List<String> categories = postDB.getAllCategories();
+        // Chỉ lấy các danh mục ở trạng thái active (status = 1)
+        ArrayList<PostCategory> categories = postDB.getAllCategories(false);
         List<String[]> authors = postDB.getAllAuthors();
 
-        // Lấy tổng số bài viết và tính số trang
-        int totalPosts = postDB.getTotalPosts(category, author, status, searchQuery);
+        // Xác định status cho public site - luôn là "1" (active)
+        String status = "1";
+        
+        // Lấy tổng số bài viết và tính số trang - chỉ đếm những bài viết active và thuộc category active
+        int totalPosts = postDB.getTotalPosts(categoryIdParam, author, status, searchQuery, false);
         int totalPages = (int) Math.ceil((double) totalPosts / POSTS_PER_PAGE);
 
         // Lấy danh sách bài viết theo trang hiện tại và các bộ lọc
-        List<Post> posts = postDB.getPaginatedPosts(currentPage, POSTS_PER_PAGE, category, author, status, searchQuery, sortBy, order);
+        // includeInactiveCategories = false đảm bảo chỉ lấy bài viết thuộc category active
+        List<Post> posts = postDB.getPaginatedPosts(currentPage, POSTS_PER_PAGE, categoryIdParam, author, status, searchQuery, sortBy, order, false);
 
         // Đưa dữ liệu vào request
         request.setAttribute("posts", posts);
@@ -81,6 +90,7 @@ public class BlogServlet extends HttpServlet {
         request.setAttribute("searchQuery", searchQuery);
         request.setAttribute("categories", categories);
         request.setAttribute("authors", authors);
+        request.setAttribute("categoryId", categoryIdParam); // Đổi từ category thành categoryId
         request.setAttribute("sortBy", sortBy);
         request.setAttribute("order", order);
 
