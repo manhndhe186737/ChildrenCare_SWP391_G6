@@ -54,14 +54,14 @@
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Your Email <span class="text-danger">*</span></label>
-                                                <input type="email" class="form-control" placeholder="Email" name="email" required="">
+                                                <input type="email" class="form-control" placeholder="Email" value="${email}" name="email" required="">
                                             </div>
                                         </div>
 
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Password <span class="text-danger">*</span></label>
-                                                <input type="password" class="form-control" placeholder="Password" name="password" required="">
+                                                <input type="password" class="form-control" placeholder="Password" value="${password}" name="password" required="">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -83,8 +83,8 @@
                                         
                                         
 
-                                        <c:if test="${not empty error}">
-                                            <div class="alert alert-error"style="
+                                        <c:if test="${not empty message}">
+                                            <div class=" mt-3 alert alert-error"style="
                                                  margin-bottom: 0px;
                                                  padding-top: 0px;
                                                  padding-bottom: 0px;
@@ -93,7 +93,7 @@
                                                  border-left-width: 0px;
                                                  border-right-width: 0px;
                                                  ">
-                                                <p>${error}</p>
+                                                <p>${message}</p>
                                             </div>
                                         </c:if>
 
@@ -106,7 +106,7 @@
                                             </div>
 
                                         <div class="col-12 text-center">
-                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Don't have an account ?</small> <a href="login?service=register" class="text-dark fw-bold">Sign Up</a></p>
+                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Don't have an account ?</small> <a href="login?service=registerform" class="text-dark fw-bold">Sign Up</a></p>
                                         </div>
                                     </div>
                                 </form>

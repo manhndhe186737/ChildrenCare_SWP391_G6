@@ -1,7 +1,7 @@
 <%-- 
-    Document   : staff-reserv
-    Created on : Mar 12, 2025, 8:49:37 AM
-    Author     : FPTSHOP
+   Document   : staff-reserv
+   Created on : Mar 12, 2025, 8:49:37 AM
+   Author     : FPTSHOP
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -277,15 +277,25 @@
                                 <div class="row w-100">
                                     <!-- Date Pickers -->
                                     <!-- Date Pickers -->
-                                    <div class="col-md-3 d-flex gap-2">
-                                        <input type="date" class="form-control" name="startDate" value="${startDate != null ? startDate : ''}">
-                                        <input type="date" class="form-control" name="endDate" value="${endDate != null ? endDate : ''}">
+                                    <div class="col-md-4 d-flex gap-2 mr-3">
+                                        <input type="date" id="startDate" class="form-control" name="startDate" value="${startDate}">
+                                        <input type="date" id="endDate" class="form-control" name="endDate" value="${endDate}">
+                                        <button onclick="resetform()" class="form-control">RESET</button>
                                     </div>
+                                        
+                                        <script>
+                                            function resetform(){
+                                                document.getElementById('startDate').value = "";
+                                                document.getElementById('endDate').value = "";
+                                            }
+                                            
+                                            
+                                        </script>
 
                                     <!-- Tạo khoảng cách giữa date picker và search box -->
-                                    <div class="col-md-1"></div> <!-- Cột trống tạo khoảng cách -->
+                                    <div class="col-md-1 ml-3"></div> <!-- Cột trống tạo khoảng cách -->
                                     <!-- Search Box -->
-                                    <div class="col-md-5 d-flex justify-content-center">
+                                    <div class="col-md-4 d-flex justify-content-center">
                                         <input type="text" class="form-control" name="searchKeyword" placeholder="" value="${param.searchKeyword}">
                                     </div>
                                     <!-- Filter and Search Button -->
@@ -358,7 +368,7 @@
                                 </div>
                             </div>
                         </div>
-                                    
+
                         <!-- Pagination -->
                         <div class="row mt-4">
                             <div class="col-12">
@@ -751,16 +761,40 @@
                     sortOrder[colIndex] = !sortOrder[colIndex];
 
                     rows.sort((a, b) => {
-                        let aText = a.getElementsByTagName("td")[colIndex].textContent.trim();
-                        let bText = b.getElementsByTagName("td")[colIndex].textContent.trim();
+                        // Xử lý đặc biệt cho cột Status (index 5)
+                        if (colIndex === 5) {
+                            // Lấy giá trị status từ nội dung của thẻ span
+                            let aSpan = a.getElementsByTagName("td")[colIndex].querySelector("span");
+                            let bSpan = b.getElementsByTagName("td")[colIndex].querySelector("span");
 
-                        // Xử lý kiểu dữ liệu (số, ngày, chuỗi)
-                        if (!isNaN(aText) && !isNaN(bText)) { // Nếu là số
-                            return sortOrder[colIndex] ? aText - bText : bText - aText;
-                        } else if (Date.parse(aText) && Date.parse(bText)) { // Nếu là ngày
-                            return sortOrder[colIndex] ? new Date(aText) - new Date(bText) : new Date(bText) - new Date(aText);
-                        } else { // Nếu là chuỗi
-                            return sortOrder[colIndex] ? aText.localeCompare(bText) : bText.localeCompare(aText);
+                            let aText = aSpan ? aSpan.textContent.trim() : "";
+                            let bText = bSpan ? bSpan.textContent.trim() : "";
+
+                            // Định nghĩa thứ tự ưu tiên của status
+                            const statusOrder = {
+                                'Completed': 1,
+                                'Scheduled': 2,
+                                'Cancelled': 3
+                            };
+
+                            // So sánh theo thứ tự ưu tiên
+                            let aOrder = statusOrder[aText] || 999; // Giá trị mặc định cao nếu không tìm thấy
+                            let bOrder = statusOrder[bText] || 999;
+
+                            return sortOrder[colIndex] ? aOrder - bOrder : bOrder - aOrder;
+                        } else {
+                            // Xử lý các cột khác như bình thường
+                            let aText = a.getElementsByTagName("td")[colIndex].textContent.trim();
+                            let bText = b.getElementsByTagName("td")[colIndex].textContent.trim();
+
+                            // Xử lý kiểu dữ liệu (số, ngày, chuỗi)
+                            if (!isNaN(aText) && !isNaN(bText)) { // Nếu là số
+                                return sortOrder[colIndex] ? aText - bText : bText - aText;
+                            } else if (Date.parse(aText) && Date.parse(bText)) { // Nếu là ngày
+                                return sortOrder[colIndex] ? new Date(aText) - new Date(bText) : new Date(bText) - new Date(aText);
+                            } else { // Nếu là chuỗi
+                                return sortOrder[colIndex] ? aText.localeCompare(bText) : bText.localeCompare(aText);
+                            }
                         }
                     });
 
@@ -782,6 +816,7 @@
                         }
                     });
                 }
+
 
                 /////
                 document.addEventListener("DOMContentLoaded", function () {

@@ -47,37 +47,37 @@
                                         <div class="col-md-12">
                                             <div class="mb-3">                                                
                                                 <label class="form-label">Full Name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" placeholder="Full Name" name="fullname" required>
+                                                <input type="text" class="form-control" placeholder="Full Name" value="${fullname}" name="fullname" required>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
-                                                <input type="date" class="form-control" name="dob" required>
+                                                <input type="date" class="form-control" value="${dob}" name="dob" required>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Your Email <span class="text-danger">*</span></label>
-                                                <input type="email" class="form-control" placeholder="Email" name="email" required>
+                                                <input type="email" class="form-control" placeholder="Email" value="${email}" name="email" required>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Your Password <span class="text-danger">*</span></label>
-                                                <input type="password" class="form-control" placeholder="Password" name="password" required>
+                                                <input type="password" class="form-control" placeholder="Password" value="${password}" name="password" required>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Mobile <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" placeholder="Mobile Number" name="mobile" required>
+                                                <input type="text" class="form-control" placeholder="Mobile Number" value="${mobile}" name="mobile" required>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Address <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" placeholder="Address" name="address" required>
+                                                <input type="text" class="form-control" placeholder="Address" value="${address}" name="address" required>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -85,14 +85,11 @@
                                                 <button class="btn btn-primary">Register</button>
                                             </div>
                                         </div>
-                                        <c:if test="${not empty message}">
-                                            <div class="alert alert-success">
-                                                <p>${message}</p>
-                                            </div>
-                                        </c:if>
+                                        
+                                       
 
                                         <c:if test="${not empty error}">
-                                            <div class="alert alert-error"style="
+                                            <div class="mt-3 text-danger alert alert-error"style="
                                                  margin-bottom: 0px;
                                                  padding-top: 0px;
                                                  padding-bottom: 0px;
@@ -101,7 +98,11 @@
                                                  border-left-width: 0px;
                                                  border-right-width: 0px;
                                                  ">
-                                                <p>${error}</p>
+                                                <c:forEach items="${error}" var="e">
+                                                    <p>${e}</p>
+                                                </c:forEach>
+                                                
+                                                
                                             </div>
                                         </c:if>
 

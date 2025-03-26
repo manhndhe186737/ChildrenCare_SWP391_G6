@@ -50,15 +50,15 @@
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                     <div class="sidebar-brand">
                         <a href="../c/home">
-                        <!--<a href="index.html">-->
+                            <!--<a href="index.html">-->
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-light-mode" alt="">
                             <img src="../assets/images/logo-icon-child.png" height="24" class="logo-dark-mode" alt="">
                         </a>
                     </div>
-                    
+
                     <ul class="sidebar-menu pt-3">
                         <li class=""><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                        
+
 
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Staff</a>
@@ -97,7 +97,7 @@
                                 </ul>
                             </div>
                         </li>
-                        
+
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Setting</a>
                             <div class="sidebar-submenu">
@@ -309,15 +309,16 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label class="form-label">Category :</label>
-                                                    <select name="label" class="form-control">
-                                                        <option value="FE">Featured</option>
-                                                        <option value="NE">New</option>
-                                                        <option value="PO">Popular</option>
-                                                        <option value="RE">Recent</option>
-                                                        <option value="FR">Free</option>
+                                                    <label class="form-label">Danh mục :</label>
+                                                    <select name="categoryId" class="form-control">
+                                                        <c:forEach items="${categoryList}" var="category">
+                                                            <option value="${category.id}" ${category.id == requestScope.service.categoryId ? 'selected' : ''}>
+                                                                ${category.categoryname}
+                                                            </option>
+                                                        </c:forEach>
                                                     </select>
                                                 </div>
+
 
                                                 <div class="mb-3">
                                                     <label class="form-label">Description:</label>

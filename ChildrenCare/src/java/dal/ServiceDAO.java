@@ -73,22 +73,24 @@ public class ServiceDAO extends DBContext {
         return service;
     }
 
-    public boolean updateProduct(int id, String name, float price, String description, String img) {
-        String sql = "UPDATE services SET name = ?, price = ?, description = ?, img = ? WHERE service_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, name);
-            stmt.setFloat(2, price);
-            stmt.setString(3, description);
-            stmt.setString(4, img);
-            stmt.setInt(5, id);
+   public boolean updateProduct(int id, String name, float price, String description, String img, int categoryId) {
+    String sql = "UPDATE services SET name = ?, price = ?, description = ?, img = ?, category_id = ? WHERE service_id = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setString(1, name);
+        stmt.setFloat(2, price);
+        stmt.setString(3, description);
+        stmt.setString(4, img);
+        stmt.setInt(5, categoryId);
+        stmt.setInt(6, id);
 
-            int rowsUpdated = stmt.executeUpdate();
-            return rowsUpdated > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+        int rowsUpdated = stmt.executeUpdate();
+        return rowsUpdated > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return false;
+}
+
 
     public boolean updateStatus(int id, boolean status) {
         String sql = "UPDATE services SET isActive = ? WHERE service_id = ?";
@@ -273,4 +275,49 @@ public class ServiceDAO extends DBContext {
         }
         return feeds;
     }
+//    public static void main(String[] args) {
+//        ServiceDAO s = new ServiceDAO();
+//        
+//        List<ServiceCategory> a =s.getCategoryNames();
+//        for(ServiceCategory b : a){
+//            System.out.println(b);
+//        }
+//    }
+    
+    
+    public static void main(String[] args) {
+    // Tạo đối tượng ServiceDAO
+    ServiceDAO serviceDAO = new ServiceDAO();
+    
+    // Thông tin cập nhật
+    int id = 1; // ID của service cần cập nhật
+    String name = "Dịch vụ đã cập nhật";
+    float price = 299.99f;
+    String description = "Mô tả mới cho dịch vụ đã cập nhật";
+    String img = "uploads/new-image.jpg";
+    int categoryId = 2; // ID danh mục mới
+    
+    // Gọi phương thức updateProduct
+    boolean result = serviceDAO.updateProduct(id, name, price, description, img, categoryId);
+    
+    // Kiểm tra kết quả
+    if (result) {
+        System.out.println("Cập nhật dịch vụ thành công!");
+        
+        // Hiển thị thông tin dịch vụ sau khi cập nhật
+        Service updatedService = serviceDAO.getServiceById(id);
+        if (updatedService != null) {
+            System.out.println("Thông tin dịch vụ sau khi cập nhật:");
+            System.out.println("ID: " + updatedService.getId());
+            System.out.println("Tên: " + updatedService.getName());
+            System.out.println("Giá: " + updatedService.getPrice());
+            System.out.println("Mô tả: " + updatedService.getDescription());
+            System.out.println("Hình ảnh: " + updatedService.getImg());
+            System.out.println("ID danh mục: " + updatedService.getCategoryId());
+        }
+    } else {
+        System.out.println("Cập nhật dịch vụ thất bại!");
+    }
+}
+
 }
