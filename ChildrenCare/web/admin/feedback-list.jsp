@@ -200,27 +200,53 @@
                 filter: brightness(0.9);
             }
 
-            /* Pagination */
-            .pagination-container {
-                margin-top: 30px;
-                text-align: center;
-            }
+          /* Pagination */
+.pagination-container {
+    margin-top: 30px;
+    text-align: center;
+}
 
-            .pagination a {
-                padding: 8px 12px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                text-decoration: none;
-                color: #333;
-                transition: background 0.3s;
-            }
+.pagination {
+    display: inline-flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 5px;
+}
 
-            .pagination a:hover,
-            .pagination a.active {
-                background: #007bff;
-                color: #fff;
-            }
+.page-item {
+    margin: 0 2px;
+}
 
+.page-item.disabled {
+    display: none; /* Ẩn hoàn toàn khi disabled */
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #28a745; /* Màu xanh lá */
+    border-color: #28a745;
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: 8px 14px;
+    line-height: 1.25;
+    color: #28a745; /* Màu xanh lá cho text */
+    background-color: #fff;
+    border: 1px solid #28a745; /* Viền xanh */
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.page-link:hover {
+    color: #fff;
+    background-color: #218838; /* Màu xanh đậm hơn khi hover */
+    border-color: #218838;
+    text-decoration: none;
+}
             /* Layout */
             .container-fluid {
                 width: 100%;
@@ -665,28 +691,35 @@
                                 </table>
                             </div>
 
-                            <!-- Pagination -->
-                            <div class="pagination-container">
-                                <c:if test="${totalPages > 1}">
-                                    <c:if test="${currentPage > 1}">
-                                        <a href="${pageContext.request.contextPath}/feedbacklist?page=${currentPage - 1}&rating=${rating}&serviceName=${serviceName}&search=${search}" class="btn btn-secondary">Previous</a>
-                                    </c:if>
+                   <!-- Pagination -->
+<div class="pagination-container">
+    <c:if test="${totalPages > 1}">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center align-items-center">
+                <!-- Previous Button -->
+                <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="${pageContext.request.contextPath}/feedbacklist?page=${currentPage - 1}&rating=${rating}&serviceName=${serviceName}&search=${search}" aria-label="Previous">
+                        <span aria-hidden="true">Previous</span>
+                    </a>
+                </li>
 
-                                    <c:forEach var="i" begin="1" end="${totalPages}">
-                                        <c:if test="${i == currentPage}">
-                                            <span class="btn btn-primary">${i}</span>
-                                        </c:if>
-                                        <c:if test="${i != currentPage}">
-                                            <a href="${pageContext.request.contextPath}/feedbacklist?page=${i}&rating=${rating}&serviceName=${serviceName}&search=${search}" class="btn btn-outline-primary">${i}</a>
-                                        </c:if>
-                                    </c:forEach>
+                <!-- Page Numbers -->
+                <c:forEach var="i" begin="1" end="${totalPages}">
+                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                        <a class="page-link" href="${pageContext.request.contextPath}/feedbacklist?page=${i}&rating=${rating}&serviceName=${serviceName}&search=${search}">${i}</a>
+                    </li>
+                </c:forEach>
 
-                                    <c:if test="${currentPage < totalPages}">
-                                        <a href="${pageContext.request.contextPath}/feedbacklist?page=${currentPage + 1}&rating=${rating}&serviceName=${serviceName}&search=${search}" class="btn btn-secondary">Next</a>
-                                    </c:if>
-                                </c:if>
-                            </div>
-
+                <!-- Next Button -->
+                <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="${pageContext.request.contextPath}/feedbacklist?page=${currentPage + 1}&rating=${rating}&serviceName=${serviceName}&search=${search}" aria-label="Next">
+                        <span aria-hidden="true">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </c:if>
+</div>
                             <!-- Reply Popup -->
                             <div class="overlay" id="replyOverlay"></div>
                             <div class="popup" id="replyPopup">
