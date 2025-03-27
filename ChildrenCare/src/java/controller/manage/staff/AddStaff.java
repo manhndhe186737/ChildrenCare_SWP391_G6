@@ -28,14 +28,14 @@ public class AddStaff extends BaseRBAC {
     ArrayList<User> staffList = staffDAO.getAllStaff();
 
     // Kiểm tra danh sách nhân viên (DEBUG)
-    System.out.println("Danh sách nhân viên khi mở trang:");
-    if (staffList == null || staffList.isEmpty()) {
-        System.out.println("⚠️ Không có nhân viên nào trong danh sách!");
-    } else {
-        for (User staff : staffList) {
-            System.out.println("✅ " + staff.getFullname() + " | " + staff.getAccount().getEmail());
-        }
-    }
+//    System.out.println("Danh sách nhân viên khi mở trang:");
+//    if (staffList == null || staffList.isEmpty()) {
+//        System.out.println("⚠️ Không có nhân viên nào trong danh sách!");
+//    } else {
+//        for (User staff : staffList) {
+//            System.out.println("✅ " + staff.getFullname() + " | " + staff.getAccount().getEmail());
+//        }
+//    }
 
     // Gửi danh sách nhân viên đến JSP
     req.setAttribute("staffList", staffList);

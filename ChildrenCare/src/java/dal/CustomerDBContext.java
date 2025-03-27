@@ -71,6 +71,77 @@ public class CustomerDBContext extends DBContext {
         return users;
     }
 
+    public ArrayList<User> getUsersByFilters(String role, String name, String sortBy, String filterBy, int page, int pageSize) {
+        ArrayList<User> users = new ArrayList<>();
+        String searchKeyword = "%" + name + "%";
+
+        String orderByClause = "ORDER BY u.user_id"; // Default sorting
+        if ("name".equalsIgnoreCase(sortBy)) {
+            orderByClause = "ORDER BY u.fullname ASC";
+        } else if ("dob".equalsIgnoreCase(sortBy)) {
+            orderByClause = "ORDER BY u.dob ASC";
+        } else if ("email".equalsIgnoreCase(sortBy)) {
+            orderByClause = "ORDER BY u.email ASC";
+        } else if ("name_desc".equalsIgnoreCase(sortBy)) {
+            orderByClause = "ORDER BY u.fullname DESC";
+        } else if ("dob_desc".equalsIgnoreCase(sortBy)) {
+            orderByClause = "ORDER BY u.dob DESC";
+        }
+
+        String filterClause = "";
+        if ("verified".equalsIgnoreCase(filterBy)) {
+            filterClause = "AND u.is_verified = 1";
+        } else if ("unverified".equalsIgnoreCase(filterBy)) {
+            filterClause = "AND u.is_verified = 0";
+        } else if ("active".equalsIgnoreCase(filterBy)) {
+            filterClause = "AND u.isActive = 1";
+        } else if ("inactive".equalsIgnoreCase(filterBy)) {
+            filterClause = "AND u.isActive = 0";
+        }
+
+        int offset = (page - 1) * pageSize; // Tính vị trí bắt đầu của dữ liệu
+
+        String sql = "SELECT u.user_id, u.fullname, u.gender, u.address, u.dob, u.avatar, u.phone, u.email, u.password, r.role_name, u.isActive, u.is_verified FROM users u\n"
+                + "JOIN userroles ur ON ur.email = u.email\n"
+                + "JOIN roles r ON r.role_id = ur.role_id\n"
+                + "WHERE r.role_name = ? AND (u.fullname LIKE ? OR u.phone LIKE ? OR u.email LIKE ?)\n"
+                + filterClause + " " + orderByClause + " LIMIT ? OFFSET ?"; // Thêm LIMIT và OFFSET
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setString(1, role);
+            stm.setString(2, searchKeyword);
+            stm.setString(3, searchKeyword);
+            stm.setString(4, searchKeyword);
+            stm.setInt(5, pageSize);
+            stm.setInt(6, offset);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    User u = new User();
+                    u.setId(rs.getInt("user_id"));
+                    u.setFullname(rs.getString("fullname"));
+                    u.setDob(rs.getDate("dob"));
+                    u.setAddress(rs.getString("address"));
+                    u.setAvatar(rs.getString("avatar"));
+                    u.setPhone(rs.getString("phone"));
+                    u.setGender(rs.getBoolean("gender"));
+                    u.setIsVerified(rs.getBoolean("is_verified"));
+
+                    Account a = new Account();
+                    a.setEmail(rs.getString("email"));
+                    a.setPassword(rs.getString("password"));
+
+                    u.setAccount(a);
+                    users.add(u);
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Database error", e);
+        }
+
+        return users;
+    }
+
     //Paging customer list
     public ArrayList<User> getUsersByNameWithPagination(String role, String name, String sortBy, int page, int pageSize) {
         ArrayList<User> users = new ArrayList<>();
@@ -128,17 +199,30 @@ public class CustomerDBContext extends DBContext {
         return users;
     }
 
-    public int getTotalUsersCount(String role, String name) {
+    public int getTotalUsersCount(String role, String name, String filterBy) {
         int total = 0;
         String searchKeyword = "%" + name + "%";
+
+        // Filter clause based on the 'filterBy' parameter (Active or Inactive based on is_verified)
+        String filterClause = "";
+        if ("active".equalsIgnoreCase(filterBy)) {
+            filterClause = "AND u.is_verified = 1";
+        } else if ("inactive".equalsIgnoreCase(filterBy)) {
+            filterClause = "AND u.is_verified = 0";
+        }
+
         String sql = "SELECT COUNT(*) FROM users u\n"
                 + "JOIN userroles ur ON ur.email = u.email\n"
                 + "JOIN roles r ON r.role_id = ur.role_id\n"
-                + "WHERE r.role_name = ? AND u.fullname LIKE ? AND u.isActive = 1";
+                + "WHERE r.role_name = ? AND (u.fullname LIKE ? OR u.phone LIKE ? OR u.email LIKE ?)\n"
+                + filterClause;
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setString(1, role);
             stm.setString(2, searchKeyword);
+            stm.setString(3, searchKeyword);
+            stm.setString(4, searchKeyword);
+
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
                     total = rs.getInt(1);
@@ -151,6 +235,28 @@ public class CustomerDBContext extends DBContext {
         return total;
     }
 
+//    public int getTotalUsersCount(String role, String name) {
+//        int total = 0;
+//        String searchKeyword = "%" + name + "%";
+//        String sql = "SELECT COUNT(*) FROM users u\n"
+//                + "JOIN userroles ur ON ur.email = u.email\n"
+//                + "JOIN roles r ON r.role_id = ur.role_id\n"
+//                + "WHERE r.role_name = ? AND u.fullname LIKE ? AND u.isActive = 1";
+//
+//        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+//            stm.setString(1, role);
+//            stm.setString(2, searchKeyword);
+//            try (ResultSet rs = stm.executeQuery()) {
+//                if (rs.next()) {
+//                    total = rs.getInt(1);
+//                }
+//            }
+//        } catch (SQLException e) {
+//            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, "Database error", e);
+//        }
+//
+//        return total;
+//    }
     public void editCustomer(User customer) {
         StringBuilder sql = new StringBuilder("UPDATE users SET ");
         ArrayList<Object> params = new ArrayList<>();
@@ -219,7 +325,7 @@ public class CustomerDBContext extends DBContext {
             Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void activeCustomer(int id) {
         String sql = "UPDATE users\n"
                 + "SET isActive = true, is_verified = true\n"

@@ -138,16 +138,7 @@
                             <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
                                 <i class="uil uil-bars"></i>
                             </a>
-                            <div class="search-bar p-0 d-none d-lg-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <form role="search" action="../admin/customers" method="get" id="searchform" class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords...">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+
                         </div>
 
                         <ul class="list-unstyled mb-0">
@@ -178,17 +169,6 @@
                         <div class="d-md-flex justify-content-between">
                             <h5 class="mb-0">Customers List</h5>
 
-                            <!-- Sort Dropdown -->
-                            <form action="../admin/customers" method="get" class="d-flex align-items-center">
-                                <label class="me-2" style="white-space: nowrap;">Sort by:</label>
-                                <select class="form-select form-select-sm" name="sortBy" onchange="this.form.submit()">
-                                    <option value="" ${empty requestScope.sortBy ? 'selected' : ''}>None</option>
-                                    <option value="name" ${requestScope.sortBy eq 'name' ? 'selected' : ''}>Name</option>
-                                    <option value="dob" ${requestScope.sortBy eq 'dob' ? 'selected' : ''}>Date of Birth</option>
-                                    <option value="email" ${requestScope.sortBy eq 'email' ? 'selected' : ''}>Email</option>
-                                </select>
-                            </form>
-
                             <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                                 <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
                                     <li class="breadcrumb-item"><a href="index.html">Children Care</a></li>
@@ -196,7 +176,40 @@
                                 </ul>
                             </nav>
                         </div>
+                        
+                        <div class="row">
+                            <form action="../admin/customers" method="get" class="d-flex align-items-center">
+                                <!-- Search Box -->
+                                <input type="text" class="form-control form-control-sm me-2" name="s" value="${requestScope.searchName}" placeholder="Search by Name/Email/Phone" />
 
+                                <!-- Sort Dropdown -->
+                                <label class="me-2" style="white-space: nowrap;">Sort by:</label>
+                                <select class="form-select form-select-sm me-2" name="sortBy" onchange="this.form.submit()">
+                                    <option value="" ${empty requestScope.sortBy ? 'selected' : ''}>None</option>
+                                    <option value="name" ${requestScope.sortBy eq 'name' ? 'selected' : ''}>Name</option>
+                                    <option value="dob" ${requestScope.sortBy eq 'dob' ? 'selected' : ''}>Date of Birth</option>
+                                    <option value="email" ${requestScope.sortBy eq 'email' ? 'selected' : ''}>Email</option>
+                                    <option value="name_desc" ${requestScope.sortBy eq 'name_desc' ? 'selected' : ''}>Name (Descending)</option>
+                                    <option value="dob_desc" ${requestScope.sortBy eq 'dob_desc' ? 'selected' : ''}>Date of Birth (Descending)</option>
+                                </select>
+
+                                <!-- Filter: Active or Verified -->
+                                <label class="me-2" style="white-space: nowrap;">Filter by:</label>
+                                <select class="form-select form-select-sm me-2" name="filterBy" onchange="this.form.submit()">
+                                    <option value="" ${empty requestScope.filterBy ? 'selected' : ''}>All</option>
+                                    <option value="active" ${requestScope.filterBy eq 'active' ? 'selected' : ''}>Active</option>
+                                    <option value="inactive" ${requestScope.filterBy eq 'inactive' ? 'selected' : ''}>Inactive</option>
+                                </select>
+
+                                <!-- Filter Button -->
+                                <button type="submit" class="btn btn-primary btn-sm ms-2" name="filter" value="true">Filter</button>
+
+                                <!-- Reset Button -->
+                                <button type="submit" class="btn btn-secondary btn-sm ms-2" name="reset" value="true">Reset</button>
+                            </form>
+                        </div>
+
+                        <!-- Customers Table -->
                         <div class="row">
                             <div class="col-12 mt-5">
                                 <div class="table-responsive shadow rounded">
@@ -242,22 +255,18 @@
 
                                                         <c:choose>
                                                             <c:when test="${c.isVerified}">
-                                                                <!-- Nút Deactive nếu đã được xác minh -->
                                                                 <a href="#" class="btn btn-icon btn-pills btn-soft-danger"
                                                                    onclick="confirmDelete(${c.id}); return false;">
                                                                     <i class="uil uil-user-times"></i>
                                                                 </a>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <!-- Nút Active nếu chưa được xác minh -->
                                                                 <a href="#" class="btn btn-icon btn-pills btn-soft-success"
                                                                    onclick="confirmActive(${c.id}); return false;">
                                                                     <i class="uil uil-user-check"></i>
                                                                 </a>
                                                             </c:otherwise>
                                                         </c:choose>
-
-
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -267,42 +276,36 @@
                             </div>
                         </div><!--end row-->
 
+                        <!-- Pagination -->
                         <div class="row text-center">
                             <div class="col-12 mt-4">
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
                                     <span class="text-muted me-3">
-                                        Showing ${(currentPage - 1) * 10 + 1} - 
-                                        ${Math.min(currentPage * 10, totalPages * 10)} out of ${totalPages * 10}
+                                        Showing ${(currentPage - 1) * 10 + 1} - ${Math.min(currentPage * 10, totalPages * 10)} out of ${totalPages * 10}
                                     </span>
-
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <!-- Nút Prev -->
                                         <c:if test="${currentPage > 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="?s=${searchName}&sortBy=${sortBy}&page=${currentPage - 1}">Prev</a>
+                                                <a class="page-link" href="?s=${searchName}&sortBy=${sortBy}&filterBy=${filterBy}&page=${currentPage - 1}">Prev</a>
                                             </li>
                                         </c:if>
-
-                                        <!-- Hiển thị số trang -->
                                         <c:forEach var="i" begin="1" end="${totalPages}">
                                             <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                <a class="page-link" href="?s=${searchName}&sortBy=${sortBy}&page=${i}">${i}</a>
+                                                <a class="page-link" href="?s=${searchName}&sortBy=${sortBy}&filterBy=${filterBy}&page=${i}">${i}</a>
                                             </li>
                                         </c:forEach>
-
-                                        <!-- Nút Next -->
                                         <c:if test="${currentPage < totalPages}">
                                             <li class="page-item">
-                                                <a class="page-link" href="?s=${searchName}&sortBy=${sortBy}&page=${currentPage + 1}">Next</a>
+                                                <a class="page-link" href="?s=${searchName}&sortBy=${sortBy}&filterBy=${filterBy}&page=${currentPage + 1}">Next</a>
                                             </li>
                                         </c:if>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div><!--end container-->
+
 
                 <!-- Footer Start -->
                 <footer class="bg-white shadow py-3">

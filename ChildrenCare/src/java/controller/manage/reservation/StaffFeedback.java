@@ -10,9 +10,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Account;
 import model.Feedback;
 import model.User;
+import model.Account;
 
 @WebServlet(name = "StaffFeedback", urlPatterns = {"/c/staff-feedback"})
 public class StaffFeedback extends BaseRBAC {
@@ -25,69 +25,105 @@ public class StaffFeedback extends BaseRBAC {
     }
 
     @Override
-    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account acocunt)
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         try {
-            // Lấy staffId từ session (giả định user đang đăng nhập là staff)
-            Integer staffId = (Integer) request.getSession().getAttribute("staffId");
+            // Validate staff login and role
             User user = (User) request.getSession().getAttribute("user");
-            if (user != null) {
-                staffId = user.getId();
+            Object roleObj = request.getSession().getAttribute("role");
+
+            if (user == null || roleObj == null || !roleObj.toString().contains("Staffs")) {
+                response.sendRedirect(request.getContextPath() + "/login");
+                return;
             }
 
-            if (staffId == null || staffId <= 0) {
-                request.setAttribute("error", "Invalid or missing staff ID.");
+            int staffId = user.getId();
+
+            if (staffId <= 0) {
+                request.setAttribute("error", "Invalid staff ID.  Please log in with a valid staff account.");
                 request.getRequestDispatcher("../c/staff-feedback.jsp").forward(request, response);
                 return;
             }
 
-            // Lấy fullname từ user (nếu user không null)
-            String staffName = (user != null && user.getFullname() != null) ? user.getFullname() : "";
-
-            // Xử lý phân trang
-            int page = 1; // Trang mặc định
-            int pageSize = 5; // Số feedback mỗi trang
-            String pageStr = request.getParameter("page");
-            if (pageStr != null && !pageStr.isEmpty()) {
-                try {
+            // Pagination parameters
+            int page = 1;
+            int pageSize = 5;
+            try {
+                String pageStr = request.getParameter("page");
+                if (pageStr != null && !pageStr.isEmpty()) {
                     page = Integer.parseInt(pageStr);
-                } catch (NumberFormatException e) {
-                    page = 1;
+                    if (page < 1) page = 1;
                 }
+            } catch (NumberFormatException e) {
+                // Log the error (optional, but recommended for debugging)
+                System.err.println("Invalid page number: " + request.getParameter("page"));
+                // Keep the default page = 1
             }
             int offset = (page - 1) * pageSize;
 
-            // Lấy tổng số feedback để tính số trang
-            int totalFeedbacks = feedbackDB.getTotalFeedbacks(null, null, staffName, null);
+            // Sorting, filtering, and search parameters
+            String sortService = request.getParameter("sortService");
+            String sortDate = request.getParameter("sortDate");
+            String sortCustomer = request.getParameter("sortCustomer");
+            String filterRating = request.getParameter("filterRating");
+            String search = request.getParameter("search");
+
+            // Fetch total feedbacks with filters
+            int totalFeedbacks = feedbackDB.getTotalFeedbacksByStaffId(staffId, filterRating, search);
             int totalPages = (int) Math.ceil((double) totalFeedbacks / pageSize);
 
-            // Lấy danh sách feedback theo staffId với phân trang
-            List<Feedback> feedbackList = feedbackDB.getFeedbacksByPage(offset, pageSize, null, null, staffName, null);
+            // Handle edge case where requested page is beyond the total pages
+            if (page > totalPages && totalPages > 0) {
+                page = totalPages;  // Go to the last page if the requested page is too high
+                offset = (page - 1) * pageSize; // Recalculate offset
+            }
 
-            // Đặt các thuộc tính vào request để JSP sử dụng
+            // Fetch feedback list
+            List<Feedback> feedbackList = feedbackDB.getFeedbacksByStaffId(
+                    staffId, sortService, sortDate, sortCustomer, filterRating, search, offset, pageSize
+            );
+
+            // Set request attributes
             request.setAttribute("feedbackList", feedbackList);
             request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
             request.setAttribute("totalFeedbacks", totalFeedbacks);
             request.setAttribute("pageSize", pageSize);
+            request.setAttribute("sortService", sortService);
+            request.setAttribute("sortDate", sortDate);
+            request.setAttribute("sortCustomer", sortCustomer);
+            request.setAttribute("filterRating", filterRating);
+            request.setAttribute("search", search);
 
-            // Chuyển hướng đến JSP để hiển thị
+            // Forward to JSP
             request.getRequestDispatcher("../c/staff-feedback.jsp").forward(request, response);
 
         } catch (SQLException e) {
-            request.setAttribute("error", "Error retrieving feedback: " + e.getMessage());
+            // Log the error
+            System.err.println("SQL Exception: " + e.getMessage());
+            e.printStackTrace();  //Print the stack trace for debugging.
+            request.setAttribute("error", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("../c/staff-feedback.jsp").forward(request, response);
+        } catch (Exception e) {
+            // Log the error
+            System.err.println("Exception: " + e.getMessage());
+            e.printStackTrace(); //Print the stack trace for debugging.
+            request.setAttribute("error", "Unexpected error: " + e.getMessage());
             request.getRequestDispatcher("../c/staff-feedback.jsp").forward(request, response);
         }
     }
 
-    @Override
+
+   @Override
     protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account acocunt)
             throws ServletException, IOException {
-        doGet(request, response);
+        // Handle POST requests the same as GET (e.g., form submission for filters)
+        doAuthorizedGet(request, response, acocunt);
     }
+
 
     @Override
     public String getServletInfo() {
-        return "Servlet to display feedback for a specific staff member";
+        return "Servlet to display feedback for a specific staff member with sorting, filtering, searching, and pagination";
     }
 }

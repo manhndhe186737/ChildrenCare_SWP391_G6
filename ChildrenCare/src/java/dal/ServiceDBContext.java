@@ -175,7 +175,7 @@ public int getTotalFilteredServices(String searchQuery, String[] selectedCategor
         ArrayList<Service> services = new ArrayList<>();
         try {
             String sql = "SELECT s.service_id, s.name, s.description, s.price, s.img, c.category_id, c.name AS categoryname "
-                    + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
+                    + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id where c.status = 1 "
                     + "LIMIT 8";  // Chỉ lấy tối đa 8 dịch vụ
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -204,7 +204,7 @@ public int getTotalFilteredServices(String searchQuery, String[] selectedCategor
     public Service getServiceById(int serviceId) {
         Service service = null;
         try {
-            String sql = "SELECT s.service_id, s.name, s.description, s.price,s.img, s.isActive, c.category_id, c.name AS categoryname "
+            String sql = "SELECT s.service_id, s.name, s.description, s.price,s.img, s.isActive, c.status, c.category_id, c.name AS categoryname "
                     + "FROM services s "
                     + "INNER JOIN servicecategories c ON s.category_id = c.category_id "
                     + "WHERE s.service_id = ?";
@@ -216,6 +216,7 @@ public int getTotalFilteredServices(String searchQuery, String[] selectedCategor
                 ServiceCategory category = new ServiceCategory();
                 category.setId(rs.getInt("category_id"));
                 category.setCategoryname(rs.getString("categoryname"));
+                category.setStatus(rs.getBoolean("status"));
 
                 service = new Service();
                 service.setId(rs.getInt("service_id"));

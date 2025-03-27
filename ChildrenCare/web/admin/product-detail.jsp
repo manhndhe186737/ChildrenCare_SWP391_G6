@@ -309,15 +309,16 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label class="form-label">Category :</label>
-                                                    <select name="label" class="form-control">
-                                                        <option value="FE">Featured</option>
-                                                        <option value="NE">New</option>
-                                                        <option value="PO">Popular</option>
-                                                        <option value="RE">Recent</option>
-                                                        <option value="FR">Free</option>
+                                                    <label class="form-label">Danh mục :</label>
+                                                    <select name="categoryId" class="form-control">
+                                                        <c:forEach items="${categoryList}" var="category">
+                                                            <option value="${category.id}" ${category.id == requestScope.service.categoryId ? 'selected' : ''}>
+                                                                ${category.categoryname}
+                                                            </option>
+                                                        </c:forEach>
                                                     </select>
                                                 </div>
+
 
                                                 <div class="mb-3">
                                                     <label class="form-label">Description:</label>
