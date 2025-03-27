@@ -47,7 +47,7 @@ public class AccountController extends HttpServlet {
                 String password = request.getParameter("password");
 
                 if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
-                    request.setAttribute("message", "Vui lòng đăng nhập.");
+                    request.setAttribute("message", "Please login!");
                     request.getRequestDispatcher("account/login.jsp").forward(request, response);
                     return;
                 }
@@ -56,7 +56,7 @@ public class AccountController extends HttpServlet {
                 User user = userDAO.getUserByEmail(email);
                 
                 if(user==null){
-                    request.setAttribute("message", "Người dùng không tồn tại");
+                    request.setAttribute("message", "User not exist!");
                     request.getRequestDispatcher("account/login.jsp").forward(request, response);
                     return;
                 }
@@ -78,18 +78,18 @@ public class AccountController extends HttpServlet {
                         session.setAttribute("account", acc);
                         session.setAttribute("role", roles);
                         session.setAttribute("isLoggedIn", true);
-                        session.setAttribute("alertMessage", "Đăng nhập thành công!");
+                        session.setAttribute("alertMessage", "Login successfully!");
                         session.setAttribute("alertType", "success");
                         response.sendRedirect("c/home");
                     } else {
-                        request.setAttribute("error", "Tài khoản của bạn chưa được xác minh.");
+                        request.setAttribute("error", "Your account hasn't been verified!");
                         request.getRequestDispatcher("account/login.jsp").forward(request, response);
                     }
                 } else {
                     request.setAttribute("email", email);
                     request.setAttribute("password", password);
 
-                    request.setAttribute("message", "Email hoặc mật khẩu không đúng.");
+                    request.setAttribute("message", "Email or password is invalid!");
                     request.getRequestDispatcher("account/login.jsp").forward(request, response);
                 }
             }
@@ -177,14 +177,14 @@ public class AccountController extends HttpServlet {
             case "forgotPassword" -> {
                 String email = request.getParameter("email");
                 if (email == null || email.isEmpty()) {
-                    request.setAttribute("error", "Vui lòng nhập email.");
+                    request.setAttribute("error", "Please enter your email!");
                     request.getRequestDispatcher("account/forgotpassword.jsp").forward(request, response);
                     return;
                 }
                 UserDAO userDAO = new UserDAO();
                 User user = userDAO.getUserByEmail(email);
                 if (user == null) {
-                    request.setAttribute("error", "Không tìm thấy tài khoản của bạn. Vui lòng thử lại.");
+                    request.setAttribute("error", "Cannot found your account. Please try again!");
                     request.getRequestDispatcher("account/forgotpassword.jsp").forward(request, response);
                     return;
                 }
@@ -196,9 +196,9 @@ public class AccountController extends HttpServlet {
                 EmailConfig emailSender = new EmailConfig();
                 try {
                     emailSender.sendPasswordResetEmail(email, token);
-                    request.setAttribute("message", "Email reset mật khẩu đã được gửi tới " + email);
+                    request.setAttribute("message", "Email reset password has been sent to " + email);
                 } catch (MessagingException e) {
-                    request.setAttribute("error", "Có lỗi xảy ra khi gửi email. Vui lòng thử lại.");
+                    request.setAttribute("error", "An occur happen. Please try again!");
                 }
 
                 request.getRequestDispatcher("account/forgotpassword.jsp").forward(request, response);
@@ -209,7 +209,7 @@ public class AccountController extends HttpServlet {
                 String newPassword = request.getParameter("newPassword");
 
                 if (token == null || token.isEmpty()) {
-                    request.setAttribute("error", "Token không hợp lệ!");
+                    request.setAttribute("error", "Token is invalid!");
                     request.getRequestDispatcher("account/error.jsp").forward(request, response);
                     return;
                 }
@@ -218,13 +218,13 @@ public class AccountController extends HttpServlet {
                 String email = tokenDAO.getEmailByToken(token);
 
                 if (email == null) {
-                    request.setAttribute("error", "Token không hợp lệ hoặc đã hết hạn.");
+                    request.setAttribute("error", "Token is invalid or expired!");
                     request.getRequestDispatcher("account/error.jsp").forward(request, response);
                     return;
                 }
 
                 if (tokenDAO.isTokenExpired(token)) {
-                    request.setAttribute("error", "Token đã hết hạn!");
+                    request.setAttribute("error", "Token has been expired!");
                     request.getRequestDispatcher("account/error.jsp").forward(request, response);
                     return;
                 }
@@ -236,13 +236,13 @@ public class AccountController extends HttpServlet {
                 String newPassword = request.getParameter("newPassword");
                 String confirmPassword = request.getParameter("confirmPassword");
                 if (newPassword == null || newPassword.isEmpty() || confirmPassword == null || confirmPassword.isEmpty()) {
-                    request.setAttribute("error", "Vui lòng nhập đầy đủ thông tin.");
+                    request.setAttribute("error", "Please enter your information!");
                     request.getRequestDispatcher("account/newpassword.jsp").forward(request, response);
                     return;
                 }
 
                 if (!newPassword.equals(confirmPassword)) {
-                    request.setAttribute("error", "Mật khẩu xác nhận không khớp.");
+                    request.setAttribute("error", "Confirm password is not matched!");
                     request.getRequestDispatcher("account/newpassword.jsp").forward(request, response);
                     return;
                 }
@@ -250,7 +250,7 @@ public class AccountController extends HttpServlet {
                 VerificationTokenDAO tokenDAO = new VerificationTokenDAO();
                 String email = tokenDAO.getEmailByToken(token);
                 if (email == null) {
-                    request.setAttribute("error", "Liên kết đặt lại mật khẩu không hợp lệ.");
+                    request.setAttribute("error", "Reset password link is invalid!");
                     request.getRequestDispatcher("account/error.jsp").forward(request, response);
                     return;
                 }
@@ -260,7 +260,7 @@ public class AccountController extends HttpServlet {
 
                 tokenDAO.deleteToken(token);
 
-                request.setAttribute("message", "Mật khẩu của bạn đã được thay đổi thành công.");
+                request.setAttribute("message", "Your password has been changed successfully!");
                 request.getRequestDispatcher("account/login.jsp").forward(request, response);
             }
 
@@ -276,18 +276,18 @@ public class AccountController extends HttpServlet {
                         if (!tokenExpired) {
                             userDAO.verifyUser(email);
                             tokenDAO.deleteToken(token);
-                            request.setAttribute("message", "Xác nhận email thành công!");
+                            request.setAttribute("message", "Verify email successfully!");
                             request.getRequestDispatcher("account/login.jsp").forward(request, response);
                         } else {
-                            request.setAttribute("message", "Token đã hết hạn!");
+                            request.setAttribute("message", "Token has been expired!");
                             request.getRequestDispatcher("account/error.jsp").forward(request, response);
                         }
                     } else {
-                        request.setAttribute("message", "Token không hợp lệ!");
+                        request.setAttribute("message", "Token is invalid!");
                         request.getRequestDispatcher("account/error.jsp").forward(request, response);
                     }
                 } else {
-                    request.setAttribute("message", "Token không được cung cấp!");
+                    request.setAttribute("message", "Token is not provided!");
                     request.getRequestDispatcher("account/error.jsp").forward(request, response);
                 }
             }

@@ -56,12 +56,12 @@ public class RegisterGoogle extends HttpServlet {
                         dob = sdf.parse(dobString);
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        request.setAttribute("error", "Ngày sinh không hợp lệ.");
+                        request.setAttribute("error", "Date of birth is invalid!");
                         request.getRequestDispatcher("account/register.jsp").forward(request, response);
                         return;
                     }
                 } else {
-                    request.setAttribute("error", "Ngày sinh không được để trống.");
+                    request.setAttribute("error", "Date of birth cannot be empty!");
                     request.getRequestDispatcher("account/register.jsp").forward(request, response);
                     return;
                 }
@@ -71,7 +71,7 @@ public class RegisterGoogle extends HttpServlet {
                 user.setAddress(address);
                 user.setDob(dob);
                 user.setPhone(phone);
-                user.setAvatar("uploads/avatar.jpg");
+                user.setAvatar("uploads/default.jpg");
                 user.setIsVerified(true);
                 UserDAO userDAO = new UserDAO();
                 int userId = userDAO.registerUser(user, email, hashedPassword);
@@ -79,11 +79,11 @@ public class RegisterGoogle extends HttpServlet {
                     User userLogin = userDAO.getUserByEmail(email);
                     HttpSession session = request.getSession();
                     session.setAttribute("userLogin", userLogin);
-                    session.setAttribute("alertMessage", "Đăng nhập thành công");
+                    session.setAttribute("alertMessage", "Login successfully!");
                     session.setAttribute("alertType", "success");
                     response.sendRedirect("login");
                 } else {
-                    request.setAttribute("error", "Đăng ký thất bại. Vui lòng thử lại.");
+                    request.setAttribute("error", "Register fail. Please try again.");
                     request.getRequestDispatcher("account/RegisterGoogle.jsp").forward(request, response);
                 }
     } 
