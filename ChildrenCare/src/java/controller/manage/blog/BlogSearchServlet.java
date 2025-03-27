@@ -47,7 +47,7 @@ public class BlogSearchServlet extends HttpServlet {
         List<Post> allPosts = postDB.searchPosts(searchQuery, currentPage, itemsPerPage);
 
         // Tính tổng số bài viết và số trang cần hiển thị
-        int totalPosts = postDB.getTotalPosts(searchQuery);
+        int totalPosts = postDB.getTotalSearchPosts(searchQuery);
         int totalPages = (int) Math.ceil((double) totalPosts / itemsPerPage);
 
         

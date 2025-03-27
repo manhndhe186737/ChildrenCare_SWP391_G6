@@ -105,8 +105,8 @@
                             <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Setting</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="settings">Category</a></li>
-                                </ul>
+                                    <li><a href="settings-servicecategory">Service Category</a></li>
+                                    <li><a href="settings-postcategory">Post Category</a></li>                                </ul>
                             </div>
                         </li>
                     </ul>

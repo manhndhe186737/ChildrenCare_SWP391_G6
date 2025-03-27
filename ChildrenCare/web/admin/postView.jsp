@@ -423,7 +423,7 @@ String authorAvatar = (post.getAuthorAvatar() != null && !post.getAuthorAvatar()
                             <h3><%= post.getTitle() %></h3>
 
                             <div class="post-info">
-                                <p><strong>Category:</strong> <%= post.getCategory() %></p>
+                                <p><strong>Category:</strong> <%= post.getCategoryName() %></p>
                                 <p><strong>Status:</strong> <%= post.getStatus().equals("1") ? "Active" : "Hidden" %></p>
                             </div>
 

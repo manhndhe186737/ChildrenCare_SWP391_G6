@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="model.Post, java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List, model.Post, model.PostCategory, java.util.ArrayList" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -417,10 +417,10 @@
                                                 <li class="has-submenu parent-menu-item">
                                                     <c:if test="${sessionScope.role.contains('Staffs')}">
                                                     <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
-                                                    
-                                                    
-                                                    </c:if>
-                                                
+
+
+                                                </c:if>
+
                                             </ul>
                                         </li>
 
@@ -462,7 +462,7 @@
                     <h2>Edit Post</h2>
 
                     <% Post post = (Post) request.getAttribute("post"); 
-                       List<String> categories = (List<String>) request.getAttribute("categories"); 
+                       ArrayList<PostCategory> categories = (ArrayList<PostCategory>) request.getAttribute("categories"); 
                     %>
 
                     <form method="POST" action="post-edit" enctype="multipart/form-data">
@@ -474,11 +474,12 @@
                         <label>Content:</label>
                         <textarea id="content-editor" name="content"><%= post.getContent() %></textarea>
 
-
                         <label>Category:</label>
-                        <select name="category">
-                            <% for (String category : categories) { %>
-                            <option value="<%= category %>" <%= category.equals(post.getCategory()) ? "selected" : "" %>><%= category %></option>
+                        <select name="categoryId">
+                            <% for (PostCategory category : categories) { %>
+                            <option value="<%= category.getId() %>" <%= post.getCategoryId() == category.getId() ? "selected" : "" %>>
+                                <%= category.getName() %>
+                            </option>
                             <% } %>
                         </select>
 
@@ -487,6 +488,7 @@
                             <option value="1" <%= post.getStatus().equals("1") ? "selected" : "" %>>Active</option>
                             <option value="0" <%= post.getStatus().equals("0") ? "selected" : "" %>>Hidden</option>
                         </select>
+
                         <input type="hidden" name="currentImage" value="<%= post.getImg() %>">
                         <div class="image-container">
                             <!-- Ảnh hiện tại -->
@@ -504,18 +506,12 @@
                         <label for="imageFile" class="btn-upload">📸 Upload</label>
                         <input type="file" name="imageFile" accept="image/*" onchange="previewImage(event)" id="imageFile">
 
-
-
-
-
-
-
                         <% 
-List<String[]> authors = (List<String[]>) request.getAttribute("authors");
-String currentAuthorId = (String) request.getAttribute("currentAuthorId");
+                        List<String[]> authors = (List<String[]>) request.getAttribute("authors");
+                        String currentAuthorId = (String) request.getAttribute("currentAuthorId");
 
-if (authors == null) authors = new ArrayList<>();
-if (currentAuthorId == null) currentAuthorId = "";
+                        if (authors == null) authors = new ArrayList<>();
+                        if (currentAuthorId == null) currentAuthorId = "";
                         %>
 
                         <label>Author:</label>
@@ -527,7 +523,6 @@ if (currentAuthorId == null) currentAuthorId = "";
                             <% } %>
                         </select>
 
-
                         <% String error = request.getParameter("error"); %>
                         <% if (error != null) { %>
                         <p style="color: red;">
@@ -535,6 +530,8 @@ if (currentAuthorId == null) currentAuthorId = "";
                             Please select an author.
                             <% } else if ("invalid_author".equals(error)) { %>
                             Invalid author selection.
+                            <% } else if ("invalid_category".equals(error)) { %>
+                            Invalid category selection.
                             <% } %>
                         </p>
                         <% } %>
@@ -544,7 +541,6 @@ if (currentAuthorId == null) currentAuthorId = "";
 
                     <a href="post-list" class="back-btn">Back to Post List</a>
                 </div>
-
                 <!-- Start -->
                 <footer class="bg-footer">
                     <div class="container">

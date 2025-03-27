@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import model.Account;
 
-@WebServlet("/admin/settings")
+@WebServlet("/admin/settings-servicecategory")
 public class Settings extends BaseRBAC {
 
     private ServiceCategoryDBContext categoryDB = new ServiceCategoryDBContext();
@@ -64,7 +64,7 @@ protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse 
             categoryDB.updateCategory(category);
 
             request.getSession().setAttribute("message", "Category updated successfully!");
-            response.sendRedirect(request.getContextPath() + "/admin/settings");
+            response.sendRedirect(request.getContextPath() + "/admin/settings-servicecategory");
         } else if ("add".equals(action)) {
             String name = request.getParameter("name");
             String description = request.getParameter("description");
@@ -77,7 +77,7 @@ protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse 
             categoryDB.addCategory(category);
 
             request.getSession().setAttribute("message", "Category added successfully!");
-            response.sendRedirect(request.getContextPath() + "/admin/settings");
+            response.sendRedirect(request.getContextPath() + "/admin/settings-servicecategory");
         } else if ("updateStatus".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             boolean status = Boolean.parseBoolean(request.getParameter("status"));

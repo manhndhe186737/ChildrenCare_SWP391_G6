@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.List;
 import model.Account;
 import model.Post;
 import model.Role;
@@ -79,7 +80,7 @@ public class Homepage extends HttpServlet {
         }
         
         PostDBContext pdb = new PostDBContext();
-        ArrayList<Post> posts = pdb.getHomePosts();
+        List<Post> posts = pdb.getHomePosts();
 
         ServiceDBContext sdb = new ServiceDBContext();
         SliderDBContext sliderDB = new SliderDBContext();

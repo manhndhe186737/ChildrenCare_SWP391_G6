@@ -1,4 +1,4 @@
-<%@ page import="model.ServiceCategory" %>
+<%@ page import="model.PostCategory" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -573,6 +573,7 @@
                                 <ul>
                                     <li><a href="settings-servicecategory">Service Category</a></li>
                                     <li><a href="settings-postcategory">Post Category</a></li>
+
                                 </ul>
                             </div>
                         </li>
@@ -631,11 +632,11 @@
 
                 <div class="container-fluid">
                     <div class="layout-specing">
-                        <h2>Settings</h2>
+                        <h2>Post Category</h2>
 
 
                         <div class="d-flex justify-content-between mb-3">
-                            <form action="settings-servicecategory" method="GET" class="d-flex">
+                            <form action="settings-postcategory" method="GET" class="d-flex">
                                 <!-- Search by Name -->
                                 <input type="text" name="name" class="form-control me-2" placeholder="Search by Name" value="${param.name}">
 
@@ -649,6 +650,7 @@
                                 <!-- Submit Button -->
                                 <button type="submit" class="btn btn-primary">Search</button>
                             </form>
+
                             <!-- Add New Category Button -->
                             <a href="#" class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
                                 <i class="bi bi-plus-circle"></i> Add New Category
@@ -664,7 +666,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="settings-servicecategory" method="POST" id="addCategoryForm">
+                                        <form action="settings-postcategory" method="POST" id="addCategoryForm">
                                             <input type="hidden" name="action" value="add">
                                             <div class="form-group mb-3">
                                                 <label for="categoryName">Category Name</label>
@@ -704,12 +706,12 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="settings-servicecategory" method="POST">
+                                        <form action="settings-postcategory" method="POST">
                                             <input type="hidden" name="action" value="update">
                                             <input type="hidden" name="id" value="${categoryToEdit != null ? categoryToEdit.id : ''}">
                                             <div class="form-group mb-3">
                                                 <label for="categoryName">Category Name</label>
-                                                <input type="text" class="form-control" name="name" value="${categoryToEdit != null ? categoryToEdit.categoryname : ''}" required>
+                                                <input type="text" class="form-control" name="name" value="${categoryToEdit != null ? categoryToEdit.name : ''}" required>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <label for="categoryStatus">Status</label>
@@ -747,7 +749,7 @@
                                 <c:forEach var="category" items="${categories}">
                                     <tr>
                                         <td>${category.id}</td>
-                                        <td>${category.categoryname}</td>
+                                        <td>${category.name}</td>
                                         <td>
                                             <label class="toggle">
                                                 <input type="checkbox" class="toggle-checkbox" data-id="${category.id}" ${category.status ? 'checked' : ''}>
@@ -757,7 +759,7 @@
                                         <td>${category.description}</td>
                                         <td>
                                             <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryModal" 
-                                                    data-id="${category.id}" data-name="${category.categoryname}" data-status="${category.status}" 
+                                                    data-id="${category.id}" data-name="${category.name}" data-status="${category.status}" 
                                                     data-description="${category.description}">
                                                 <i class="bi bi-pencil-square"></i> Edit
                                             </button>
@@ -772,7 +774,7 @@
                             <ul class="pagination justify-content-center">
                                 <c:forEach var="i" begin="1" end="${totalPages}">
                                     <li class="page-item ${currentPage == i ? 'active' : ''}">
-                                        <a class="page-link" href="settings-servicecategory?page=${i}">${i}</a>
+                                        <a class="page-link" href="settings-postcategory?page=${i}">${i}</a>
                                     </li>
                                 </c:forEach>
                             </ul>
@@ -864,7 +866,7 @@
                             var newStatus = $(this).prop('checked');
 
                             $.ajax({
-                                url: 'settings-servicecategory', // Adjust the URL if needed
+                                url: 'settings-postcategory', // Adjust the URL if needed
                                 type: 'POST',
                                 data: {
                                     action: 'updateStatus', // Action is to update the status
@@ -913,3 +915,4 @@
 
                 </body>
                 </html>
+
