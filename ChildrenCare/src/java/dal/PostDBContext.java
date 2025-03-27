@@ -15,7 +15,7 @@ public class PostDBContext extends DBContext {
                 + "LEFT JOIN users u ON p.author_id = u.user_id "
                 + "INNER JOIN postcategories pc ON p.category_id = pc.category_id "
                 + "WHERE 1=1 ";
-                
+
         // Thêm điều kiện lọc theo trạng thái danh mục nếu cần
         if (!includeInactiveCategories) {
             sql += " AND pc.status = 1 ";
@@ -68,15 +68,15 @@ public class PostDBContext extends DBContext {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Post post = new Post(
-                    rs.getInt("post_id"),
-                    rs.getString("title"),
-                    rs.getString("content"),
-                    rs.getDate("updatedate"),
-                    rs.getDate("createdate"),
-                    rs.getString("status"),
-                    rs.getString("image"),
-                    rs.getString("category_name"),
-                    rs.getString("author_name")
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getDate("updatedate"),
+                        rs.getDate("createdate"),
+                        rs.getString("status"),
+                        rs.getString("image"),
+                        rs.getString("category_name"),
+                        rs.getString("author_name")
                 );
                 post.setCategoryId(rs.getInt("category_id"));
                 posts.add(post);
@@ -98,22 +98,22 @@ public class PostDBContext extends DBContext {
         String sql = "SELECT COUNT(*) FROM posts p "
                 + "INNER JOIN postcategories pc ON p.category_id = pc.category_id "
                 + "WHERE 1=1 ";
-                
+
         // Thêm điều kiện lọc theo trạng thái danh mục nếu cần
         if (!includeInactiveCategories) {
             sql += " AND pc.status = 1 ";
         }
         if (categoryId != null && !categoryId.isEmpty()) {
-            sql += " AND category_id = ? ";
+            sql += " AND p.category_id = ? ";
         }
         if (author != null && !author.isEmpty()) {
-            sql += " AND author_id = ? ";
+            sql += " AND p.author_id = ? ";
         }
         if (status != null && !status.isEmpty()) {
-            sql += " AND status = ? ";
+            sql += " AND p.status = ? ";
         }
         if (search != null && !search.isEmpty()) {
-            sql += " AND title LIKE ? ";
+            sql += " AND p.title LIKE ? ";
         }
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -131,12 +131,20 @@ public class PostDBContext extends DBContext {
                 stmt.setString(paramIndex++, "%" + search + "%");
             }
 
+            // In ra câu SQL để debug
+            System.out.println("SQL: " + sql);
+
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1);
+                int count = rs.getInt(1);
+                System.out.println("Total posts count: " + count);
+                return count;
             }
         } catch (SQLException e) {
+            System.err.println("Error in getTotalPosts: " + e.getMessage());
             e.printStackTrace();
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid number format in getTotalPosts: " + e.getMessage());
         }
         return 0;
     }
@@ -153,7 +161,7 @@ public class PostDBContext extends DBContext {
                 + "LEFT JOIN users u ON p.author_id = u.user_id "
                 + "INNER JOIN postcategories pc ON p.category_id = pc.category_id "
                 + "WHERE p.post_id = ? ";
-                
+
         // Thêm điều kiện lọc theo trạng thái danh mục nếu cần
         if (!includeInactiveCategory) {
             sql += " AND pc.status = 1 ";
@@ -163,19 +171,19 @@ public class PostDBContext extends DBContext {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Post post = new Post(
-                    rs.getInt("post_id"),
-                    rs.getString("title"),
-                    rs.getString("content"),
-                    rs.getDate("updatedate"),
-                    rs.getDate("createdate"),
-                    rs.getString("status"),
-                    rs.getString("image"),
-                    rs.getString("category_name"),
-                    rs.getString("author_name")
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getDate("updatedate"),
+                        rs.getDate("createdate"),
+                        rs.getString("status"),
+                        rs.getString("image"),
+                        rs.getString("category_name"),
+                        rs.getString("author_name")
                 );
                 post.setAuthorAvatar(rs.getString("author_avatar"));
                 post.setCategoryId(rs.getInt("category_id"));
-                
+
                 // Create PostCategory object
                 if (rs.getObject("category_id") != null) {
                     PostCategory category = new PostCategory();
@@ -183,7 +191,7 @@ public class PostDBContext extends DBContext {
                     category.setName(rs.getString("category_name"));
                     post.setPostCategory(category);
                 }
-                
+
                 return post;
             }
         } catch (SQLException e) {
@@ -255,7 +263,7 @@ public class PostDBContext extends DBContext {
         // Admin có thể xem tất cả các bài viết kể cả thuộc danh mục không active
         return getPostById(id, true);
     }
-    
+
     // Phiên bản hiển thị cho người dùng - chỉ hiển thị bài viết thuộc danh mục active
     public Post getPublicPostById(int id) {
         return getPostById(id, false);
@@ -270,7 +278,7 @@ public class PostDBContext extends DBContext {
                     + "LEFT JOIN users u ON p.author_id = u.user_id "
                     + "INNER JOIN postcategories pc ON p.category_id = pc.category_id "
                     + "WHERE p.category_id = ? ";
-                    
+
             if (!includeInactiveStatuses) {
                 sql += " AND p.status = 1 AND pc.status = 1 ";
             }
@@ -281,15 +289,15 @@ public class PostDBContext extends DBContext {
 
             while (rs.next()) {
                 Post post = new Post(
-                    rs.getInt("post_id"),
-                    rs.getString("title"),
-                    rs.getString("content"),
-                    rs.getDate("updatedate"),
-                    rs.getDate("createdate"),
-                    rs.getString("status"),
-                    rs.getString("image"),
-                    rs.getString("category_name"),
-                    rs.getString("author_name")
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getDate("updatedate"),
+                        rs.getDate("createdate"),
+                        rs.getString("status"),
+                        rs.getString("image"),
+                        rs.getString("category_name"),
+                        rs.getString("author_name")
                 );
                 post.setCategoryId(categoryId);
                 posts.add(post);
@@ -305,7 +313,7 @@ public class PostDBContext extends DBContext {
         // Mặc định hiển thị cả các bài viết không active (dành cho admin)
         return getPostsByCategoryId(categoryId, true);
     }
-    
+
     // Phiên bản cho người dùng - chỉ hiển thị bài viết active và thuộc danh mục active
     public ArrayList<Post> getPublicPostsByCategoryId(int categoryId) {
         return getPostsByCategoryId(categoryId, false);
@@ -315,16 +323,15 @@ public class PostDBContext extends DBContext {
     public ArrayList<PostCategory> getAllCategories(boolean includeInactive) {
         ArrayList<PostCategory> categories = new ArrayList<>();
         String sql = "SELECT category_id, name, description, status FROM postcategories";
-        
+
         if (!includeInactive) {
             sql += " WHERE status = 1";
         }
-        
+
         // Thêm ORDER BY để hiển thị danh mục theo thứ tự alphabet
         sql += " ORDER BY name ASC";
-    
-        try (PreparedStatement stmt = connection.prepareStatement(sql); 
-             ResultSet rs = stmt.executeQuery()) {
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 PostCategory category = new PostCategory();
                 category.setId(rs.getInt("category_id"));
@@ -341,11 +348,11 @@ public class PostDBContext extends DBContext {
 
     public List<String[]> getAllAuthors() {
         List<String[]> authors = new ArrayList<>();
-        String sql = "SELECT u.user_id, u.fullname " +
-                    "FROM users u " +
-                    "JOIN userroles ur ON u.email = ur.email " +
-                    "JOIN roles r ON ur.role_id = r.role_id " +
-                    "WHERE r.role_name = ?";
+        String sql = "SELECT u.user_id, u.fullname "
+                + "FROM users u "
+                + "JOIN userroles ur ON u.email = ur.email "
+                + "JOIN roles r ON ur.role_id = r.role_id "
+                + "WHERE r.role_name = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, "Marketing Staff");
@@ -363,12 +370,12 @@ public class PostDBContext extends DBContext {
 
     public ArrayList<Post> getHomePosts() {
         ArrayList<Post> posts = new ArrayList<>();
-        String sql = "SELECT p.*, u.fullname AS author_name, pc.name AS category_name " +
-                   "FROM posts p " +
-                   "INNER JOIN postcategories pc ON p.category_id = pc.category_id " +
-                   "LEFT JOIN users u ON p.author_id = u.user_id " +
-                   "WHERE p.status = 1 AND pc.status = 1 " +
-                   "ORDER BY p.createdate DESC";
+        String sql = "SELECT p.*, u.fullname AS author_name, pc.name AS category_name "
+                + "FROM posts p "
+                + "INNER JOIN postcategories pc ON p.category_id = pc.category_id "
+                + "LEFT JOIN users u ON p.author_id = u.user_id "
+                + "WHERE p.status = 1 AND pc.status = 1 "
+                + "ORDER BY p.createdate DESC";
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             ResultSet rs = stm.executeQuery();
@@ -397,13 +404,13 @@ public class PostDBContext extends DBContext {
     public List<Post> searchPosts(String searchQuery, int currentPage, int itemsPerPage) {
         List<Post> posts = new ArrayList<>();
         try {
-            String sql = "SELECT p.*, u.fullname AS author_name, pc.name AS category_name " +
-                       "FROM posts p " +
-                       "INNER JOIN postcategories pc ON p.category_id = pc.category_id " +
-                       "LEFT JOIN users u ON p.author_id = u.user_id " +
-                       "WHERE (p.title LIKE ? OR p.content LIKE ?) AND p.status = 1 AND pc.status = 1 " +
-                       "ORDER BY p.updatedate DESC LIMIT ? OFFSET ?";
-                       
+            String sql = "SELECT p.*, u.fullname AS author_name, pc.name AS category_name "
+                    + "FROM posts p "
+                    + "INNER JOIN postcategories pc ON p.category_id = pc.category_id "
+                    + "LEFT JOIN users u ON p.author_id = u.user_id "
+                    + "WHERE (p.title LIKE ? OR p.content LIKE ?) AND p.status = 1 AND pc.status = 1 "
+                    + "ORDER BY p.updatedate DESC LIMIT ? OFFSET ?";
+
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, "%" + searchQuery + "%");
             stm.setString(2, "%" + searchQuery + "%");
@@ -434,9 +441,9 @@ public class PostDBContext extends DBContext {
     // Đếm tổng số bài viết theo từ khóa tìm kiếm
     public int getTotalSearchPosts(String searchQuery) {
         try {
-            String sql = "SELECT COUNT(*) FROM posts p " +
-                         "INNER JOIN postcategories pc ON p.category_id = pc.category_id " +
-                         "WHERE (p.title LIKE ? OR p.content LIKE ?) AND p.status = 1 AND pc.status = 1";
+            String sql = "SELECT COUNT(*) FROM posts p "
+                    + "INNER JOIN postcategories pc ON p.category_id = pc.category_id "
+                    + "WHERE (p.title LIKE ? OR p.content LIKE ?) AND p.status = 1 AND pc.status = 1";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, "%" + searchQuery + "%");
             stm.setString(2, "%" + searchQuery + "%");
