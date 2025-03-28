@@ -47,15 +47,15 @@ public class BlogSearchServlet extends HttpServlet {
         List<Post> allPosts = postDB.searchPosts(searchQuery, currentPage, itemsPerPage);
 
         // Tính tổng số bài viết và số trang cần hiển thị
-        int totalPosts = postDB.getTotalSearchPosts(searchQuery);
-        int totalPages = (int) Math.ceil((double) totalPosts / itemsPerPage);
+        //int totalPosts = postDB.getTotalSearchPosts(searchQuery);
+       // int totalPages = (int) Math.ceil((double) totalPosts / itemsPerPage);
 
         
         // Truyền dữ liệu vào request để hiển thị trên JSP
         request.setAttribute("posts", allPosts);
         request.setAttribute("searchQuery", searchQuery);
         request.setAttribute("currentPage", currentPage);
-        request.setAttribute("totalPages", totalPages);
+       // request.setAttribute("totalPages", totalPages);
 
         // Chuyển hướng đến `blogs.jsp`
         RequestDispatcher dispatcher = request.getRequestDispatcher("./blogs.jsp");

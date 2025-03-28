@@ -326,7 +326,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Pagination Controls -->
+                 
                     <!-- Pagination Controls -->
                     <div class="pagination-container text-center">
                         <c:if test="${currentPage > 1}">
