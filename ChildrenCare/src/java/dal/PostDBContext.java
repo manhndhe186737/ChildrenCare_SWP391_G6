@@ -133,79 +133,91 @@ public class PostDBContext extends DBContext {
     /**
      * Lấy danh sách bài viết với phân trang và các tiêu chí lọc (dành cho quản lý bài viết)
      */
-    public List<Post> getPaginatedPosts(int page, int pageSize, String categoryId, String author, String status,
-                                        String search, String sortBy, String order, boolean includeInactiveCategories) {
-        List<Post> posts = new ArrayList<>();
-        StringBuilder sql = new StringBuilder(
-            "SELECT p.*, u.fullname AS author_name, pc.name AS category_name " +
-            "FROM posts p " +
-            "LEFT JOIN users u ON p.author_id = u.user_id " +
-            "INNER JOIN postcategories pc ON p.category_id = pc.category_id " +
-            "WHERE 1=1 "
-        );
-        List<Object> params = new ArrayList<>();
+  public List<Post> getPaginatedPosts(int page, int pageSize, String categoryId, String author, String status,
+                                    String search, String sortBy, String order, boolean includeInactiveCategories) {
+    List<Post> posts = new ArrayList<>();
+    StringBuilder sql = new StringBuilder(
+        "SELECT p.*, u.fullname AS author_name, pc.name AS category_name " +
+        "FROM posts p " +
+        "LEFT JOIN users u ON p.author_id = u.user_id " +
+        "INNER JOIN postcategories pc ON p.category_id = pc.category_id " +
+        "WHERE 1=1 "
+    );
+    List<Object> params = new ArrayList<>();
 
-        if (!includeInactiveCategories) {
-            sql.append("AND pc.status = 1 ");
-        }
-
-        // Xử lý categoryId
-        if (categoryId != null && !categoryId.trim().isEmpty()) {
-            try {
-                int categoryIdInt = Integer.parseInt(categoryId);
-                sql.append("AND p.category_id = ? ");
-                params.add(categoryIdInt);
-            } catch (NumberFormatException e) {
-                LOGGER.log(Level.WARNING, "Invalid categoryId in getPaginatedPosts: " + categoryId, e);
-            }
-        }
-
-        // Xử lý author
-        if (author != null && !author.trim().isEmpty()) {
-            try {
-                int authorIdInt = Integer.parseInt(author);
-                sql.append("AND p.author_id = ? ");
-                params.add(authorIdInt);
-            } catch (NumberFormatException e) {
-                LOGGER.log(Level.WARNING, "Invalid authorId in getPaginatedPosts: " + author, e);
-            }
-        }
-
-        // Xử lý status
-        if (status != null && !status.trim().isEmpty()) {
-            sql.append("AND p.status = ? ");
-            params.add(status);
-        }
-
-        // Xử lý tìm kiếm
-        if (search != null && !search.trim().isEmpty()) {
-            sql.append("AND p.title LIKE ? ");
-            params.add("%" + search + "%");
-        }
-
-        // Xử lý sắp xếp
-        Set<String> validSortColumns = Set.of("p.title", "pc.name", "u.fullname", "p.status", "p.updatedate");
-        String validSortOrder = "ASC".equalsIgnoreCase(order) ? "ASC" : "DESC";
-        String sortColumn = validSortColumns.contains(sortBy) ? sortBy : "p.updatedate";
-        sql.append("ORDER BY ").append(sortColumn).append(" ").append(validSortOrder);
-
-        // Thêm phân trang
-        sql.append(" LIMIT ? OFFSET ?");
-        params.add(pageSize);
-        params.add((page - 1) * pageSize);
-
-        try (PreparedStatement stmt = connection.prepareStatement(sql.toString())) {
-            setParameters(stmt, params);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                posts.add(extractPostFromResultSet(rs));
-            }
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error in getPaginatedPosts: " + e.getMessage(), e);
-        }
-        return posts;
+    if (!includeInactiveCategories) {
+        sql.append("AND pc.status = 1 ");
     }
 
+    // Xử lý categoryId
+    if (categoryId != null && !categoryId.trim().isEmpty()) {
+        try {
+            int categoryIdInt = Integer.parseInt(categoryId);
+            sql.append("AND p.category_id = ? ");
+            params.add(categoryIdInt);
+        } catch (NumberFormatException e) {
+            LOGGER.log(Level.WARNING, "Invalid categoryId in getPaginatedPosts: " + categoryId, e);
+        }
+    }
+
+    // Xử lý author
+    if (author != null && !author.trim().isEmpty()) {
+        try {
+            int authorIdInt = Integer.parseInt(author);
+            sql.append("AND p.author_id = ? ");
+            params.add(authorIdInt);
+        } catch (NumberFormatException e) {
+            LOGGER.log(Level.WARNING, "Invalid authorId in getPaginatedPosts: " + author, e);
+        }
+    }
+
+    // Xử lý status
+    if (status != null && !status.trim().isEmpty()) {
+        sql.append("AND p.status = ? ");
+        params.add(status);
+    }
+
+    // Xử lý tìm kiếm
+    if (search != null && !search.trim().isEmpty()) {
+        sql.append("AND p.title LIKE ? ");
+        params.add("%" + search + "%");
+    }
+
+    // Xử lý sắp xếp
+    Set<String> validSortColumns = Set.of("p.title", "pc.name", "u.fullname", "p.status", "p.updatedate");
+    String validSortOrder = "ASC".equalsIgnoreCase(order) ? "ASC" : "DESC";
+    String sortColumn = validSortColumns.contains(sortBy) ? sortBy : "p.updatedate";
+    sql.append("ORDER BY ").append(sortColumn).append(" ").append(validSortOrder);
+
+    // Thêm phân trang
+    sql.append(" LIMIT ? OFFSET ?");
+    params.add(pageSize);
+    params.add((page - 1) * pageSize);
+
+    try (PreparedStatement stmt = connection.prepareStatement(sql.toString())) {
+        setParameters(stmt, params);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Post post = new Post(
+                rs.getInt("post_id"),
+                rs.getString("title"),
+                rs.getString("content"),
+                rs.getDate("updatedate"),
+                rs.getDate("createdate"),
+                rs.getString("status"),
+                rs.getString("image"),
+                rs.getString("category_name"),
+                rs.getString("author_name")
+            );
+            post.setCategoryId(rs.getInt("category_id"));
+            //post.setAuthor(String.valueOf(rs.getInt("author_id")));
+            posts.add(post);
+        }
+    } catch (SQLException e) {
+        LOGGER.log(Level.SEVERE, "Error in getPaginatedPosts: " + e.getMessage(), e);
+    }
+    return posts;
+}
     /**
      * Phương thức tiện ích: Lấy danh sách bài viết với phân trang (không bao gồm danh mục không hoạt động)
      */

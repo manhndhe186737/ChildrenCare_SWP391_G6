@@ -54,13 +54,13 @@ public class AccountController extends HttpServlet {
 
                 UserDAO userDAO = new UserDAO();
                 User user = userDAO.getUserByEmail(email);
-                
-                if(user==null){
+
+                if (user == null) {
                     request.setAttribute("message", "User not exist!");
                     request.getRequestDispatcher("account/login.jsp").forward(request, response);
                     return;
                 }
-                
+
                 Account acc = userDAO.getUserRoles(email);
                 user.setAccount(acc);
 
@@ -107,6 +107,12 @@ public class AccountController extends HttpServlet {
                     try {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         dob = sdf.parse(dobString);
+
+                        // Kiểm tra xem ngày sinh có phải là ngày trong tương lai không
+                        if (dob.after(new Date())) {
+                            error.add("Date of birth cannot be in the future.");
+                            return;
+                        }
 
                     } catch (ParseException e) {
                         e.printStackTrace();

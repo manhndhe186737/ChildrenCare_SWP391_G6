@@ -657,7 +657,7 @@ public class StaffDBContext extends DBContext {
             sql.append("AND (rsv.customer_name LIKE ? OR rsv.customer_address LIKE ?) ");
         }
 
-        sql.append("LIMIT ? OFFSET ?");
+        sql.append("ORDER BY rsv.dateBook DESC LIMIT ? OFFSET ? ");
 
         try (PreparedStatement stm = connection.prepareStatement(sql.toString())) {
             stm.setInt(1, staffId);
