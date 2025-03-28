@@ -232,7 +232,7 @@ public class PostDBContext extends DBContext {
                     rs.getString("author_name")
                 );
                 post.setCategoryId(rs.getInt("category_id"));
-                post.setAuthor(String.valueOf(rs.getInt("author_id")));
+                //post.setAuthor(String.valueOf(rs.getInt("author_id")));
                 posts.add(post);
             }
         } catch (SQLException e) {

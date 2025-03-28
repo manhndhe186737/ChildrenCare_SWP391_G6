@@ -507,7 +507,7 @@
                 </div>
 
                 <!-- Pagination -->
-                <c:if test="${totalPages > 1}">
+                <c:if test="${totalPages >= 1}">
                     <div class="row text-center mt-4">
                         <div class="col-12">
                             <ul class="pagination justify-content-center mb-0">
@@ -538,6 +538,8 @@
         </div>
     </section>
     <!-- End Blog Section -->
+    
+    &nbsp;
 
     <!-- Footer Start -->
     <footer class="bg-footer">

@@ -172,7 +172,7 @@ public class BlogDBContext extends DBContext {
                 + "FROM posts p\n"
                 + "LEFT JOIN users u ON p.author_id = u.user_id\n"
                 + "LEFT JOIN postcategories pc ON p.category_id = pc.category_id\n"
-                + "WHERE pc.status = 1\n"
+                + "WHERE pc.status = 1 AND p.status = 1\n"
                 + "ORDER BY createdate DESC\n"
                 + "LIMIT 1;";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
