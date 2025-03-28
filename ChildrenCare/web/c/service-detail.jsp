@@ -410,13 +410,15 @@
                                         <a href="service-detail?id=${rel.id}" class="text-dark product-name h6">${rel.name}</a>
                                         <div class="d-flex justify-content-between mt-1">
                                             <h6 class="text-muted small font-italic mb-0 mt-1">$${rel.price}</h6>
-                                            <ul class="list-unstyled text-warning mb-0">
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                                <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            </ul>
+                                             <ul class="list-unstyled text-warning mb-0">
+                                            <!-- Hiển thị sao dựa trên avgRating của related service -->
+                                            <c:forEach var="i" begin="1" end="${relatedServicesAvgRating[rel.id]}">
+                                                <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            </c:forEach>
+                                            <c:forEach var="i" begin="${relatedServicesAvgRating[rel.id] + 1}" end="5">
+                                                <li class="list-inline-item"><i class="mdi mdi-star text-muted"></i></li>
+                                            </c:forEach>
+                                        </ul>
                                         </div>
                                     </div>
                                 </div>

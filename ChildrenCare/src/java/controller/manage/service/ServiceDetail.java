@@ -36,28 +36,26 @@ public class ServiceDetail extends HttpServlet {
         // Lấy thông tin chi tiết của dịch vụ từ database
         ServiceDBContext serviceDB = new ServiceDBContext();
         Service service = serviceDB.getServiceById(serviceId);
-        
-        if(!service.getCategory().isStatus()){
+
+        if (!service.getCategory().isStatus()) {
             response.sendRedirect("service-list");
             return;
         }
-        
+
         if (!service.isActive) {
             response.sendRedirect("service-list");
             return;
         }
-        // Kiểm tra nếu dịch vụ không tồn tại
+
         if (service == null) {
             response.sendRedirect("service-list");
             return;
         }
 
-        // Lấy danh sách các dịch vụ cùng loại (liên quan)
         int categoryId = service.getCategory().getId();
-        // Sử dụng hàm getServicesByCategoryId đã có
-        // (Nếu muốn hiển thị thêm ảnh, bạn có thể mở rộng hàm này để lấy thêm cột image)
+
+        // Lấy danh sách các related services
         java.util.ArrayList<Service> relatedServices = serviceDB.getServicesByCategoryId(categoryId);
-        // Loại bỏ dịch vụ hiện tại nếu có trong danh sách
         relatedServices.removeIf(s -> s.getId() == service.getId());
 
         ServiceDAO sd = new ServiceDAO();
@@ -73,12 +71,34 @@ public class ServiceDetail extends HttpServlet {
             avgRating = totalRating / totalFeedbacks; // Tính trung bình
         }
 
+        java.util.HashMap<Integer, Double> relatedServicesAvgRating = new java.util.HashMap<>();
+        java.util.HashMap<Integer, Integer> relatedServicesTotalFeedbacks = new java.util.HashMap<>();
+
+        for (Service relatedService : relatedServices) {
+            List<ServiceFeedback> relatedFeedbacks = sd.getServiceFeedback(relatedService.getId());
+            int relatedTotalFeedbacks = relatedFeedbacks.size();
+            double relatedAvgRating = 0.0;
+
+            if (relatedTotalFeedbacks > 0) {
+                double relatedTotalRating = 0;
+                for (ServiceFeedback feedback : relatedFeedbacks) {
+                    relatedTotalRating += feedback.getRating();
+                }
+                relatedAvgRating = relatedTotalRating / relatedTotalFeedbacks;
+            }
+
+            relatedServicesAvgRating.put(relatedService.getId(), relatedAvgRating);
+            relatedServicesTotalFeedbacks.put(relatedService.getId(), relatedTotalFeedbacks);
+        }
+
         // Gửi dữ liệu đến JSP
         request.setAttribute("feedback", feedbacks);
         request.setAttribute("service", service);
         request.setAttribute("relatedServices", relatedServices);
-        request.setAttribute("avgRating", avgRating);  
-        request.setAttribute("totalFeedbacks", totalFeedbacks);  
+        request.setAttribute("avgRating", avgRating);
+        request.setAttribute("totalFeedbacks", totalFeedbacks);
+        request.setAttribute("relatedServicesAvgRating", relatedServicesAvgRating); // Thêm avgRating của related services
+        request.setAttribute("relatedServicesTotalFeedbacks", relatedServicesTotalFeedbacks); // Thêm total feedbacks của related services
 
         request.getRequestDispatcher("c/service-detail.jsp").forward(request, response);
     }
