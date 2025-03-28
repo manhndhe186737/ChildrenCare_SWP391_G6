@@ -57,21 +57,17 @@ public class BlogServlet extends HttpServlet {
         String sortColumn = determineSortColumn(sortBy);
         String validSortOrder = normalizeSortOrder(sortOrder);
 
-        // Lấy tổng số bài viết và tính tổng số trang
-        int totalPosts = postDB.getTotalSearchPosts(searchQuery, categoryIdParam, fromDate, toDate);
+        // Lấy tổng số bài viết với tất cả các bộ lọc
+        int totalPosts = postDB.getTotalPostsWithFilters(searchQuery, categoryIdParam, fromDate, toDate);
         int totalPages = calculateTotalPages(totalPosts);
 
         // Điều chỉnh currentPage nếu vượt quá totalPages
         currentPage = adjustCurrentPage(currentPage, totalPages);
 
-        // Lấy danh sách bài viết
-        // Bỏ searchQuery khỏi tham số của getPostsWithSorting vì phương thức này không sử dụng searchQuery
-        List<Post> posts = postDB.getPostsWithSorting(categoryIdParam, fromDate, toDate, sortColumn, validSortOrder, currentPage, POSTS_PER_PAGE);
-
-        // Nếu có searchQuery, gọi phương thức searchPosts thay thế
-        if (isValidParam(searchQuery)) {
-            posts = postDB.searchPosts(searchQuery, currentPage, POSTS_PER_PAGE);
-        }
+        // Lấy danh sách bài viết với tất cả các bộ lọc và sắp xếp
+        List<Post> posts = postDB.getPostsWithFiltersAndSorting(
+                searchQuery, categoryIdParam, fromDate, toDate, 
+                sortColumn, validSortOrder, currentPage, POSTS_PER_PAGE);
 
         // Đưa dữ liệu vào request
         setRequestAttributes(request, posts, currentPage, totalPages, searchQuery, 

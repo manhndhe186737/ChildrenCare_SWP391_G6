@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : blogs
     Created on : Feb 8, 2025, 10:03:12 AM
     Author     : dell
@@ -148,7 +148,6 @@
             background: #0056b3;
         }
         
-        /* Thêm class chung cho các nút trong form lọc */
         .filter-form .filter-button {
             width: 100%;
             padding: 0.6rem;
@@ -160,7 +159,6 @@
             transition: background 0.3s;
         }
 
-        /* Màu cho nút Apply Filters */
         .filter-form .apply-button {
             background: #007bff;
             color: white;
@@ -170,7 +168,6 @@
             background: #0056b3;
         }
 
-        /* Màu cho nút Reset */
         .filter-form .reset-button {
             background: #dc3545;
             color: white;
@@ -180,7 +177,6 @@
             background: #c82333;
         }
 
-        /* Đảm bảo các nút trong div flex có kích thước bằng nhau */
         .filter-buttons-container {
             display: flex;
             gap: 0.4rem;
@@ -419,12 +415,14 @@
 
     <!-- Start Blog Section -->
     <section class="container mt-5">
-        <h2 class="text-center mb-4">Latest Posts</h2>
+        <h2 class="text-center mb-4">Latest Blogs</h2>
 
         <div class="blog-page-container">
             <!-- Filter Panel (Left) -->
             <div class="filter-panel">
-                <form action="${pageContext.request.contextPath}/blog" method="get" class="filter-form">
+                <form action="${pageContext.request.contextPath}/blog" method="get" class="filter-form" id="filterForm">
+                    <input type="hidden" name="sortBy" value="${param.sortBy}">
+                    <input type="hidden" name="sortOrder" value="${param.sortOrder}">
                     <div class="search-container">
                         <input type="text" name="search" placeholder="Search posts..." value="${param.search}">
                         <button type="submit"><i class="uil uil-search"></i></button>
@@ -462,8 +460,8 @@
                 <!-- Sort Options -->
                 <div class="sort-options">
                     <label>Sort by Date:</label>
-                    <select id="sortOrder" onchange="updateSort()">
-                        <option value="desc" ${empty param.sortOrder || param.sortOrder eq 'desc' ? 'selected' : ''}>Newest First</option>
+                    <select id="sortOrder" name="sortOrder" onchange="updateSort()">
+                        <option value="desc" ${param.sortOrder eq 'desc' || empty param.sortOrder ? 'selected' : ''}>Newest First</option>
                         <option value="asc" ${param.sortOrder eq 'asc' ? 'selected' : ''}>Oldest First</option>
                     </select>
                 </div>
@@ -633,7 +631,7 @@
             const today = new Date();
             const selectedDate = new Date(input.value);
             today.setHours(0, 0, 0, 0);
-            if (selectedDate > today + 1) {
+            if (selectedDate > today) {
                 alert("Cannot select a future date!");
                 input.value = today.toISOString().split('T')[0];
             }
@@ -641,20 +639,20 @@
 
         function updateSort() {
             const sortOrder = document.getElementById('sortOrder').value;
-            const url = new URL(window.location.href);
-            url.searchParams.set('sortBy', 'date'); // Chỉ giữ sortBy là 'date'
-            url.searchParams.set('sortOrder', sortOrder);
-            window.location.href = url.toString();
+            const form = document.getElementById('filterForm');
+            form.querySelector('input[name="sortBy"]').value = 'date';
+            form.querySelector('input[name="sortOrder"]').value = sortOrder;
+            form.submit();
         }
 
         function resetFilters() {
-            const form = document.querySelector('.filter-form');
-            // Xóa giá trị của các trường input
+            const form = document.getElementById('filterForm');
             form.querySelector('input[name="search"]').value = '';
             form.querySelector('select[name="category"]').value = '';
             form.querySelector('input[name="fromDate"]').value = '';
             form.querySelector('input[name="toDate"]').value = '';
-            // Gửi form để tải lại trang với các tham số mặc định
+            form.querySelector('input[name="sortBy"]').value = '';
+            form.querySelector('input[name="sortOrder"]').value = '';
             form.submit();
         }
     </script>
