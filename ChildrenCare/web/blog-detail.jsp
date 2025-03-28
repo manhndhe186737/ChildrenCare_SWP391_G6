@@ -141,7 +141,7 @@
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
                                     <c:if test="${sessionScope.role.contains('Staffs')}">
-                                    <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
+                                    <li><a href="c/staff-reserv" class="sub-menu-item">Reservation</a></li>
                                     
                                     
                                     </c:if>
@@ -193,10 +193,6 @@
                                 <ul class="list-unstyled mt-4">
                                     <li class="list-inline-item user text-muted me-2"><i class="mdi mdi-account"></i>${blog.author}</li>                                    <li> <fmt:formatDate value="${blog.createdate}" pattern="dd MMMM, yyyy"/></li>
                                 </ul>
-                                <p class="para-desc mx-auto text-muted">${blog.content}</p>
-                            </c:if>
-                            <c:if test="${blog == null}">
-                                <p>Blog không tồn tại hoặc không có dữ liệu.</p>
                             </c:if>
 
                         </div>

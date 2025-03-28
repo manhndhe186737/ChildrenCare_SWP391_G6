@@ -53,11 +53,29 @@
         .d-flex.align-items-center .ms-2 {
             margin-left: 15px !important;
         }
-        .star-rating .fas {
-            color: #f1c40f;
+
+        /* New rating display style */
+        .rating-display {
+            display: inline-flex;
+            align-items: center;
+            font-size: 16px; /* Adjust the font size for the number */
+            color: #333; /* Color for the number */
         }
-        .star-rating .far {
-            color: #ddd;
+
+        .rating-display .fas.fa-star {
+            font-size: 14px; /* Size of the single star */
+            color: #f1c40f; /* Gold color for the star */
+            margin-left: 4px; /* Space between the number and the star */
+        }
+
+        /* Truncate long comments in the table */
+        .comment-truncated {
+            max-width: 200px; /* Adjust this value based on your design */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            vertical-align: middle;
         }
 
         /* Thêm class chung cho các nút trong form lọc */
@@ -210,7 +228,7 @@
                         <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
                         <ul class="submenu">
                             <c:if test="${sessionScope.role.contains('Staffs')}">
-                                <li><a href="doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
+                                <li><a href="staff-reserv" class="sub-menu-item">Reservation</a></li>
                             </c:if>
                         </ul>
                     </li>
@@ -369,13 +387,13 @@
                                                         </td>
                                                         <td class="p-3">${feedback.reservation.service.name}</td>
                                                         <td class="p-3">
-                                                            <div class="star-rating">
-                                                                <c:forEach begin="1" end="5" var="i">
-                                                                    <i class="fas fa-star${i <= feedback.rating ? '' : '-o'}"></i>
-                                                                </c:forEach>
+                                                            <div class="rating-display">
+                                                                ${feedback.rating} <i class="fas fa-star"></i>
                                                             </div>
                                                         </td>
-                                                        <td class="p-3">${feedback.comment}</td>
+                                                        <td class="p-3">
+                                                            <span class="comment-truncated">${feedback.comment}</span>
+                                                        </td>
                                                         <td class="p-3">${feedback.date}</td>
                                                         <td class="text-end p-3">
                                                             <a href="#" class="btn btn-icon btn-pills btn-soft-primary" data-bs-toggle="modal" data-bs-target="#viewFeedback${feedback.id}">
@@ -464,9 +482,9 @@
                                 <li class="mb-3 d-flex">
                                     <h6 class="mb-0" style="width: 100px;">Rating:</h6>
                                     <p class="text-muted ms-2">
-                                        <c:forEach begin="1" end="5" var="i">
-                                            <i class="fas fa-star${i <= feedback.rating ? '' : '-o'}"></i>
-                                        </c:forEach>
+                                        <div class="rating-display">
+                                            ${feedback.rating} <i class="fas fa-star"></i>
+                                        </div>
                                     </p>
                                 </li>
                                 <li class="mb-3 d-flex">

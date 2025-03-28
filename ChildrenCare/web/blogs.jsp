@@ -350,7 +350,7 @@
                         <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
                         <ul class="submenu">
                             <c:if test="${sessionScope.role.contains('Staffs')}">
-                                <li><a href="${pageContext.request.contextPath}/doctor-appointment.html" class="sub-menu-item">Reservation</a></li>
+                                <li><a href="${pageContext.request.contextPath}/c/staff-reserv" class="sub-menu-item">Reservation</a></li>
                             </c:if>
                         </ul>
                     </li>
@@ -489,7 +489,8 @@
                                                 <span><i class="uil uil-bookmark"></i> ${post.categoryName}</span>
                                             </div>
                                             <h5 class="title">${post.title}</h5>
-                                            <p>${fn:substring(post.content, 0, 100)}...</p>
+<!--                                            <p>${fn:substring(post.content, 0, 100)}...</p>-->
+                                            <p>${post.shortContent}</p>
                                             <a href="${pageContext.request.contextPath}/blog-detail?id=${post.id}" class="btn btn-primary btn-sm">Read More</a>
                                         </div>
                                     </div>

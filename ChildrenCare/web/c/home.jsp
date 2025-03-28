@@ -151,8 +151,6 @@
             .my-slider .item:last-child {
                 margin-right: 0; /* Loại bỏ khoảng cách sau item cuối cùng */
             }
-
-
         </style>
 
 
@@ -263,10 +261,10 @@
                                 <li class="has-submenu parent-menu-item">
                                     <c:if test="${sessionScope.role.contains('Staffs')}">
                                     <li><a href="../c/staff-reserv" class="sub-menu-item">Reservation</a></li>
-                                    
-                                    
-                                    </c:if>
-                                
+
+
+                                </c:if>
+
                             </ul>
                         </li>
 
@@ -349,7 +347,7 @@
                         <div class="section-title ms-lg-5">
                             <span class="badge badge-pill badge-soft-primary">About Children Care</span>
                             <h4 class="title mt-3 mb-4">${b.title}</h4>
-                            <p class="para-desc text-muted">${b.content}</p>
+                            <p class="para-desc text-muted" >${requestScope.shortcontent}</p>
                             <div class="mt-4">
                                 <a href="../blog-detail?id=${b.id}" class="btn btn-soft-primary">Read More</a>
                             </div>
@@ -625,6 +623,7 @@
                                             slide: sliderImages,
                                             delay: [3000, 3000, 3000]
                                         });
+
         </script>
 
 

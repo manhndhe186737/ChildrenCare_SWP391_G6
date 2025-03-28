@@ -11,6 +11,7 @@ public class Post {
     private String img;
     private String author; 
     private String authorAvatar;
+    private String shortContent;
     
     private int categoryId;
     private PostCategory postCategory;
@@ -27,9 +28,8 @@ public class Post {
         this.categoryName = category;
         this.author = author;
     }
-    
-    // New constructor with categoryId
-    public Post(int id, String title, String content, Date updatedate, Date createdate, String status, String img, int categoryId, String author) {
+
+    public Post(int id, String title, String content, Date updatedate, Date createdate, String status, String img, String author, String authorAvatar, String shortContent, int categoryId, PostCategory postCategory, String categoryName) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -37,11 +37,23 @@ public class Post {
         this.createdate = createdate;
         this.status = status;
         this.img = img;
-        this.categoryId = categoryId;
         this.author = author;
+        this.authorAvatar = authorAvatar;
+        this.shortContent = shortContent;
+        this.categoryId = categoryId;
+        this.postCategory = postCategory;
+        this.categoryName = categoryName;
     }
 
     public Post() {
+    }
+
+    public String getShortContent() {
+        return shortContent;
+    }
+
+    public void setShortContent(String shortContent) {
+        this.shortContent = shortContent;
     }
     
     // Existing getters and setters

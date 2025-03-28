@@ -78,15 +78,24 @@ public class Homepage extends HttpServlet {
             }
             isLogin += "1";
         }
-        
+
         PostDBContext pdb = new PostDBContext();
         List<Post> posts = pdb.getHomePosts();
 
         ServiceDBContext sdb = new ServiceDBContext();
         SliderDBContext sliderDB = new SliderDBContext();
-        
+
         BlogDBContext bdb = new BlogDBContext();
-        
+
+        String fullContent = bdb.getPostNew().getContent(); // HTML từ TinyMCE
+        String plainText = stripHtmlTags(fullContent);
+
+        String shortContent = plainText;
+        if (plainText.length() > 600) {
+            shortContent = plainText.substring(0, 600) + "............";
+        }
+
+        request.setAttribute("shortcontent", shortContent);
         request.setAttribute("blog", bdb.getPostNew());
         request.setAttribute("posts", posts);
         request.setAttribute("sliders", sliderDB.getActiveSliders());
@@ -96,6 +105,10 @@ public class Homepage extends HttpServlet {
         request.setAttribute("role", roles);
 
         request.getRequestDispatcher("home.jsp").forward(request, response);
+    }
+
+    public static String stripHtmlTags(String html) {
+        return html.replaceAll("<[^>]*>", "").replaceAll("&nbsp;", " ").trim();
     }
 
     /**
@@ -121,8 +134,5 @@ public class Homepage extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-   
+
 }
-
-
-
