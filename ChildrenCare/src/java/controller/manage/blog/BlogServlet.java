@@ -1,5 +1,6 @@
 package controller.manage.blog;
 
+import static controller.manage.Homepage.stripHtmlTags;
 import dal.PostDBContext;
 import model.Post;
 import jakarta.servlet.ServletException;
@@ -66,15 +67,30 @@ public class BlogServlet extends HttpServlet {
 
         // Lấy danh sách bài viết với tất cả các bộ lọc và sắp xếp
         List<Post> posts = postDB.getPostsWithFiltersAndSorting(
-                searchQuery, categoryIdParam, fromDate, toDate, 
+                searchQuery, categoryIdParam, fromDate, toDate,
                 sortColumn, validSortOrder, currentPage, POSTS_PER_PAGE);
 
+        for (Post post : posts) {
+            String fullContent = post.getContent();
+            String plainText = stripHtmlTags(fullContent);
+
+            String shortContent = plainText;
+            if (plainText.length() > 150) {
+                shortContent = plainText.substring(0, 150) + "............";
+            }
+            post.setShortContent(shortContent);
+        }
+
         // Đưa dữ liệu vào request
-        setRequestAttributes(request, posts, currentPage, totalPages, searchQuery, 
+        setRequestAttributes(request, posts, currentPage, totalPages, searchQuery,
                 categoryIdParam, fromDateParam, toDateParam, sortBy, validSortOrder, categories);
 
         // Chuyển hướng đến trang JSP
         request.getRequestDispatcher("blogs.jsp").forward(request, response);
+    }
+
+    public static String stripHtmlTags(String html) {
+        return html.replaceAll("<[^>]*>", "").replaceAll("&nbsp;", " ").trim();
     }
 
     @Override
@@ -105,7 +121,7 @@ public class BlogServlet extends HttpServlet {
     }
 
     // Hàm phụ trợ: Xử lý hiển thị chi tiết bài viết
-    private void handlePostDetail(HttpServletRequest request, HttpServletResponse response, String postIdParam) 
+    private void handlePostDetail(HttpServletRequest request, HttpServletResponse response, String postIdParam)
             throws ServletException, IOException {
         try {
             int postId = Integer.parseInt(postIdParam);
@@ -170,8 +186,8 @@ public class BlogServlet extends HttpServlet {
     }
 
     // Hàm phụ trợ: Đặt các thuộc tính vào request
-    private void setRequestAttributes(HttpServletRequest request, List<Post> posts, int currentPage, 
-            int totalPages, String searchQuery, String categoryIdParam, String fromDateParam, 
+    private void setRequestAttributes(HttpServletRequest request, List<Post> posts, int currentPage,
+            int totalPages, String searchQuery, String categoryIdParam, String fromDateParam,
             String toDateParam, String sortBy, String sortOrder, ArrayList<PostCategory> categories) {
         request.setAttribute("posts", posts);
         request.setAttribute("currentPage", currentPage);
