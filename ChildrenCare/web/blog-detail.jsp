@@ -193,10 +193,6 @@
                                 <ul class="list-unstyled mt-4">
                                     <li class="list-inline-item user text-muted me-2"><i class="mdi mdi-account"></i>${blog.author}</li>                                    <li> <fmt:formatDate value="${blog.createdate}" pattern="dd MMMM, yyyy"/></li>
                                 </ul>
-                                <p class="para-desc mx-auto text-muted">${blog.content}</p>
-                            </c:if>
-                            <c:if test="${blog == null}">
-                                <p>Blog không tồn tại hoặc không có dữ liệu.</p>
                             </c:if>
 
                         </div>
