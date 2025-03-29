@@ -229,7 +229,7 @@
                         <div class="card border-0 sidebar sticky-bar rounded shadow">
                             <div class="card-body">
                                 <div class="widget mb-4 pb-2">
-                                    <h5 class="widget-title">Recent Posts</h5>
+                                    <h5 class="widget-title">Recent Blogs</h5>
                                     <div class="mt-4">
                                         <c:forEach var="recentBlog" items="${recentBlogs}">
                                             <div class="clearfix post-recent">
