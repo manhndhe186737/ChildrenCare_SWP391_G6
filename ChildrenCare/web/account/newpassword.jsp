@@ -73,6 +73,21 @@
                                             <p class="mb-0 mt-3"><small class="text-dark me-2">Remember your password ?</small> <a href="login?service=login" class="text-dark h6 mb-0">Sign in</a></p>
                                         </div>
                                     </div>
+                                    <!-- Hiển thị thông báo lỗi -->
+                                    <% if (request.getAttribute("error") != null) { %>
+                                    <div class="alert alert-danger mt-3">
+                                        <i class="fas fa-exclamation-circle"></i> 
+                                        <%= request.getAttribute("error") %>
+                                    </div>
+                                    <% } %>
+
+                                    <!-- Hiển thị thông báo thành công -->
+                                    <% if (request.getAttribute("message") != null) { %>
+                                    <div class="alert alert-success mt-3">
+                                        <i class="fas fa-check-circle"></i> 
+                                        <%= request.getAttribute("message") %>
+                                    </div>
+                                    <% } %>
                                 </form>
                             </div>
                         </div><!---->
@@ -89,6 +104,45 @@
         <!-- Main Js -->
         <script src="./assets/js/app.js"></script>
 
+        <!-- Thêm jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("form").submit(function (event) {
+                    var password = $("input[name='newPassword']").val();
+                    var confirmPassword = $("input[name='confirmPassword']").val();
+                    var passwordError = false;
+
+                    // Kiểm tra password không được bỏ trống
+                    if (password === "") {
+                        alert("Password cannot be empty.");
+                        passwordError = true;
+                    }
+
+                    // Kiểm tra password và confirm password khớp nhau
+                    if (password !== confirmPassword) {
+                        alert("Passwords do not match.");
+                        passwordError = true;
+                    }
+
+                    // Kiểm tra định dạng của password (gọi hàm checkPassword)
+                    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])(?=\S+$).{8,64}$/;
+                    if (!regex.test(password)) {
+                        alert("Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and be between 8 and 64 characters long.");
+                        passwordError = true;
+                    }
+
+                    // Nếu có lỗi, ngừng submit form
+                    if (passwordError) {
+                        event.preventDefault();  // Ngừng việc submit form
+                    }
+                });
+            });
+        </script>
+
+
     </body>
 
 </html>
+
+

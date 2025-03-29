@@ -1,15 +1,18 @@
-<%-- 
+<%--
     Document   : patients
     Created on : Feb 4, 2025, 8:23:49 PM
     Author     : FPTSHOP
 --%>
 
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
+
 <!DOCTYPE html>
 <html lang="en">
+
 
     <head>
         <meta charset="utf-8" />
@@ -40,23 +43,28 @@
                 vertical-align: middle;
             }
 
+
             /* Fixed width for the columns */
             table th {
                 width: 33%;
             }
 
+
             table td {
                 word-wrap: break-word;
             }
+
 
             /* Style for the buttons */
             .role-btn {
                 margin: 0 5px;
             }
 
+
             .role-btn:focus {
                 box-shadow: none;
             }
+
 
             .custom-btn-size {
                 width: 100px;  /* Đặt chiều rộng cố định */
@@ -67,8 +75,10 @@
                 overflow: hidden;  /* Ẩn văn bản vượt quá kích thước nút */
             }
 
+
         </style>
     </head>
+
 
     <body>
         <!-- Loader -->
@@ -82,6 +92,7 @@
         </div>
         <!-- Loader -->
 
+
         <div class="page-wrapper doctris-theme toggled">
             <nav id="sidebar" class="sidebar-wrapper">
                 <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
@@ -93,8 +104,10 @@
                         </a>
                     </div>
 
+
                     <ul class="sidebar-menu pt-3">
                         <li><a href="../admin/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                       
 
 
                         <li class="sidebar-dropdown">
@@ -107,6 +120,7 @@
                             </div>
                         </li>
 
+
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-wheelchair me-2 d-inline-block"></i>Customers</a>
                             <div class="sidebar-submenu">
@@ -115,6 +129,8 @@
                                 </ul>
                             </div>
                         </li>
+
+
 
 
                         <li class="sidebar-dropdown">
@@ -126,6 +142,7 @@
                             </div>
                         </li>
 
+
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authorization</a>
                             <div class="sidebar-submenu">
@@ -134,13 +151,13 @@
                                 </ul>
                             </div>
                         </li>
-
+                       
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Setting</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="settings-servicecategory">Service Category</a></li>
-                                    <li><a href="settings-postcategory">Post Category</a></li>                                </ul>
+                                    <li><a href="settings">Category</a></li>
+                                </ul>
                             </div>
                         </li>
                     </ul>
@@ -157,6 +174,7 @@
             </nav>
             <!-- sidebar-wrapper  -->
 
+
             <!-- Start Page Content -->
             <main class="page-content bg-light">
                 <div class="top-header">
@@ -172,10 +190,21 @@
                             <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
                                 <i class="uil uil-bars"></i>
                             </a>
-
+                            <div class="search-bar p-0 d-none d-lg-block ms-2">
+                                <div id="search" class="menu-search mb-0">
+                                    <form role="search" action="../admin/customers" method="get" id="searchform" class="searchform">
+                                        <div>
+                                            <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords...">
+                                            <input type="submit" id="searchsubmit" value="Search">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
 
+
                         <ul class="list-unstyled mb-0">
+
 
                             <li class="list-inline-item mb-0 ms-1">
                                 <div class="dropdown dropdown-primary">
@@ -198,11 +227,13 @@
                     </div>
                 </div>                    
 
+
                 <div class="container-fluid">
                     <div class="layout-specing">
                         <div class="d-md-flex justify-content-between">
                             <h5 class="mb-0">Authorization</h5>
                         </div>
+
 
                         <!-- Center buttons -->
                         <div class="d-flex justify-content-center mb-3">
@@ -213,11 +244,13 @@
                             </div>
                         </div>
 
+
                         <div class="d-flex justify-content-left mb-3">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFeatureModal">
                                 + Add Feature
                             </button>
                         </div>
+
 
                         <!-- Tables -->
                         <form>
@@ -245,7 +278,7 @@
                                             <td style="text-align: left; border-left: none; border-right: none;">${f.fname}</td>
                                             <td style="text-align: left; border-left: none; border-right: none;">${f.url}</td>
                                             <td style="text-align: left; border-left: none; border-right: none;">
-                                                <button type="button" 
+                                                <button type="button"
                                                         class="btn ${f.status == 'active' ? 'btn-danger' : 'btn-success'} custom-btn-size"
                                                         onclick="submitFeature('${r.rid}', '${f.fid}', '${f.fname}', '${f.url}', '${f.status}')"
                                                         ${r.rname == 'Admin' ? 'disabled' : ''}>
@@ -255,7 +288,7 @@
                                             <!--                                            <td style="text-align: left; border-left: none; border-right: none;">
                                                                                             <input type="hidden" name="roleId" value="${r.rid}"/>
                                                                                             <input type="hidden" name="featureId" value="${f.fid}"/>
-                                                                                            <button type="button" style="border-radius: 5px" class="btn-primary custom-btn-size" data-bs-toggle="modal" data-bs-target="#updateFeatureModal" onclick="setUpdateData('${r.rid}', '${f.fid}', '${f.fname}', '${f.url}')">Update</button> 
+                                                                                            <button type="button" style="border-radius: 5px" class="btn-primary custom-btn-size" data-bs-toggle="modal" data-bs-target="#updateFeatureModal" onclick="setUpdateData('${r.rid}', '${f.fid}', '${f.fname}', '${f.url}')">Update</button>
                                                                                         </td>-->
                                             </tr>
                                         </c:forEach>
@@ -266,6 +299,7 @@
                         </form>
                     </div>
                 </div>
+
 
                 <!-- Modal for Add Feature -->
                 <div class="modal fade" id="addFeatureModal" tabindex="-1" aria-labelledby="addFeatureModalLabel" aria-hidden="true">
@@ -287,6 +321,7 @@
                                         </select>
                                     </div>
 
+
                                     <div class="mb-3">
                                         <label for="featureName" class="form-label">Feature Name</label>
                                         <input type="text" class="form-control" id="featureName" name="featureName" required>
@@ -304,6 +339,7 @@
                     </div>
                 </div>
                 <!-- page-wrapper -->
+
 
                 <!-- Modal update -->
                 <div class="modal fade" id="updateFeatureModal" tabindex="-1" aria-labelledby="updateFeatureModalLabel" aria-hidden="true">
@@ -341,6 +377,8 @@
                 </div>
 
 
+
+
                 <!-- Offcanvas Start -->
                 <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                     <div class="offcanvas-header p-4 border-bottom">
@@ -372,6 +410,7 @@
                         </div><!--end row-->
                     </div>
 
+
                     <div class="offcanvas-footer p-4 border-top text-center">
                         <ul class="list-unstyled social-icon mb-0">
                             <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
@@ -385,6 +424,7 @@
                     </div>
                 </div>
 
+
                 <!-- javascript -->
                 <script src="../assets/js/bootstrap.bundle.min.js"></script>
                 <!-- simplebar -->
@@ -394,12 +434,16 @@
                 <!-- Main Js -->
                 <script src="../assets/js/app.js"></script>
 
+
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
                 <script>
 
+
                                                 var alertMessage = '<%= session.getAttribute("success") != null ? session.getAttribute("success") : "" %>';
                                                 var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "success" %>'; // Lấy alertType nếu có, mặc định là "error"
+
 
                                                 // Kiểm tra nếu có thông báo thì hiển thị Swal.fire
                                                 if (alertMessage.trim() !== "") {
@@ -416,8 +460,10 @@
                     %>
                                                 }
 
+
                                                 var alertMessage = '<%= session.getAttribute("fsuccess") != null ? session.getAttribute("fsuccess") : "" %>';
                                                 var alertType = '<%= session.getAttribute("alertType") != null ? session.getAttribute("alertType") : "success" %>'; // Lấy alertType nếu có, mặc định là "error"
+
 
                                                 // Kiểm tra nếu có thông báo thì hiển thị Swal.fire
                                                 if (alertMessage.trim() !== "") {
@@ -434,7 +480,9 @@
                     %>
                                                 }
 
+
                 </script>
+
 
                 <script>
                     // JavaScript function to toggle the visibility of the feature table
@@ -442,13 +490,16 @@
                         var table = document.getElementById("table-" + roleName);
                         var allTables = document.querySelectorAll(".role-table");
 
+
                         // Hide all tables first
                         allTables.forEach(function (t) {
                             t.style.display = "none";
                         });
 
+
                         // Show the clicked role's table
                         table.style.display = table.style.display === "none" ? "block" : "none";
+
 
                         // Change the button style to active and reset others
                         var buttons = document.querySelectorAll(".role-btn");
@@ -457,9 +508,11 @@
                             btn.classList.add("btn-outline-primary");
                         });
 
+
                         button.classList.remove("btn-outline-primary");
                         button.classList.add("btn-primary");
                     }
+
 
 // Initialize the page by making the first role button active by default
                     document.addEventListener("DOMContentLoaded", function () {
@@ -467,6 +520,7 @@
                         if (firstRoleButton) {
                             firstRoleButton.classList.remove("btn-outline-primary");
                             firstRoleButton.classList.add("btn-primary");
+
 
                             // Show the first role's table by default
                             var firstRoleName = firstRoleButton.getAttribute("data-role");
@@ -477,9 +531,11 @@
                         }
                     });
 
+
                     function setUpdateData(roleId, featureId, featureName, url) {
                         // Hiển thị alert với thông tin roleId và featureId
                         alert("Role ID: " + roleId + "\nFeature ID: " + featureId);
+
 
                         // Cập nhật các trường dữ liệu trong form modal
                         document.getElementById("roleUpdateId").value = roleId;
@@ -489,9 +545,13 @@
                     }
 
 
+
+
                 </script>
 
+
                 <script>
+
 
                     function submitFeature(roleId, featureId, featureName, featureUrl, featureStatus) {
                         // Hiển thị SweetAlert để xác nhận
@@ -507,11 +567,13 @@
                                 // Thêm dữ liệu vào form trước khi submit
                                 const form = document.querySelector('form');
 
+
                                 const roleIdInput = document.createElement('input');
                                 roleIdInput.type = 'hidden';
                                 roleIdInput.name = 'roleId';
                                 roleIdInput.value = roleId;
                                 form.appendChild(roleIdInput);
+
 
                                 const featureIdInput = document.createElement('input');
                                 featureIdInput.type = 'hidden';
@@ -519,11 +581,13 @@
                                 featureIdInput.value = featureId;
                                 form.appendChild(featureIdInput);
 
+
                                 const featureNameInput = document.createElement('input');
                                 featureNameInput.type = 'hidden';
                                 featureNameInput.name = 'featureName';
                                 featureNameInput.value = featureName;
                                 form.appendChild(featureNameInput);
+
 
                                 const featureUrlInput = document.createElement('input');
                                 featureUrlInput.type = 'hidden';
@@ -531,11 +595,13 @@
                                 featureUrlInput.value = featureUrl;
                                 form.appendChild(featureUrlInput);
 
+
                                 const featureStatusInput = document.createElement('input');
                                 featureStatusInput.type = 'hidden';
                                 featureStatusInput.name = 'featureStatus';
                                 featureStatusInput.value = featureStatus;
                                 form.appendChild(featureStatusInput);
+
 
                                 form.action = 'authorization';
                                 form.method = 'POST';
@@ -546,8 +612,15 @@
                     }
 
 
+
+
                 </script>
+
 
                 </body>
 
+
                 </html>
+
+
+

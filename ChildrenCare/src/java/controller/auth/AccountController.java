@@ -237,18 +237,27 @@ public class AccountController extends HttpServlet {
                 request.setAttribute("token", token);
                 request.getRequestDispatcher("account/newpassword.jsp").forward(request, response);
             }
+            
             case "resetPasswordSubmit" -> {
                 String token = request.getParameter("token");
                 String newPassword = request.getParameter("newPassword");
                 String confirmPassword = request.getParameter("confirmPassword");
                 if (newPassword == null || newPassword.isEmpty() || confirmPassword == null || confirmPassword.isEmpty()) {
-                    request.setAttribute("error", "Please enter your information!");
+                    request.setAttribute("error", "Please enter complete information.");
                     request.getRequestDispatcher("account/newpassword.jsp").forward(request, response);
                     return;
                 }
 
                 if (!newPassword.equals(confirmPassword)) {
-                    request.setAttribute("error", "Confirm password is not matched!");
+                    request.setAttribute("error", "Confirmation password does not match.");
+                    request.getRequestDispatcher("account/newpassword.jsp").forward(request, response);
+                    return;
+                }
+
+                // Validate máº­t kháº©u má»›i (theo cÃ¡c yÃªu cáº§u Ä‘Ã£ Ä‘á»‹nh nghÄ©a)
+                if (!Validate.checkPassword(newPassword)) {
+                    request.setAttribute("error", "New password must be at least 8 characters long, "
+                            + "contain at least one lowercase letter, one uppercase letter, one number, and one special character.");
                     request.getRequestDispatcher("account/newpassword.jsp").forward(request, response);
                     return;
                 }
@@ -256,7 +265,7 @@ public class AccountController extends HttpServlet {
                 VerificationTokenDAO tokenDAO = new VerificationTokenDAO();
                 String email = tokenDAO.getEmailByToken(token);
                 if (email == null) {
-                    request.setAttribute("error", "Reset password link is invalid!");
+                    request.setAttribute("error", "Invalid password reset link.");
                     request.getRequestDispatcher("account/error.jsp").forward(request, response);
                     return;
                 }
@@ -266,7 +275,7 @@ public class AccountController extends HttpServlet {
 
                 tokenDAO.deleteToken(token);
 
-                request.setAttribute("message", "Your password has been changed successfully!");
+                request.setAttribute("message", "Your password has been changed successfully..");
                 request.getRequestDispatcher("account/login.jsp").forward(request, response);
             }
 
