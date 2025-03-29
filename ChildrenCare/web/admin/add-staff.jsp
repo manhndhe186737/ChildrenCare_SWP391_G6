@@ -235,7 +235,7 @@
                 <div class="container-fluid">
                     <div class="layout-specing">
                         <div class="d-md-flex justify-content-between">
-                            <h5 class="mb-0">Add New Doctor</h5>
+                            <h5 class="mb-0">Add New Staff</h5>
 
                             <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                                 <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
@@ -267,7 +267,7 @@
 
 
 
-                                    <form class="mt-4" method="POST" action="add-staff">
+                                    <form class="mt-4" method="POST" action="add-staff" id="staffForm">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="mb-3">
@@ -310,7 +310,7 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" name="dob" required>
+                                                    <input type="date" class="form-control" name="dob" id="dob" required>
                                                 </div>
                                             </div><!--end col-->
                                         </div><!--end row-->
@@ -325,7 +325,7 @@
                             <div class="col-lg-4 mt-4">
                                 <div class="card rounded border-0 shadow">
                                     <div class="p-4 border-bottom">
-                                        <h5 class="mb-0">Doctors List</h5>
+                                        <h5 class="mb-0">Staff List</h5>
                                     </div>
 
                                     <ul class="list-unstyled ps-3" style="max-height: 500px; overflow-y: auto;">
@@ -538,22 +538,45 @@
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
+
         <script>
-                                        // Thêm class 'hide' sau 5 giây để ẩn thông báo lỗi hoặc thành công
-                                        setTimeout(function () {
-                                            var alert = document.querySelector('.alert');
-                                            if (alert) {
-                                                alert.classList.add('hide');
+                                        // Lấy ngày hiện tại
+                                        const currentDate = new Date().toISOString().split('T')[0];
+
+                                        // Lấy đối tượng form và trường date
+                                        const dobInput = document.getElementById('dob');
+                                        const form = document.getElementById('staffForm');
+
+                                        // Set giá trị tối đa của trường ngày sinh là ngày hiện tại
+                                        dobInput.setAttribute('max', currentDate);
+
+                                        // Xử lý sự kiện submit
+                                        form.addEventListener('submit', function (event) {
+                                            const dobValue = dobInput.value;
+                                            if (dobValue > currentDate) {
+                                                // Ngừng việc submit form nếu ngày sinh lớn hơn ngày hiện tại
+                                                event.preventDefault();
+                                                alert('Ngày sinh không thể là ngày trong tương lai!');
                                             }
-                                        }, 5000);
+                                        });
+        </script>
+
+        <script>
+            // Thêm class 'hide' sau 5 giây để ẩn thông báo lỗi hoặc thành công
+            setTimeout(function () {
+                var alert = document.querySelector('.alert');
+                if (alert) {
+                    alert.classList.add('hide');
+                }
+            }, 5000);
 
 // Thêm sự kiện đóng thông báo bằng nút
-                                        document.querySelectorAll('.alert .close').forEach(function (button) {
-                                            button.addEventListener('click', function () {
-                                                var alert = button.closest('.alert');
-                                                alert.classList.add('hide');
-                                            });
-                                        });
+            document.querySelectorAll('.alert .close').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var alert = button.closest('.alert');
+                    alert.classList.add('hide');
+                });
+            });
 
         </script>
     </body>
