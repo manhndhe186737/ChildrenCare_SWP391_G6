@@ -135,7 +135,7 @@ public class AccountController extends HttpServlet {
                     valid = false;
                 }
                 if (!Validate.checkPassword(password)) {
-                    error.add("Invalid password");
+                    error.add("New password must be at least 8 characters, contain at least one lowercase letter, one uppercase letter, one number, and one special character.");
                     valid = false;
                 }
 

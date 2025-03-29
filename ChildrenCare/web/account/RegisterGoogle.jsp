@@ -19,6 +19,15 @@
         <link href="./assets/css/remixicon.css" rel="stylesheet" type="text/css" />
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" rel="stylesheet">
         <link href="./assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+
+        <style>
+            #alertMessage, #errorMessage {
+                position: relative;
+                z-index: 1050; /* Ensure alert is on top of other content */
+            }
+
+        </style>
+
     </head>
 
     <body>
@@ -39,7 +48,7 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-5 col-md-8">
-                        <img src="./assets/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
+
                         <div class="card login-page bg-white shadow mt-4 rounded border-0">
                             <div class="card-body">
                                 <h4 class="text-center">Sign Up</h4>  
@@ -51,7 +60,7 @@
                                                 <input type="text" class="form-control" placeholder="Full Name" value="${name}" name="fullname" required>
                                             </div>
                                         </div>
-                                            <div class="col-md-12">
+                                        <div class="col-md-12">
                                             <div class="mb-3">                                                
                                                 <label class="form-label">Full Name <span class="text-danger">*</span></label>
                                                 <input type="hidden" class="form-control" placeholder="Full Name" value="${picture}" name="fullname" required>
@@ -60,7 +69,7 @@
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
-                                                <input type="date" class="form-control" name="dob" required>
+                                                <input type="date" class="form-control" name="dob" id="dob" required>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -92,33 +101,30 @@
                                                 <button class="btn btn-primary">Register</button>
                                             </div>
                                         </div>
-                                        <c:if test="${not empty message}">
-                                            <div class="alert alert-success">
-                                                <p>${message}</p>
-                                            </div>
-                                        </c:if>
 
-                                        <c:if test="${not empty error}">
-                                            <div class="alert alert-error"style="
-                                                 margin-bottom: 0px;
-                                                 padding-top: 0px;
-                                                 padding-bottom: 0px;
-                                                 border-top-width: 0px;
-                                                 border-bottom-width: 0px;
-                                                 border-left-width: 0px;
-                                                 border-right-width: 0px;
-                                                 ">
-                                                <p>${error}</p>
-                                            </div>
-                                        </c:if>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <c:if test="${not empty alertMessage}">
+                                                    <div class="alert alert-${alertType} alert-dismissible fade show ms-2" role="alert" id="alertMessage">
+                                                        <i class="fas fa-info-circle"></i> ${alertMessage}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                    </div>
+                                                </c:if>
 
-                                        <div class="col-lg-12 mt-3 text-center">
-                                            <h6 class="text-muted">Or</h6>
+                                                <c:if test="${not empty errors}">
+                                                    <div class="alert alert-danger alert-dismissible fade show ms-2" role="alert" id="errorMessage">
+                                                        <i class="fas fa-exclamation-circle"></i> 
+                                                        <ul>
+                                                            <c:forEach items="${errors}" var="error">
+                                                                <li>${error}</li>
+                                                                </c:forEach>
+                                                        </ul>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                    </div>
+                                                </c:if>
+                                            </div>
                                         </div>
-                                        <div class="d-grid">
-                                            <a href="#" class="btn btn-soft-primary"><i class="uil uil-google"></i>
-                                                Google</a>
-                                        </div>
+
                                         <div class="mx-auto">
                                             <p class="mb-0 mt-3"><small class="text-dark me-2">Already have an account?</small> <a href="account?service=login" class="text-dark fw-bold">Sign in</a></p>
                                         </div>
@@ -134,6 +140,20 @@
         <script src="./assets/js/bootstrap.bundle.min.js"></script>
         <script src="./assets/js/feather.min.js"></script>
         <script src="./assets/js/app.js"></script>
+
+        <script>
+            document.getElementById("dob").addEventListener("input", function (event) {
+                var today = new Date().toISOString().split('T')[0];  // Get today's date in YYYY-MM-DD format
+                var dob = event.target.value;  // Get the selected date value
+
+                if (dob > today) {
+                    alert("Date of Birth cannot be in the future.");
+                    event.target.setCustomValidity("Date of Birth cannot be in the future.");
+                } else {
+                    event.target.setCustomValidity("");  // Reset the custom validity if date is valid
+                }
+            });
+        </script>
     </body>
 
 </html>

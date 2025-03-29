@@ -503,13 +503,13 @@
                                                                     <button class="btn btn-success mb-2 w-100 feedbackBtn" data-reserv-id="${requestScope.reserv.id}">Feedback</button>
                                                                 </c:otherwise>
                                                             </c:choose>
-                                                            <button class="btn btn-primary mb-2 w-100">Reschedule</button>
+                                                            <button class="btn btn-primary mb-2 w-100">Re-reserve</button>
                                                         </c:when>
                                                         <c:when test="${requestScope.reserv.status eq 'Cancelled'}">
                                                             <form id="fbook" action="c/BookingStaff" method="post" class="w-100">
                                                                 <input type="hidden" name="service_id" value="${requestScope.reserv.service.id}"/>
                                                                 <input type="hidden" name="service_name" value="${requestScope.reserv.service.name}"/>
-                                                                <input type="submit" class="btn btn-primary mb-2 w-100" value="Reschedule"/>
+                                                                <input type="submit" class="btn btn-primary mb-2 w-100" value="Re-reserve"/>
                                                             </form>
                                                         </c:when>
                                                         <c:otherwise>

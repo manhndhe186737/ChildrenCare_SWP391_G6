@@ -315,6 +315,7 @@ public class PostDBContext extends DBContext {
             if (rs.next()) {
                 Post post = extractPostFromResultSet(rs);
                 post.setAuthorAvatar(rs.getString("author_avatar"));
+                post.setAuthor(rs.getString("author_name"));
                 if (rs.getObject("category_id") != null) {
                     PostCategory category = new PostCategory();
                     category.setId(rs.getInt("category_id"));

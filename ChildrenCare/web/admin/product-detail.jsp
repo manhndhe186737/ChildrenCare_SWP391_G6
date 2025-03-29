@@ -197,8 +197,8 @@
                                         <!-- Hi?n th? giá d?ch v? -->
                                         <h5 class="text-muted">$${service.price}</h5>
                                         <!-- Mô t? s?n ph?m -->
-                                        <h5 class="mt-4 py-2">Product Overview</h5>
-                                        <p class="text-muted">${not empty service.description ? service.description : "Mô t? ?ang c?p nh?t."}</p>
+                                        <h5 class="mt-4 py-2">Service Overview</h5>
+                                        <p class="text-muted">${not empty service.description ? service.description : "No description"}</p>
                                         <!-- Nút hành ??ng -->
                                         <div class="mt-4 pt-2">
                                             <!-- Nút Update -->
@@ -219,7 +219,7 @@
 
                         <div class="row mt-4">
                             <div class="col-12">
-                                <h5 class="mb-0">Related Products:</h5>
+                                <h5 class="mb-0">Related Services:</h5>
                             </div><!--end col-->
                         </div><!--end row-->
                         <div class="row">
@@ -296,20 +296,20 @@
                                                 <input type="hidden" name="id" value="${requestScope.service.id}">
 
                                                 <div class="mb-3">
-                                                    <label class="form-label">Shop Title <span class="text-danger">*</span></label>
-                                                    <input name="name" id="name" type="text" class="form-control" placeholder="Title :" value="${requestScope.service.name}">
+                                                    <label class="form-label">Service Name <span class="text-danger">*</span></label>
+                                                    <input name="name" id="name" type="text" class="form-control" placeholder="Title :" value="${requestScope.service.name}" required>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label class="form-label">Price: </label>
                                                     <div class="input-group">
                                                         <span class="input-group-text">$</span>
-                                                        <input type="number" min="0" name="price" class="form-control" placeholder="Price" value="${requestScope.service.price}">
+                                                        <input type="number" min="0" name="price" class="form-control" placeholder="Price" value="${requestScope.service.price}" required>
                                                     </div>
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label class="form-label">Danh mục :</label>
+                                                    <label class="form-label">Category :</label>
                                                     <select name="categoryId" class="form-control">
                                                         <c:forEach items="${categoryList}" var="category">
                                                             <option value="${category.id}" ${category.id == requestScope.service.categoryId ? 'selected' : ''}>
@@ -322,7 +322,7 @@
 
                                                 <div class="mb-3">
                                                     <label class="form-label">Description:</label>
-                                                    <input name="description" type="text" class="form-control" value="${requestScope.service.description}">
+                                                    <input name="description" type="text" class="form-control" value="${requestScope.service.description}" required>
                                                 </div>
 
                                                 <div class="text-end">

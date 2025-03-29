@@ -82,18 +82,9 @@ public class Validate {
     }
 
     public static boolean checkPassword(String password) {
-        String regex1 = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@.$!%*?&])[A-Za-z\\d@$!.%*?&]{8,}$";
-        //^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@.$!%*?&])[A-Za-z\\d@$!.%*?&]{7,}$
-        String regex2 = "^\\d{8,}$";
-        Pattern pattern1 = Pattern.compile(regex1);
-        Matcher matcher1 = pattern1.matcher(password);
-
-        Pattern pattern2 = Pattern.compile(regex2);
-        Matcher matcher2 = pattern2.matcher(password);
-        boolean isRegex1 = matcher1.matches();
-        boolean isRegex2 = matcher2.matches();
-        //System.out.println(isRegex1 + " " + isRegex2);
-        return isRegex1 || isRegex2;
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,64}$";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(password).matches();
     }
 
     public static boolean isLeapYear(int year) {
@@ -111,7 +102,7 @@ public class Validate {
         return LocalDateTime.parse(dateTimeString, formatter);
     }
 
-    public  void main(String[] args) {
+    public void main(String[] args) {
         Validate val = new Validate();
         System.out.println(val.convertTime("20240708222852"));
     }

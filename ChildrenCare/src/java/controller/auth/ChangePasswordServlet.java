@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
 import model.Account;
+import model.Validate;
 
 /**
  *
@@ -90,6 +91,13 @@ public class ChangePasswordServlet extends HttpServlet {
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
+        
+        if (!Validate.checkPassword(newPassword)) {
+        request.setAttribute("errorMessage", "New password must be at least 8 characters long, " +
+                "contain at least one lowercase letter, one uppercase letter, one number, and one special character.");
+        request.getRequestDispatcher("c/doctor-profile-setting.jsp").forward(request, response);
+        return;
+    }
 
         // Kiểm tra mật khẩu mới nhập lại có khớp không
         if (!newPassword.equals(confirmPassword)) {

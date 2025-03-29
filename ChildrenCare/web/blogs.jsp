@@ -385,7 +385,7 @@
     <!-- Navbar End -->
 
     <!-- Start Hero -->
-    <section class="bg-half-170 d-table w-100" style="background: url('${pageContext.request.contextPath}/assets/images/bg/02.jpg') center center;">
+    <section class="bg-half-170 d-table w-100" style="background: url('${pageContext.request.contextPath}/assets/images/bg/childcare.jpg') center center;">
         <div class="bg-overlay bg-overlay-dark"></div>
         <div class="container">
             <div class="row mt-5 justify-content-center">
@@ -395,7 +395,7 @@
                         <p class="para-desc mx-auto text-white-50">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
                         <nav aria-label="breadcrumb" class="d-inline-block mt-3">
                             <ul class="breadcrumb bg-light rounded mb-0 py-1 px-2">
-                                <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/index.jsp">Doctris</a></li>
+                                <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/index.jsp">Children Care</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Blogs</li>
                             </ul>
                         </nav>

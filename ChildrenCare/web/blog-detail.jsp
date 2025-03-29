@@ -134,7 +134,7 @@
 
                 <div id="navigation">
                     <!-- Navigation Menu-->   
-                    <ul class="navigation-menu nav-left nav-dark">
+                    <ul class="navigation-menu nav-left nav-light">
 
                         <li class="has-submenu parent-parent-menu-item">
                             <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
@@ -183,15 +183,19 @@
         <!-- Navbar End -->
 
 
-        <section class="bg-half-150 d-table w-100 bg-light">
+        <section class="bg-half-170 d-table w-100" style="background: url('${pageContext.request.contextPath}/assets/images/bg/teaching.jpg') center center;">
+            <div class="bg-overlay bg-overlay-dark"></div>
             <div class="container">
                 <div class="row mt-5 justify-content-center">
                     <div class="col-12">
                         <div class="section-title text-center">
                             <c:if test="${blog != null}">
-                                <h3 class="sub-title mb-4">${blog.title}</h3>
+                                <h3 class="sub-title mb-4 text-white title-dark">${blog.title}</h3>
                                 <ul class="list-unstyled mt-4">
-                                    <li class="list-inline-item user text-muted me-2"><i class="mdi mdi-account"></i>${blog.author}</li>                                    <li> <fmt:formatDate value="${blog.createdate}" pattern="dd MMMM, yyyy"/></li>
+                                    <li class="breadcrumb-item"><i class="mdi mdi-account"></i>${blog.author}</li>                                    
+                                    <li>
+                                        <h6 class="text-white"><fmt:formatDate value="${blog.createdate}" pattern="dd MMMM, yyyy"/></h6>
+                                    </li>
                                 </ul>
                             </c:if>
 

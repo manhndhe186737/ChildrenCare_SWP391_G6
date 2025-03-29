@@ -42,7 +42,7 @@
                         <div class="card login-page bg-white shadow mt-4 rounded border-0">
                             <div class="card-body">
                                 <h4 class="text-center">Sign Up</h4>  
-                                <form action="login?service=register" class="login-form mt-4" method="POST">
+                                <form action="login?service=register" class="login-form mt-4" method="POST" id="registrationForm">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="mb-3">                                                
@@ -53,7 +53,7 @@
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
-                                                <input type="date" class="form-control" value="${dob}" name="dob" required>
+                                                <input type="date" class="form-control" value="${dob}" name="dob" id="dob" required>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -85,34 +85,15 @@
                                                 <button class="btn btn-primary">Register</button>
                                             </div>
                                         </div>
-                                        
-                                       
 
                                         <c:if test="${not empty error}">
-                                            <div class="mt-3 text-danger alert alert-error"style="
-                                                 margin-bottom: 0px;
-                                                 padding-top: 0px;
-                                                 padding-bottom: 0px;
-                                                 border-top-width: 0px;
-                                                 border-bottom-width: 0px;
-                                                 border-left-width: 0px;
-                                                 border-right-width: 0px;
-                                                 ">
+                                            <div class="mt-3 text-danger alert alert-error" style="margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-right-width: 0px;">
                                                 <c:forEach items="${error}" var="e">
                                                     <p>${e}</p>
                                                 </c:forEach>
-                                                
-                                                
                                             </div>
                                         </c:if>
 
-                                        <div class="col-lg-12 mt-3 text-center">
-                                            <h6 class="text-muted">Or</h6>
-                                        </div>
-                                        <div class="d-grid">
-                                            <a href="#" class="btn btn-soft-primary"><i class="uil uil-google"></i>
-                                                Google</a>
-                                        </div>
                                         <div class="mx-auto">
                                             <p class="mb-0 mt-3"><small class="text-dark me-2">Already have an account?</small> <a href="login?service=login" class="text-dark fw-bold">Sign in</a></p>
                                         </div>
@@ -128,6 +109,26 @@
         <script src="./assets/js/bootstrap.bundle.min.js"></script>
         <script src="./assets/js/feather.min.js"></script>
         <script src="./assets/js/app.js"></script>
+
+        <script>
+            // Lấy ngày hiện tại và thiết lập giá trị max cho input ngày sinh
+            const currentDate = new Date().toISOString().split('T')[0]; // Lấy ngày hiện tại dưới định dạng YYYY-MM-DD
+            const dobInput = document.getElementById('dob');
+
+            // Thiết lập giá trị max cho trường ngày sinh
+            dobInput.setAttribute('max', currentDate);
+
+            // Xử lý sự kiện submit để kiểm tra nếu người dùng chọn ngày tương lai
+            const form = document.getElementById('registrationForm');
+            form.addEventListener('submit', function (event) {
+                const dobValue = dobInput.value;
+                if (dobValue > currentDate) {
+                    // Ngừng việc submit form nếu ngày sinh lớn hơn ngày hiện tại
+                    event.preventDefault();
+                    alert('Ngày sinh không thể là ngày trong tương lai!');
+                }
+            });
+        </script>
     </body>
 
 </html>
