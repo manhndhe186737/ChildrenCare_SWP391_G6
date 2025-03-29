@@ -727,7 +727,7 @@
                                     <span id="closeReplyPopup" class="close">×</span>
                                     <h2 id="popupTitle">Reply to Feedback</h2>
                                     <form id="replyForm">
-                                        <textarea id="replyText" name="reply" placeholder="Nhập phản hồi của bạn..." rows="5"></textarea>
+                                        <textarea id="replyText" name="reply" placeholder="Enter your feedback..." rows="5"></textarea>
                                         <input type="hidden" id="feedbackId" name="feedback_id">
                                         <input type="hidden" id="actionType" name="action">
                                         <button type="submit" class="btn btn-primary" id="submitReplyBtn">Send Reply</button>
@@ -867,8 +867,8 @@
                         // Open Popup
                         function openReplyPopup(feedbackId, existingReply) {
                             if (!feedbackId) {
-                                console.error("Không tìm thấy ID feedback.");
-                                alert("ID feedback không hợp lệ!");
+                                console.error("Feedback ID not found.");
+                                alert("Invalid feedback ID!");
                                 return;
                             }
 
@@ -930,18 +930,18 @@
                             event.preventDefault();
 
                             const action = actionTypeInput.value;
-                            const actionText = action === "reply" ? "gửi phản hồi" : "cập nhật phản hồi";
-                            if (!confirm("Bạn có chắc chắn muốn " + actionText + " này?"))
+                            const actionText = action === "reply" ? "send" : "update";
+                            if (!confirm("Are you sure you want to " + actionText + " this reply?"))
                                 return;
 
                             submitReplyBtn.disabled = true;
-                            submitReplyBtn.textContent = action === "reply" ? "Đang gửi..." : "Đang cập nhật...";
+                            submitReplyBtn.textContent = action === "reply" ? "Sending..." : "Updating...";
 
                             const feedbackId = document.getElementById("feedbackId").value;
                             const replyContent = replyText.value.trim();
 
                             if (!replyContent) {
-                                alert("Vui lòng nhập nội dung phản hồi!");
+                                alert("Please enter feedback!");
                                 submitReplyBtn.disabled = false;
                                 submitReplyBtn.textContent = action === "reply" ? "Send Reply" : "Update";
                                 return;
@@ -962,16 +962,16 @@
                                         const message = params.get("message");
 
                                         if (success) {
-                                            alert("Phản hồi đã được " + (action === "reply" ? "gửi" : "cập nhật") + " thành công!");
+                                            alert("Feedback has been " + (action === "reply" ? "send" : "Update") + " success!");
                                             closeReplyPopup();
                                             location.reload();
                                         } else {
-                                            alert((action === "reply" ? "Gửi" : "Cập nhật") + " phản hồi thất bại: " + (message || "Lỗi không xác định"));
+                                            alert((action === "reply" ? "Send" : "Update") + " response failed: " + (message || "Unknown error"));
                                         }
                                     })
                                     .catch(error => {
                                         console.error("Lỗi khi " + actionText + ":", error);
-                                        alert((action === "reply" ? "Gửi" : "Cập nhật") + " phản hồi thất bại: " + error.message);
+                                        alert((action === "reply" ? "Send" : "Update") + " response failed: " + error.message);
                                     })
                                     .finally(() => {
                                         submitReplyBtn.disabled = false;
