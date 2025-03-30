@@ -35,6 +35,10 @@ public class StaffReservation extends BaseRBAC {
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String searchKeyword = request.getParameter("searchKeyword");
+        
+        if(searchKeyword != null){
+            searchKeyword = searchKeyword.trim();
+        }
 
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("account") == null) {

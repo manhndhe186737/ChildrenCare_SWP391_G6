@@ -53,6 +53,10 @@ public class FeedbackList extends BaseRBAC {
         String serviceName = request.getParameter("serviceName");
         String staffName = request.getParameter("staffName");
         String search = request.getParameter("search");
+        
+        if(search != null){
+            search = search.trim();
+        }
 
         // Lấy dữ liệu từ cơ sở dữ liệu
         List<Feedback> feedbackList;

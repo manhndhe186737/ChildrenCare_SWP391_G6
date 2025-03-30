@@ -565,7 +565,7 @@
                             <input type="radio" id="star1" name="rating" value="1">
                             <label for="star1">★</label>
                         </div>
-                        <textarea id="feedbackText" name="comment" placeholder="Nhập phản hồi của bạn..." rows="5"></textarea>
+                        <textarea id="feedbackText" name="comment" placeholder="Enter your feedback..." rows="5"></textarea>
 
                         <!-- Input chọn ảnh -->
                         <label for="feedbackImage" class="file-label">Choose image</label>
@@ -573,7 +573,7 @@
 
                         <!-- Xem trước ảnh -->
                         <div class="preview-container">
-                            <img id="previewImage" src="" alt="Ảnh xem trước" style="display:none;">
+                            <img id="previewImage" src="" alt="Preview Image" style="display:none;">
                         </div>
 
                         <input type="hidden" id="reservId" name="reserv_id">

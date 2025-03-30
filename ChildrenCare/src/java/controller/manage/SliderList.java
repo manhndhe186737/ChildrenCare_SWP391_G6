@@ -62,6 +62,10 @@ public class SliderList extends BaseRBAC {
         String search = request.getParameter("search");
         int page = 1;
         int pageSize = 5;
+        
+        if(search != null){
+            search = search.trim();
+        }
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));

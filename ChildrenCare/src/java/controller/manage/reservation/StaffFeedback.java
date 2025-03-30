@@ -67,6 +67,10 @@ public class StaffFeedback extends BaseRBAC {
             String sortCustomer = request.getParameter("sortCustomer");
             String filterRating = request.getParameter("filterRating");
             String search = request.getParameter("search");
+            
+            if(search != null){
+                search = search.trim();
+            }
 
             // Fetch total feedbacks with filters
             int totalFeedbacks = feedbackDB.getTotalFeedbacksByStaffId(staffId, filterRating, search);

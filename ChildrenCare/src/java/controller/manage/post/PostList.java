@@ -60,6 +60,10 @@ public class PostList extends BaseRBAC {
         String search = request.getParameter("search");
         String sortBy = request.getParameter("sortBy");
         String order = request.getParameter("order") == null ? "ASC" : request.getParameter("order");
+        
+        if(search != null){
+            search = search.trim();
+        }
 
         // Kiểm tra cột sắp xếp hợp lệ
         if (sortBy == null || (!sortBy.equals("p.title") && !sortBy.equals("category_name") && !sortBy.equals("author_name") && !sortBy.equals("p.status"))) {

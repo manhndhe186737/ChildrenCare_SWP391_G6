@@ -31,6 +31,10 @@ public class ServiceListServlet extends BaseRBAC {
     String searchQuery = request.getParameter("search");
     String categoryIdStr = request.getParameter("categoryId");
     
+    if(searchQuery != null){
+        searchQuery = searchQuery.trim();
+    }
+    
     List<Service> services;
     
     if (searchQuery != null && !searchQuery.trim().isEmpty()) {

@@ -43,6 +43,10 @@ public class SliderAdd extends BaseRBAC {
             request.getRequestDispatcher("/admin/sliderAdd.jsp").forward(request, response);
             return;
         }
+        
+        if (title != null) {
+            title = title.trim();
+        }
 
         // Xử lý upload ảnh
         String imagePath = null;

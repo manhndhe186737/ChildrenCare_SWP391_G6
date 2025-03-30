@@ -38,7 +38,7 @@ public class PostView extends BaseRBAC {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PostView</title>");            
+            out.println("<title>Servlet PostView</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet PostView at " + request.getContextPath() + "</h1>");
@@ -56,24 +56,38 @@ public class PostView extends BaseRBAC {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-      @Override
+    @Override
     protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         // Nhận tham số ID bài viết
         String postIdStr = request.getParameter("id");
-        if (postIdStr != null) {
-            int postId = Integer.parseInt(postIdStr);
-            PostDBContext postDAO = new PostDBContext();
 
-            // Lấy bài viết từ database
-            Post post = postDAO.getPostById(postId);
-            
-            if (post != null) {
-                // Đưa bài viết vào request và chuyển đến trang view.jsp
-                request.setAttribute("post", post);
-                request.getRequestDispatcher("admin/postView.jsp").forward(request, response);
-            } else {
-                response.sendRedirect("post-list"); // Chuyển hướng nếu không tìm thấy bài viết
+        if (postIdStr != null) {
+            try {
+                // Chuyển đổi ID sang kiểu long để xử lý số lớn
+                long postId = Long.parseLong(postIdStr);
+
+                // Kiểm tra nếu postId vượt quá giới hạn của kiểu int
+                if (postId > Integer.MAX_VALUE || postId < Integer.MIN_VALUE) {
+                    response.sendRedirect("post-list"); // Chuyển hướng nếu postId không hợp lệ
+                    return;
+                }
+
+                // Chuyển postId thành kiểu int nếu nó hợp lệ
+                PostDBContext postDAO = new PostDBContext();
+                Post post = postDAO.getPostById((int) postId);
+
+                if (post != null) {
+                    // Đưa bài viết vào request và chuyển đến trang view.jsp
+                    request.setAttribute("post", post);
+                    request.getRequestDispatcher("admin/postView.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect("post-list"); // Chuyển hướng nếu không tìm thấy bài viết
+                }
+
+            } catch (NumberFormatException e) {
+                // Xử lý nếu ID không phải là số hợp lệ
+                response.sendRedirect("post-list");
             }
         } else {
             response.sendRedirect("post-list");

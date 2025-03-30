@@ -85,6 +85,10 @@ public class PostEdit extends BaseRBAC {
         String status = request.getParameter("status");
         String authorIdStr = request.getParameter("author");
         System.out.println("🚀 Received content: " + content);
+        
+        if (title != null) {
+            title = title.trim();
+        }
 
         // Xử lý lỗi tác giả
         if (authorIdStr == null || authorIdStr.trim().isEmpty()) {

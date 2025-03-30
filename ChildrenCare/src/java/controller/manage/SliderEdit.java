@@ -64,17 +64,38 @@ public class SliderEdit extends BaseRBAC {
      */
     protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        SliderDBContext db = new SliderDBContext();
-        Slider slider = db.getSliderById(id);
+        String idStr = request.getParameter("id");
 
-        if (slider == null) {
+        if (idStr != null) {
+            try {
+                // Chuyển đổi ID sang kiểu long để xử lý số lớn
+                long id = Long.parseLong(idStr);
+
+                // Kiểm tra nếu id vượt quá giới hạn của kiểu int
+                if (id > Integer.MAX_VALUE || id < Integer.MIN_VALUE) {
+                    response.sendRedirect("slider"); // Chuyển hướng nếu id không hợp lệ
+                    return;
+                }
+
+                // Chuyển id thành kiểu int nếu nó hợp lệ
+                int validId = (int) id;
+                SliderDBContext db = new SliderDBContext();
+                Slider slider = db.getSliderById(validId);
+
+                if (slider == null) {
+                    response.sendRedirect("slider"); // Chuyển hướng nếu không tìm thấy slider
+                } else {
+                    request.setAttribute("slider", slider);
+                    request.getRequestDispatcher("/admin/sliderEdit.jsp").forward(request, response);
+                }
+            } catch (NumberFormatException e) {
+                // Nếu id không phải là một số hợp lệ, chuyển hướng về slider
+                response.sendRedirect("slider");
+            }
+        } else {
+            // Nếu không có tham số id, chuyển hướng về slider
             response.sendRedirect("slider");
-            return;
         }
-
-        request.setAttribute("slider", slider);
-        request.getRequestDispatcher("/admin/sliderEdit.jsp").forward(request, response);
     }
 
     protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
@@ -89,6 +110,10 @@ public class SliderEdit extends BaseRBAC {
         String title = request.getParameter("title");
         String status = request.getParameter("status");
         String backlink = request.getParameter("backlink"); // Lấy backlink từ form
+        
+        if (title != null) {
+            title = title.trim();
+        }
 
         SliderDBContext db = new SliderDBContext();
         Slider slider = db.getSliderById(id);

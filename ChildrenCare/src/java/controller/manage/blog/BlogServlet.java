@@ -37,6 +37,10 @@ public class BlogServlet extends HttpServlet {
         String sortBy = request.getParameter("sortBy");
         String sortOrder = request.getParameter("sortOrder");
         String pageParam = request.getParameter("page");
+        
+        if(searchQuery != null){
+            searchQuery = searchQuery.trim();
+        }
 
         // Xử lý số trang hiện tại
         int currentPage = parsePageNumber(pageParam);

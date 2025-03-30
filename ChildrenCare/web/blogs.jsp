@@ -395,7 +395,7 @@
                         <p class="para-desc mx-auto text-white-50">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
                         <nav aria-label="breadcrumb" class="d-inline-block mt-3">
                             <ul class="breadcrumb bg-light rounded mb-0 py-1 px-2">
-                                <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/index.jsp">Children Care</a></li>
+                                <li class="breadcrumb-item"><a>Children Care</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Blogs</li>
                             </ul>
                         </nav>

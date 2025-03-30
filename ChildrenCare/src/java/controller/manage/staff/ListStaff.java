@@ -31,6 +31,10 @@ public class ListStaff extends BaseRBAC {
 
         int page = (pageParam != null && !pageParam.isEmpty()) ? Integer.parseInt(pageParam) : 1;
         int pageSize = 10;
+        
+        if(search != null){
+            search = search.trim();
+        }
 
         ArrayList<User> staff = sdb.getUsers("Staffs", search, sort, page, pageSize);
 

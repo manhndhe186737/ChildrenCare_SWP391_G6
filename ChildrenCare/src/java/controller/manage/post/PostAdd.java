@@ -48,6 +48,10 @@ public class PostAdd extends BaseRBAC {
         String categoryIdStr = request.getParameter("categoryId");
         String status = request.getParameter("status");
         String authorIdStr = request.getParameter("author");
+        
+        if (title != null) {
+            title = title.trim();
+        }
 
         // Kiểm tra nếu authorId bị null hoặc trống
         if (authorIdStr == null || authorIdStr.trim().isEmpty()) {

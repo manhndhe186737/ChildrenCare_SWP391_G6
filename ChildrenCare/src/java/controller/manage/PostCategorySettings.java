@@ -34,6 +34,10 @@ public class PostCategorySettings extends BaseRBAC {
         if (statusParam != null && !statusParam.isEmpty()) {
             statusFilter = Boolean.parseBoolean(statusParam);
         }
+        
+        if (nameFilter != null) {
+            nameFilter = nameFilter.trim();
+        }
 
         ArrayList<PostCategory> categories = categoryDB.getCategoriesWithFilterAndPagination(nameFilter, statusFilter, page, 10);
         int totalCategories = categoryDB.getTotalCategories(nameFilter, statusFilter);
