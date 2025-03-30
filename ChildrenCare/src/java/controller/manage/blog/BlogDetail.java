@@ -76,10 +76,10 @@ public class BlogDetail extends HttpServlet {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/blog-detail.jsp");
                 dispatcher.forward(request, response);
             } else {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Bài viết không tồn tại.");
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Blog not exist.");
             }
         } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Thiếu id bài viết.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Blog not exist.");
         }
     }
 

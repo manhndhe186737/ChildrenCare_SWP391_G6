@@ -37,17 +37,17 @@ public class ServiceDetail extends HttpServlet {
         ServiceDBContext serviceDB = new ServiceDBContext();
         Service service = serviceDB.getServiceById(serviceId);
 
+        if (service == null) {
+            response.sendRedirect("service-list");
+            return;
+        }
+
         if (!service.getCategory().isStatus()) {
             response.sendRedirect("service-list");
             return;
         }
 
         if (!service.isActive) {
-            response.sendRedirect("service-list");
-            return;
-        }
-
-        if (service == null) {
             response.sendRedirect("service-list");
             return;
         }

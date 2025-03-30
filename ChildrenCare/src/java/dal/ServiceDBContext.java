@@ -56,120 +56,120 @@ public class ServiceDBContext extends DBContext {
         return 0;
     }
 
-public ArrayList<Service> getServicesByCategoryId(int categoryId) {
-    ArrayList<Service> services = new ArrayList<>();
-    try {
-        String sql = "select service_id, s.name, s.description, s.price, s.img "
-                   + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
-                   + "WHERE s.isActive = 1 AND c.status = 1 AND s.category_id = ?";
-        PreparedStatement stm = connection.prepareStatement(sql);
-        stm.setInt(1, categoryId);
-        ResultSet rs = stm.executeQuery();
-        while (rs.next()) {
-            Service service = new Service();
-            service.setId(rs.getInt("service_id"));
-            service.setName(rs.getString("name"));
-            service.setDescription(rs.getString("description"));
-            service.setPrice(rs.getFloat("price"));
-            service.setImg(rs.getString("img"));
-            services.add(service);
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return services;
-}
-
-public ArrayList<Service> getFilteredServices(int page, int pageSize, String searchQuery, String[] selectedCategories, double minPrice, double maxPrice) {
-    ArrayList<Service> services = new ArrayList<>();
-    try {
-        String sql = "SELECT s.service_id, s.name, s.description, s.price, c.category_id, s.img, c.name AS categoryname "
-                   + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
-                   + "WHERE s.isActive = 1 AND c.status = 1 AND s.name LIKE ? ";
-
-        if (selectedCategories != null && selectedCategories.length > 0) {
-            sql += "AND c.category_id IN (" + String.join(",", Collections.nCopies(selectedCategories.length, "?")) + ") ";
-        }
-
-        // Thêm phần lọc theo giá
-        sql += "AND s.price BETWEEN ? AND ? ";
-
-        sql += "LIMIT ? OFFSET ?";
-
-        PreparedStatement stm = connection.prepareStatement(sql);
-        stm.setString(1, "%" + searchQuery + "%");
-
-        int index = 2;
-        if (selectedCategories != null) {
-            for (String category : selectedCategories) {
-                stm.setInt(index++, Integer.parseInt(category));
+    public ArrayList<Service> getServicesByCategoryId(int categoryId) {
+        ArrayList<Service> services = new ArrayList<>();
+        try {
+            String sql = "select service_id, s.name, s.description, s.price, s.img "
+                    + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
+                    + "WHERE s.isActive = 1 AND c.status = 1 AND s.category_id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, categoryId);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Service service = new Service();
+                service.setId(rs.getInt("service_id"));
+                service.setName(rs.getString("name"));
+                service.setDescription(rs.getString("description"));
+                service.setPrice(rs.getFloat("price"));
+                service.setImg(rs.getString("img"));
+                services.add(service);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        // Thiết lập giá lọc
-        stm.setDouble(index++, minPrice);
-        stm.setDouble(index++, maxPrice);
-
-        stm.setInt(index++, pageSize);
-        stm.setInt(index, (page - 1) * pageSize);
-        ResultSet rs = stm.executeQuery();
-
-        while (rs.next()) {
-            ServiceCategory category = new ServiceCategory();
-            category.setId(rs.getInt("category_id"));
-            category.setCategoryname(rs.getString("categoryname"));
-
-            Service service = new Service();
-            service.setId(rs.getInt("service_id"));
-            service.setName(rs.getString("name"));
-            service.setDescription(rs.getString("description"));
-            service.setPrice(rs.getFloat("price"));
-            service.setCategory(category);
-            service.setImg(rs.getString("img"));
-            services.add(service);
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return services;
     }
-    return services;
-}
 
-public int getTotalFilteredServices(String searchQuery, String[] selectedCategories, double minPrice, double maxPrice) {
-    try {
-        String sql = "SELECT COUNT(*) AS total "
-                   + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
-                   + "WHERE s.isActive = 1 AND c.status = 1 AND s.name LIKE ? ";
+    public ArrayList<Service> getFilteredServices(int page, int pageSize, String searchQuery, String[] selectedCategories, double minPrice, double maxPrice) {
+        ArrayList<Service> services = new ArrayList<>();
+        try {
+            String sql = "SELECT s.service_id, s.name, s.description, s.price, c.category_id, s.img, c.name AS categoryname "
+                    + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
+                    + "WHERE s.isActive = 1 AND c.status = 1 AND s.name LIKE ? ";
 
-        if (selectedCategories != null && selectedCategories.length > 0) {
-            sql += "AND c.category_id IN (" + String.join(",", Collections.nCopies(selectedCategories.length, "?")) + ") ";
-        }
-
-        // Thêm phần lọc theo giá
-        sql += "AND s.price BETWEEN ? AND ? ";
-
-        PreparedStatement stm = connection.prepareStatement(sql);
-        stm.setString(1, "%" + searchQuery + "%");
-
-        int index = 2;
-        if (selectedCategories != null) {
-            for (String category : selectedCategories) {
-                stm.setInt(index++, Integer.parseInt(category));
+            if (selectedCategories != null && selectedCategories.length > 0) {
+                sql += "AND c.category_id IN (" + String.join(",", Collections.nCopies(selectedCategories.length, "?")) + ") ";
             }
-        }
 
-        // Thiết lập giá lọc
-        stm.setDouble(index++, minPrice);
-        stm.setDouble(index++, maxPrice);
+            // Thêm phần lọc theo giá
+            sql += "AND s.price BETWEEN ? AND ? ";
 
-        ResultSet rs = stm.executeQuery();
-        if (rs.next()) {
-            return rs.getInt("total");
+            sql += "LIMIT ? OFFSET ?";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, "%" + searchQuery + "%");
+
+            int index = 2;
+            if (selectedCategories != null) {
+                for (String category : selectedCategories) {
+                    stm.setInt(index++, Integer.parseInt(category));
+                }
+            }
+
+            // Thiết lập giá lọc
+            stm.setDouble(index++, minPrice);
+            stm.setDouble(index++, maxPrice);
+
+            stm.setInt(index++, pageSize);
+            stm.setInt(index, (page - 1) * pageSize);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                ServiceCategory category = new ServiceCategory();
+                category.setId(rs.getInt("category_id"));
+                category.setCategoryname(rs.getString("categoryname"));
+
+                Service service = new Service();
+                service.setId(rs.getInt("service_id"));
+                service.setName(rs.getString("name"));
+                service.setDescription(rs.getString("description"));
+                service.setPrice(rs.getFloat("price"));
+                service.setCategory(category);
+                service.setImg(rs.getString("img"));
+                services.add(service);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return services;
     }
-    return 0;
-}
+
+    public int getTotalFilteredServices(String searchQuery, String[] selectedCategories, double minPrice, double maxPrice) {
+        try {
+            String sql = "SELECT COUNT(*) AS total "
+                    + "FROM services s INNER JOIN servicecategories c ON s.category_id = c.category_id "
+                    + "WHERE s.isActive = 1 AND c.status = 1 AND s.name LIKE ? ";
+
+            if (selectedCategories != null && selectedCategories.length > 0) {
+                sql += "AND c.category_id IN (" + String.join(",", Collections.nCopies(selectedCategories.length, "?")) + ") ";
+            }
+
+            // Thêm phần lọc theo giá
+            sql += "AND s.price BETWEEN ? AND ? ";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, "%" + searchQuery + "%");
+
+            int index = 2;
+            if (selectedCategories != null) {
+                for (String category : selectedCategories) {
+                    stm.setInt(index++, Integer.parseInt(category));
+                }
+            }
+
+            // Thiết lập giá lọc
+            stm.setDouble(index++, minPrice);
+            stm.setDouble(index++, maxPrice);
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     public ArrayList<Service> getHomeServices() {
         ArrayList<Service> services = new ArrayList<>();
@@ -204,7 +204,7 @@ public int getTotalFilteredServices(String searchQuery, String[] selectedCategor
     public Service getServiceById(int serviceId) {
         Service service = null;
         try {
-            String sql = "SELECT s.service_id, s.name, s.description, s.price,s.img, s.isActive, c.status, c.category_id, c.name AS categoryname "
+            String sql = "SELECT s.service_id, s.name, s.description, s.price, s.img, s.isActive, c.status, c.category_id, c.name AS categoryname "
                     + "FROM services s "
                     + "INNER JOIN servicecategories c ON s.category_id = c.category_id "
                     + "WHERE s.service_id = ?";
@@ -212,6 +212,7 @@ public int getTotalFilteredServices(String searchQuery, String[] selectedCategor
             stm.setInt(1, serviceId);
             ResultSet rs = stm.executeQuery();
 
+            // Kiểm tra nếu không có bản ghi nào
             if (rs.next()) {
                 ServiceCategory category = new ServiceCategory();
                 category.setId(rs.getInt("category_id"));
@@ -230,9 +231,9 @@ public int getTotalFilteredServices(String searchQuery, String[] selectedCategor
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        // Trả về null nếu không tìm thấy dịch vụ
         return service;
     }
-   
+
 }
-
-
