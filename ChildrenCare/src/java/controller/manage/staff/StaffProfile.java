@@ -32,7 +32,15 @@ public class StaffProfile extends BaseRBAC{
         
         StaffDBContext sdb = new StaffDBContext();
         
+        User user = sdb.getUserById(id);
+        
         User staff = sdb.getProfileStaff(id);
+        
+        if(user == null){
+            resp.sendRedirect("../admin/staff");
+            return;
+        }
+        
         staff.setReservations(sdb.getStaffReserv(id));
         req.setAttribute("staff", staff);
         req.getRequestDispatcher("../admin/staff-profile.jsp").forward(req, resp);

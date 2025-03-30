@@ -45,7 +45,7 @@ public class ServiceDetailServlet extends BaseRBAC {
             request.setAttribute("service", service);
         } else {
             // Nếu không tìm thấy sản phẩm
-            response.sendRedirect("error.jsp");
+            response.sendRedirect("../c/error.html");
             return;
         }
         ServiceDAO s = new ServiceDAO();
