@@ -39,10 +39,15 @@ public class MyReservation extends BaseRBAC {
                 String sortByPrice = request.getParameter("sortPrice") != null ? request.getParameter("sortPrice").trim() : "";
                 int currentPage = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
                 int itemsPerPage = 5;
-
+//                String search = "";
+//                for (int i = 0; i < searchQuery.length(); i++) {
+//                    if (searchQuery.charAt(i) == ' ') {
+//                            search+=searchQuery.substring(i)
+//                    }
+//                }
                 // Quyết định cột và thứ tự sắp xếp
                 String sortColumn = "r.dateBook"; // Mặc định sắp xếp theo Service Name
-                String sortOrderFinal = "desc"; 
+                String sortOrderFinal = "desc";
 
                 // Kiểm tra để xác định xem có yêu cầu sắp xếp theo Price không
                 if ("asc".equals(sortByPrice) || "desc".equals(sortByPrice)) {
