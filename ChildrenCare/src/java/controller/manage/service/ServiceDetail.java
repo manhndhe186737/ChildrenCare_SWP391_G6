@@ -31,7 +31,24 @@ public class ServiceDetail extends HttpServlet {
 
         // Lấy service_id từ request
         String serviceIdParam = request.getParameter("id");
-        int serviceId = serviceIdParam != null ? Integer.parseInt(serviceIdParam) : 0;
+        int serviceId = 0;
+
+        // Kiểm tra serviceId có hợp lệ không
+        try {
+            if (serviceIdParam != null && !serviceIdParam.isEmpty()) {
+                serviceId = Integer.parseInt(serviceIdParam);
+            }
+        } catch (NumberFormatException e) {
+            // Nếu ID không hợp lệ, chuyển hướng về trang danh sách dịch vụ
+            response.sendRedirect("service-list");
+            return;
+        }
+
+        // Kiểm tra nếu serviceId là hợp lệ (không phải 0 hoặc giá trị quá lớn)
+        if (serviceId <= 0) {
+            response.sendRedirect("service-list");
+            return;
+        }
 
         // Lấy thông tin chi tiết của dịch vụ từ database
         ServiceDBContext serviceDB = new ServiceDBContext();

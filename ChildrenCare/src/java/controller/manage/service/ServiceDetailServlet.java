@@ -33,31 +33,49 @@ public class ServiceDetailServlet extends BaseRBAC {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account acocunt) throws ServletException, IOException {
-        int serviceId = Integer.parseInt(request.getParameter("id"));
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, Account account) throws ServletException, IOException {
+        // Get the serviceId parameter and handle potential invalid input
+        String serviceIdParam = request.getParameter("id");
+        int serviceId = -1;
 
-        // Lấy thông tin sản phẩm từ database
+        try {
+            if (serviceIdParam != null && !serviceIdParam.isEmpty()) {
+                serviceId = Integer.parseInt(serviceIdParam);  // Parse serviceId safely
+            }
+        } catch (NumberFormatException e) {
+            // If the ID is not a valid integer, redirect to the error page
+            response.sendRedirect("../c/error.html");
+            return;
+        }
+
+        // If serviceId is invalid (less than or equal to 0), redirect to error page
+        if (serviceId <= 0) {
+            response.sendRedirect("../c/error.html");
+            return;
+        }
+
+        // Get service information from the database
         ServiceDAO serviceDAO = new ServiceDAO();
         Service service = serviceDAO.getServiceById(serviceId);
 
         if (service != null) {
-            // Truyền thông tin sản phẩm vào request
+            // Set service information as request attribute
             request.setAttribute("service", service);
         } else {
-            // Nếu không tìm thấy sản phẩm
+            // If service not found, redirect to error page
             response.sendRedirect("../c/error.html");
             return;
         }
-        ServiceDAO s = new ServiceDAO();
-        List<Service> services1;
-        services1 = s.getAllServices();
+
+        // Get all services (assuming needed for sidebar or recommendations)
+        List<Service> services1 = serviceDAO.getAllServices();
         request.setAttribute("services1", services1);
 
+        // Get list of service categories
         List<ServiceCategory> categoryList = serviceDAO.getCategoryNames();
-
         request.setAttribute("categoryList", categoryList);
 
-        // Forward đến JSP để hiển thị thông tin sản phẩm
+        // Forward the request to the product-detail.jsp page
         request.getRequestDispatcher("/admin/product-detail.jsp").forward(request, response);
     }
 
@@ -69,12 +87,11 @@ public class ServiceDetailServlet extends BaseRBAC {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
-protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
-        throws ServletException, IOException {
-    
-}
+    @Override
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, Account account)
+            throws ServletException, IOException {
 
+    }
 
     /**
      * Returns a short description of the servlet.

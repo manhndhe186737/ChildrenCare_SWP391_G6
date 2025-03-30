@@ -43,6 +43,8 @@ public class ListCustomers extends BaseRBAC {
     } else if ("inactive".equalsIgnoreCase(filterBy)) {
         filterBy = "unverified";
     }
+    
+    searchName = searchName.trim();
 
     int page = 1;
     int pageSize = 5;

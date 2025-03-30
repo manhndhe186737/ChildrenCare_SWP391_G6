@@ -64,22 +64,33 @@ public class BlogDetail extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String blogId = request.getParameter("id");
 
-        if (blogId != null) {
-            Post blog = postDBContext.getPostById(Integer.parseInt(blogId));
+        if (blogId != null && !blogId.isEmpty()) {
+            try {
+                int blogIdInt = Integer.parseInt(blogId);  // Parse blogId safely
 
-            if (blog != null) {
-                request.setAttribute("blog", blog);
+                Post blog = postDBContext.getPostById(blogIdInt);
 
-                List<Post> recentBlogs = postDBContext.getPaginatedPosts(1, 5, null, null, null, null, "updatedate", "DESC");
-                request.setAttribute("recentBlogs", recentBlogs);
+                if (blog != null) {
+                    request.setAttribute("blog", blog);
 
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/blog-detail.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Blog not exist.");
+                    // Fetch recent blog posts (for sidebar or recommendations)
+                    List<Post> recentBlogs = postDBContext.getPaginatedPosts(1, 5, null, null, null, null, "updatedate", "DESC");
+                    request.setAttribute("recentBlogs", recentBlogs);
+
+                    // Forward the request to the blog-detail.jsp page
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/blog-detail.jsp");
+                    dispatcher.forward(request, response);
+                } else {
+                    // If blog post doesn't exist
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Blog post not found.");
+                }
+            } catch (NumberFormatException e) {
+                // If blogId is not a valid integer, return a bad request error
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid blog ID format.");
             }
         } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Blog not exist.");
+            // If blogId parameter is missing
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Blog ID is required.");
         }
     }
 
