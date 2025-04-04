@@ -344,6 +344,15 @@
                                 </ul>
                             </div>
                         </li>
+                        
+                        <li class="sidebar-dropdown">
+                            <a href="javascript:void(0)"><i class="uil uil-shopping-cart me-2 d-inline-block"></i>Products</a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li><a href="ServiceListServlet">Products List</a></li>
+                                </ul>
+                            </div>
+                        </li>
 
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authorization</a>

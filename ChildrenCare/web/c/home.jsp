@@ -279,6 +279,16 @@
                             </ul>
                         </li>
 
+                        <li class="has-submenu parent-menu-item">
+                            <a href="javascript:void(0)">Products</a><span class="menu-arrow"></span>
+                            <ul class="submenu">
+                                <li><a href="../service-list" class="sub-menu-item">Products List</a></li>
+                                    <c:if test="${sessionScope.role.contains('Customer')}">
+                                    <li><a href="../myreservation" class="sub-menu-item">My Orders</a></li>
+                                    </c:if>
+                            </ul>
+                        </li>
+
                         <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)">Pages</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
