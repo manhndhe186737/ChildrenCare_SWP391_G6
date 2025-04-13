@@ -47,13 +47,19 @@ public class FeedbackList extends BaseRBAC {
 
         // Tính offset
         int offset = (page - 1) * PAGE_SIZE;
+        
 
         // Lấy các tham số lọc (nếu có)
         String rating = request.getParameter("rating");
         String serviceName = request.getParameter("serviceName");
         String staffName = request.getParameter("staffName");
-        String search = request.getParameter("search");
-        
+      String originalSearch = request.getParameter("search");
+String search = "";
+
+
+        if (originalSearch != null && !originalSearch.trim().isEmpty()) {
+    search = originalSearch.trim().replaceAll("\\s+", "%");
+}
         if(search != null){
             search = search.trim();
         }
@@ -87,7 +93,7 @@ public class FeedbackList extends BaseRBAC {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("rating", rating);
         request.setAttribute("serviceName", serviceName);
-        request.setAttribute("search", search);
+        request.setAttribute("search", originalSearch);
         request.setAttribute("serviceList", serviceList);
 
         // Chuyển hướng đến JSP

@@ -57,6 +57,9 @@ public class BlogDBContext extends DBContext {
     // Tìm kiếm blog theo từ khóa trong title với phân trang
     public List<Blog> searchBlogs(String query, int page, int pageSize) {
         List<Blog> blogs = new ArrayList<>();
+        
+        String normalizedQuery = query.trim().replaceAll("\\s+", "%");
+
         String sql = "SELECT blog_id, title, content, created_at, updated_at, author_id, status, featured_image, slug, meta_description, meta_keywords "
                 + "FROM blogs WHERE title LIKE ? LIMIT ? OFFSET ?";  // Only search in title
 

@@ -349,7 +349,7 @@
                             <a href="javascript:void(0)"><i class="uil uil-shopping-cart me-2 d-inline-block"></i>Products</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="ServiceListServlet">Products List</a></li>
+                                   <li><a href="${pageContext.request.contextPath}/admin/product-manager">Products List</a></li>
                                 </ul>
                             </div>
                         </li>

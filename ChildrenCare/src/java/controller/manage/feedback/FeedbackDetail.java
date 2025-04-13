@@ -26,6 +26,7 @@ public class FeedbackDetail extends HttpServlet {
         try {
             int feedbackId = Integer.parseInt(request.getParameter("id"));
             Feedback feedback = db.getFeedbackById(feedbackId);
+            
 
             if (feedback != null) {
                 request.setAttribute("feedback", feedback);
@@ -39,6 +40,11 @@ public class FeedbackDetail extends HttpServlet {
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/feedbacklist?error=DatabaseError");
         }
+    }
+    
+       // Hàm phụ trợ: Kiểm tra tham số hợp lệ
+    private boolean isValidParam(String param) {
+        return param != null && !param.trim().isEmpty();
     }
 
     @Override

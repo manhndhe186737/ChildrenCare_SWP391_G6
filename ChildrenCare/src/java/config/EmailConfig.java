@@ -31,7 +31,7 @@ public class EmailConfig {
         Session session = createEmailSession();
         String subject = "Xác Minh Địa Chỉ Email Của Bạn";
         subject = MimeUtility.encodeText(subject, "UTF-8", "B");
-        String verificationLink = "http://localhost:8080/ChildrenCare/login?service=verify&token=" + token + "&type=register";
+        String verificationLink = "http://localhost:9999/ChildrenCare/login?service=verify&token=" + token + "&type=register";
 
         try {
             Message message = new MimeMessage(session);
@@ -54,7 +54,7 @@ public class EmailConfig {
         Session session = createEmailSession();
         String subject = "Đặt Lại Mật Khẩu Của Bạn";
         subject = MimeUtility.encodeText(subject, "UTF-8", "B");
-        String resetLink = "http://localhost:8080/ChildrenCare/login?service=resetPassword&token=" + token + "&type=resetPassword";
+        String resetLink = "http://localhost:9999/ChildrenCare/login?service=resetPassword&token=" + token + "&type=resetPassword";
 
         try {
             Message message = new MimeMessage(session);

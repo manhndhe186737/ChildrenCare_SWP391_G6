@@ -259,10 +259,11 @@
                             <a href="javascript:void(0)">Staff</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
-                                    <c:if test="${sessionScope.role.contains('Staffs')}">
+                                <c:if test="${sessionScope.role.contains('Staffs')}">
                                     <li><a href="../c/staff-reserv" class="sub-menu-item">Reservation</a></li>
-
-
+                                </c:if>
+                                <c:if test="${sessionScope.role.contains('Shipper')}">
+                                    <li><a href="../order-list" class="sub-menu-item">Ship</a></li>
                                 </c:if>
 
                             </ul>
@@ -282,9 +283,9 @@
                         <li class="has-submenu parent-menu-item">
                             <a href="javascript:void(0)">Products</a><span class="menu-arrow"></span>
                             <ul class="submenu">
-                                <li><a href="../service-list" class="sub-menu-item">Products List</a></li>
+                                <li><a href="../productlist" class="sub-menu-item">Products List</a></li>
                                     <c:if test="${sessionScope.role.contains('Customer')}">
-                                    <li><a href="../myreservation" class="sub-menu-item">My Orders</a></li>
+                                    <li><a href="../myorders" class="sub-menu-item">My Orders</a></li>
                                     </c:if>
                             </ul>
                         </li>

@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Children Care - Children Service Booking System</title>
+    <title>Children Care - Product Cart</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
     <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -43,6 +43,27 @@
         }
         .content-area {
             padding: 20px;
+        }
+        .qty-btn {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            margin: 0 5px;
+        }
+        .btn-checkout-all {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-checkout-all:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
         }
     </style>
 </head>
@@ -201,10 +222,10 @@
                     <div class="sidebar">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active" href="Cart">Reservation Cart</a>
+                                <a class="nav-link" href="Cart">Reservation Cart</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="ProductCart">Product Cart</a>
+                                <a class="nav-link active" href="ProductCart">Product Cart</a>
                             </li>
                         </ul>
                     </div>
@@ -213,7 +234,7 @@
 
                 <!-- Content -->
                 <div class="col-md-10 content-area">
-                    <h2>Reservation Cart</h2>
+                    <h2>Product Cart</h2>
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive bg-white shadow rounded">
@@ -221,44 +242,79 @@
                                     <thead>
                                         <tr>
                                             <th class="border-bottom p-3" style="min-width:50px"></th>
-                                            <th class="border-bottom p-3" style="min-width: 100px;">Service</th>
+                                            <th class="border-bottom p-3" style="min-width: 100px;">Product</th>
                                             <th class="border-bottom text-center p-3" style="min-width: 500px;">Description</th>
                                             <th class="border-bottom text-center p-3" style="min-width: 50px;">Price</th>
+                                            <th class="border-bottom text-center p-3" style="min-width: 150px;">Quantity</th>
+                                            <th class="border-bottom text-center p-3" style="min-width: 50px;">Subtotal</th>
                                             <th class="border-bottom text-center p-3" style="min-width: 50px;"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="s" items="${requestScope.services}">
+                                        <c:set var="totalCartAmount" value="0" />
+                                        <c:forEach var="item" items="${requestScope.cartItems}">
                                             <tr>
-                                                <td class="h5 p-3 text-center"><a href="../c/deleteCart?id=${s.id}" class="text-danger"><i class="uil uil-times"></i></a></td>
+                                                <td class="h5 p-3 text-center">
+                                                    <a href="../deleteProductCart?pcartId=${item.cartId}" class="text-danger">
+                                                        <i class="uil uil-times"></i>
+                                                    </a>
+                                                </td>
                                                 <td class="p-3">
                                                     <div class="d-flex align-items-center">
-                                                        <img src="${pageContext.request.contextPath}/${s.img}" class="img-fluid" alt="Service Image" style="max-width: 100px; max-height: 100px;">
-                                                        <h6 class="mb-0 ms-3">${s.name}</h6>
+                                                        <img src="${pageContext.request.contextPath}/${item.product.img}" class="img-fluid" alt="Product Image" style="max-width: 100px; max-height: 100px;">
+                                                        <h6 class="mb-0 ms-3">${item.product.productName}</h6>
                                                     </div>
                                                 </td>
-                                                <td class="text-center p-3">${s.description}</td>
-                                                <td class="text-center shop-list p-3">$ ${s.price}</td>
+                                                <td class="text-center p-3">${item.product.description}</td>
+                                                <td class="text-center shop-list p-3">$ ${item.product.price}</td>
+                                                <td class="text-center p-3">
+                                                    <form action="../UpdateCartQuantity" method="post" class="d-flex align-items-center justify-content-center">
+                                                        <input type="hidden" name="cartId" value="${item.cartId}"/>
+                                                        <button type="button" class="btn btn-outline-secondary qty-btn decrease">-</button>
+                                                        <input type="number" name="quantity" value="${item.quantity}" min="1" class="form-control quantity-input mx-2" />
+                                                        <button type="button" class="btn btn-outline-secondary qty-btn increase">+</button>
+                                                        <button type="submit" class="btn btn-primary btn-sm ms-2">Update</button>
+                                                    </form>
+                                                </td>
+                                                <td class="text-center p-3">$ ${item.product.price * item.quantity}</td>
                                                 <td>
                                                     <div class="qty-icons">
-                                                        <form id="fbook" action="BookingStaff" method="post">
-                                                            <input type="hidden" name="service_id" value="${s.id}"/>
-                                                            <input type="hidden" name="service_name" value="${s.name}"/>
-                                                            <input type="hidden" name="isFromCart" value="true"/>
-                                                            <input type="submit" class="btn btn-primary" value="Book"/>
+                                                        <form action="../Checkout" method="post">
+                                                            <input type="hidden" name="cartId" value="${item.cartId}"/>
+                                                            <input type="hidden" name="quantity" value="${item.quantity}"/>
+                                                            <input type="hidden" name="productId" value="${item.product.productId}"/>
+                                                            <input type="submit" class="btn btn-primary" value="Checkout"/>
                                                         </form>
                                                     </div>
                                                 </td>
                                             </tr>
+                                            <c:set var="totalCartAmount" value="${totalCartAmount + (item.product.price * item.quantity)}" />
                                         </c:forEach>
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="5" class="text-end p-3"><strong>Total:</strong></td>
+                                            <td class="text-center p-3"><strong>$ ${totalCartAmount}</strong></td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div><!--end col-->
                     </div><!--end row-->
                     <div class="row">
                         <div class="col-lg-8 col-md-6 mt-4 pt-2">
-                            <a href="../service-list" class="btn btn-primary">Add More Services</a>
+                            <a href="../productlist" class="btn btn-primary">Add More Products</a>
+                            <c:if test="${not empty requestScope.cartItems}">
+                                <form action="../CheckoutAll" method="post" class="d-inline">
+                                    <c:forEach var="item" items="${requestScope.cartItems}">
+                                        <input type="hidden" name="cartIds" value="${item.cartId}"/>
+                                        <input type="hidden" name="quantities" value="${item.quantity}"/>
+                                        <input type="hidden" name="productIds" value="${item.product.productId}"/>
+                                    </c:forEach>
+                                    <button type="submit" class="btn btn-checkout-all ms-2">Proceed to Checkout All</button>
+                                </form>
+                            </c:if>
                         </div>
                     </div><!--end row-->
                 </div><!--end content-->
@@ -356,74 +412,8 @@
     <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
     <!-- Back to top -->
 
-    <!-- Offcanvas Start -->
-    <div class="offcanvas bg-white offcanvas-top" tabindex="-1" id="offcanvasTop">
-        <div class="offcanvas-body d-flex align-items-center align-items-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div class="text-center">
-                            <h4>Search now.....</h4>
-                            <div class="subcribe-form mt-4">
-                                <form>
-                                    <div class="mb-0">
-                                        <input type="text" id="help" name="name" class="border bg-white rounded-pill" required="" placeholder="Search">
-                                        <button type="submit" class="btn btn-pills btn-primary">Search</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </div>
-    </div>
-    <!-- Offcanvas End -->
-
-    <!-- Offcanvas Start -->
-    <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-        <div class="offcanvas-header p-4 border-bottom">
-            <h5 id="offcanvasRightLabel" class="mb-0">
-                <img src="../assets/images/logo-dark.png" height="24" class="light-version" alt="">
-                <img src="../assets/images/logo-light.png" height="24" class="dark-version" alt="">
-            </h5>
-            <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
-        </div>
-        <div class="offcanvas-body p-4 px-md-5">
-            <div class="row">
-                <div class="col-12">
-                    <!-- Style switcher -->
-                    <div id="style-switcher">
-                        <div>
-                            <ul class="text-center list-unstyled mb-0">
-                                <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="../assets/images/layouts/landing-light-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="../assets/images/layouts/landing-dark-rtl.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">RTL Version</span></a></li>
-                                <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">LTR Version</span></a></li>
-                                <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="../assets/images/layouts/landing-dark.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Dark Version</span></a></li>
-                                <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="../assets/images/layouts/landing-light.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                <li class="d-grid"><a href="../admin/index.html" target="_blank" class="mt-4"><img src="../assets/images/layouts/light-dash.png" class="img-fluid rounded-md shadow-md d-block" alt=""><span class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- end Style switcher -->
-                </div><!--end col-->
-            </div><!--end row-->
-        </div>
-
-        <div class="offcanvas-footer p-4 border-top text-center">
-            <ul class="list-unstyled social-icon mb-0">
-                <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
-                <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
-                <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
-                <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
-                <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
-                <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
-                <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
-            </ul><!--end icon-->
-        </div>
-    </div>
-    <!-- Offcanvas End -->
+    <!-- Thư viện SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- javascript -->
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
@@ -431,6 +421,50 @@
     <script src="../assets/js/feather.min.js"></script>
     <!-- Main Js -->
     <script src="../assets/js/app.js"></script>
+
+    <script>
+        // Lấy thông báo từ session
+        var alertMessage = '<%= session.getAttribute("cartMessage") != null ? session.getAttribute("cartMessage") : "" %>';
+        var alertType = '<%= session.getAttribute("cartAlertType") != null ? session.getAttribute("cartAlertType") : "" %>';
+
+        // Kiểm tra nếu có thông báo thì hiển thị Swal.fire
+        if (alertMessage.trim() !== "" && alertType.trim() !== "") {
+            Swal.fire({
+                icon: alertType, // success, error, warning
+                title: alertMessage,
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+
+        // Xóa thông báo khỏi session sau khi hiển thị
+        <%
+            session.removeAttribute("cartMessage");
+            session.removeAttribute("cartAlertType");
+        %>
+
+        // Xử lý nút tăng/giảm số lượng
+        document.addEventListener('DOMContentLoaded', function () {
+            const forms = document.querySelectorAll('form[action="../UpdateCartQuantity"]');
+            forms.forEach(form => {
+                const input = form.querySelector('input[name="quantity"]');
+                const decreaseBtn = form.querySelector('.decrease');
+                const increaseBtn = form.querySelector('.increase');
+
+                decreaseBtn.addEventListener('click', function () {
+                    let value = parseInt(input.value);
+                    if (value > 1) {
+                        input.value = value - 1;
+                    }
+                });
+
+                increaseBtn.addEventListener('click', function () {
+                    let value = parseInt(input.value);
+                    input.value = value + 1;
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
