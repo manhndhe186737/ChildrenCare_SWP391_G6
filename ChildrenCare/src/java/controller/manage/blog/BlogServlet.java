@@ -22,7 +22,7 @@ public class BlogServlet extends HttpServlet {
     private static final int POSTS_PER_PAGE = 6;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    private final PostDBContext postDB = new PostDBContext(); // Khởi tạo một lần
+    private final PostDBContext postDB = new PostDBContext(); 
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -61,7 +61,7 @@ public class BlogServlet extends HttpServlet {
         // Xác định cột và thứ tự sắp xếp
         String sortColumn = determineSortColumn(sortBy);
         String validSortOrder = normalizeSortOrder(sortOrder);
-
+        searchQuery = searchQuery.trim().replaceAll("\\s+", "%");
         // Lấy tổng số bài viết với tất cả các bộ lọc
         int totalPosts = postDB.getTotalPostsWithFilters(searchQuery, categoryIdParam, fromDate, toDate);
         int totalPages = calculateTotalPages(totalPosts);

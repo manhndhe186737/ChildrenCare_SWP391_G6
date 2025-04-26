@@ -320,7 +320,9 @@ public class FeedbackDBContext extends DBContext {
         query.append(" AND f.rating = ?");
         parameters.add(filterRating);
     }
-
+        if (search != null) {
+            search = search.trim().replaceAll("\\s+", "%");
+        }
     if (search != null && !search.isEmpty()) {
         query.append(" AND (f.comment LIKE ? OR s.name LIKE ? OR r.customer_name LIKE ?)");
         parameters.add("%" + search + "%");
